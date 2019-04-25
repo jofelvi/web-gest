@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Breadcrumb } from 'antd';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+import { Switch, Route } from 'react-router-dom';
+
+import Header from './components/Header';
+import Sider from './components/Sider';
+
+import HomeScreen from './screens/HomeScreen';
+import UsersListScreen from './screens/UsersListScreen';
+
+const { Content } = Layout;
+
+const App = () => (
+  <Layout>
+    <Header className="header" />
+    <Layout>
+      <Sider />
+      <Layout style={{ padding: '0 24px 24px' }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb>
+        <Content
+          style={{
+            background: '#fff',
+            padding: 24,
+            margin: 0,
+            minHeight: 280
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+          <Switch>
+            <Route path="/" exact component={HomeScreen} />
+            <Route path="/users" exact component={UsersListScreen} />
+          </Switch>
+        </Content>
+      </Layout>
+    </Layout>
+  </Layout>
+);
 
 export default App;
