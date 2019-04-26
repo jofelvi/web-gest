@@ -1,7 +1,7 @@
 import React from 'react';
-import { Menu, Layout, Avatar } from 'antd';
+import { Menu, Layout } from 'antd';
 
-import { LogoContainer } from './styles';
+import { LogoContainer, Logo } from './styles';
 
 import logo from '../../assets/logo.png';
 
@@ -11,7 +11,7 @@ const { Item } = Menu;
 const Header = () => (
   <AntdHeader className="header">
     <LogoContainer className="logo">
-      <Avatar size={48} src={logo} shape="square" />
+      <Logo src={logo} shape="square" />
     </LogoContainer>
     <Menu
       theme="dark"
