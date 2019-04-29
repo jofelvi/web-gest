@@ -9,10 +9,12 @@ import rootReducer from './rootReducers';
 // rootSaga
 import rootSagas from './rootSagas';
 
+import { tokenMiddleware } from '../lib/restClient';
+
 // create saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware];
+const middlewares = [tokenMiddleware, sagaMiddleware];
 
 export default initialState => {
   const store = createStore(
