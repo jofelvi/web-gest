@@ -9,7 +9,7 @@ import LoginForm from '../../components/LoginForm';
 
 const LoginScreen = ({ status }) =>
   status !== STATUS.LOGGED ? (
-    <Row type="flex" justify="center">
+    <Row type="flex" justify="center" align="middle">
       <Col span={12}>
         <LoginForm />
       </Col>
