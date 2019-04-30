@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { checkLogin } from './modules/auth/actions';
 
 import { Layout } from 'antd';
 
