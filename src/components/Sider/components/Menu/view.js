@@ -34,53 +34,54 @@ const Menu = () => (
       }
     >
       <Item key="3">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/group">Grupo</SideLink>
         </span>
       </Item>
       <Item key="4">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/enterprise-group">
             Grupo Empresarial
           </SideLink>
         </span>
       </Item>
       <Item key="5">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/delegate">Delegado</SideLink>
         </span>
       </Item>
       <Item key="6">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/area-managers">Jefes de zona</SideLink>
         </span>
       </Item>
       <Item key="7">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/products">Producto</SideLink>
         </span>
       </Item>
       <Item key="8">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/subgroup">Subgrupo</SideLink>
         </span>
       </Item>
       <Item key="9">
         <span>
+          <Icon type="user" />
           <SideLink to="/management/foreclosed-orders">
             Pedidos embargados
           </SideLink>
         </span>
       </Item>
       <Item key="10">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/management/commercial-deals">
             Acuerdos comerciales
           </SideLink>
@@ -88,14 +89,14 @@ const Menu = () => (
       </Item>
     </SubMenu>
     <Item key="11">
-      <Icon type="user" />
       <span>
+        <Icon type="user" />
         <SideLink to="/wholesaler-pharmacy">Mayorista-Farmacia</SideLink>
       </span>
     </Item>
     <Item key="12">
-      <Icon type="user" />
       <span>
+        <Icon type="user" />
         <SideLink to="/deals">Ofertas</SideLink>
       </span>
     </Item>
@@ -109,22 +110,22 @@ const Menu = () => (
       }
     >
       <Item key="13">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/massive-management/delegates-pharmacy">
             Delegados y Farmacias
           </SideLink>
         </span>
       </Item>
       <Item key="14">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/massive-management/relationships">Relaciones</SideLink>
         </span>
       </Item>
       <Item key="15">
-        <Icon type="user" />
         <span>
+          <Icon type="user" />
           <SideLink to="/massive-management/purchase-limit">
             Limitación de compras
           </SideLink>
@@ -132,20 +133,20 @@ const Menu = () => (
       </Item>
     </SubMenu>
     <Item key="16">
-      <Icon type="user" />
       <span>
+        <Icon type="user" />
         <SideLink to="/cmi">CMI</SideLink>
       </span>
     </Item>
     <Item key="17">
-      <Icon type="user" />
       <span>
+        <Icon type="user" />
         <SideLink to="/reports">Informes</SideLink>
       </span>
     </Item>
     <Item key="18">
-      <Icon type="user" />
       <span>
+        <Icon type="user" />
         <SideLink to="/online-help">Ayuda Online</SideLink>
       </span>
     </Item>
