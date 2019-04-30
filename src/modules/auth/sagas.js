@@ -2,9 +2,8 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 
 import utils from '../../lib/utils';
 
-import { FETCH_ME, LOGIN, REFRESH_TOKEN, LOGOUT } from './actionTypes';
+import { LOGIN, REFRESH_TOKEN, LOGOUT } from './actionTypes';
 import {
-  setMe,
   loginSuccess,
   loginFailed,
   logoutSuccess,
@@ -15,20 +14,6 @@ import {
 } from './actions';
 
 import * as api from './api';
-
-function* fetchMe() {
-  try {
-    const response = yield call(api.getProfile);
-    const user = response.data;
-    yield put(setMe({ me: user }));
-  } catch (error) {
-    console.error(`error while log out ${error}`);
-  }
-}
-
-export function* watchFetchMe() {
-  yield takeLatest(FETCH_ME, fetchMe);
-}
 
 function* refreshToken() {
   try {
