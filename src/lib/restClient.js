@@ -1,11 +1,28 @@
 import axios from 'axios';
 
+import { SET_TOKEN } from '../modules/auth/actionTypes';
+
 let api = null;
+let storedToken = null;
+
+export const tokenMiddleware = () => next => action => {
+  const { type } = action;
+  if (type === SET_TOKEN) {
+    const {
+      payload: { token }
+    } = action;
+    if (token) {
+      storedToken = token;
+    }
+  }
+  return next(action);
+};
 
 const getHeaders = async () => {
   const headers = {
     'Content-Type': 'application/json',
-    accept: 'application/json'
+    accept: 'application/json',
+    Authorization: `Bearer ${storedToken}`
   };
   return headers;
 };
