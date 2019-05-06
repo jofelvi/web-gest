@@ -20,7 +20,7 @@ import * as api from './api';
 function* fetchTasks() {
   try {
     const response = yield call(api.fetchTasks);
-    yield put(fetchTasksSuccess, { tasks: response.data });
+    yield put(fetchTasksSuccess({ tasks: response.data }));
   } catch (e) {
     console.error(e);
     yield put(fetchTasksFailed());
