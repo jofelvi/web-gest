@@ -10,6 +10,13 @@ import {
 
 import { watchRefreshToken, watchLogin, watchLogout } from './auth/sagas';
 
+import {
+  watchStartProcess,
+  watchGetTaskVariables,
+  watchContinueProcess,
+  watchCompleteTaskProcess
+} from './forms/sagas';
+
 export default function* rootSaga() {
   yield all([
     watchFetchUsers(),
@@ -19,6 +26,10 @@ export default function* rootSaga() {
     watchFetchTasksByUser(),
     watchRefreshToken(),
     watchLogin(),
-    watchLogout()
+    watchLogout(),
+    watchStartProcess(),
+    watchGetTaskVariables(),
+    watchContinueProcess(),
+    watchCompleteTaskProcess()
   ]);
 }
