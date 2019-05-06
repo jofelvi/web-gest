@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
+import loadable from '@loadable/component';
 import { connect } from 'react-redux';
 
 import { setToken } from './modules/auth/actions';
+
+
 
 import utils from './lib/utils';
 
@@ -22,10 +24,39 @@ import TasksListScreen from './screens/TasksListScreen';
 
 const { Content } = Layout;
 
-const App = ({ location: { pathname }, setToken }) => {
+const App = ({
+  location: { pathname },
+  process,
+  taskName,
+  history,
+  completed,
+  processKey,
+  setToken,
+}) => {
   useEffect(() => {
     setToken({ token: utils.getAuthToken() });
   });
+  const [prevCompleted, setPrevCompleted] = useState(false);
+
+  if (!completed && prevCompleted) {
+    setPrevCompleted(true);
+    history.push(`/process/${processKey}/thankyou`);
+  }
+
+  const DynamicProcess = loadable(() =>
+    process
+      ? import(`./screens/Forms/${process}`)
+      : import(
+          `./screens/${utils.capitalizeWord(pathname.split('/')[2])}Screen`
+        )
+  );
+
+  const DynamicTaskForm = loadable(() =>
+    taskName
+      ? import(`./screens/Forms/${process}/components/${taskName}`)
+      : import(`./screens/Forms/${process}`)
+  );
+
   return (
     <Layout>
       <Header className="header" />
@@ -61,9 +92,15 @@ App.propTypes = {
   status: PropTypes.string.isRequired
 };
 
+
 export default withRouter(
   connect(
-    () => ({}),
+    state => ({
+      process: state.forms.process,
+      taskName: state.forms.taskName,
+      processKey: state.forms.processKey,
+      completed: state.forms.completed
+    }),
     { setToken }
   )(App)
 );
