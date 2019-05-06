@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
+import loadable from '@loadable/component';
 import { connect } from 'react-redux';
 
-import loadable from '@loadable/component';
+import { setToken } from './modules/auth/actions';
+
+
+
 import utils from './lib/utils';
 
 import { Layout } from 'antd';
@@ -17,6 +20,7 @@ import Sider from './components/Sider';
 import HomeScreen from './screens/HomeScreen';
 import UsersListScreen from './screens/UsersListScreen';
 import LoginScreen from './screens/LoginScreen';
+import TasksListScreen from './screens/TasksListScreen';
 
 const { Content } = Layout;
 
@@ -26,8 +30,12 @@ const App = ({
   taskName,
   history,
   completed,
-  processKey
+  processKey,
+  setToken,
 }) => {
+  useEffect(() => {
+    setToken({ token: utils.getAuthToken() });
+  });
   const [prevCompleted, setPrevCompleted] = useState(false);
 
   if (!completed && prevCompleted) {
@@ -67,14 +75,9 @@ const App = ({
               <PrivateRoute path="/" exact component={HomeScreen} />
               <PrivateRoute path="/users" exact component={UsersListScreen} />
               <PrivateRoute
-                path={`/process/${process}/:taskName`}
+                path="/management/group"
                 exact
-                component={DynamicTaskForm}
-              />
-              <PrivateRoute
-                path={`/process/${process}`}
-                exact
-                component={DynamicProcess}
+                component={TasksListScreen}
               />
               <Route path="/login" exact component={LoginScreen} />
             </Switch>
@@ -89,11 +92,15 @@ App.propTypes = {
   status: PropTypes.string.isRequired
 };
 
+
 export default withRouter(
-  connect(state => ({
-    process: state.forms.process,
-    taskName: state.forms.taskName,
-    processKey: state.forms.processKey,
-    completed: state.forms.completed
-  }))(App)
+  connect(
+    state => ({
+      process: state.forms.process,
+      taskName: state.forms.taskName,
+      processKey: state.forms.processKey,
+      completed: state.forms.completed
+    }),
+    { setToken }
+  )(App)
 );
