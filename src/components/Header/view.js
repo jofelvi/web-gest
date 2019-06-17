@@ -14,7 +14,14 @@ import logo from "../../assets/logo.png";
 
 const { Header: AntdHeader } = Layout;
 
-const Header = ({ logout, status, history }) => (
+const renderLoginButton = (pathname, history) =>
+  pathname === "/login" ? null : (
+    <Button onClick={() => history.push("/login")} type="primary">
+      Login
+    </Button>
+  );
+
+const Header = ({ logout, status, history, location: { pathname } }) => (
   <AntdHeader className="header">
     <LogoContainer className="logo">
       <Logo src={logo} shape="square" />
@@ -27,13 +34,13 @@ const Header = ({ logout, status, history }) => (
     >
       <Row type="flex">
         <Col span={1}>
-          <MenuItem key="1">nav 1</MenuItem>
+          <MenuItem key="1">Nav 1</MenuItem>
         </Col>
         <Col span={1}>
-          <MenuItem key="2">nav 2</MenuItem>
+          <MenuItem key="2">Nav 2</MenuItem>
         </Col>
         <Col span={1}>
-          <MenuItem key="3">nav 3</MenuItem>
+          <MenuItem key="3">Nav 3</MenuItem>
         </Col>
         <Col span={15} />
         <RightSectionContainer span={6}>
@@ -50,9 +57,7 @@ const Header = ({ logout, status, history }) => (
               </Button>
             </Col>
           ) : (
-            <Button onClick={() => history.push("/login")} type="primary">
-              Login
-            </Button>
+            renderLoginButton(pathname, history)
           )}
         </RightSectionContainer>
       </Row>
@@ -63,7 +68,10 @@ const Header = ({ logout, status, history }) => (
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
-  history: PropTypes.shape({}).isRequired
+  history: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string
+  }).isRequired
 };
 
 export default withRouter(Header);
