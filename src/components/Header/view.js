@@ -1,18 +1,18 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { withRouter } from "react-router-dom";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { Menu, Layout, Row, Col, Button } from 'antd';
+import { Menu, Layout, Row, Col, Button } from "antd";
 
-import { LogoContainer, Logo, RightSectionContainer } from './styles';
+import { LogoContainer, Logo, RightSectionContainer } from "./styles";
+import MenuItem from "./components/MenuItem";
 
-import { STATUS } from '../../modules/auth/constants';
+import { STATUS } from "../../modules/auth/constants";
 
-import logo from '../../assets/logo.png';
+import logo from "../../assets/logo.png";
 
 const { Header: AntdHeader } = Layout;
-const { Item } = Menu;
 
 const Header = ({ logout, status, history }) => (
   <AntdHeader className="header">
@@ -22,18 +22,18 @@ const Header = ({ logout, status, history }) => (
     <Menu
       theme="dark"
       mode="horizontal"
-      defaultSelectedKeys={['1']}
-      style={{ lineHeight: '64px' }}
+      defaultSelectedKeys={["1"]}
+      style={{ lineHeight: "64px" }}
     >
       <Row type="flex">
         <Col span={1}>
-          <Item key="1">nav 1</Item>
+          <MenuItem key="1">nav 1</MenuItem>
         </Col>
         <Col span={1}>
-          <Item key="2">nav 2</Item>
+          <MenuItem key="2">nav 2</MenuItem>
         </Col>
         <Col span={1}>
-          <Item key="3">nav 3</Item>
+          <MenuItem key="3">nav 3</MenuItem>
         </Col>
         <Col span={15} />
         <RightSectionContainer span={6}>
@@ -42,7 +42,7 @@ const Header = ({ logout, status, history }) => (
               <Button
                 onClick={() => {
                   logout();
-                  history.push('/login');
+                  history.push("/login");
                 }}
                 type="primary"
               >
@@ -50,7 +50,7 @@ const Header = ({ logout, status, history }) => (
               </Button>
             </Col>
           ) : (
-            <Button onClick={() => history.push('/login')} type="primary">
+            <Button onClick={() => history.push("/login")} type="primary">
               Login
             </Button>
           )}
