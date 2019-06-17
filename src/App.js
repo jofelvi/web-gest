@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 
 import { setToken } from './modules/auth/actions';
 
-
-
 import utils from './lib/utils';
 
 import { Layout } from 'antd';
