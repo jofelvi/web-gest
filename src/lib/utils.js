@@ -6,7 +6,6 @@ const utils = {
   removeAuthToken: () => localStorage.removeItem(TOKEN_STORAGE_KEY),
   isAuthd: () => !!localStorage.getItem(TOKEN_STORAGE_KEY),
   capitalizeWord: word => {
-    console.log(word);
     const capitalizedWord = `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
     return capitalizedWord;
   }
