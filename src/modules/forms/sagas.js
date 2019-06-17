@@ -74,6 +74,8 @@ function* continueProcess({ payload }) {
       null,
       `/process/${processKey}/${response.data.formKey}`
     );
+  } else if (response.status === 401) {
+    window.history.pushState(null, null, '/login');
   } else {
     console.log('---> completed');
   }
@@ -110,6 +112,8 @@ function* completeTaskProcess({ payload }) {
       null,
       `/process/${processKey}/${response.data.formKey}`
     );
+  } else if (response.status === 401) {
+    window.history.pushState(null, null, '/login');
   } else {
     console.log('--> completed');
     yield put(complete());
