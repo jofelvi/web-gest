@@ -1,154 +1,137 @@
-import React from 'react';
+import React from "react";
 
-import { Menu as AntdMenu, Icon } from 'antd';
+import { Menu as AntdMenu } from "antd";
 
-import { SideLink } from './styles';
+import MenuItemContent from "./components/MenuItemContent";
+import SubMenuItemContent from "./components/SubMenuItemContent";
 
 const { Item, SubMenu } = AntdMenu;
 
 const Menu = () => (
   <AntdMenu
     mode="inline"
-    defaultSelectedKeys={['1']}
-    style={{ height: '100%', borderRight: 0 }}
+    defaultSelectedKeys={["1"]}
+    style={{ height: "100%", borderRight: 0 }}
   >
     <Item key="1">
-      <Icon type="desktop" />
-      <span>
-        <SideLink to="/">Inicio</SideLink>
-      </span>
+      <MenuItemContent icon="desktop" link="/" name="Inicio" />
     </Item>
     <Item key="2">
-      <Icon type="user" />
-      <span>
-        <SideLink to="/users">Usuarios Farmacia</SideLink>
-      </span>
+      <MenuItemContent icon="user" link="/users" name="Usuarios Farmacia" />
     </Item>
     <SubMenu
       key="sub1"
       title={
-        <span>
-          <Icon type="setting" />
-          <span>Gestión</span>
-        </span>
+        <SubMenuItemContent icon="setting" isLink={false} name="Gestión" />
       }
     >
       <Item key="3">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/group">Grupo</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/group"
+          name="Gestión"
+        />
       </Item>
       <Item key="4">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/enterprise-group">
-            Grupo Empresarial
-          </SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/enterprise-group"
+          name="Grupo Empresarial"
+        />
       </Item>
       <Item key="5">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/delegate">Delegado</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/delegate"
+          name="Delegado"
+        />
       </Item>
       <Item key="6">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/area-managers">Jefes de zona</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/area-managers"
+          name="Jefes de zona"
+        />
       </Item>
       <Item key="7">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/products">Producto</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/products"
+          name="Producto"
+        />
       </Item>
       <Item key="8">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/subgroup">Subgrupo</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/subgroup"
+          name="Subgrupo"
+        />
       </Item>
       <Item key="9">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/foreclosed-orders">
-            Pedidos embargados
-          </SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/foreclosed-orders"
+          name="Pedidos Embargados"
+        />
       </Item>
       <Item key="10">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/management/commercial-deals">
-            Acuerdos comerciales
-          </SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/management/commercial-deals"
+          name="Acuerdos comerciales"
+        />
       </Item>
     </SubMenu>
     <Item key="11">
-      <span>
-        <Icon type="user" />
-        <SideLink to="/wholesaler-pharmacy">Mayorista-Farmacia</SideLink>
-      </span>
+      <SubMenuItemContent
+        icon="user"
+        link="/management/wholesaler-pharmacy"
+        name="Mayorista-Farmacia"
+      />
     </Item>
     <Item key="12">
-      <span>
-        <Icon type="user" />
-        <SideLink to="/deals">Ofertas</SideLink>
-      </span>
+      <SubMenuItemContent icon="user" link="/deals" name="Ofertas" />
     </Item>
     <SubMenu
       key="sub2"
       title={
-        <span>
-          <Icon type="setting" />
-          <span>Gestión masiva</span>
-        </span>
+        <SubMenuItemContent
+          icon="setting"
+          isLink={false}
+          name="Gestión masiva"
+        />
       }
     >
       <Item key="13">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/massive-management/delegates-pharmacy">
-            Delegados y Farmacias
-          </SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/massive-management/delegates-pharmacy"
+          name="Delegados y Farmacias"
+        />
       </Item>
       <Item key="14">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/massive-management/relationships">Relaciones</SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/massive-management/relationships"
+          name="Relaciones"
+        />
       </Item>
       <Item key="15">
-        <span>
-          <Icon type="user" />
-          <SideLink to="/massive-management/purchase-limit">
-            Limitación de compras
-          </SideLink>
-        </span>
+        <SubMenuItemContent
+          icon="user"
+          link="/massive-management/purchase-limit"
+          name="Limitación de compras"
+        />
       </Item>
     </SubMenu>
     <Item key="16">
-      <span>
-        <Icon type="user" />
-        <SideLink to="/cmi">CMI</SideLink>
-      </span>
+      <SubMenuItemContent icon="user" link="/cmi" name="CMI" />
     </Item>
     <Item key="17">
-      <span>
-        <Icon type="user" />
-        <SideLink to="/reports">Informes</SideLink>
-      </span>
+      <SubMenuItemContent icon="user" link="/reports" name="Informes" />
     </Item>
     <Item key="18">
-      <span>
-        <Icon type="user" />
-        <SideLink to="/online-help">Ayuda Online</SideLink>
-      </span>
+      <SubMenuItemContent icon="user" link="/online-help" name="Ayuda Online" />
     </Item>
   </AntdMenu>
 );
