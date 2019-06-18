@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import loadable from '@loadable/component';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import loadable from "@loadable/component";
+import { connect } from "react-redux";
 
-import { setToken } from './modules/auth/actions';
+import { setToken } from "./modules/auth/actions";
 
-import utils from './lib/utils';
+import utils from "./lib/utils";
 
-import { Layout } from 'antd';
+import { Layout } from "antd";
 
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from "react-router-dom";
 
-import PrivateRoute from './components/PrivateRoute';
-import Header from './components/Header';
-import Sider from './components/Sider';
+import PrivateRoute from "./components/PrivateRoute";
+import Header from "./components/Header";
+import Sider from "./components/Sider";
 
-import HomeScreen from './screens/HomeScreen';
-import UsersListScreen from './screens/UsersListScreen';
-import LoginScreen from './screens/LoginScreen';
-import TasksListScreen from './screens/TasksListScreen';
+import HomeScreen from "./screens/HomeScreen";
+import UsersListScreen from "./screens/UsersListScreen";
+import LoginScreen from "./screens/LoginScreen";
+import TasksListScreen from "./screens/TasksListScreen";
+import Forms from "./screens/Forms";
 
 const { Content } = Layout;
 
@@ -48,7 +49,7 @@ const App = ({
     process
       ? import(`./screens/Forms/${process}`)
       : import(
-          `./screens/${utils.capitalizeWord(pathname.split('/')[2])}Screen`
+          `./screens/${utils.capitalizeWord(pathname.split("/")[2])}Screen`
         )
   );
 
@@ -62,11 +63,11 @@ const App = ({
     <Layout>
       <Header className="header" />
       <Layout>
-        {pathname !== '/login' ? <Sider /> : null}
+        {pathname !== "/login" ? <Sider /> : null}
         <Layout>
           <Content
             style={{
-              background: '#fff',
+              background: "#fff",
               padding: 24,
               margin: 0,
               minHeight: 280
@@ -79,6 +80,15 @@ const App = ({
                 path="/management/group"
                 exact
                 component={TasksListScreen}
+              />
+              <PrivateRoute
+                path={`/process/${process}/:taskName`}
+                component={DynamicTaskForm}
+              />
+              <PrivateRoute
+                path={`/process/${process}`}
+                exact
+                component={DynamicProcess}
               />
               <Route path="/login" exact component={LoginScreen} />
             </Switch>
