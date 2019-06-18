@@ -11,9 +11,9 @@ import {
 
 const defaultState = {
   processStep: 'startForm',
-  process: 'signup',
-  processKey: 'signup',
-  taskName: 'signup',
+  process: '',
+  processKey: '',
+  taskName: '',
   finishedProcess: false,
   completed: false
 };
