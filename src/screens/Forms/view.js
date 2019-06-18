@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import StartForm from './components/StartForm';
