@@ -1,3 +1,11 @@
-import View from './view';
+import { connect } from "react-redux";
 
-export default View;
+import View from "./view";
+
+export default connect(
+  state => ({
+    process: state.forms.process,
+    taskName: state.forms.taskName
+  }),
+  {}
+)(View);
