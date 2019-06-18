@@ -29,10 +29,13 @@ const App = ({
   history,
   completed,
   processKey,
-  setToken,
+  token,
+  setToken
 }) => {
   useEffect(() => {
-    setToken({ token: utils.getAuthToken() });
+    if (token === null) {
+      setToken({ token: utils.getAuthToken() });
+    }
   });
   const [prevCompleted, setPrevCompleted] = useState(false);
 
@@ -90,14 +93,14 @@ App.propTypes = {
   status: PropTypes.string.isRequired
 };
 
-
 export default withRouter(
   connect(
     state => ({
       process: state.forms.process,
       taskName: state.forms.taskName,
       processKey: state.forms.processKey,
-      completed: state.forms.completed
+      completed: state.forms.completed,
+      token: state.auth.token
     }),
     { setToken }
   )(App)
