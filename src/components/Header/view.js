@@ -1,31 +1,31 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Menu, Layout, Row, Col, Button } from "antd";
+import { Menu, Layout, Row, Col, Button } from 'antd';
 
 import {
   LogoContainer,
   Logo,
   RightSectionContainer,
   SignupButton
-} from "./styles";
-import MenuItem from "./components/MenuItem";
+} from './styles';
+import MenuItem from './components/MenuItem';
 
-import { STATUS } from "../../modules/auth/constants";
+import { STATUS } from '../../modules/auth/constants';
 
-import logo from "../../assets/logo.png";
+import logo from '../../assets/logo.png';
 
 const { Header: AntdHeader } = Layout;
 
 const renderLoginButton = (pathname, history) =>
-  pathname === "/login" ? null : (
+  pathname === '/login' || pathname === '/signup' ? null : (
     <>
-      <Button onClick={() => history.push("/login")} type="primary">
+      <Button onClick={() => history.push('/login')} type="primary">
         Login
       </Button>
-      <SignupButton onClick={() => history.push("/signup")} type="primary">
+      <SignupButton onClick={() => history.push('/signup')} type="primary">
         Sign up
       </SignupButton>
     </>
@@ -39,8 +39,8 @@ const Header = ({ logout, status, history, location: { pathname } }) => (
     <Menu
       theme="dark"
       mode="horizontal"
-      defaultSelectedKeys={["1"]}
-      style={{ lineHeight: "64px" }}
+      defaultSelectedKeys={['1']}
+      style={{ lineHeight: '64px' }}
     >
       <Row type="flex">
         <Col span={1}>
@@ -59,7 +59,7 @@ const Header = ({ logout, status, history, location: { pathname } }) => (
               <Button
                 onClick={() => {
                   logout();
-                  history.push("/login");
+                  history.push('/login');
                 }}
                 type="primary"
               >

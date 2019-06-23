@@ -1,23 +1,27 @@
-import React from "react";
+import React from 'react';
 
-import { Menu as AntdMenu } from "antd";
+import { Menu as AntdMenu } from 'antd';
 
-import MenuItemContent from "./components/MenuItemContent";
-import SubMenuItemContent from "./components/SubMenuItemContent";
+import MenuItemContent from './components/MenuItemContent';
+import SubMenuItemContent from './components/SubMenuItemContent';
 
 const { Item, SubMenu } = AntdMenu;
 
 const Menu = () => (
   <AntdMenu
     mode="inline"
-    defaultSelectedKeys={["1"]}
-    style={{ height: "100%", borderRight: 0 }}
+    defaultSelectedKeys={['1']}
+    style={{ height: '100%', borderRight: 0 }}
   >
     <Item key="1">
       <MenuItemContent icon="desktop" link="/" name="Inicio" />
     </Item>
     <Item key="2">
-      <MenuItemContent icon="user" link="/users" name="Usuarios Farmacia" />
+      <MenuItemContent
+        icon="user"
+        link="/signup"
+        name="Usuarios Farmacia"
+      />
     </Item>
     <SubMenu
       key="sub1"
