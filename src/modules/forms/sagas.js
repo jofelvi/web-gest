@@ -9,14 +9,18 @@ import {
   completeTaskSuccess,
   getTaskVariablesFailed,
   getTaskVariablesSuccess,
-  complete
+  complete,
+  getTaskForm as fetchTaskForm,
+  getTaskFormSuccess,
+  getTaskFormFailed
 } from './actions';
 
 import {
   START_PROCESS,
   CONTINUE_PROCESS,
   COMPLETE_TASK,
-  GET_TASK_VARIABLES
+  GET_TASK_VARIABLES,
+  GET_TASK_FORM
 } from './actionTypes';
 
 import * as api from './api';
@@ -88,8 +92,8 @@ export function* watchContinueProcess() {
 function* completeTaskProcess({ payload }) {
   const processKey = yield select(state => state.forms.processKey);
   const taskId = yield select(state => state.forms.taskId);
+  console.log("TCL: function*completeTaskProcess -> taskId", taskId)
   let response;
-  console.log({ taskId });
   if (taskId) {
     response = yield call(api.completeTask, taskId, payload.variables);
   } else {
@@ -122,6 +126,32 @@ function* completeTaskProcess({ payload }) {
 
 export function* watchCompleteTaskProcess() {
   yield takeLatest(COMPLETE_TASK, completeTaskProcess);
+}
+
+function* getTaskForm({ payload }) {
+  try {
+    const response = yield call(api.getTaskForm, payload.taskId);
+    if (response.status === 200) {
+      yield put(getTaskFormSuccess({ taskName: response.data }));
+    }
+  } catch (e) {
+    console.error(e);
+    yield put(getTaskFormFailed());
+    const user = process.env.REACT_APP_ANONYM_USER;
+    const password = process.env.REACT_APP_ANONYM_PASSWORD;
+    console.warn('login with anonym user');
+    yield put(
+      login({
+        values: { user, password },
+        nextAction: fetchTaskForm,
+        nextActionPayload: payload
+      })
+    );
+  }
+}
+
+export function* watchGetTaskForm() {
+  yield takeLatest(GET_TASK_FORM, getTaskForm);
 }
 
 function* getTaskVariables() {

@@ -5,13 +5,14 @@ import {
   continueProcessSuccess,
   completeTaskSuccess,
   changeProcessSuccess,
+  getTaskFormSuccess,
   getTaskVariablesSuccess,
   complete
 } from './actions';
 
 const defaultState = {
-  processStep: 'startForm',
-  process: '',
+  processStep: '',
+  process: 'signup',
   processKey: '',
   taskName: '',
   finishedProcess: false,
@@ -32,6 +33,10 @@ export default handleActions(
       ...state,
       taskName: payload.taskName,
       taskId: payload.taskId
+    }),
+    [getTaskFormSuccess]: (state, { payload }) => ({
+      ...state,
+      taskName: payload.taskName
     }),
     [completeTaskSuccess]: (state, { payload }) => ({
       ...state,
