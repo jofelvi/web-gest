@@ -21,6 +21,7 @@ import UsersListScreen from './screens/UsersListScreen';
 import LoginScreen from './screens/LoginScreen';
 import TasksListScreen from './screens/TasksListScreen';
 import SignupScreen from './screens/SignupScreen';
+import CompletedForm from './screens/Forms/completedForm/view';
 
 const { Content } = Layout;
 
@@ -53,6 +54,16 @@ const App = ({
       ? () => import(`./screens/Forms/${process}`)
       : () =>
           import(`./screens/${capitalizeWord(pathname.split('/')[2])}Screen`),
+    loading() {
+      return <div>Loading...</div>;
+    }
+  });
+
+  const DynamicProcessForm = Loadable({
+    loader:
+      process && taskName
+        ? () => import(`./screens/Forms/${process}/${taskName}`)
+        : () => import(`./screens/Forms/${process}`),
     loading() {
       return <div>Loading...</div>;
     }
@@ -95,9 +106,19 @@ const App = ({
                 component={DynamicTaskForm}
               />
               <PrivateRoute
-                path={`/process/:process/:task`}
+                path={`/process/:process`}
                 exact
                 component={DynamicProcess}
+              />
+              <PrivateRoute
+                path={`/process/:process/:task`}
+                exact
+                component={DynamicProcessForm}
+              />
+              <PrivateRoute
+                path={`/task/completed`}
+                exact
+                component={CompletedForm}
               />
               <Route path="/login" exact component={LoginScreen} />
               <Route path="/signup" exact component={SignupScreen} />
