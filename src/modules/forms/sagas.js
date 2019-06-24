@@ -25,6 +25,7 @@ import {
 
 import * as api from './api';
 import { login } from '../auth/actions';
+import utils from '../../lib/utils';
 
 function* startProcessSaga({ payload }) {
   try {
@@ -65,8 +66,10 @@ function* continueProcess({ payload }) {
   let response = yield call(api.continueProcess, processKey, payload.variables);
   const procId = response.data;
   response = yield call(api.checkTask, procId);
+
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
+    utils.setTaskId(response.data.taskId);
     yield put(
       continueProcessSuccess({
         taskName: newTaskName,
@@ -92,7 +95,6 @@ export function* watchContinueProcess() {
 function* completeTaskProcess({ payload }) {
   const processKey = yield select(state => state.forms.processKey);
   const taskId = yield select(state => state.forms.taskId);
-  console.log("TCL: function*completeTaskProcess -> taskId", taskId)
   let response;
   if (taskId) {
     response = yield call(api.completeTask, taskId, payload.variables);
@@ -105,6 +107,7 @@ function* completeTaskProcess({ payload }) {
   console.log({ responseNext: response });
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
+
     yield put(
       completeTaskSuccess({
         taskName: newTaskName,
