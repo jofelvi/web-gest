@@ -14,8 +14,12 @@ class View extends Component {
   render() {
     const { processStep, taskId, taskName } = this.props;
 
-    if (taskName) {
+    if (taskId && taskName) {
       return <Redirect to={`/task/${taskId}/form`} />;
+    }
+
+    if (taskName && processStep) {
+      return <Redirect to={`/process/${processStep}/${taskName}`} />;
     }
     return processStep === 'startForm' ? <StartForm /> : <Start />;
   }
