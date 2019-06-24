@@ -12,9 +12,10 @@ import {
 
 const defaultState = {
   processStep: '',
-  process: 'signup',
+  process: '',
   processKey: '',
   taskName: '',
+  taskId: '',
   finishedProcess: false,
   completed: false
 };
