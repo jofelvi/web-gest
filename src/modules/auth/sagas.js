@@ -2,7 +2,7 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 
 import utils from '../../lib/utils';
 
-import { LOGIN, REFRESH_TOKEN, LOGOUT } from './actionTypes';
+import { LOGIN, REFRESH_TOKEN, LOGOUT, CHECK_LOGIN } from './actionTypes';
 import {
   loginSuccess,
   loginFailed,
@@ -10,7 +10,9 @@ import {
   logoutFailed,
   setToken,
   refreshTokenFailed,
-  refreshTokenSuccess
+  refreshTokenSuccess,
+  checkLoginFailed,
+  checkLoginSuccess
 } from './actions';
 
 import * as api from './api';
@@ -64,4 +66,20 @@ function* logout() {
 
 export function* watchLogout() {
   yield takeLatest(LOGOUT, logout);
+}
+
+function* checkLogin() {
+  try {
+    if (utils.isAuthd()) {
+      yield put(checkLoginSuccess());
+    }
+    yield put(checkLoginFailed());
+  } catch (e) {
+    console.error(e);
+    yield put(checkLoginFailed());
+  }
+}
+
+export function* watchCheckLogin() {
+  yield takeLatest(CHECK_LOGIN, checkLogin);
 }

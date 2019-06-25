@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import loadable from '@loadable/component';
 import { connect } from 'react-redux';
 
-import { setToken } from './modules/auth/actions';
+import Loadable from 'react-loadable';
 
-
+import { setToken, loginSuccess } from './modules/auth/actions';
 
 import utils from './lib/utils';
 
@@ -21,6 +20,8 @@ import HomeScreen from './screens/HomeScreen';
 import UsersListScreen from './screens/UsersListScreen';
 import LoginScreen from './screens/LoginScreen';
 import TasksListScreen from './screens/TasksListScreen';
+import SignupScreen from './screens/SignupScreen';
+import CompletedForm from './screens/Forms/completedForm/view';
 
 const { Content } = Layout;
 
@@ -31,37 +32,57 @@ const App = ({
   history,
   completed,
   processKey,
-  setToken,
+  token,
+  setToken
 }) => {
   useEffect(() => {
-    setToken({ token: utils.getAuthToken() });
-  });
+    if (!token) {
+      setToken({ token: utils.getAuthToken() });
+    }
+    loginSuccess();
+  }, [setToken, token]);
   const [prevCompleted, setPrevCompleted] = useState(false);
+  const { capitalizeWord } = utils;
 
   if (!completed && prevCompleted) {
     setPrevCompleted(true);
     history.push(`/process/${processKey}/thankyou`);
   }
 
-  const DynamicProcess = loadable(() =>
-    process
-      ? import(`./screens/Forms/${process}`)
-      : import(
-          `./screens/${utils.capitalizeWord(pathname.split('/')[2])}Screen`
-        )
-  );
+  const DynamicProcess = Loadable({
+    loader: process
+      ? () => import(`./screens/Forms/${process}`)
+      : () =>
+          import(`./screens/${capitalizeWord(pathname.split('/')[2])}Screen`),
+    loading() {
+      return <div>Loading...</div>;
+    }
+  });
 
-  const DynamicTaskForm = loadable(() =>
-    taskName
-      ? import(`./screens/Forms/${process}/components/${taskName}`)
-      : import(`./screens/Forms/${process}`)
-  );
+  const DynamicProcessForm = Loadable({
+    loader:
+      process && taskName
+        ? () => import(`./screens/Forms/${process}/${taskName}`)
+        : () => import(`./screens/Forms/${process}`),
+    loading() {
+      return <div>Loading...</div>;
+    }
+  });
+
+  const DynamicTaskForm = Loadable({
+    loader: taskName
+      ? () => import(`./screens/Forms/${process}/${taskName}`)
+      : () => import(`./screens/Forms/${process}`),
+    loading() {
+      return <div>Loading...</div>;
+    }
+  });
 
   return (
     <Layout>
       <Header className="header" />
       <Layout>
-        {pathname !== '/login' ? <Sider /> : null}
+        {pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null}
         <Layout>
           <Content
             style={{
@@ -79,7 +100,28 @@ const App = ({
                 exact
                 component={TasksListScreen}
               />
+              <PrivateRoute
+                path={`/task/:taskId/form`}
+                exact
+                component={DynamicTaskForm}
+              />
+              <PrivateRoute
+                path={`/process/:process`}
+                exact
+                component={DynamicProcess}
+              />
+              <PrivateRoute
+                path={`/process/:process/:task`}
+                exact
+                component={DynamicProcessForm}
+              />
+              <PrivateRoute
+                path={`/task/completed`}
+                exact
+                component={CompletedForm}
+              />
               <Route path="/login" exact component={LoginScreen} />
+              <Route path="/signup" exact component={SignupScreen} />
             </Switch>
           </Content>
         </Layout>
@@ -92,14 +134,14 @@ App.propTypes = {
   status: PropTypes.string.isRequired
 };
 
-
 export default withRouter(
   connect(
     state => ({
       process: state.forms.process,
       taskName: state.forms.taskName,
       processKey: state.forms.processKey,
-      completed: state.forms.completed
+      completed: state.forms.completed,
+      token: state.auth.token
     }),
     { setToken }
   )(App)

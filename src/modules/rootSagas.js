@@ -8,13 +8,19 @@ import {
   watchFetchTasksByUser
 } from './tasks/sagas';
 
-import { watchRefreshToken, watchLogin, watchLogout } from './auth/sagas';
+import {
+  watchRefreshToken,
+  watchLogin,
+  watchLogout,
+  watchCheckLogin
+} from './auth/sagas';
 
 import {
   watchStartProcess,
   watchGetTaskVariables,
   watchContinueProcess,
-  watchCompleteTaskProcess
+  watchCompleteTaskProcess,
+  watchGetTaskForm
 } from './forms/sagas';
 
 export default function* rootSaga() {
@@ -25,9 +31,11 @@ export default function* rootSaga() {
     watchFetchTasksCount(),
     watchFetchTasksByUser(),
     watchRefreshToken(),
+    watchCheckLogin(),
     watchLogin(),
     watchLogout(),
     watchStartProcess(),
+    watchGetTaskForm(),
     watchGetTaskVariables(),
     watchContinueProcess(),
     watchCompleteTaskProcess()
