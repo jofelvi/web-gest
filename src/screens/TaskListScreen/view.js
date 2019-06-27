@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
 import TasksList from '../../components/TasksList';
+import TaskDetail from '../../components/TaskDetail/view';
 
 const getTaskList = (fetchTaskList, pathname) => {
   if (pathname.includes('user')) {
@@ -15,7 +16,13 @@ const getTaskList = (fetchTaskList, pathname) => {
   return fetchTaskList({ type: 'all' });
 };
 
-const TasksListScreen = ({ fetchTaskList, tasks, location: { pathname } }) => {
+const TasksListScreen = ({
+  fetchTaskList,
+  tasks,
+  selectedTask,
+  location: { pathname },
+  history
+}) => {
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, pathname);
   }, [fetchTaskList, pathname]);
@@ -30,6 +37,11 @@ const TasksListScreen = ({ fetchTaskList, tasks, location: { pathname } }) => {
         <Col span={11}>
           <TasksList tasks={tasks} />
         </Col>
+        {selectedTask ? (
+          <Col span={13}>
+            <TaskDetail history={history} selectedTask={selectedTask} />
+          </Col>
+        ) : null}
       </Row>
     </Row>
   );
@@ -37,7 +49,8 @@ const TasksListScreen = ({ fetchTaskList, tasks, location: { pathname } }) => {
 
 TasksListScreen.propTypes = {
   fetchTaskList: PropTypes.func.isRequired,
-  tasks: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  tasks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  selectedTask: PropTypes.string.isRequired
 };
 
 export default TasksListScreen;
