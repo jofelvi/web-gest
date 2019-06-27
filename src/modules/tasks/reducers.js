@@ -3,11 +3,14 @@ import { handleActions } from 'redux-actions';
 import {
   fetchTasksSuccess,
   fetchTasksCount,
-  fetchTasksByUser
+  fetchTasksByUser,
+  fetchTaskListSuccess,
+  setSelectedTask
 } from './actions';
 
 const defaultState = {
-  list: []
+  list: [],
+  taskList: []
 };
 
 export default handleActions(
@@ -23,6 +26,14 @@ export default handleActions(
     [fetchTasksByUser]: (state, { payload }) => ({
       ...state,
       byUser: payload.tasksByUser
+    }),
+    [fetchTaskListSuccess]: (state, { payload }) => ({
+      ...state,
+      taskList: payload
+    }),
+    [setSelectedTask]: (state, { payload }) => ({
+      ...state,
+      selectedTask: payload
     })
   },
   defaultState
