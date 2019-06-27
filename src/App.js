@@ -19,7 +19,7 @@ import Sider from './components/Sider';
 import HomeScreen from './screens/HomeScreen';
 import UsersListScreen from './screens/UsersListScreen';
 import LoginScreen from './screens/LoginScreen';
-import TasksListScreen from './screens/TasksListScreen';
+import TaskListScreen from './screens/TaskListScreen';
 import SignupScreen from './screens/SignupScreen';
 import CompletedForm from './screens/Forms/completedForm/view';
 
@@ -95,10 +95,16 @@ const App = ({
             <Switch>
               <PrivateRoute path="/" exact component={HomeScreen} />
               <PrivateRoute path="/users" exact component={UsersListScreen} />
+              <PrivateRoute path="/tasks" exact component={TaskListScreen} />
               <PrivateRoute
-                path="/management/group"
+                path="/tasks/user"
                 exact
-                component={TasksListScreen}
+                component={TaskListScreen}
+              />
+              <PrivateRoute
+                path="/tasks/group"
+                exact
+                component={TaskListScreen}
               />
               <PrivateRoute
                 path={`/task/:taskId/form`}
