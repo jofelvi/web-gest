@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
 import TasksList from '../../components/TasksList';
+import TaskFilter from '../../components/TaskFilter';
 
 const getTaskList = (fetchTaskList, pathname) => {
   if (pathname.includes('user')) {
@@ -22,8 +23,8 @@ const TasksListScreen = ({ fetchTaskList, tasks, location: { pathname } }) => {
   return (
     <Row>
       <Row>
-        <Col span={24}>
-          <h1>Filter tasks</h1>
+        <Col span={12}>
+          <TaskFilter />
         </Col>
       </Row>
       <Row>
