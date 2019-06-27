@@ -10,7 +10,9 @@ import {
 
 const defaultState = {
   list: [],
-  taskList: []
+  taskList: [],
+  sortBy: 'name',
+  sortOrder: 'asc',
 };
 
 export default handleActions(

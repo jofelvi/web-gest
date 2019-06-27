@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 
 import {
   fetchTasksSuccess,
@@ -64,22 +64,35 @@ export function* watchFetchTasksByUser() {
 
 function* fetchTaskList({ payload }) {
   try {
+    const { sortBy, sortOrder } = yield select(state => state.tasks);
     const taskListType = payload.type;
     switch (taskListType) {
       case 'user':
-        const userResponse = yield call(api.fetchUserTaskList);
+        const userResponse = yield call(
+          api.fetchUserTaskList,
+          sortBy,
+          sortOrder
+        );
         yield put(fetchTaskListSuccess(userResponse.data));
         break;
       case 'group':
-        const groupResponse = yield call(api.fetchGroupTaskList);
-        yield put(fetchTaskListSuccess(groupResponse.data));
+        const groupResponse = yield call(
+          api.fetchGroupTaskList,
+          sortBy,
+          sortOrder
+        );
+        yield put(fetchTaskListSuccess(groupResponse.data), sortBy, sortOrder);
         break;
       case 'all':
-        const response = yield call(api.fetchTaskList);
+        const response = yield call(api.fetchTaskList, sortBy, sortOrder);
         yield put(fetchTaskListSuccess(response.data));
         break;
       default:
-        const defaultResponse = yield call(api.fetchTaskList);
+        const defaultResponse = yield call(
+          api.fetchTaskList,
+          sortBy,
+          sortOrder
+        );
         yield put(fetchTaskListSuccess(defaultResponse.data));
     }
   } catch (e) {
