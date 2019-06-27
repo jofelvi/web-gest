@@ -95,8 +95,14 @@ const App = ({
             <Switch>
               <PrivateRoute path="/" exact component={HomeScreen} />
               <PrivateRoute path="/users" exact component={UsersListScreen} />
+              <PrivateRoute path="/tasks" exact component={TasksListScreen} />
               <PrivateRoute
-                path="/management/group"
+                path="/tasks/user"
+                exact
+                component={TasksListScreen}
+              />
+              <PrivateRoute
+                path="/tasks/group"
                 exact
                 component={TasksListScreen}
               />
