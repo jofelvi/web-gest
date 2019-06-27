@@ -26,21 +26,21 @@ const Menu = () => (
         />
       }
     >
-      <Item key="3">
+      <Item key="task-list-1">
         <SubMenuItemContent
           icon="user"
           link="/tasks/user"
           name="Mis tareas"
         />
       </Item>
-      <Item key="4">
+      <Item key="task-list-2">
         <SubMenuItemContent
           icon="team"
           link="/tasks/group"
           name="Tareas de mi grupo"
         />
       </Item>
-      <Item key="5">
+      <Item key="task-list-3">
         <SubMenuItemContent icon="team" link="/tasks" name="Todas las tareas" />
       </Item>
     </SubMenu>
