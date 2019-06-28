@@ -1,68 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Row, Col, Icon } from 'antd';
-import { FilterText, FilterContainer } from './styles';
+import { Row, Col } from 'antd';
+import TaskFilterItem from './components/TaskFilterItem/view';
 
-const renderIcon = (name, filter) => {
-  if (filter.sortBy === name) {
-    return filter.sortOrder === 'asc' ? (
-      <Icon type="up" />
-    ) : (
-      <Icon type="down" />
-    );
+const filters = [
+  {
+    name: 'name',
+    text: 'Task name'
+  },
+  {
+    name: 'created',
+    text: 'Created'
+  },
+  {
+    name: 'priority',
+    text: 'Priority'
+  },
+  {
+    name: 'assignee',
+    text: 'Assignee'
   }
-};
+];
 
-const TaskFilter = () => {
-  const [currentFilter, setCurrentFilter] = useState({
-    sortBy: 'name',
-    sortOrder: 'asc'
-  });
+const TaskFilter = ({ sortBy, setTaskListFilter, fetchTaskList, pathname }) => (
+  <Row>
+    {filters.map(filter => (
+      <Col span={6}>
+        <TaskFilterItem
+          name={filter.name}
+          text={filter.text}
+          sortBy={sortBy}
+          setTaskListFilter={setTaskListFilter}
+          fetchTaskList={fetchTaskList}
+          pathname={pathname}
+        />
+      </Col>
+    ))}
+  </Row>
+);
 
-  return (
-    <Row>
-      <Col span={6}>
-        <FilterContainer
-          type="flex"
-          justify="center"
-          onClick={() =>
-            setCurrentFilter({
-              sortBy: 'name',
-              sortOrder: !currentFilter.sortOrder
-            })
-          }
-        >
-          <Col>
-            <FilterText>Task Name</FilterText>
-            {renderIcon('name', currentFilter)}
-          </Col>
-        </FilterContainer>
-      </Col>
-      <Col span={6}>
-        <FilterContainer type="flex" justify="center">
-          <Col>
-            <FilterText>Created</FilterText>
-            {renderIcon('created', currentFilter)}
-          </Col>
-        </FilterContainer>
-      </Col>
-      <Col span={6}>
-        <FilterContainer type="flex" justify="center">
-          <Col>
-            <FilterText>Priority</FilterText>
-            {renderIcon('priority', currentFilter)}
-          </Col>
-        </FilterContainer>
-      </Col>
-      <Col span={6}>
-        <FilterContainer type="flex" justify="center">
-          <Col>
-            <FilterText>Assignee</FilterText>
-            {renderIcon('assignee', currentFilter)}
-          </Col>
-        </FilterContainer>
-      </Col>
-    </Row>
-  );
-};
 export default TaskFilter;
