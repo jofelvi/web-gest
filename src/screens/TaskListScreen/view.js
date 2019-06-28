@@ -18,13 +18,13 @@ const getTaskList = (fetchTaskList, pathname) => {
 
 const TasksListScreen = ({ fetchTaskList, tasks, location: { pathname } }) => {
   useEffect(() => {
-    getTaskList(fetchTaskList, pathname, pathname);
+    getTaskList(fetchTaskList, pathname);
   }, [fetchTaskList, pathname]);
   return (
     <Row>
       <Row>
         <Col span={12}>
-          <TaskFilter />
+          <TaskFilter pathname={pathname} />
         </Col>
       </Row>
       <Row>
