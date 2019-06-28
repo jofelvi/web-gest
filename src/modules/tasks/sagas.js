@@ -64,8 +64,10 @@ export function* watchFetchTasksByUser() {
 
 function* fetchTaskList({ payload }) {
   try {
-    const { sortBy, sortOrder } = yield select(state => state.tasks);
+    const sortBy = yield select(state => state.tasks.sortBy);
     const taskListType = payload.type;
+    const sortOrder = payload.sortOrder;
+
     switch (taskListType) {
       case 'user':
         const userResponse = yield call(
