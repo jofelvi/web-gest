@@ -12,7 +12,20 @@ const TaskCard = ({
   setSelectedTask,
   selected
 }) => (
-  <Container onClick={() => setSelectedTask(id)} selected={selected === id}>
+  <Container
+    onClick={() =>
+      setSelectedTask({
+        id,
+        name,
+        processDefinitionName,
+        assignee,
+        due,
+        created,
+        priority
+      })
+    }
+    selected={selected && selected.id === id}
+  >
     <Row>
       <Col span={24}>
         <TaskTitle>{name}</TaskTitle>
