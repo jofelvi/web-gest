@@ -32,11 +32,12 @@ const TaskFilterItem = ({
 }) => {
   const [filter, setFilter] = useState({ name, sortOrder: 'asc' });
   useEffect(() => {
-    if (filter.name !== sortBy && filter.sortOrder !== 'asc') {
+    if (filter.name !== sortBy) {
       setFilter({ ...filter, sortOrder: 'asc' });
     }
+
     fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
-  }, [filter]);
+  }, [filter.sortOrder]);
 
   return (
     <FilterContainer
@@ -46,9 +47,7 @@ const TaskFilterItem = ({
         setTaskListFilter({
           sortBy: filter.name,
         });
-        if (filter.name !== sortBy) {
-          setFilter({ ...filter, sortOrder: 'asc' });
-        }
+
         return filter.sortOrder === 'asc'
           ? setFilter({ ...filter, sortOrder: 'desc' })
           : setFilter({ ...filter, sortOrder: 'asc' });
