@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
 import TasksList from '../../components/TasksList';
+import TaskFilter from '../../components/TaskFilter';
 import TaskDetail from '../../components/TaskDetail/view';
 
 const getTaskList = (fetchTaskList, pathname) => {
@@ -24,13 +25,13 @@ const TasksListScreen = ({
   history
 }) => {
   useEffect(() => {
-    getTaskList(fetchTaskList, pathname, pathname);
+    getTaskList(fetchTaskList, pathname);
   }, [fetchTaskList, pathname]);
   return (
     <Row>
       <Row>
-        <Col span={24}>
-          <h1>Filter tasks</h1>
+        <Col span={12}>
+          <TaskFilter pathname={pathname} />
         </Col>
       </Row>
       <Row>

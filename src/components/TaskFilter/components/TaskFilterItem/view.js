@@ -1,0 +1,74 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import useStateWithCallback from '../../../../lib/hooks/useStateWithCallback';
+
+import { Col, Icon } from 'antd';
+
+import { FilterContainer, FilterText } from './styles';
+
+const renderIcon = ({ name, sortOrder }, sortBy) => {
+  if (name === sortBy && sortOrder === 'desc') {
+    return <Icon type="down" />;
+  }
+  return <Icon type="up" />;
+};
+
+const fetchOrderedTaskList = (filter, pathname, fetchTaskList) => {
+  if (pathname.includes('/user')) {
+    return fetchTaskList({ type: 'user', sortOrder: filter });
+  }
+  if (pathname.includes('/group')) {
+    return fetchTaskList({ type: 'group', sortOrder: filter });
+  }
+  return fetchTaskList({ type: 'all', sortOrder: filter });
+};
+
+const TaskFilterItem = ({
+  name,
+  text,
+  sortBy,
+  setTaskListFilter,
+  fetchTaskList,
+  pathname
+}) => {
+  const [filter, setFilter] = useStateWithCallback(
+    { name, sortOrder: 'asc' },
+    filter => {
+      if (filter.name !== sortBy && filter.sortOrder !== 'asc') {
+        setFilter({ ...filter, sortOrder: 'asc' });
+      }
+      fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
+    }
+  );
+
+  return (
+    <FilterContainer
+      type="flex"
+      justify="center"
+      onClick={() => {
+        setTaskListFilter({
+          sortBy: filter.name
+        });
+        if (filter.name !== sortBy) {
+          setFilter({ ...filter, sortOrder: 'asc' });
+        }
+        return filter.sortOrder === 'asc'
+          ? setFilter({ ...filter, sortOrder: 'desc' })
+          : setFilter({ ...filter, sortOrder: 'asc' });
+      }}
+    >
+      <Col>
+        <FilterText>{text}</FilterText>
+        {renderIcon(filter, sortBy)}
+      </Col>
+    </FilterContainer>
+  );
+};
+
+TaskFilterItem.propTypes = {
+  sortBy: PropTypes.string.isRequired,
+  setTaskListFilter: PropTypes.func.isRequired
+};
+
+export default TaskFilterItem;

@@ -5,12 +5,14 @@ import {
   fetchTasksCount,
   fetchTasksByUser,
   fetchTaskListSuccess,
-  setSelectedTask
+  setSelectedTask,
+  setTaskListFilter
 } from './actions';
 
 const defaultState = {
   list: [],
-  taskList: []
+  taskList: [],
+  sortBy: 'name',
 };
 
 export default handleActions(
@@ -34,6 +36,11 @@ export default handleActions(
     [setSelectedTask]: (state, { payload }) => ({
       ...state,
       selectedTask: payload
+    }),
+    [setTaskListFilter]: (state, { payload }) => ({
+      ...state,
+      sortBy: payload.sortBy,
+      isSorted: payload.isSorted
     })
   },
   defaultState

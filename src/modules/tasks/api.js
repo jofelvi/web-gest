@@ -6,8 +6,11 @@ export const fetchTasksCount = () => get('/task/count');
 
 export const fetchTasksByUser = user => get(`/task?assignee=${user}`);
 
-export const fetchTaskList = () => get('/tasklist/all');
+export const fetchTaskList = (sortBy, sortOrder = 'asc') =>
+  get(`/tasklist/all?sortBy=${sortBy}&sortOrder=${sortOrder}`);
 
-export const fetchGroupTaskList = () => get('/tasklist/group');
+export const fetchGroupTaskList = (sortBy, sortOrder = 'asc') =>
+  get(`/tasklist/group?sortBy=${sortBy}&sortOrder=${sortOrder}`);
 
-export const fetchUserTaskList = () => get('/tasklist/user');
+export const fetchUserTaskList = (sortBy, sortOrder = 'asc') =>
+  get(`/tasklist/user?sortBy=${sortBy}&sortOrder=${sortOrder}`);
