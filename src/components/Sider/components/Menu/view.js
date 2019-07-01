@@ -16,12 +16,36 @@ const Menu = () => (
     <Item key="1">
       <MenuItemContent icon="desktop" link="/" name="Inicio" />
     </Item>
+    <SubMenu
+      key="sub-tasks"
+      title={
+        <SubMenuItemContent
+          icon="profile"
+          isLink={false}
+          name="Gestión de tareas"
+        />
+      }
+    >
+      <Item key="task-list-1">
+        <SubMenuItemContent
+          icon="user"
+          link="/tasks/user"
+          name="Mis tareas"
+        />
+      </Item>
+      <Item key="task-list-2">
+        <SubMenuItemContent
+          icon="team"
+          link="/tasks/group"
+          name="Tareas de mi grupo"
+        />
+      </Item>
+      <Item key="task-list-3">
+        <SubMenuItemContent icon="team" link="/tasks" name="Todas las tareas" />
+      </Item>
+    </SubMenu>
     <Item key="2">
-      <MenuItemContent
-        icon="user"
-        link="/signup"
-        name="Usuarios Farmacia"
-      />
+      <MenuItemContent icon="user" link="/signup" name="Usuarios Farmacia" />
     </Item>
     <SubMenu
       key="sub1"
