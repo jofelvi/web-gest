@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
-import useStateWithCallback from '../../../../lib/hooks/useStateWithCallback';
 
 import { Col, Icon } from 'antd';
 
@@ -9,9 +7,9 @@ import { FilterContainer, FilterText } from './styles';
 
 const renderIcon = ({ name, sortOrder }, sortBy) => {
   if (name === sortBy && sortOrder === 'desc') {
-    return <Icon type="down" />;
+    return <Icon type='down' />;
   }
-  return <Icon type="up" />;
+  return <Icon type='up' />;
 };
 
 const fetchOrderedTaskList = (filter, pathname, fetchTaskList) => {
@@ -30,25 +28,23 @@ const TaskFilterItem = ({
   sortBy,
   setTaskListFilter,
   fetchTaskList,
-  pathname
+  pathname,
 }) => {
-  const [filter, setFilter] = useStateWithCallback(
-    { name, sortOrder: 'asc' },
-    filter => {
-      if (filter.name !== sortBy && filter.sortOrder !== 'asc') {
-        setFilter({ ...filter, sortOrder: 'asc' });
-      }
-      fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
+  const [filter, setFilter] = useState({ name, sortOrder: 'asc' });
+  useEffect(() => {
+    if (filter.name !== sortBy && filter.sortOrder !== 'asc') {
+      setFilter({ ...filter, sortOrder: 'asc' });
     }
-  );
+    fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
+  }, [filter]);
 
   return (
     <FilterContainer
-      type="flex"
-      justify="center"
+      type='flex'
+      justify='center'
       onClick={() => {
         setTaskListFilter({
-          sortBy: filter.name
+          sortBy: filter.name,
         });
         if (filter.name !== sortBy) {
           setFilter({ ...filter, sortOrder: 'asc' });
@@ -68,7 +64,7 @@ const TaskFilterItem = ({
 
 TaskFilterItem.propTypes = {
   sortBy: PropTypes.string.isRequired,
-  setTaskListFilter: PropTypes.func.isRequired
+  setTaskListFilter: PropTypes.func.isRequired,
 };
 
 export default TaskFilterItem;
