@@ -18,7 +18,7 @@ import {
   GET_TASK_VARIABLES,
   GET_TASK_VARIABLES_SUCCESS,
   GET_TASK_VARIABLES_FAILED,
-  COMPLETE
+  COMPLETE,
 } from './actionTypes';
 
 export const {
@@ -39,7 +39,7 @@ export const {
   getTaskVariables,
   getTaskVariablesSuccess,
   getTaskVariablesFailed,
-  complete
+  complete,
 } = createActions(
   START_PROCESS,
   START_PROCESS_SUCCESS,
