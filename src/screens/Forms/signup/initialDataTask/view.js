@@ -32,9 +32,9 @@ const InitialDataTask = ({
           user: taskVariables && taskVariables[0] ? taskVariables[0].value : '',
           nif: taskVariables && taskVariables[1] ? taskVariables[1].value : '',
           isDemo:
-            taskVariables && taskVariables[2] ? taskVariables[2].value : '',
+            taskVariables && taskVariables[2] ? taskVariables[2].value : false,
           acceptTerms:
-            taskVariables && taskVariables[3] ? taskVariables[3].value : ''
+            taskVariables && taskVariables[3] ? taskVariables[3].value : false
         }}
         onSubmit={values => {
           const variables = [];
