@@ -6,6 +6,8 @@ export const fetchTasksCount = () => get('/task/count');
 
 export const fetchTasksByUser = user => get(`/task?assignee=${user}`);
 
+export const fetchTaskForm = id => get(`/task/${id}/form`);
+
 export const fetchTaskList = (sortBy, sortOrder = 'asc') =>
   get(`/tasklist/all?sortBy=${sortBy}&sortOrder=${sortOrder}`);
 

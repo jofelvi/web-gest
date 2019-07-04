@@ -8,14 +8,17 @@ import {
   fetchTasksByUserSuccess,
   fetchTasksByUserFailed,
   fetchTaskListSuccess,
-  fetchTaskListFailed
+  fetchTaskListFailed,
 } from './actions';
+
+import { getTaskFormSuccess, getTaskFormFailed } from '../forms/actions';
 
 import {
   FETCH_TASKS,
   FETCH_TASKS_COUNT,
   FETCH_TASKS_BY_USER,
-  FETCH_TASK_LIST
+  FETCH_TASK_LIST,
+  FETCH_TASK_FORM,
 } from './actionTypes';
 
 import * as api from './api';
@@ -62,6 +65,20 @@ export function* watchFetchTasksByUser() {
   yield takeLatest(FETCH_TASKS_BY_USER, fetchTasksByUser);
 }
 
+function* fetchTaskForm({ payload }) {
+  try {
+    const response = yield call(api.fetchTaskForm, payload.taskId);
+    yield put(getTaskFormSuccess({ taskName: response.data }));
+  } catch (e) {
+    console.error(e);
+    yield put(getTaskFormFailed());
+  }
+}
+
+export function* watchFetchTaskForm() {
+  yield takeLatest(FETCH_TASK_FORM, fetchTaskForm);
+}
+
 function* fetchTaskList({ payload }) {
   try {
     const sortBy = yield select(state => state.tasks.sortBy);
@@ -83,7 +100,7 @@ function* fetchTaskList({ payload }) {
           sortBy,
           sortOrder
         );
-        yield put(fetchTaskListSuccess(groupResponse.data), sortBy, sortOrder);
+        yield put(fetchTaskListSuccess(groupResponse.data));
         break;
       case 'all':
         const response = yield call(api.fetchTaskList, sortBy, sortOrder);
