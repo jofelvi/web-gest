@@ -8,9 +8,18 @@ import { Container, TaskTitle, PriorityContainer } from './styles';
 import { calculateTimeDistance } from '../../lib/date';
 
 const TaskCard = ({
-  task: { id, name, processDefinitionName, assignee, due, created, priority },
+  task: {
+    id,
+    name,
+    processDefinitionName,
+    processDefinitionId,
+    assignee,
+    due,
+    created,
+    priority,
+  },
   setSelectedTask,
-  selected
+  selected,
 }) => (
   <Container
     onClick={() =>
@@ -18,10 +27,11 @@ const TaskCard = ({
         id,
         name,
         processDefinitionName,
+        processDefinitionId,
         assignee,
         due,
         created,
-        priority
+        priority,
       })
     }
     selected={selected && selected.id === id}
@@ -41,7 +51,7 @@ const TaskCard = ({
         {assignee ? assignee : 'No hay encargado actualmente'}
       </Col>
     </Row>
-    <Row type="flex">
+    <Row type='flex'>
       <Col span={10}>
         {due ? `Pendiente ${calculateTimeDistance(due)}` : ''}
       </Col>
@@ -58,11 +68,12 @@ TaskCard.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     processDefinitionName: PropTypes.string,
+    processDefinitionId: PropTypes.string,
     assignee: PropTypes.string,
     due: PropTypes.string,
-    created: PropTypes.string
+    created: PropTypes.string,
   }).isRequired,
-  setSelectedTask: PropTypes.func.isRequired
+  setSelectedTask: PropTypes.func.isRequired,
 };
 
 export default TaskCard;

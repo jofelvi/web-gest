@@ -10,11 +10,12 @@ import {
   FETCH_TASKS_BY_USER,
   FETCH_TASKS_BY_USER_SUCCESS,
   FETCH_TASKS_BY_USER_FAILED,
+  FETCH_TASK_FORM,
   FETCH_TASK_LIST,
   FETCH_TASK_LIST_SUCCESS,
   FETCH_TASK_LIST_FAILED,
   SET_SELECTED_TASK,
-  SET_TASK_LIST_FILTER
+  SET_TASK_LIST_FILTER,
 } from './actionTypes';
 
 export const {
@@ -27,11 +28,12 @@ export const {
   fetchTasksByUser,
   fetchTasksByUserSuccess,
   fetchTasksByUserFailed,
+  fetchTaskForm,
   fetchTaskList,
   fetchTaskListSuccess,
   fetchTaskListFailed,
   setSelectedTask,
-  setTaskListFilter
+  setTaskListFilter,
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -42,6 +44,7 @@ export const {
   FETCH_TASKS_BY_USER,
   FETCH_TASKS_BY_USER_SUCCESS,
   FETCH_TASKS_BY_USER_FAILED,
+  FETCH_TASK_FORM,
   FETCH_TASK_LIST,
   FETCH_TASK_LIST_SUCCESS,
   FETCH_TASK_LIST_FAILED,

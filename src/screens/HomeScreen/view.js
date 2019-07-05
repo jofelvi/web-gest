@@ -6,12 +6,14 @@ import { Empty } from 'antd';
 
 import utils from '../../lib/utils';
 
-const HomeScreen = ({ process, taskName, taskId }) => {
+const HomeScreen = ({ fetchTaskForm, process, taskName, taskId }) => {
   useEffect(() => {
-    if (!utils.getTaskId() && taskId) {
-      utils.setTaskId(taskId);
+    if (utils.getTaskId() || taskId) {
+      const id = utils.getTaskId();
+      fetchTaskForm({ taskId: id || taskId });
     }
-  }, [taskId]);
+  }, [taskId, fetchTaskForm]);
+
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
 
   if (id) {
@@ -28,7 +30,7 @@ const HomeScreen = ({ process, taskName, taskId }) => {
 HomeScreen.propTypes = {
   process: PropTypes.string.isRequired,
   taskName: PropTypes.string.isRequired,
-  taskId: PropTypes.string.isRequired
+  taskId: PropTypes.string.isRequired,
 };
 
 export default HomeScreen;
