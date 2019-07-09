@@ -160,7 +160,7 @@ export function* watchGetTaskForm() {
 
 function* getTaskVariables() {
   try {
-    const taskId = yield select(state => state.forms.taskId);
+    const taskId = yield select(state => state.tasks.selectedTask.id);
     const response = yield call(api.getTaskVariables, taskId);
     yield put(getTaskVariablesSuccess(response.data));
   } catch (e) {
