@@ -7,9 +7,9 @@ import { FilterContainer, FilterText } from './styles';
 
 const renderIcon = ({ name, sortOrder }, sortBy) => {
   if (name === sortBy && sortOrder === 'desc') {
-    return <Icon type='down' />;
+    return <Icon type="down" />;
   }
-  return <Icon type='up' />;
+  return <Icon type="up" />;
 };
 
 const fetchOrderedTaskList = (filter, pathname, fetchTaskList) => {
@@ -30,25 +30,24 @@ const TaskFilterItem = ({
   fetchTaskList,
   pathname,
 }) => {
+  const [didMount, setDidMount] = useState(false);
   const [filter, setFilter] = useState({ name, sortOrder: 'asc' });
   useEffect(() => {
-    if (filter.name !== sortBy) {
-      setFilter({ ...filter, sortOrder: 'asc' });
+    if (didMount) {
+      fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
     }
-
-    fetchOrderedTaskList(filter.sortOrder, pathname, fetchTaskList);
+    setDidMount(true);
   }, [filter.sortOrder]);
-
   return (
     <FilterContainer
-      type='flex'
-      justify='center'
+      type="flex"
+      justify="center"
       onClick={() => {
         setTaskListFilter({
           sortBy: filter.name,
         });
 
-        return filter.sortOrder === 'asc'
+        filter.sortOrder === 'asc'
           ? setFilter({ ...filter, sortOrder: 'desc' })
           : setFilter({ ...filter, sortOrder: 'asc' });
       }}

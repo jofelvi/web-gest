@@ -6,23 +6,28 @@ import TaskFilterItem from './components/TaskFilterItem/view';
 const filters = [
   {
     name: 'name',
-    text: 'Task name'
+    text: 'Task name',
   },
   {
     name: 'created',
-    text: 'Created'
+    text: 'Created',
   },
   {
     name: 'priority',
-    text: 'Priority'
+    text: 'Priority',
   },
   {
     name: 'assignee',
-    text: 'Assignee'
-  }
+    text: 'Assignee',
+  },
 ];
 
-const TaskFilter = ({ sortBy, setTaskListFilter, fetchTaskList, pathname }) => (
+const TaskFilter = ({
+  sortBy,
+  setTaskListFilter,
+  fetchTaskList,
+  pathname,
+}) => (
   <Row>
     {filters.map(filter => (
       <Col span={6}>
