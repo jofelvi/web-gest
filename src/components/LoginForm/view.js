@@ -7,30 +7,44 @@ import * as Yup from 'yup';
 import { Form, Input, Icon, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { ButtonContainer, SignupContainer } from './styles';
+import {
+  ButtonContainer,
+  SignupContainer,
+  LoginErrorContainer,
+  LoginErrorText,
+  FieldErrorContainer,
+  FieldErrorText,
+} from './styles';
 
 const { Item } = Form;
 
 const validationSchema = Yup.object().shape({
   user: Yup.string().required(),
-  password: Yup.string().required()
+  password: Yup.string().required(),
 });
 
-const LoginForm = ({ login }) => (
+const LoginForm = ({ login, status }) => (
   <>
     <Formik
       initialValues={{
         user: '',
-        password: ''
+        password: '',
       }}
       validationSchema={validationSchema}
       onSubmit={values => {
         login({ values: { user: values.user, password: values.password } });
       }}
     >
-      {({ values, handleChange, handleBlur, handleSubmit }) => (
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        errors,
+        touched,
+      }) => (
         <>
-          <Item>
+          <Item validateStatus={errors.user && touched.user ? 'error' : null}>
             <Input
               id="user"
               value={values.user}
@@ -39,8 +53,19 @@ const LoginForm = ({ login }) => (
               onChange={handleChange}
               onBlur={handleBlur}
             />
+            {errors.user && touched.user && (
+              <FieldErrorContainer>
+                <FieldErrorText>
+                  Debe introducir un usuario válido
+                </FieldErrorText>
+              </FieldErrorContainer>
+            )}
           </Item>
-          <Item>
+          <Item
+            validateStatus={
+              errors.password && touched.password ? 'error' : null
+            }
+          >
             <Input
               id="password"
               value={values.password}
@@ -50,6 +75,18 @@ const LoginForm = ({ login }) => (
               onChange={handleChange}
               onBlur={handleBlur}
             />
+            {errors.password && touched.password && (
+              <FieldErrorContainer>
+                <p>Debe introducir una contraseña</p>
+              </FieldErrorContainer>
+            )}
+            {status === 'logged-error' && (
+              <LoginErrorContainer>
+                <LoginErrorText>
+                  El usuario o la contraseña son incorrectos
+                </LoginErrorText>
+              </LoginErrorContainer>
+            )}
           </Item>
           <ButtonContainer>
             <Button
@@ -71,7 +108,8 @@ const LoginForm = ({ login }) => (
 );
 
 LoginForm.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  status: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
