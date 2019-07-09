@@ -7,7 +7,7 @@ import View from './view';
 export default connect(
   state => ({
     tasks: state.tasks.taskList,
-    selectedTask: state.tasks.selectedTask
+    selectedTask: state.tasks.selectedTask,
   }),
   { fetchTaskList }
 )(View);

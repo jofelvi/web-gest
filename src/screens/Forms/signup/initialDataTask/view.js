@@ -10,17 +10,18 @@ const validationSchema = Yup.object().shape({
   user: Yup.string().required(),
   nif: Yup.string().required(),
   isDemo: Yup.bool().required(),
-  acceptTerms: Yup.bool().required()
+  acceptTerms: Yup.bool().required(),
 });
 
 const InitialDataTask = ({
   getTaskVariables,
   taskVariables,
   completeTask,
-  completed
+  completed,
+  taskId,
 }) => {
   useEffect(() => {
-    getTaskVariables();
+    getTaskVariables({ taskId });
   }, [getTaskVariables]);
 
   return completed ? (
@@ -34,7 +35,7 @@ const InitialDataTask = ({
           isDemo:
             taskVariables && taskVariables[2] ? taskVariables[2].value : false,
           acceptTerms:
-            taskVariables && taskVariables[3] ? taskVariables[3].value : false
+            taskVariables && taskVariables[3] ? taskVariables[3].value : false,
         }}
         onSubmit={values => {
           const variables = [];
@@ -45,7 +46,7 @@ const InitialDataTask = ({
               type: `${(typeof value[1])
                 .charAt(0)
                 .toUpperCase()}${(typeof value[1]).slice(1)}`,
-              transient: false
+              transient: false,
             };
             return variables.push(taskVariable);
           });
@@ -117,7 +118,7 @@ const InitialDataTask = ({
 };
 
 InitialDataTask.propTypes = {
-  completeTask: PropTypes.func.isRequired
+  completeTask: PropTypes.func.isRequired,
 };
 
 export default InitialDataTask;

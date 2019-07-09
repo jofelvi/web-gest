@@ -5,7 +5,7 @@ import Loadable from 'react-loadable';
 const TaskFormScreen = ({ taskId, process, taskName, fetchTaskForm }) => {
   useEffect(() => {
     fetchTaskForm({ taskId });
-  }, [taskName]);
+  }, []);
 
   const processId = process.split(':')[0];
   const DynamicTask = Loadable({

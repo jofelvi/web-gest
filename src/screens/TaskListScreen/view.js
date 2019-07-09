@@ -22,11 +22,11 @@ const TasksListScreen = ({
   tasks,
   selectedTask,
   location: { pathname },
-  history
+  history,
 }) => {
   useEffect(() => {
     getTaskList(fetchTaskList, pathname);
-  }, [fetchTaskList, pathname]);
+  }, [pathname]);
   return (
     <Row>
       <Row>
@@ -51,7 +51,7 @@ const TasksListScreen = ({
 TasksListScreen.propTypes = {
   fetchTaskList: PropTypes.func.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  selectedTask: PropTypes.string.isRequired
+  selectedTask: PropTypes.string.isRequired,
 };
 
 export default TasksListScreen;
