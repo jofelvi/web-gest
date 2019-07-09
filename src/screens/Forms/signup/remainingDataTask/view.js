@@ -17,7 +17,7 @@ const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
   }, [getTaskVariables]);
 
   return (
-    <Row type='flex' justify='center'>
+    <Row type="flex" justify="center">
       <Formik
         initialValues={{
           useTrello: false,
@@ -34,10 +34,10 @@ const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
           <Form onSubmit={handleSubmit}>
             <Row>
               <Col span={24}>
-                <Form.Item label='Contraseña'>
+                <Form.Item label="Contraseña">
                   <Input
-                    className='mb-4'
-                    name='password'
+                    className="mb-4"
+                    name="password"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     values={values.password}
@@ -47,10 +47,10 @@ const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
             </Row>
             <Row>
               <Col span={24}>
-                <Form.Item label='Uso Trello como gestor de tareas'>
+                <Form.Item label="Uso Trello como gestor de tareas">
                   <Input
-                    type='checkbox'
-                    name='useTrello'
+                    type="checkbox"
+                    name="useTrello"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     values={values.useTrello}
@@ -61,7 +61,7 @@ const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
             <Row>
               <Col span={24}>
                 <Form.Item>
-                  <Button type='primary' onClick={handleSubmit}>
+                  <Button type="primary" onClick={handleSubmit}>
                     Enviar
                   </Button>
                 </Form.Item>

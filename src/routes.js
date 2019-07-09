@@ -66,7 +66,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       />
       <PrivateRoute path={`/task/completed`} exact component={CompletedForm} />
       <Route path='/login' exact component={LoginScreen} />
-      <Route path='/signup' exact component={SignupScreen} />
+      <Route path='/process/signup' exact component={SignupScreen} />
     </Switch>
   );
 };

@@ -33,7 +33,10 @@
     "lint": "eslint src/**/*.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "react-hooks/exhaustive-deps": 0
+    }
   },
   "browserslist": {
     "production": [
