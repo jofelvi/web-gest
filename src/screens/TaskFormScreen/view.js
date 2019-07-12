@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
 
-const TaskFormScreen = ({ taskId, process, taskName, fetchTaskForm }) => {
+const TaskFormScreen = ({ match: { params: { taskId } }, process, taskName, fetchTaskForm }) => {
   useEffect(() => {
     fetchTaskForm({ taskId });
   }, []);
