@@ -45,7 +45,7 @@ const Menu = () => (
       </Item>
     </SubMenu>
     <Item key="2">
-      <MenuItemContent icon="user" link="/signup" name="Usuarios Farmacia" />
+      <MenuItemContent icon="user" link="/process/signup" name="Usuarios Farmacia" />
     </Item>
     <SubMenu
       key="sub1"
