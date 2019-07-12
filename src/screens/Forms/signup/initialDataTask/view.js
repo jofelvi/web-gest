@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -19,14 +19,13 @@ const InitialDataTask = ({
   completeTask,
   completed,
   taskId,
+  history,
 }) => {
   useEffect(() => {
     getTaskVariables({ taskId });
   }, [getTaskVariables]);
 
-  return completed ? (
-    <Redirect to="/task/completed" />
-  ) : (
+  return (
     <Row type="flex" justify="center">
       <Formik
         initialValues={{
@@ -50,8 +49,7 @@ const InitialDataTask = ({
             };
             return variables.push(taskVariable);
           });
-          console.log(completed);
-          completeTask({ variables });
+          completeTask({ variables, history });
         }}
         validationSchema={validationSchema}
       >
@@ -121,4 +119,4 @@ InitialDataTask.propTypes = {
   completeTask: PropTypes.func.isRequired,
 };
 
-export default InitialDataTask;
+export default withRouter(InitialDataTask);
