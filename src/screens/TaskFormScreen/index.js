@@ -7,8 +7,9 @@ import View from './view';
 export default connect(
   state => ({
     taskName: state.forms.taskName,
-    taskId: state.tasks.selectedTask.id,
-    process: state.tasks.selectedTask.processDefinitionId,
+    process: state.tasks.selectedTask
+      ? state.tasks.selectedTask.processDefinitionId
+      : state.forms.taskName,
   }),
   { fetchTaskForm }
 )(View);

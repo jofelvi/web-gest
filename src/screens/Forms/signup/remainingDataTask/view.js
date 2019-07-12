@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropType from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -11,7 +12,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required(),
 });
 
-const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
+const RemainingDataTask = ({ getTaskVariables, completeTask, history }) => {
   useEffect(() => {
     getTaskVariables();
   }, [getTaskVariables]);
@@ -26,7 +27,7 @@ const RemainingDataTask = ({ getTaskVariables, completeTask }) => {
         onSubmit={values => {
           const variables = transformData(values);
           console.log({ variables });
-          completeTask({ variables });
+          completeTask({ variables, history });
         }}
         validationSchema={validationSchema}
       >
@@ -79,4 +80,4 @@ RemainingDataTask.propTypes = {
   getTaskVariables: PropType.func.isRequired,
 };
 
-export default RemainingDataTask;
+export default withRouter(RemainingDataTask);

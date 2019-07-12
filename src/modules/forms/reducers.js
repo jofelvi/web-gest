@@ -7,7 +7,8 @@ import {
   changeProcessSuccess,
   getTaskFormSuccess,
   getTaskVariablesSuccess,
-  complete,
+  setComplete,
+  setProcId,
 } from './actions';
 
 const defaultState = {
@@ -51,9 +52,18 @@ export default handleActions(
       ...state,
       taskVariables: payload.taskVariables,
     }),
-    [complete]: state => ({
+    [setComplete]: (state, { payload }) => ({
       ...state,
-      completed: true,
+      completed: payload,
+      process: '',
+      processKey: '',
+      processStep: '',
+      taskName: '',
+      procId: null,
+    }),
+    [setProcId]: (state, { payload }) => ({
+      ...state,
+      procId: payload,
     }),
   },
   defaultState

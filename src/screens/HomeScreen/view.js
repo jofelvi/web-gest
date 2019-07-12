@@ -6,7 +6,13 @@ import { Empty } from 'antd';
 
 import utils from '../../lib/utils';
 
-const HomeScreen = ({ fetchTaskForm, process, taskName, taskId }) => {
+const HomeScreen = ({
+  fetchTaskForm,
+  process,
+  taskName,
+  taskId,
+  completed,
+}) => {
   useEffect(() => {
     if (utils.getTaskId() || taskId) {
       const id = utils.getTaskId();
@@ -16,7 +22,7 @@ const HomeScreen = ({ fetchTaskForm, process, taskName, taskId }) => {
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
 
-  if (id) {
+  if (id && !completed) {
     return <Redirect to={`/task/${taskId}/form`} />;
   }
 
