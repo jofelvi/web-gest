@@ -9,10 +9,11 @@ import {
   completeTaskSuccess,
   getTaskVariablesFailed,
   getTaskVariablesSuccess,
-  complete,
+  setComplete,
   getTaskForm as fetchTaskForm,
   getTaskFormSuccess,
   getTaskFormFailed,
+  setProcId,
 } from './actions';
 
 import {
@@ -29,6 +30,7 @@ import utils from '../../lib/utils';
 
 function* startProcessSaga({ payload }) {
   try {
+    yield put(setComplete(false));
     const response = yield call(api.startProcess, payload.key);
     if (response.data !== null) {
       yield put(
@@ -65,6 +67,7 @@ function* continueProcess({ payload }) {
   const processKey = yield select(state => state.forms.processKey);
   let response = yield call(api.continueProcess, processKey, payload.variables);
   const procId = response.data;
+  yield put(setProcId(procId));
   response = yield call(api.checkTask, procId);
 
   if (response.status === 200) {
@@ -93,16 +96,28 @@ export function* watchContinueProcess() {
 }
 
 function* completeTaskProcess({ payload }) {
-  const processKey = yield select(state => state.forms.processKey);
-  const taskId = yield select(state => state.forms.taskId);
+  yield put(setComplete(true));
+  let procId = yield select(state =>
+    state.tasks.selectedTask
+      ? state.tasks.selectedTask.processDefinitionId.split(':')[2]
+      : state.forms.procId
+  );
+  const processKey = yield select(state =>
+    state.tasks.selectedTask
+      ? state.tasks.selectedTask.processDefinitionId.split(':')[0]
+      : state.forms.processKey
+  );
+  const taskId = yield select(state =>
+    state.tasks.selectedTask ? state.tasks.selectedTask.id : state.forms.taskId
+  );
   let response;
   if (taskId) {
     response = yield call(api.completeTask, taskId, payload.variables);
   } else {
     response = yield call(api.continueProcess, processKey, payload.variables);
   }
-  const procId = response.data;
-  console.log({ responseComplete: response });
+  procId = response.data ? response.data : procId;
+  yield put(setProcId(procId));
   response = yield call(api.checkTask, procId);
   console.log({ responseNext: response });
   if (response.status === 200) {
@@ -114,17 +129,13 @@ function* completeTaskProcess({ payload }) {
         taskId: response.data.taskId,
       })
     );
-    window.history.pushState(
-      null,
-      null,
-      `/process/${processKey}/${response.data.formKey}`
-    );
+    payload.history.push(`/process/${processKey}/${response.data.formKey}`);
   } else if (response.status === 401) {
-    window.history.pushState(null, null, '/login');
+    payload.history.push('/login');
   } else {
     console.log('--> completed');
-    yield put(complete());
-    window.history.pushState(null, null, `/process/${processKey}/complete`);
+    yield put(setComplete(true));
+    payload.history.push(`/task/completed`);
   }
 }
 
@@ -160,7 +171,11 @@ export function* watchGetTaskForm() {
 
 function* getTaskVariables() {
   try {
-    const taskId = yield select(state => state.tasks.selectedTask.id);
+    const taskId = yield select(state =>
+      state.tasks.selectedTask
+        ? state.tasks.selectedTask.id
+        : state.forms.taskId
+    );
     const response = yield call(api.getTaskVariables, taskId);
     yield put(getTaskVariablesSuccess(response.data));
   } catch (e) {
