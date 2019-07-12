@@ -46,7 +46,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path='/tasks/user' exact component={TaskListScreen} />
       <PrivateRoute path='/tasks/group' exact component={TaskListScreen} />
       <PrivateRoute
-        path={`/task/:taskId/form`}
+        path={`/task/:taskId/process/:procId`}
         exact
         component={TaskFormScreen}
       />
@@ -62,6 +62,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       />
       <PrivateRoute
         path={`/process/:process/complete`}
+        exact
         component={CompletedForm}
       />
       <PrivateRoute path={`/task/completed`} exact component={CompletedForm} />
