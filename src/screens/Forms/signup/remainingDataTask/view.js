@@ -4,15 +4,20 @@ import PropType from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 
-import { Form, Input, Row, Col, Button } from 'antd';
-import { transformData } from '../../lib';
+import { Form, Input, Row, Col, Button, Checkbox } from 'antd';
+import { transformData, selectTaskVariable } from '../../lib';
 
 const validationSchema = Yup.object().shape({
   useTrello: Yup.bool().required(),
   password: Yup.string().required(),
 });
 
-const RemainingDataTask = ({ getTaskVariables, completeTask, history }) => {
+const RemainingDataTask = ({
+  getTaskVariables,
+  taskVariables,
+  completeTask,
+  history,
+}) => {
   useEffect(() => {
     getTaskVariables();
   }, [getTaskVariables]);
@@ -21,15 +26,21 @@ const RemainingDataTask = ({ getTaskVariables, completeTask, history }) => {
     <Row type="flex" justify="center">
       <Formik
         initialValues={{
-          useTrello: false,
-          password: '',
+          useTrello:
+            taskVariables && selectTaskVariable(taskVariables, 'useTrello')
+              ? selectTaskVariable(taskVariables, 'useTrello').value
+              : false,
+          password:
+            taskVariables && selectTaskVariable(taskVariables, 'password')
+              ? selectTaskVariable(taskVariables, 'password').value
+              : '',
         }}
         onSubmit={values => {
           const variables = transformData(values);
-          console.log({ variables });
           completeTask({ variables, history });
         }}
         validationSchema={validationSchema}
+        enableReinitialize
       >
         {({ values, handleSubmit, handleChange, handleBlur }) => (
           <Form onSubmit={handleSubmit}>
@@ -49,12 +60,13 @@ const RemainingDataTask = ({ getTaskVariables, completeTask, history }) => {
             <Row>
               <Col span={24}>
                 <Form.Item label="Uso Trello como gestor de tareas">
-                  <Input
+                  <Checkbox
                     type="checkbox"
                     name="useTrello"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     values={values.useTrello}
+                    checked={values.useTrello}
                   />{' '}
                 </Form.Item>
               </Col>

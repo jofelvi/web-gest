@@ -8,6 +8,8 @@ import {
 import View from './view';
 
 export default connect(
-  () => ({}),
+  state => ({
+    taskVariables: state.forms.taskVariables,
+  }),
   { completeTask, getTaskVariables }
 )(View);

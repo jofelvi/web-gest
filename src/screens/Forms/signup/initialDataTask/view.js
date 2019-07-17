@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 import { Form, Input, Checkbox, Row, Col, Button } from 'antd';
+
+import { selectTaskVariable } from '../../lib';
 
 const validationSchema = Yup.object().shape({
   user: Yup.string().required(),
@@ -17,24 +19,32 @@ const InitialDataTask = ({
   getTaskVariables,
   taskVariables,
   completeTask,
-  completed,
-  taskId,
   history,
 }) => {
   useEffect(() => {
-    getTaskVariables({ taskId });
+    getTaskVariables();
   }, [getTaskVariables]);
 
   return (
     <Row type="flex" justify="center">
       <Formik
         initialValues={{
-          user: taskVariables && taskVariables[0] ? taskVariables[0].value : '',
-          nif: taskVariables && taskVariables[1] ? taskVariables[1].value : '',
+          user:
+            taskVariables && selectTaskVariable(taskVariables, 'user')
+              ? selectTaskVariable(taskVariables, 'user').value
+              : '',
+          nif:
+            taskVariables && selectTaskVariable(taskVariables, 'nif')
+              ? selectTaskVariable(taskVariables, 'nif').value
+              : '',
           isDemo:
-            taskVariables && taskVariables[2] ? taskVariables[2].value : false,
+            taskVariables && selectTaskVariable(taskVariables, 'isDemo')
+              ? selectTaskVariable(taskVariables, 'isDemo').value
+              : false,
           acceptTerms:
-            taskVariables && taskVariables[3] ? taskVariables[3].value : false,
+            taskVariables && selectTaskVariable(taskVariables, 'acceptTerms')
+              ? selectTaskVariable(taskVariables, 'acceptTerms').value
+              : false,
         }}
         onSubmit={values => {
           const variables = [];
@@ -52,6 +62,7 @@ const InitialDataTask = ({
           completeTask({ variables, history });
         }}
         validationSchema={validationSchema}
+        enableReinitialize
       >
         {({ values, handleSubmit, handleChange, handleBlur }) => (
           <Col span={12}>
@@ -82,6 +93,7 @@ const InitialDataTask = ({
                 <Col span={12}>
                   <Form.Item label="Solicito periodo de Demo">
                     <Checkbox
+                      checked={values.isDemo}
                       value={values.isDemo}
                       onChange={handleChange('isDemo')}
                       onBlur={handleBlur('isDemo')}
@@ -93,6 +105,7 @@ const InitialDataTask = ({
                 <Col span={12}>
                   <Form.Item label="Acepto las condiciones legales">
                     <Checkbox
+                      checked={values.acceptTerms}
                       value={values.acceptTerms}
                       onChange={handleChange('acceptTerms')}
                       onBlur={handleBlur('acceptTerms')}
