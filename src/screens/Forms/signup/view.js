@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import StartForm from '../components/StartForm';
@@ -7,8 +7,8 @@ import Start from '../components/Start';
 
 class View extends Component {
   componentDidMount() {
-    const { startProcess } = this.props;
-    startProcess({ key: 'signup' });
+    const { startProcess, history } = this.props;
+    startProcess({ key: 'signup', history });
   }
 
   render() {
@@ -28,7 +28,7 @@ class View extends Component {
 View.propTypes = {
   startProcess: PropTypes.func.isRequired,
   processStep: PropTypes.string.isRequired,
-  taskId: PropTypes.string.isRequired
+  taskId: PropTypes.string.isRequired,
 };
 
-export default View;
+export default withRouter(View);

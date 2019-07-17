@@ -30,8 +30,8 @@ import utils from '../../lib/utils';
 
 function* startProcessSaga({ payload }) {
   try {
-    yield put(setComplete(false));
     const response = yield call(api.startProcess, payload.key);
+    yield put(setComplete(false));
     if (response.data !== null) {
       yield put(
         startProcessSuccess({
@@ -41,7 +41,7 @@ function* startProcessSaga({ payload }) {
         })
       );
     } else {
-      yield put(nextProcess({ variables: [] }));
+      yield put(nextProcess({ variables: [], history: payload.history }));
     }
   } catch (e) {
     console.error(e);
@@ -79,15 +79,12 @@ function* continueProcess({ payload }) {
         taskId: response.data.taskId,
       })
     );
-    window.history.pushState(
-      null,
-      null,
-      `/process/${processKey}/${response.data.formKey}`
-    );
+    payload.history.push(`/process/${processKey}/${response.data.formKey}`);
   } else if (response.status === 401) {
-    window.history.pushState(null, null, '/login');
+    payload.history.pushState(null, null, '/login');
   } else {
     console.log('---> completed');
+    yield put(setComplete(true));
   }
 }
 
@@ -96,7 +93,6 @@ export function* watchContinueProcess() {
 }
 
 function* completeTaskProcess({ payload }) {
-  yield put(setComplete(true));
   let procId = yield select(state =>
     state.tasks.selectedTask
       ? state.tasks.selectedTask.processDefinitionId.split(':')[2]
@@ -119,7 +115,6 @@ function* completeTaskProcess({ payload }) {
   procId = response.data ? response.data : procId;
   yield put(setProcId(procId));
   response = yield call(api.checkTask, procId);
-  console.log({ responseNext: response });
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
 
@@ -177,7 +172,7 @@ function* getTaskVariables() {
         : state.forms.taskId
     );
     const response = yield call(api.getTaskVariables, taskId);
-    yield put(getTaskVariablesSuccess(response.data));
+    yield put(getTaskVariablesSuccess({ taskVariables: response.data }));
   } catch (e) {
     console.error(e);
     yield put(getTaskVariablesFailed());
