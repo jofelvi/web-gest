@@ -26,14 +26,14 @@ const RemainingDataTask = ({
     <Row type="flex" justify="center">
       <Formik
         initialValues={{
-          useTrello:
-            taskVariables && selectTaskVariable(taskVariables, 'useTrello')
-              ? selectTaskVariable(taskVariables, 'useTrello').value
-              : false,
           password:
             taskVariables && selectTaskVariable(taskVariables, 'password')
               ? selectTaskVariable(taskVariables, 'password').value
               : '',
+          useTrello:
+            taskVariables && selectTaskVariable(taskVariables, 'useTrello')
+              ? selectTaskVariable(taskVariables, 'useTrello').value
+              : false,
         }}
         onSubmit={values => {
           const variables = transformData(values);
@@ -52,7 +52,7 @@ const RemainingDataTask = ({
                     name="password"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    values={values.password}
+                    value={values.password}
                   />
                 </Form.Item>
               </Col>
@@ -65,7 +65,7 @@ const RemainingDataTask = ({
                     name="useTrello"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    values={values.useTrello}
+                    value={values.useTrello}
                     checked={values.useTrello}
                   />{' '}
                 </Form.Item>
