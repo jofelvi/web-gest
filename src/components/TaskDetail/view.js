@@ -6,7 +6,7 @@ import { Container, ContentContainer, TaskText, ProcessText } from './styles';
 
 const TaskDetail = ({
   history,
-  selectedTask: { id, processDefinitionId, name, processDefinitionName },
+  selectedTask: { id, processInstanceId, name, processDefinitionName }
 }) => (
   <Container>
     <Row>
@@ -27,7 +27,7 @@ const TaskDetail = ({
         <Button
           type="primary"
           onClick={() =>
-            history.push(`/task/${id}/process/${processDefinitionId.split(':')[2]}`)
+            history.push(`/task/${id}/process/${processInstanceId}`)
           }
         >
           Completar
@@ -42,7 +42,8 @@ TaskDetail.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     processDefinitionName: PropTypes.string,
-  }).isRequired,
+    processInstanceId: PropTypes.string
+  }).isRequired
 };
 
 export default TaskDetail;

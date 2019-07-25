@@ -13,13 +13,14 @@ const TaskCard = ({
     name,
     processDefinitionName,
     processDefinitionId,
+    processInstanceId,
     assignee,
     due,
     created,
-    priority,
+    priority
   },
   setSelectedTask,
-  selected,
+  selected
 }) => (
   <Container
     onClick={() =>
@@ -28,10 +29,11 @@ const TaskCard = ({
         name,
         processDefinitionName,
         processDefinitionId,
+        processInstanceId,
         assignee,
         due,
         created,
-        priority,
+        priority
       })
     }
     selected={selected && selected.id === id}
@@ -51,7 +53,7 @@ const TaskCard = ({
         {assignee ? assignee : 'No hay encargado actualmente'}
       </Col>
     </Row>
-    <Row type='flex'>
+    <Row type="flex">
       <Col span={10}>
         {due ? `Pendiente ${calculateTimeDistance(due)}` : ''}
       </Col>
@@ -69,11 +71,12 @@ TaskCard.propTypes = {
     name: PropTypes.string,
     processDefinitionName: PropTypes.string,
     processDefinitionId: PropTypes.string,
+    processInstanceId: PropTypes.string,
     assignee: PropTypes.string,
     due: PropTypes.string,
-    created: PropTypes.string,
+    created: PropTypes.string
   }).isRequired,
-  setSelectedTask: PropTypes.func.isRequired,
+  setSelectedTask: PropTypes.func.isRequired
 };
 
 export default TaskCard;
