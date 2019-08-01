@@ -26,8 +26,17 @@ import {
 } from './forms/sagas';
 
 import {
-  watchloadCommercialDeals
+  watchloadCommercialDeals,
+  watchAgreements,
+  watchloadOffers,
+  watchloadCampaigns,
+  watchloadPlans
 } from './commercialDeals/sagas'
+
+import{
+  watchloadMenuItems,
+  watchloadChildItems
+} from './menu/sagas'
 
 export default function* rootSaga() {
   yield all([
@@ -47,6 +56,12 @@ export default function* rootSaga() {
     watchGetTaskVariables(),
     watchContinueProcess(),
     watchCompleteTaskProcess(),
-    watchloadCommercialDeals()
+    watchloadCommercialDeals(),
+    watchAgreements(),
+    watchloadOffers(),
+    watchloadCampaigns(),
+    watchloadPlans(),
+    watchloadMenuItems(),
+    watchloadChildItems()
   ]);
 }

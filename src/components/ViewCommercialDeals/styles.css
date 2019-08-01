@@ -1,0 +1,8 @@
+.commercial-deals-table .ant-table-thead > tr > th{
+    background-color: rgba(7, 87, 161, 0.767)!important;
+    color:white;
+    font-weight: bold;
+}
+.commercial-deals-table .ant-table-tbody > tr:nth-child(2n){
+    background-color: rgba(214, 228, 241, 0.5)!important;
+}

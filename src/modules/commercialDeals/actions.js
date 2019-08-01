@@ -3,15 +3,51 @@ import { createActions } from 'redux-actions';
 import {
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
-  LOAD_COMMERCIAL_DEALS_FAILED
+  LOAD_COMMERCIAL_DEALS_FAILED,
+  LOAD_OFFERS,
+  LOAD_OFFERS_SUCCESS,
+  LOAD_OFFERS_FAILED,
+  LOAD_AGREEMENTS,
+  LOAD_AGREEMENTS_SUCCESS,
+  LOAD_AGREEMENTS_FAILED,
+  LOAD_PLANS,
+  LOAD_PLANS_SUCCESS,
+  LOAD_PLANS_FAILED,
+  LOAD_CAMPAIGNS,
+  LOAD_CAMPAIGNS_SUCCESS,
+  LOAD_CAMPAIGNS_FAILED,
 } from './actionTypes';
 
 export const {
   loadCommercialDeals,
   loadCommercialDealsSuccess,
-  loadCommercialDealsFailed
+  loadCommercialDealsFailed,
+  loadOffers,
+  loadOffersSuccess,
+  loadOffersFailed,
+  loadAgreements,
+  loadAgreementsSuccess,
+  loadAgreementsFailed,
+  loadPlans,
+  loadPlansSuccess,
+  loadPlansFailed,
+  loadCampaigns,
+  loadCampaignsSuccess,
+  loadCampaignsFailed
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
   LOAD_COMMERCIAL_DEALS_FAILED,
+  LOAD_OFFERS,
+  LOAD_OFFERS_SUCCESS,
+  LOAD_OFFERS_FAILED,
+  LOAD_AGREEMENTS,
+  LOAD_AGREEMENTS_SUCCESS,
+  LOAD_AGREEMENTS_FAILED,
+  LOAD_PLANS,
+  LOAD_PLANS_SUCCESS,
+  LOAD_PLANS_FAILED,
+  LOAD_CAMPAIGNS,
+  LOAD_CAMPAIGNS_SUCCESS,
+  LOAD_CAMPAIGNS_FAILED,
 );

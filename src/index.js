@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import createStore from './modules/createStore';
 
 import 'antd/dist/antd.css';
+import './styles.css';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';

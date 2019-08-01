@@ -11,26 +11,46 @@ const CommercialDealsScreen = ({
 }) =>{
     useEffect(()=>{
         loadCommercialDeals();
-    });
-    return  <Tabs defaultActiveKey="1">
-                <TabPane tab="Promociones" key="1">
-                    <ViewCommercialDeals list={list} key="Promociones"></ViewCommercialDeals>
+    }, [loadCommercialDeals]);
+    return  <Tabs defaultActiveKey="0" tabPosition="left">
+                <TabPane 
+                    tab="Promociones" 
+                    key="0">
+                    <ViewCommercialDeals 
+                        list={list}
+                        type="Offers" 
+                        key="Promociones"></ViewCommercialDeals>
                 </TabPane>
-                <TabPane tab="Acuerdos Comerciales" key="2">
-                    <ViewCommercialDeals list={list} key="Acuerdos"></ViewCommercialDeals>
+                <TabPane 
+                    tab="Acuerdos Comerciales" 
+                    key="1">
+                    <ViewCommercialDeals 
+                        list={list} 
+                        type="Agreements"
+                        key="Acuerdos"></ViewCommercialDeals>
                 </TabPane>
-                    <TabPane tab="Planes de Compra" key="3">
-                <ViewCommercialDeals list={list} key="Planes"></ViewCommercialDeals>
+                <TabPane 
+                    tab="Planes de Compra" 
+                    key="2">
+                    <ViewCommercialDeals 
+                        list={list} 
+                        type="Plans" 
+                        key="Planes"></ViewCommercialDeals>
                 </TabPane>
-                <TabPane tab="Campañas" key="4">
-                    <ViewCommercialDeals list={list} key="Campanias"></ViewCommercialDeals>
+                <TabPane 
+                    tab="Campañas" 
+                    key="3">
+                    <ViewCommercialDeals 
+                        list={list} 
+                        type="Campaigns"
+                        key="Campanias"></ViewCommercialDeals>
                 </TabPane>
             </Tabs>;
 };
 
 CommercialDealsScreen.propTypes = {
     loadCommercialDeals: PropTypes.func.isRequired,
-    list: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    list: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 export default CommercialDealsScreen;

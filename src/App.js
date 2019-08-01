@@ -13,6 +13,8 @@ import { withRouter } from 'react-router-dom';
 import Header from './components/Header';
 import Sider from './components/Sider';
 import Routes from './routes';
+import Menu from './components/Menu';
+import LeftMenu from './components/LeftMenu';
 
 const { Content } = Layout;
 
@@ -39,9 +41,11 @@ const App = ({
 
   return (
     <Layout>
-      <Header className='header' />
+      {/*<Header className='header' />*/}
+      <Menu></Menu>
+      <LeftMenu></LeftMenu>
       <Layout>
-        {pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null}
+        {/*pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null*/}
         <Layout>
           <Content
             style={{
