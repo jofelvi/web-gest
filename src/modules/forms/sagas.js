@@ -95,16 +95,17 @@ export function* watchContinueProcess() {
 function* completeTaskProcess({ payload }) {
   let procId = yield select(state =>
     state.tasks.selectedTask
-      ? state.tasks.selectedTask.processDefinitionId.split(':')[2]
+      ? state.tasks.selectedTask.processInstanceId
       : state.forms.procId
   );
+  console.log(procId);
   const processKey = yield select(state =>
     state.tasks.selectedTask
       ? state.tasks.selectedTask.processDefinitionId.split(':')[0]
       : state.forms.processKey
   );
   const taskId = yield select(state =>
-    state.tasks.selectedTask ? state.tasks.selectedTask.id : state.forms.taskId
+    state.tasks.selectedTask ? state.forms.taskId : state.tasks.selectedTask.id
   );
   let response;
   if (taskId) {
@@ -124,7 +125,7 @@ function* completeTaskProcess({ payload }) {
         taskId: response.data.taskId,
       })
     );
-    payload.history.push(`/process/${processKey}/${response.data.formKey}`);
+    payload.history.push(`/task/${response.data.taskId}/process/${procId}`);
   } else if (response.status === 401) {
     payload.history.push('/login');
   } else {

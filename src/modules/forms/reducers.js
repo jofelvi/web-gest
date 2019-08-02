@@ -59,6 +59,7 @@ export default handleActions(
       processKey: '',
       processStep: '',
       taskName: '',
+      taskId: '',
       procId: null,
     }),
     [setProcId]: (state, { payload }) => ({
