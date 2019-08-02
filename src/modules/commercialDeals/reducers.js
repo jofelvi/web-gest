@@ -5,7 +5,12 @@ import {
   loadOffersSuccess,
   loadAgreementsSuccess,
   loadPlansSuccess,
-  loadCampaignsSuccess
+  loadCampaignsSuccess,
+  showNewCommercialDeal,
+  showEditCommercialDeal,
+  showViewProductsCommercialDeal,
+  showNewProductCommercialDeal,
+  setCurrentCommercialDeal
 } from './actions';
 
 const defaultState = {
@@ -13,7 +18,12 @@ const defaultState = {
   listAgreements:[],
   listOffers:[],
   listPlans:[],
-  listCampaigns:[]
+  listCampaigns:[],
+  viewProductsCommercialDealVisible: false,
+  newProductsCommercialDealVisible: false,
+  editCommercialDealVisible: false,
+  newCommercialDealVisible:false,
+  currentCommercialDeal: {}
 };
 
 export default handleActions(
@@ -41,6 +51,26 @@ export default handleActions(
       ...state,
       list: payload.commercialDeals,
       listCampaigns: payload.campaigns
+    }),
+    [showNewCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      newCommercialDealVisible: payload
+    }),
+    [showEditCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      editCommercialDealVisible: payload
+    }),
+    [showViewProductsCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      viewProductsCommercialDealVisible: payload
+    }),
+    [showNewProductCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      newProductsCommercialDealVisible: payload
+    }),
+    [setCurrentCommercialDeal]: (state, {payload}) => ({
+      ...state,
+      currentCommercialDeal: payload
     })
   },
   defaultState

@@ -10,11 +10,11 @@ import { Layout } from 'antd';
 
 import { withRouter } from 'react-router-dom';
 
-import Header from './components/Header';
-import Sider from './components/Sider';
+/*import Header from './components/Header';
+import Sider from './components/Sider';*/
 import Routes from './routes';
-import Menu from './components/Menu';
-import LeftMenu from './components/LeftMenu';
+import Menu from './components/Navigation/Menu';
+import LeftMenu from './components/Navigation/LeftMenu';
 
 const { Content } = Layout;
 
@@ -64,7 +64,7 @@ const App = ({
 };
 
 App.propTypes = {
-  status: PropTypes.string.isRequired,
+  status: PropTypes.string,
 };
 
 export default withRouter(

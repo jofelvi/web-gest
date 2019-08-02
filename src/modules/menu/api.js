@@ -1,4 +1,4 @@
-import { get, post } from '../../lib/restClient';
+/*import { get, post } from '../../lib/restClient';*/
 const mockMenu ={
   "data":[
     {
@@ -134,7 +134,6 @@ export const getMenuItems = () => {
 }
 
 export const getChildItems = (parentItem) =>{
-  console.log(parentItem);
   const _items = mockMenu.data.filter(item => {
     return item.id === parentItem.id
   });

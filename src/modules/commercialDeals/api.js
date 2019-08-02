@@ -1,4 +1,4 @@
-import { get, post } from '../../lib/restClient';
+/*import { get, post } from '../../lib/restClient';*/
 const mockCommercialDeals ={
   "data": [
   {
@@ -151,7 +151,7 @@ const mockCommercialDeals ={
       "descripcion":"rus consequat, pretium lectus sed, molestie turpis. Morbi luctus mauris nunc. In eleifend tortor nisl, ut commodo lectus efficitur scel",
       "tipocondicion":"Campaña",
       "fechainicio":"21/01/2019",
-      "fechafin":"21/5/2019",
+      "fechafin":"21/05/2019",
       "codigocampania":"1222",
       "estado":"Inactivo",
       "lineasescalado":[

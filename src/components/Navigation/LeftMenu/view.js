@@ -34,7 +34,7 @@ const LeftMenu = ({
 LeftMenu.propTypes = {
     selectParentItem: PropTypes.func,
     loadChildItemsMenu: PropTypes.func,
-    parentItem: PropTypes.shape({id:0,label:'',url:'',childs:[]}),
+    parentItem: PropTypes.object,
     childItemsMenu: PropTypes.arrayOf(PropTypes.object)
 };
 export default LeftMenu;

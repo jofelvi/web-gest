@@ -5,8 +5,10 @@ import {
   loadOffers,
   loadAgreements,
   loadPlans,
-  loadCampaigns
-} from '../../modules/commercialDeals/actions';
+  loadCampaigns,
+  showNewCommercialDeal,
+  setCurrentCommercialDeal
+} from '../../../modules/commercialDeals/actions';
 
 export default connect(
   state => ({
@@ -14,10 +16,13 @@ export default connect(
     listAgreements: state.commercialDeals.listAgreements,
     listOffers: state.commercialDeals.listOffers,
     listPlans: state.commercialDeals.listPlans,
-    listCampaigns: state.commercialDeals.listCampaigns
+    listCampaigns: state.commercialDeals.listCampaigns,
+    newCommercialDealVisible:state.commercialDeals.newCommercialDealVisible
   }),
   { loadOffers,
     loadAgreements,
     loadPlans,
-    loadCampaigns  }
+    loadCampaigns,
+    showNewCommercialDeal,
+    setCurrentCommercialDeal }
 )(View);

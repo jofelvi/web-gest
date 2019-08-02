@@ -1,8 +1,8 @@
 import View from './view';
 import { connect } from 'react-redux';
 
-import { logout } from '../../modules/auth/actions';
-import { loadMenuItems } from '../../modules/menu/actions'
+import { logout } from '../../../modules/auth/actions';
+import { loadMenuItems } from '../../../modules/menu/actions'
 
 export default connect(
     state => ({

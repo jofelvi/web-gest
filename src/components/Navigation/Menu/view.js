@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import './styles.css'
-import logo from '../../assets/logo.png';
-import usr from '../../assets/user.svg';
+import logo from '../../../assets/logo.png';
+import usr from '../../../assets/user.svg';
 import TopNode from './TopNode';
 import PropTypes from 'prop-types';
-import { STATUS } from '../../modules/auth/constants';
-import { withRouter } from 'react-router-dom'
+import { STATUS } from '../../../modules/auth/constants';
+import { withRouter } from 'react-router-dom';
+import {Button} from 'antd';
 
 const Menu = ({
     loadMenuItems,
@@ -33,26 +34,26 @@ const Menu = ({
             <div className="user-desc-container">
                 <label>Rafael Lucia</label>
                 <label>Gerencia General</label>
-                <a onClick={() => {
+                <Button onClick={() => {
                     logout();
                     history.push('/login');
-                   }}>Logout</a>
+                   }}>Logout</Button>
             </div>
         </div>
         :<div className="user-container-blank">
-            <a onClick={() => history.push('/login')}>
+            <Button onClick={() => history.push('/login')}>
                 Login
-            </a>
-            <a onClick={() => history.push('/signup')}>
+            </Button>
+            <Button onClick={() => history.push('/signup')}>
                 Sign up
-            </a>
+            </Button>
         </div>}
     </header>
 };
 Menu.propTypes = {
     loadMenuItems: PropTypes.func,
     itemsMenu: PropTypes.arrayOf(PropTypes.object),
-    parentItem: PropTypes.shape({id:0,label:'',url:'',childs:[]}),
+    parentItem: PropTypes.object,
     logout: PropTypes.func.isRequired,
     status: PropTypes.string.isRequired
 }

@@ -49,6 +49,16 @@
     flex-grow: 1;
     justify-content: flex-end;
 }
+.menu-container .user-container .ant-btn,
+.menu-container .user-container-blank .ant-btn{
+    background-color: transparent;
+    border:0px;
+    padding: 0px;
+    margin: 0px;
+    color:rgba(7, 87, 161, 0.767);
+    text-align: left;
+}
+
 .menu-container .user-container-blank{
     display: flex;
     flex-direction: column;

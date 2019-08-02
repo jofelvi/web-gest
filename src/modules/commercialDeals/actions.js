@@ -16,6 +16,11 @@ import {
   LOAD_CAMPAIGNS,
   LOAD_CAMPAIGNS_SUCCESS,
   LOAD_CAMPAIGNS_FAILED,
+  SHOW_NEW_COMMERCIAL_DEAL,
+  SHOW_EDIT_COMMERCIAL_DEAL,
+  SHOW_VIEW_PRODUCTS_COMMERCIAL_DEAL,
+  SHOW_NEW_PRODUCT_COMMERCIAL_DEAL,
+  SET_CURRENT_COMMERCIAL_DEAL
 } from './actionTypes';
 
 export const {
@@ -33,7 +38,12 @@ export const {
   loadPlansFailed,
   loadCampaigns,
   loadCampaignsSuccess,
-  loadCampaignsFailed
+  loadCampaignsFailed,
+  showNewCommercialDeal,
+  showEditCommercialDeal,
+  showViewProductsCommercialDeal,
+  showNewProductCommercialDeal,
+  setCurrentCommercialDeal
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
@@ -50,4 +60,9 @@ export const {
   LOAD_CAMPAIGNS,
   LOAD_CAMPAIGNS_SUCCESS,
   LOAD_CAMPAIGNS_FAILED,
+  SHOW_NEW_COMMERCIAL_DEAL,
+  SHOW_EDIT_COMMERCIAL_DEAL,
+  SHOW_VIEW_PRODUCTS_COMMERCIAL_DEAL,
+  SHOW_NEW_PRODUCT_COMMERCIAL_DEAL,
+  SET_CURRENT_COMMERCIAL_DEAL
 );

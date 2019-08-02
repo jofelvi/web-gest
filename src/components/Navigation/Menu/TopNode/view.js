@@ -24,7 +24,7 @@ const redirect = (item,_history, _selectNode) => {
 }
 
 TopNode.propTypes= {
-    parentItem: PropTypes.shape({id:0,label:'',url:'',childs:[]}),
+    parentItem: PropTypes.object,
     selectParentItem: PropTypes.func.isRequired,
     id: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,

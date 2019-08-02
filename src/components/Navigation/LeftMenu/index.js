@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import View from './view';
 
-import {loadChildItemsMenu, selectParentItem} from '../../modules/menu/actions';
+import {loadChildItemsMenu, selectParentItem} from '../../../modules/menu/actions';
 
 export default connect(
 state => ({
