@@ -98,16 +98,21 @@ function* completeTaskProcess({ payload }) {
       ? state.tasks.selectedTask.processInstanceId
       : state.forms.procId
   );
-  console.log(procId);
+
   const processKey = yield select(state =>
     state.tasks.selectedTask
       ? state.tasks.selectedTask.processDefinitionId.split(':')[0]
       : state.forms.processKey
   );
   const taskId = yield select(state =>
-    state.tasks.selectedTask ? state.forms.taskId : state.tasks.selectedTask.id
+    state.forms.taskId
+      ? state.forms.taskId
+      : state.tasks.selectedTask
+      ? state.tasks.selectedTask.id
+      : null
   );
   let response;
+
   if (taskId) {
     response = yield call(api.completeTask, taskId, payload.variables);
   } else {
