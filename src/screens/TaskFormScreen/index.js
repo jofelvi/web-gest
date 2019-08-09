@@ -9,7 +9,7 @@ export default connect(
     taskName: state.forms.taskName,
     process: state.tasks.selectedTask
       ? state.tasks.selectedTask.processDefinitionId
-      : state.forms.taskName,
+      : state.forms.process,
   }),
   { fetchTaskForm }
 )(View);
