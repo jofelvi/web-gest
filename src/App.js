@@ -6,20 +6,22 @@ import { setToken, loginSuccess } from './modules/auth/actions';
 
 import utils from './lib/utils';
 
-import { Layout } from 'antd';
+import { Layout,Col } from 'antd';
 
 import { withRouter } from 'react-router-dom';
 
 /*import Header from './components/Header';
 import Sider from './components/Sider';*/
 import Routes from './routes';
-import Menu from './components/Navigation/Menu';
+import TopBar from './components/Navigation/TopBar';
 import LeftMenu from './components/Navigation/LeftMenu';
 
 const { Content } = Layout;
 
 const App = ({
   location: { pathname },
+  wContent,
+  wMenu,
   history,
   completed,
   processKey,
@@ -42,23 +44,25 @@ const App = ({
   return (
     <Layout>
       {/*<Header className='header' />*/}
-      <Menu></Menu>
+      <TopBar></TopBar>
       <LeftMenu></LeftMenu>
-      <Layout>
-        {/*pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null*/}
+      <Col md={{span:wContent, offset:wMenu}}>
         <Layout>
-          <Content
-            style={{
-              background: '#fff',
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            <Routes />
-          </Content>
+          {/*pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null*/}
+          <Layout>
+            <Content
+              style={{
+                background: '#fff',
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+              }}
+            >
+              <Routes />
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+        </Col>
     </Layout>
   );
 };
@@ -73,6 +77,8 @@ export default withRouter(
       processKey: state.forms.processKey,
       completed: state.forms.completed,
       token: state.auth.token,
+      wContent: state.menu.wContent,
+      wMenu: state.menu.wMenu
     }),
     { setToken }
   )(App)

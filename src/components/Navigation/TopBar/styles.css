@@ -1,0 +1,14 @@
+.topbar{
+    height: 50px;
+    background-color: #001529;
+}
+.topbar .user-container{
+    max-width: 100%;
+    color:rgba(255,255,255,1);
+}
+.topbar .user-container button{
+    border:0px;
+    background-color: transparent;
+    color:rgb(3, 159, 250);
+    padding: 0px 8px;
+}

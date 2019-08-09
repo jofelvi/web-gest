@@ -9,7 +9,7 @@ const mockMenu ={
     {
       id:2,
       label:"Gestión Tareas",
-      childs:[
+      children:[
         {
           id:11,
           label:"Mis tareas",
@@ -35,7 +35,7 @@ const mockMenu ={
     {
       id:4,
       label:"Gestión",
-      childs:[
+      children:[
         {
           id:14,
           label:"Gestión",
@@ -91,7 +91,7 @@ const mockMenu ={
     {
       id:7,
       label:"Gestión Masiva",
-      childs:[
+      children:[
         {
           id:22,
           label:"Delegados y Farmacias",
@@ -138,6 +138,6 @@ export const getChildItems = (parentItem) =>{
     return item.id === parentItem.id
   });
   return new Promise((resolve, reject) => {
-    resolve({"data":_items[0].childs});
+    resolve({"data":_items[0].children});
   });
 }

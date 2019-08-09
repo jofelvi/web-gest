@@ -7,7 +7,8 @@ import {
   SELECT_PARENT_ITEM,
   LOAD_CHILD_ITEMS_MENU,
   LOAD_CHILD_ITEMS_MENU_SUCCESS,
-  LOAD_CHILD_ITEMS_MENU_FAILED
+  LOAD_CHILD_ITEMS_MENU_FAILED,
+  SET_COLLAPSE
 } from './actionTypes';
 
 export const {
@@ -17,7 +18,8 @@ export const {
   selectParentItem,
   loadChildItemsMenu,
   loadChildItemsMenuSuccess,
-  loadChildItemsMenuFailed
+  loadChildItemsMenuFailed,
+  setCollapse
 } = createActions(
   LOAD_MENU_ITEMS,
   LOAD_MENU_ITEMS_SUCCESS,
@@ -25,5 +27,6 @@ export const {
   SELECT_PARENT_ITEM,
   LOAD_CHILD_ITEMS_MENU,
   LOAD_CHILD_ITEMS_MENU_SUCCESS,
-  LOAD_CHILD_ITEMS_MENU_FAILED
+  LOAD_CHILD_ITEMS_MENU_FAILED,
+  SET_COLLAPSE
 );

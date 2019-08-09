@@ -1,12 +1,21 @@
 import {connect} from 'react-redux';
 import View from './view';
 
-import {loadChildItemsMenu, selectParentItem} from '../../../modules/menu/actions';
+import {
+    loadChildItemsMenu,
+    selectParentItem,
+    loadMenuItems,
+    setCollapse} from '../../../modules/menu/actions';
 
 export default connect(
 state => ({
-    parentItem: state.menu.parentItem,
-    childItemsMenu: state.menu.childItemsMenu
+    itemsMenu: state.menu.itemsMenu,
+    collapsed: state.menu.collapsed,
+    wMenu: state.menu.wMenu
     }),
-    { loadChildItemsMenu, selectParentItem }
+    { 
+        loadChildItemsMenu, 
+        selectParentItem,
+        loadMenuItems,
+        setCollapse }
 )(View);
