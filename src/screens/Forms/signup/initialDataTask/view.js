@@ -23,7 +23,7 @@ const InitialDataTask = ({
 }) => {
   useEffect(() => {
     getTaskVariables({ history });
-  }, [getTaskVariables]);
+  }, []);
 
   return (
     <Row type="flex" justify="center">

@@ -20,7 +20,7 @@ const RemainingDataTask = ({
 }) => {
   useEffect(() => {
     getTaskVariables({ history });
-  }, [getTaskVariables]);
+  }, []);
 
   return (
     <Row type="flex" justify="center">

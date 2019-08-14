@@ -8,7 +8,7 @@ const { Column, ColumnGroup } = Table;
 const UsersListScreen = ({ fetchUsers, users, history }) => {
   useEffect(() => {
     fetchUsers({ history });
-  }, [fetchUsers]);
+  }, []);
 
   return (
     <Table dataSource={users}>
