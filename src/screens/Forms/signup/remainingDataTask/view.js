@@ -19,7 +19,7 @@ const RemainingDataTask = ({
   history,
 }) => {
   useEffect(() => {
-    getTaskVariables();
+    getTaskVariables({ history });
   }, [getTaskVariables]);
 
   return (

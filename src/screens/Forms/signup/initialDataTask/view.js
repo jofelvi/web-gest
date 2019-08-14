@@ -22,7 +22,7 @@ const InitialDataTask = ({
   history,
 }) => {
   useEffect(() => {
-    getTaskVariables();
+    getTaskVariables({ history });
   }, [getTaskVariables]);
 
   return (

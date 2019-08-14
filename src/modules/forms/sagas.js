@@ -16,6 +16,8 @@ import {
   setProcId,
 } from './actions';
 
+import { cleanSelectedTask } from '../tasks/actions';
+
 import {
   START_PROCESS,
   CONTINUE_PROCESS,
@@ -32,6 +34,11 @@ function* startProcessSaga({ payload }) {
   try {
     const response = yield call(api.startProcess, payload.key);
     yield put(setComplete(false));
+
+    if (response.status === 401) {
+      payload.history.push('/login');
+    }
+
     if (response.data !== null) {
       yield put(
         startProcessSuccess({
@@ -81,7 +88,7 @@ function* continueProcess({ payload }) {
     );
     payload.history.push(`/process/${processKey}/${response.data.formKey}`);
   } else if (response.status === 401) {
-    payload.history.pushState(null, null, '/login');
+    payload.history.push('/login');
   } else {
     console.log('---> completed');
     yield put(setComplete(true));
@@ -136,6 +143,7 @@ function* completeTaskProcess({ payload }) {
   } else {
     console.log('--> completed');
     yield put(setComplete(true));
+    yield put(cleanSelectedTask());
     payload.history.push(`/task/completed`);
   }
 }
@@ -149,6 +157,8 @@ function* getTaskForm({ payload }) {
     const response = yield call(api.getTaskForm, payload.taskId);
     if (response.status === 200) {
       yield put(getTaskFormSuccess({ taskName: response.data }));
+    } else if (response.status === 401) {
+      payload.history.push('/login');
     }
   } catch (e) {
     console.error(e);
@@ -170,7 +180,7 @@ export function* watchGetTaskForm() {
   yield takeLatest(GET_TASK_FORM, getTaskForm);
 }
 
-function* getTaskVariables() {
+function* getTaskVariables({ payload }) {
   try {
     const taskId = yield select(state =>
       state.tasks.selectedTask
@@ -178,6 +188,11 @@ function* getTaskVariables() {
         : state.forms.taskId
     );
     const response = yield call(api.getTaskVariables, taskId);
+
+    if (response.status === 401) {
+      payload.history.push('/login');
+    }
+
     yield put(getTaskVariablesSuccess({ taskVariables: response.data }));
   } catch (e) {
     console.error(e);

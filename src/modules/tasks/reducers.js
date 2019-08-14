@@ -7,6 +7,7 @@ import {
   fetchTaskListSuccess,
   setSelectedTask,
   setTaskListFilter,
+  cleanSelectedTask,
 } from './actions';
 
 const defaultState = {
@@ -42,6 +43,10 @@ export default handleActions(
       ...state,
       sortBy: payload.sortBy,
       isSorted: payload.isSorted,
+    }),
+    [cleanSelectedTask]: state => ({
+      ...state,
+      selectedTask: null,
     }),
   },
   defaultState

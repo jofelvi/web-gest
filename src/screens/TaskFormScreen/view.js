@@ -9,9 +9,10 @@ const TaskFormScreen = ({
   process,
   taskName,
   fetchTaskForm,
+  history,
 }) => {
   useEffect(() => {
-    fetchTaskForm({ taskId });
+    fetchTaskForm({ taskId, history });
   }, []);
   console.log(process);
   const processId = process.split(':')[0] || process;
@@ -32,6 +33,7 @@ TaskFormScreen.propTypes = {
   taskId: PropTypes.string.isRequired,
   taskName: PropTypes.string.isRequired,
   fetchTaskForm: PropTypes.func.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default TaskFormScreen;
