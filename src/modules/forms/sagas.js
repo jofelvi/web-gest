@@ -37,6 +37,7 @@ function* startProcessSaga({ payload }) {
   try {
     const response = yield call(api.startProcess, payload.key);
     yield put(setComplete(false));
+    yield put(cleanSelectedTask());
 
     if (response.data !== null) {
       yield put(
