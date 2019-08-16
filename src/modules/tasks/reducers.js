@@ -6,6 +6,7 @@ import {
   fetchTasksByUser,
   fetchTaskListSuccess,
   setSelectedTask,
+  setSelectedTaskId,
   setTaskListFilter,
   cleanSelectedTask,
 } from './actions';
@@ -39,6 +40,10 @@ export default handleActions(
       ...state,
       selectedTask: payload,
     }),
+    [setSelectedTaskId]: (state, { payload }) => {
+      const selectedTask = { ...state.selectedTask, id: payload };
+      return { ...state, selectedTask };
+    },
     [setTaskListFilter]: (state, { payload }) => ({
       ...state,
       sortBy: payload.sortBy,

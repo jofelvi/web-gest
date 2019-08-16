@@ -15,6 +15,7 @@ import {
   FETCH_TASK_LIST_SUCCESS,
   FETCH_TASK_LIST_FAILED,
   SET_SELECTED_TASK,
+  SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
   CLEAN_SELECTED_TASK,
 } from './actionTypes';
@@ -34,6 +35,7 @@ export const {
   fetchTaskListSuccess,
   fetchTaskListFailed,
   setSelectedTask,
+  setSelectedTaskId,
   setTaskListFilter,
   cleanSelectedTask,
 } = createActions(
@@ -51,6 +53,7 @@ export const {
   FETCH_TASK_LIST_SUCCESS,
   FETCH_TASK_LIST_FAILED,
   SET_SELECTED_TASK,
+  SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
   CLEAN_SELECTED_TASK
 );
