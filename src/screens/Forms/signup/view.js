@@ -7,9 +7,11 @@ import Start from '../components/Start';
 
 const View = ({ startProcess, history, processStep, taskId, taskName }) => {
   useEffect(() => {
-    startProcess({ key: 'signup', history });
+    if (processStep === '') {
+      startProcess({ key: 'signup', history });
+    }
   }, []);
-
+  console.log(processStep);
   if (taskId && taskName) {
     return <Redirect to={`/task/${taskId}/form`} />;
   }

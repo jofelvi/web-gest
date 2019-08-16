@@ -14,9 +14,12 @@ import {
   getTaskFormSuccess,
   getTaskFormFailed,
   setProcId,
+  continueProcessFailed,
 } from './actions';
 
 import { cleanSelectedTask } from '../tasks/actions';
+
+import { checkLoginFailed } from '../auth/actions';
 
 import {
   START_PROCESS,
@@ -34,10 +37,6 @@ function* startProcessSaga({ payload }) {
   try {
     const response = yield call(api.startProcess, payload.key);
     yield put(setComplete(false));
-
-    if (response.status === 401) {
-      payload.history.push('/login');
-    }
 
     if (response.data !== null) {
       yield put(
@@ -72,26 +71,41 @@ export function* watchStartProcess() {
 
 function* continueProcess({ payload }) {
   const processKey = yield select(state => state.forms.processKey);
-  let response = yield call(api.continueProcess, processKey, payload.variables);
-  const procId = response.data;
-  yield put(setProcId(procId));
-  response = yield call(api.checkTask, procId);
-
-  if (response.status === 200) {
-    const newTaskName = response.data.formKey;
-    utils.setTaskId(response.data.taskId);
-    yield put(
-      continueProcessSuccess({
-        taskName: newTaskName,
-        taskId: response.data.taskId,
-      })
+  try {
+    let response = yield call(
+      api.continueProcess,
+      processKey,
+      payload.variables
     );
-    payload.history.push(`/process/${processKey}/${response.data.formKey}`);
-  } else if (response.status === 401) {
-    payload.history.push('/login');
-  } else {
-    console.log('---> completed');
-    yield put(setComplete(true));
+    const procId = response.data;
+    yield put(setProcId(procId));
+    response = yield call(api.checkTask, procId);
+
+    if (response.status === 200) {
+      const newTaskName = response.data.formKey;
+      utils.setTaskId(response.data.taskId);
+      yield put(
+        continueProcessSuccess({
+          taskName: newTaskName,
+          taskId: response.data.taskId,
+        })
+      );
+      payload.history.push(`/process/${processKey}/${response.data.formKey}`);
+    } else {
+      console.log('---> completed');
+      yield put(setComplete(true));
+    }
+  } catch (e) {
+    console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(continueProcessFailed());
+    }
+
+    yield put(continueProcessFailed());
   }
 }
 
@@ -139,6 +153,8 @@ function* completeTaskProcess({ payload }) {
     );
     payload.history.push(`/task/${response.data.taskId}/process/${procId}`);
   } else if (response.status === 401) {
+    utils.removeAuthToken();
+    yield put(checkLoginFailed());
     payload.history.push('/login');
   } else {
     console.log('--> completed');
@@ -158,6 +174,8 @@ function* getTaskForm({ payload }) {
     if (response.status === 200) {
       yield put(getTaskFormSuccess({ taskName: response.data }));
     } else if (response.status === 401) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
       payload.history.push('/login');
     }
   } catch (e) {
@@ -189,13 +207,17 @@ function* getTaskVariables({ payload }) {
     );
     const response = yield call(api.getTaskVariables, taskId);
 
-    if (response.status === 401) {
-      payload.history.push('/login');
-    }
-
     yield put(getTaskVariablesSuccess({ taskVariables: response.data }));
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(getTaskVariablesFailed());
+    }
+
     yield put(getTaskVariablesFailed());
   }
 }

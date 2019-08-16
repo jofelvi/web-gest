@@ -35,6 +35,7 @@ function* fetchUserById({ payload }) {
     const response = yield call(api.fetchUserById(payload.id));
 
     if (response.status === 401) {
+      
       payload.history.push('/login');
     }
 
