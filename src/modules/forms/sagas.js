@@ -17,7 +17,7 @@ import {
   continueProcessFailed,
 } from './actions';
 
-import { cleanSelectedTask } from '../tasks/actions';
+import { cleanSelectedTask, setSelectedTaskId } from '../tasks/actions';
 
 import { checkLoginFailed } from '../auth/actions';
 
@@ -85,6 +85,7 @@ function* continueProcess({ payload }) {
     if (response.status === 200) {
       const newTaskName = response.data.formKey;
       utils.setTaskId(response.data.taskId);
+      yield put(setSelectedTaskId(response.data.taskId));
       yield put(
         continueProcessSuccess({
           taskName: newTaskName,
@@ -145,7 +146,10 @@ function* completeTaskProcess({ payload }) {
   response = yield call(api.checkTask, procId);
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
-
+    const selectedTask = yield select(state => state.tasks.selectedTask);
+    if (selectedTask) {
+      yield put(setSelectedTaskId(response.data.taskId));
+    }
     yield put(
       completeTaskSuccess({
         taskName: newTaskName,
