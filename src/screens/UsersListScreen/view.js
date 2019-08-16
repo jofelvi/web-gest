@@ -5,10 +5,10 @@ import { Table, Avatar } from 'antd';
 
 const { Column, ColumnGroup } = Table;
 
-const UsersListScreen = ({ fetchUsers, users }) => {
+const UsersListScreen = ({ fetchUsers, users, history }) => {
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchUsers({ history });
+  }, []);
 
   return (
     <Table dataSource={users}>
@@ -32,7 +32,8 @@ const UsersListScreen = ({ fetchUsers, users }) => {
 
 UsersListScreen.propTypes = {
   fetchUsers: PropTypes.func.isRequired,
-  users: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  history: PropTypes.shape({}).isRequired,
+  users: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default UsersListScreen;

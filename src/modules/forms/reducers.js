@@ -60,6 +60,7 @@ export default handleActions(
       processStep: '',
       taskName: '',
       taskId: '',
+      taskVariables: null,
       procId: null,
     }),
     [setProcId]: (state, { payload }) => ({

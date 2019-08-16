@@ -13,6 +13,8 @@ import {
 
 import { getTaskFormSuccess, getTaskFormFailed } from '../forms/actions';
 
+import { checkLoginFailed } from '../auth/actions';
+
 import {
   FETCH_TASKS,
   FETCH_TASKS_COUNT,
@@ -21,14 +23,25 @@ import {
   FETCH_TASK_FORM,
 } from './actionTypes';
 
+import utils from '../../lib/utils';
+
 import * as api from './api';
 
-function* fetchTasks() {
+function* fetchTasks({ payload }) {
   try {
     const response = yield call(api.fetchTasks);
+
     yield put(fetchTasksSuccess({ tasks: response.data }));
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(fetchTaskListFailed());
+    }
+
     yield put(fetchTasksFailed());
   }
 }
@@ -37,12 +50,21 @@ export function* watchFetchTasks() {
   yield takeLatest(FETCH_TASKS, fetchTasks);
 }
 
-function* fetchTasksCount() {
+function* fetchTasksCount({ payload }) {
   try {
     const response = yield call(api.fetchTasksCount);
+
     yield put(fetchTasksCountSuccess({ tasksCount: response.data }));
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(fetchTaskListFailed());
+    }
+
     yield put(fetchTasksCountFailed());
   }
 }
@@ -54,9 +76,18 @@ export function* watchFetchTasksCount() {
 function* fetchTasksByUser({ payload }) {
   try {
     const response = yield call(api.fetchTasksByUser, payload.user);
+
     yield put(fetchTasksByUserSuccess({ tasksByUser: response.data }));
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(fetchTaskListFailed());
+    }
+
     yield put(fetchTasksByUserFailed());
   }
 }
@@ -68,9 +99,18 @@ export function* watchFetchTasksByUser() {
 function* fetchTaskForm({ payload }) {
   try {
     const response = yield call(api.fetchTaskForm, payload.taskId);
+
     yield put(getTaskFormSuccess({ taskName: response.data }));
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(fetchTaskListFailed());
+    }
+
     yield put(getTaskFormFailed());
   }
 }
@@ -92,6 +132,7 @@ function* fetchTaskList({ payload }) {
           sortBy,
           sortOrder
         );
+
         yield put(fetchTaskListSuccess(userResponse.data));
         break;
       case 'group':
@@ -100,10 +141,12 @@ function* fetchTaskList({ payload }) {
           sortBy,
           sortOrder
         );
+
         yield put(fetchTaskListSuccess(groupResponse.data));
         break;
       case 'all':
         const response = yield call(api.fetchTaskList, sortBy, sortOrder);
+
         yield put(fetchTaskListSuccess(response.data));
         break;
       default:
@@ -112,10 +155,19 @@ function* fetchTaskList({ payload }) {
           sortBy,
           sortOrder
         );
+
         yield put(fetchTaskListSuccess(defaultResponse.data));
     }
   } catch (e) {
     console.error(e);
+
+    if (e.message.includes('401')) {
+      utils.removeAuthToken();
+      yield put(checkLoginFailed());
+      payload.history.push('/login');
+      yield put(fetchTaskListFailed());
+    }
+
     yield put(fetchTaskListFailed());
   }
 }

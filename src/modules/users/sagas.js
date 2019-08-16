@@ -4,16 +4,21 @@ import {
   fetchUsersSuccess,
   fetchUsersFailed,
   fetchUserByIdFailed,
-  fetchUserByIdSuccess
+  fetchUserByIdSuccess,
 } from './actions';
 
 import { FETCH_USERS, FETCH_USER_BY_ID } from './actionTypes';
 
 import * as api from './api';
 
-function* fetchUsers() {
+function* fetchUsers({ payload }) {
   try {
     const response = yield call(api.fetchUsers);
+
+    if (response.status === 401) {
+      payload.history.push('/login');
+    }
+
     yield put(fetchUsersSuccess({ users: response.data.results }));
   } catch (e) {
     console.error(e);
@@ -28,6 +33,12 @@ export function* watchFetchUsers() {
 function* fetchUserById({ payload }) {
   try {
     const response = yield call(api.fetchUserById(payload.id));
+
+    if (response.status === 401) {
+      
+      payload.history.push('/login');
+    }
+
     yield put(fetchUserByIdSuccess({ user: response.data }));
   } catch (e) {
     console.error(e);
