@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Table, Row, Col, Button} from 'antd';
+import {Table, Row, Col, Button, Switch} from 'antd';
 import './styles.css';
 import { String} from 'typescript-string-operations';
 import * as dayjs from 'dayjs';
@@ -27,12 +27,31 @@ const columnsToShow = [
         title: 'Descripción',
         dataIndex: 'descripcion',
         key: 'descripcion',
-    }/*,
+    },
     {
         title: 'Tipo de Condición',
         dataIndex: 'tipocondicion',
         key: 'tipocondicion',
-    }*/,
+        filters: [
+            {
+                text:'Promoción',
+                value:'Promoción'
+            },
+            {
+                text:'Acuerdo Comercial',
+                value:'Acuerdo Comercial'
+            },
+            {
+                text:'Plan de Compra',
+                value:'Plan de Compra'
+            },
+            {
+                text:'Campaña',
+                value:'Campaña'
+            }
+        ],
+        onFilter: (value, record) => record.tipocondicion.indexOf(value) === 0,
+    },
     {
         title: 'Fecha de Inicio',
         dataIndex: 'fechainicio',
@@ -90,6 +109,7 @@ const columnsToShow = [
         onFilter: (value, record) => record.estado.indexOf(value) === 0,
         sorter: (a,b) => a.estado.length - b.estado.length,
         sortDirections: ['descend', 'ascend'],
+        render: (estado,deal) => estado === 'Borrador'? <a disabled={!deal.products}>Activar</a> : <Switch checked={estado === 'Activo'}></Switch>
     },
     {
         title: '',
@@ -99,40 +119,22 @@ const columnsToShow = [
     }
 ]
 const ViewCommercialDeals = ({
-    loadOffers,
-    loadAgreements,
-    loadPlans,
-    loadCampaigns,
     list,
-    listAgreements,
-    listOffers,
-    listPlans,
-    listCampaigns,
     type,
     showNewCommercialDeal,
-    newCommercialDealVisible,
     setCurrentCommercialDeal
 }) =>{
     useEffect(()=>{
-        if(list != null){ 
-            loadCampaigns(list);
-            loadOffers(list);
-            loadAgreements(list);
-            loadPlans(list);
-        }
-    },[list, loadPlans, loadCampaigns, loadOffers, loadAgreements]);
+    },[list]);
     return <div>
         <ButtonGroup className="commercial-deals-top-actions">
             <Button onClick={()=> {
                 showNewCommercialDeal(true);
-                setCurrentCommercialDeal({});
+                setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
             }}>Nuevo</Button>
             <Button>Eliminar</Button>
         </ButtonGroup>
-        {type === "Offers"? renderTable(listOffers): 
-         type === "Agreements"? renderTable(listAgreements): 
-         type === "Plans"? renderTable(listPlans): 
-         type === "Campaigns"? renderTable(listCampaigns): 
+        {type === "all"? renderTable(list):
          <div>sin resultados</div>}
          <FormCommercialDeal />
     </div>
@@ -146,34 +148,56 @@ const renderTable= (items)=>{
         columns={columnsToShow}
         expandedRowRender = {item => expandRow(item)}
         rowSelection={rowSelection}
-        rowKey="id"></Table>;
+        rowKey="id"
+        pagination={{position:'both'}}
+        locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
+        size="middle"></Table>;
 };
 const rowSelection = {
   };
+
+const columnsLines = [
+    {
+        title: 'Unidades Mínimas',
+        dataIndex: 'unidadesmin',
+        key: 'unidadesmin',
+        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+    },
+    {
+        title: 'Unidades Máximas',
+        dataIndex: 'unidadesmax',
+        key: 'unidadesmax',
+        sorter: (a,b) => a.unidadesmax - b.unidadesmax
+    },
+    {
+        title: 'Descuento',
+        dataIndex: 'descuesto',
+        key: 'descuesto',
+        sorter: (a,b) => a.descuesto - b.descuesto,
+        render: (descuesto) => String.Format('{0} %',descuesto)
+    },
+    {
+        title: 'Texto Equivalente',
+        dataIndex: 'textoequivalencia',
+        key: 'textoequivalencia'
+    },
+]
 const expandRow = (item) => {
-    return  <div className="commercial-deals-lines" key={String.Format('commercial-deals-lines-{0}',item.id)}>
-                <Col md={{span:24}}><h3 className="commercial-deals-lines-title">Lineas de Escalado</h3></Col>
-                {item.lineasescalado.map((line,i) => {
-                    return  <Row gutter={6} className="commercial-deals-lines-row" key={String.Format('commercial-deals-lines-{0}-line-{1}',item.id,i)}>
-                                <Col md={{span:6}}><label>Unidades Mínimas: </label>{line.unidadesmin}</Col>
-                                <Col md={{span:6}}><label>Unidades Máximas: </label>{line.unidadesmax}</Col>
-                                <Col md={{span:6}}><label>Descuento: </label>{line.descuesto}</Col>
-                                <Col md={{span:6}}><label>Texto Equivalente: </label>{line.textoequivalencia}</Col>
-                            </Row>;
-                })}
-            </div>
+    return (
+        <Table 
+        className="commercial-deals-lines"
+        dataSource={item.lineasescalado}
+        columns={columnsLines}
+        size='small'
+        pagination={false}
+        rowKey='id'
+        >
+        </Table>
+    )
 };
 
 ViewCommercialDeals.propTypes = {
-    loadOffers: PropTypes.func.isRequired,
-    loadAgreements: PropTypes.func.isRequired,
-    loadPlans: PropTypes.func.isRequired,
-    loadCampaigns: PropTypes.func.isRequired,
     list: PropTypes.arrayOf(PropTypes.shape({})),
-    listAgreements: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    listOffers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    listPlans: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    listCampaigns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     type: PropTypes.string.isRequired,
     showNewCommercialDeal: PropTypes.func.isRequired,
     newCommercialDealVisible: PropTypes.bool,

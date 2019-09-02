@@ -12,40 +12,11 @@ const CommercialDealsScreen = ({
     useEffect(()=>{
         loadCommercialDeals();
     }, [loadCommercialDeals]);
-    return  <Tabs defaultActiveKey="0" tabPosition="left">
-                <TabPane 
-                    tab="Promociones" 
-                    key="0">
-                    <ViewCommercialDeals 
-                        list={list}
-                        type="Offers" 
-                        key="Promociones"></ViewCommercialDeals>
-                </TabPane>
-                <TabPane 
-                    tab="Acuerdos Comerciales" 
-                    key="1">
-                    <ViewCommercialDeals 
-                        list={list} 
-                        type="Agreements"
-                        key="Acuerdos"></ViewCommercialDeals>
-                </TabPane>
-                <TabPane 
-                    tab="Planes de Compra" 
-                    key="2">
-                    <ViewCommercialDeals 
-                        list={list} 
-                        type="Plans" 
-                        key="Planes"></ViewCommercialDeals>
-                </TabPane>
-                <TabPane 
-                    tab="Campañas" 
-                    key="3">
-                    <ViewCommercialDeals 
-                        list={list} 
-                        type="Campaigns"
-                        key="Campanias"></ViewCommercialDeals>
-                </TabPane>
-            </Tabs>;
+    return  <ViewCommercialDeals 
+                list={list} 
+                type="all"
+                key="all">
+            </ViewCommercialDeals>;
 };
 
 CommercialDealsScreen.propTypes = {

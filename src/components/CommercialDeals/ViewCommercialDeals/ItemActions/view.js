@@ -6,9 +6,7 @@ const menu = (cmp) => <Menu>
     <Menu.Item key="1" onClick={() => {
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
-    }} disabled={cmp.deal.estado != 'Borrador'}>Editar</Menu.Item>
-    <Menu.Item key="2">Ver Productos</Menu.Item>
-    <Menu.Item key="3" disabled={cmp.deal.estado != 'Borrador'}>Agregar productos</Menu.Item>
+    }}>Editar</Menu.Item>
 </Menu>;
 
 const ItemActions = ({

@@ -26,3 +26,16 @@
     border:0px;
     background-color: transparent;
 }
+.commercial-deals-lines{
+    margin-top:10px!important;
+    margin-bottom: 10px!important;
+}
+.commercial-deals-lines .ant-table-thead > tr > th{
+    background-color: transparent!important;
+    color:rgba(7, 87, 161, 0.767);
+    font-weight: bold;
+}
+.commercial-deals-lines td,
+.commercial-deals-lines th{
+    text-align: center!important;
+}
