@@ -9,6 +9,8 @@ import {
   fetchTasksByUserFailed,
   fetchTaskListSuccess,
   fetchTaskListFailed,
+  fetchTaskSuccess,
+  fetchTaskFailed
 } from './actions';
 
 import { getTaskFormSuccess, getTaskFormFailed } from '../forms/actions';
@@ -21,6 +23,7 @@ import {
   FETCH_TASKS_BY_USER,
   FETCH_TASK_LIST,
   FETCH_TASK_FORM,
+  FETCH_TASK
 } from './actionTypes';
 
 import utils from '../../lib/utils';
@@ -48,6 +51,22 @@ function* fetchTasks({ payload }) {
 
 export function* watchFetchTasks() {
   yield takeLatest(FETCH_TASKS, fetchTasks);
+}
+
+function* fetchTask({ payload }) {
+  try {
+    const response = yield call(api.fetchTask, payload);
+
+    yield put(fetchTaskSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+
+    yield put(fetchTaskFailed());
+  }
+}
+
+export function* watchFetchTask() {
+  yield takeLatest(FETCH_TASK, fetchTask);
 }
 
 function* fetchTasksCount({ payload }) {

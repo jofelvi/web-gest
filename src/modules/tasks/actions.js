@@ -4,6 +4,9 @@ import {
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
   FETCH_TASKS_FAILED,
+  FETCH_TASK,
+  FETCH_TASK_SUCCESS,
+  FETCH_TASK_FAILED,
   FETCH_TASKS_COUNT,
   FETCH_TASKS_COUNT_SUCCESS,
   FETCH_TASKS_COUNT_FAILED,
@@ -17,11 +20,14 @@ import {
   SET_SELECTED_TASK,
   SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
-  CLEAN_SELECTED_TASK,
+  CLEAN_SELECTED_TASK
 } from './actionTypes';
 
 export const {
   fetchTasks,
+  fetchTask,
+  fetchTaskSuccess,
+  fetchTaskFailed,
   fetchTasksSuccess,
   fetchTasksFailed,
   fetchTasksCount,
@@ -37,11 +43,14 @@ export const {
   setSelectedTask,
   setSelectedTaskId,
   setTaskListFilter,
-  cleanSelectedTask,
+  cleanSelectedTask
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
   FETCH_TASKS_FAILED,
+  FETCH_TASK,
+  FETCH_TASK_SUCCESS,
+  FETCH_TASK_FAILED,
   FETCH_TASKS_COUNT,
   FETCH_TASKS_COUNT_SUCCESS,
   FETCH_TASKS_COUNT_FAILED,

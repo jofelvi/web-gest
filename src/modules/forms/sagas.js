@@ -15,6 +15,9 @@ import {
   getTaskFormFailed,
   setProcId,
   continueProcessFailed,
+  setProcess,
+  getTaskInfoSuccess,
+  getTaskInfoFailed
 } from './actions';
 
 import { cleanSelectedTask, setSelectedTaskId } from '../tasks/actions';
@@ -27,6 +30,7 @@ import {
   COMPLETE_TASK,
   GET_TASK_VARIABLES,
   GET_TASK_FORM,
+  GET_TASK_INFO
 } from './actionTypes';
 
 import * as api from './api';
@@ -44,7 +48,7 @@ function* startProcessSaga({ payload }) {
         startProcessSuccess({
           key: payload.key,
           taskName: response.data,
-          process: payload.key,
+          process: payload.key
         })
       );
     } else {
@@ -60,7 +64,7 @@ function* startProcessSaga({ payload }) {
       login({
         values: { user, password },
         nextAction: startProcess,
-        nextActionPayload: payload,
+        nextActionPayload: payload
       })
     );
   }
@@ -89,7 +93,7 @@ function* continueProcess({ payload }) {
       yield put(
         continueProcessSuccess({
           taskName: newTaskName,
-          taskId: response.data.taskId,
+          taskId: response.data.taskId
         })
       );
       payload.history.push(`/process/${processKey}/${response.data.formKey}`);
@@ -153,7 +157,7 @@ function* completeTaskProcess({ payload }) {
     yield put(
       completeTaskSuccess({
         taskName: newTaskName,
-        taskId: response.data.taskId,
+        taskId: response.data.taskId
       })
     );
     payload.history.push(`/task/${response.data.taskId}/process/${procId}`);
@@ -193,7 +197,7 @@ function* getTaskForm({ payload }) {
       login({
         values: { user, password },
         nextAction: fetchTaskForm,
-        nextActionPayload: payload,
+        nextActionPayload: payload
       })
     );
   }
