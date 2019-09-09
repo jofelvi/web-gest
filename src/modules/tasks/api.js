@@ -2,6 +2,8 @@ import { get } from '../../lib/restClient';
 
 export const fetchTasks = () => get(`/task`);
 
+export const fetchTask = id => get(`/task/${id}`);
+
 export const fetchTasksCount = () => get('/task/count');
 
 export const fetchTasksByUser = user => get(`/task?assignee=${user}`);
