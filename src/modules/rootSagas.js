@@ -25,6 +25,19 @@ import {
   watchGetTaskForm
 } from './forms/sagas';
 
+import {
+  watchloadCommercialDeals,
+  watchAgreements,
+  watchloadOffers,
+  watchloadCampaigns,
+  watchloadPlans
+} from './commercialDeals/sagas'
+
+import{
+  watchloadMenuItems,
+  watchloadChildItems
+} from './menu/sagas'
+
 export default function* rootSaga() {
   yield all([
     watchFetchUsers(),
@@ -42,6 +55,13 @@ export default function* rootSaga() {
     watchGetTaskForm(),
     watchGetTaskVariables(),
     watchContinueProcess(),
-    watchCompleteTaskProcess()
+    watchCompleteTaskProcess(),
+    watchloadCommercialDeals(),
+    watchAgreements(),
+    watchloadOffers(),
+    watchloadCampaigns(),
+    watchloadPlans(),
+    watchloadMenuItems(),
+    watchloadChildItems()
   ]);
 }

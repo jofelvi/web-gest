@@ -14,6 +14,7 @@ import TaskListScreen from './screens/TaskListScreen';
 import SignupScreen from './screens/SignupScreen';
 import CompletedForm from './screens/Forms/completedForm';
 import TaskFormScreen from './screens/TaskFormScreen';
+import CommercialDealsScreen from './screens/CommercialDealsScreen';
 
 const { capitalizeWord } = utils;
 
@@ -68,6 +69,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path={`/task/completed`} exact component={CompletedForm} />
       <Route path='/login' exact component={LoginScreen} />
       <Route path='/process/signup' exact component={SignupScreen} />
+      <PrivateRoute path="/management/commercial-deals" exact component={CommercialDealsScreen}/>
     </Switch>
   );
 };

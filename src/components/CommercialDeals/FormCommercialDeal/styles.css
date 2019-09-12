@@ -1,0 +1,14 @@
+
+.commercial-deals-modal-form{
+    min-width: 60%;
+}
+@media (max-width: 992px) {
+    .commercial-deals-modal-form{
+        min-width: 90%;
+    }
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+    .commercial-deals-modal-form{
+        min-width: 70%;
+    }
+}

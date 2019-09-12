@@ -1,0 +1,41 @@
+.commercial-deals-top-actions > button{
+    margin-right: 10px;
+    background-color:rgba(7, 87, 161, 0.767);
+    color: rgba(255,255,255,1);
+}
+.commercial-deals-table{
+    margin-top: 20px;
+}
+.commercial-deals-table .ant-table-thead > tr > th{
+    background-color: rgba(7, 87, 161, 0.767)!important;
+    color:white;
+    font-weight: bold;
+}
+.commercial-deals-table .ant-table-tbody > tr:nth-child(2n){
+    background-color: rgba(214, 228, 241, 0.5)!important;
+}
+.commercial-deals-table .commercial-deals-lines-row {
+    border-bottom: 1px solid rgba(7, 87, 161, 0.2);
+    padding: 10px 15px;
+}
+.commercial-deals-table .commercial-deals-lines-title{
+    margin-bottom: 20px;
+}
+.commercial-deals-table .ant-btn,
+.commercial-deals-table .ant-btn:hover{
+    border:0px;
+    background-color: transparent;
+}
+.commercial-deals-lines{
+    margin-top:10px!important;
+    margin-bottom: 10px!important;
+}
+.commercial-deals-lines .ant-table-thead > tr > th{
+    background-color: transparent!important;
+    color:rgba(7, 87, 161, 0.767);
+    font-weight: bold;
+}
+.commercial-deals-lines td,
+.commercial-deals-lines th{
+    text-align: center!important;
+}
