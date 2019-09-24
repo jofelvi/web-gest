@@ -2,26 +2,30 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 
 import { 
   LOAD_COMMERCIAL_DEALS,
-  LOAD_OFFERS,
-  LOAD_AGREEMENTS,
-  LOAD_PLANS,
-  LOAD_CAMPAIGNS
+  CREATE_COMMERCIAL_DEAL,
+  LOAD_FAMILIES,
+  LOAD_SUB_FAMILIES,
+  LOAD_PRODUCTS,
+  LOAD_USERS
 } from './actionTypes';
 import {
   loadCommercialDealsSuccess,
   loadCommercialDealsFailed,
-  loadOffersSuccess,
-  loadOffersFailed,
-  loadAgreementsSuccess,
-  loadAgreementsFailed,
-  loadPlansSuccess,
-  loadPlansFailed,
-  loadCampaignsSuccess,
-  loadCampaignsFailed
+  createCommercialDealFailed,
+  createCommercialDealSuccess,
+  loadFamiliesSuccess,
+  loadFamiliesFailed,
+  loadSubFamiliesSuccess,
+  loadSubFamiliesFailed,
+  loadProductsFailed,
+  loadProductsSuccess,
+  loadUsersFailed,
+  loadUsersSuccess
 } from './actions';
 
 import * as api from './api';
 
+// commercial deals
 function* loadCommercialDeals() {
   try {
     const response = yield call(api.getCommercialDeals);
@@ -36,58 +40,71 @@ export function* watchloadCommercialDeals() {
   yield takeLatest(LOAD_COMMERCIAL_DEALS, loadCommercialDeals);
 }
 
-function* loadOffers({payload}) {
+function* createCommercialDeal({payload}) {
   try {
-    const response = yield call(api.getOffers,payload);
-    yield put(loadOffersSuccess({ offers: response.data }));
+    const response = yield call(api.createCommercialDeal,payload);
+    yield put(createCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
     console.error(e);
-    yield put(loadOffersFailed);
+    yield put(createCommercialDealFailed);
   }
 }
 
-export function* watchloadOffers() {
-  yield takeLatest(LOAD_OFFERS, loadOffers);
+export function* watchCreateCommercialDeal() {
+  yield takeLatest(CREATE_COMMERCIAL_DEAL, createCommercialDeal);
 }
 
-function* loadAgreements({payload}) {
+//Lists
+
+//families
+function* loadFamilies() {
   try {
-    const response = yield call(api.getAgreements,payload);
-    yield put(loadAgreementsSuccess({ agreements: response.data }));
+    const response = yield call(api.getFamlies);
+    yield put(loadFamiliesSuccess({ families: response.data }));
   } catch (e) {
     console.error(e);
-    yield put(loadAgreementsFailed);
+    yield put(loadFamiliesFailed());
   }
 }
-
-export function* watchAgreements() {
-  yield takeLatest(LOAD_AGREEMENTS, loadAgreements);
+export function* watchloadFamilies() {
+  yield takeLatest(LOAD_FAMILIES, loadFamilies);
 }
-function* loadPlans({payload}) {
+//subfamilies
+function* loadSubFamilies() {
   try {
-    const response = yield call(api.getPlans,payload);
-    yield put(loadPlansSuccess({ plans: response.data }));
+    const response = yield call(api.getSubFamilies);
+    yield put(loadSubFamiliesSuccess({ subFamilies: response.data }));
   } catch (e) {
     console.error(e);
-    yield put(loadPlansFailed);
+    yield put(loadSubFamiliesFailed());
   }
 }
-
-export function* watchloadPlans() {
-  yield takeLatest(LOAD_PLANS, loadPlans);
+export function* watchloadSubFamilies() {
+  yield takeLatest(LOAD_SUB_FAMILIES, loadSubFamilies);
 }
-function* loadCampaigns({payload}) {
+//products
+function* loadProducts() {
   try {
-    const response = yield call(api.getCampaigns,payload);
-    yield put(loadCampaignsSuccess({ campaigns: response.data }));
+    const response = yield call(api.getProducts);
+    yield put(loadProductsSuccess({ products: response.data }));
   } catch (e) {
     console.error(e);
-    yield put(loadCampaignsFailed);
+    yield put(loadProductsFailed());
   }
 }
-
-export function* watchloadCampaigns() {
-  yield takeLatest(LOAD_CAMPAIGNS, loadCampaigns);
+export function* watchloadProducts() {
+  yield takeLatest(LOAD_PRODUCTS, loadProducts);
 }
-
-
+//users
+function* loadUsers() {
+  try {
+    const response = yield call(api.getUsers);
+    yield put(loadUsersSuccess({ users: response.data }));
+  } catch (e) {
+    console.error(e);
+    yield put(loadUsersFailed());
+  }
+}
+export function* watchloadUsers() {
+  yield takeLatest(LOAD_USERS, loadUsers);
+}

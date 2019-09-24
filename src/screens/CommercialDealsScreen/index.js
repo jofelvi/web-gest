@@ -6,7 +6,8 @@ import View from './view';
 
 export default connect(
   state => ({
-    list: state.commercialDeals.list
+    list: state.commercialDeals.list,
+    token: state.auth.token
   }),
   { loadCommercialDeals }
 )(View);

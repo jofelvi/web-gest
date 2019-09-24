@@ -16,7 +16,7 @@ import Routes from './routes';
 import TopBar from './components/Navigation/TopBar';
 import LeftMenu from './components/Navigation/LeftMenu';
 
-const { Content } = Layout;
+const { Content, Header, Sider } = Layout;
 
 const App = ({
   location: { pathname },
@@ -43,26 +43,17 @@ const App = ({
 
   return (
     <Layout>
-      {/*<Header className='header' />*/}
-      <TopBar></TopBar>
-      <LeftMenu></LeftMenu>
-      <Col md={{span:wContent, offset:wMenu}}>
-        <Layout>
-          {/*pathname !== '/login' && pathname !== '/signup' ? <Sider /> : null*/}
-          <Layout>
-            <Content
-              style={{
-                background: '#fff',
-                padding: 24,
-                margin: 0,
-                minHeight: 280,
-              }}
-            >
-              <Routes />
-            </Content>
-          </Layout>
-        </Layout>
-        </Col>
+      <Header className='header'>
+        <TopBar></TopBar>
+      </Header>
+      <Layout>
+        <Sider breakpoint="lg" width="300">
+          <LeftMenu></LeftMenu>
+        </Sider>
+        <Content className='principal-content'>
+          <Routes />
+        </Content>
+      </Layout>
     </Layout>
   );
 };

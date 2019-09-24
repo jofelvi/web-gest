@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 import View from './view';
 
 import { 
-  loadOffers,
-  loadAgreements,
-  loadPlans,
-  loadCampaigns,
   showNewCommercialDeal,
-  setCurrentCommercialDeal
+  setCurrentCommercialDeal,
+  loadFamilies,
+  loadSubFamilies,
+  loadProducts,
+  loadUsers
 } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -17,12 +17,19 @@ export default connect(
     listOffers: state.commercialDeals.listOffers,
     listPlans: state.commercialDeals.listPlans,
     listCampaigns: state.commercialDeals.listCampaigns,
-    newCommercialDealVisible:state.commercialDeals.newCommercialDealVisible
+    newCommercialDealVisible:state.commercialDeals.newCommercialDealVisible,
+    families: state.commercialDeals.families,
+    subFamilies: state.commercialDeals.subFamilies,
+    products: state.commercialDeals.products,
+    users: state.commercialDeals.users,
+    token: state.auth.token
   }),
-  { loadOffers,
-    loadAgreements,
-    loadPlans,
-    loadCampaigns,
+  { 
     showNewCommercialDeal,
-    setCurrentCommercialDeal }
+    setCurrentCommercialDeal,
+    loadFamilies,
+    loadSubFamilies,
+    loadProducts,
+    loadUsers
+  }
 )(View);

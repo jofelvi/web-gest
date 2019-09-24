@@ -17,9 +17,9 @@ const TopBar = ({
                 <img src={logo} alt="logo sitio domtar indas"/>
     </div>*/}
             {status === STATUS.LOGGED ? 
-            <Col className="user-container" md={{span:3, offset:21}}>
+            <Col className="user-container" xs={{span:8, offset:16}} md={{span:6, offset:18}} sm={{span:6, offset:18}}>
                 <Row gutter={16}>
-                    <Col md={{span:5}}>
+                    <Col md={{span:5}} xs={{span:8}}>
                         <img src={usr} alt="imagen de usuario"/>
                     </Col>
                     <Col md={{span:19}} className="user-desc-container">

@@ -2,9 +2,9 @@
     margin-right: 10px;
     background-color:rgba(7, 87, 161, 0.767);
     color: rgba(255,255,255,1);
-}
-.commercial-deals-table{
-    margin-top: 20px;
+    position: absolute!important;
+    margin-top: 15px;
+    z-index: 1;
 }
 .commercial-deals-table .ant-table-thead > tr > th{
     background-color: rgba(7, 87, 161, 0.767)!important;

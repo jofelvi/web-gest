@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Form, Input, Button, Divider, Col, Row } from 'antd';
 import FormDefinition from './FormDefinition';
-import './styles.css'
-import { showNewCommercialDeal } from '../../../modules/commercialDeals/actions';
-import CommercialDealProducts from './CommercialDealProducts';
+import './styles.css';
 
 var FormComponent = () =>{
     return <div></div>;
@@ -25,6 +23,8 @@ const FormCommercialDeal = ({
     },[currentCommercialDeal,newCommercialDealVisible,editCommercialDealVisible])
     return ( 
             <Modal 
+                maskClosable={false}
+                destroyOnClose={false}
                 className="commercial-deals-modal-form"
                 centered
                 footer={<div></div>}
@@ -38,8 +38,6 @@ const FormCommercialDeal = ({
                     showNewCommercialDeal(false);
                 }}>
                 <FormComponent></FormComponent>
-                <Divider />
-                <CommercialDealProducts></CommercialDealProducts>
             </Modal>);
 };
 

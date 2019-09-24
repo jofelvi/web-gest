@@ -7,11 +7,13 @@ const {TabPane} = Tabs;
 
 const CommercialDealsScreen = ({
     loadCommercialDeals,
-    list
+    list,
+    token
 }) =>{
     useEffect(()=>{
         loadCommercialDeals();
-    }, [loadCommercialDeals]);
+        console.log(list);
+    }, [loadCommercialDeals,token]);
     return  <ViewCommercialDeals 
                 list={list} 
                 type="all"
@@ -22,6 +24,7 @@ const CommercialDealsScreen = ({
 CommercialDealsScreen.propTypes = {
     loadCommercialDeals: PropTypes.func.isRequired,
     list: PropTypes.arrayOf(PropTypes.shape({})),
+    token: PropTypes.string
 }
 
 export default CommercialDealsScreen;

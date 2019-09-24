@@ -27,10 +27,11 @@ import {
 
 import {
   watchloadCommercialDeals,
-  watchAgreements,
-  watchloadOffers,
-  watchloadCampaigns,
-  watchloadPlans
+  watchCreateCommercialDeal,
+  watchloadFamilies,
+  watchloadSubFamilies,
+  watchloadProducts,
+  watchloadUsers
 } from './commercialDeals/sagas'
 
 import{
@@ -57,11 +58,12 @@ export default function* rootSaga() {
     watchContinueProcess(),
     watchCompleteTaskProcess(),
     watchloadCommercialDeals(),
-    watchAgreements(),
-    watchloadOffers(),
-    watchloadCampaigns(),
-    watchloadPlans(),
+    watchloadFamilies(),
+    watchloadSubFamilies(),
+    watchloadProducts(),
+    watchloadUsers(),
     watchloadMenuItems(),
-    watchloadChildItems()
+    watchloadChildItems(),
+    watchCreateCommercialDeal()
   ]);
 }

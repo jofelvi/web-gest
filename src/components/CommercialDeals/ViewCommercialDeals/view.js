@@ -10,12 +10,13 @@ import ItemActions from './ItemActions';
 import FormCommercialDeal from '../FormCommercialDeal';
 dayjs.extend(customParseFormat)
 
+//properties
 const columnsToShow = [
     {
         title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        sorter: (a,b) => a.id - b.id,
+        dataIndex: 'idcondcomercial',
+        key: 'idcondcomercial',
+        sorter: (a,b) => a.idcondcomercial - b.idcondcomercial,
         sortDirections: ['descend', 'ascend'],
     },
     {
@@ -30,8 +31,8 @@ const columnsToShow = [
     },
     {
         title: 'Tipo de Condición',
-        dataIndex: 'tipocondicion',
-        key: 'tipocondicion',
+        dataIndex: 'tipo',
+        key: 'tipo',
         filters: [
             {
                 text:'Promoción',
@@ -50,7 +51,7 @@ const columnsToShow = [
                 value:'Campaña'
             }
         ],
-        onFilter: (value, record) => record.tipocondicion.indexOf(value) === 0,
+        onFilter: (value, record) => record.tipo.indexOf(value) === 0,
     },
     {
         title: 'Fecha de Inicio',
@@ -66,6 +67,7 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
     },
     {
         title: 'Fecha Fin',
@@ -81,16 +83,29 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
     },
     {
         title: 'Código Campaña',
-        dataIndex: 'codigocampania',
-        key: 'codigocampania',
+        dataIndex: 'codcupon',
+        key: 'codcupon',
+    },
+    {
+        title: 'Margen',
+        dataIndex: 'margen',
+        key: 'margen',
+        render: (data) => String.Format('{0}%',data)
+    },
+    {
+        title: 'Surtido',
+        dataIndex: 'ind_surtido',
+        key: 'ind_surtido',
+        render: (data) => data ? 'SI': 'NO'
     },
     {
         title: 'Estado',
         dataIndex: 'estado',
-        key: 'estado',
+        key: 'estado_disp',
         filters: [
             {
                 text:'Borrador',
@@ -108,8 +123,13 @@ const columnsToShow = [
         filterMultiple: false,
         onFilter: (value, record) => record.estado.indexOf(value) === 0,
         sorter: (a,b) => a.estado.length - b.estado.length,
-        sortDirections: ['descend', 'ascend'],
-        render: (estado,deal) => estado === 'Borrador'? <a disabled={!deal.products}>Activar</a> : <Switch checked={estado === 'Activo'}></Switch>
+        sortDirections: ['descend', 'ascend']
+    },
+    {
+        title: '',
+        dataIndex: 'estado',
+        key: 'estado',
+        render: (estado,deal) => estado === 'Borrador'? <a onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</a> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>
     },
     {
         title: '',
@@ -118,90 +138,109 @@ const columnsToShow = [
         render: (deal) => <ItemActions key={String.Format('commercial-deals-{0}-actions',deal.id)} deal={deal}/>
     }
 ]
-const ViewCommercialDeals = ({
-    list,
-    type,
-    showNewCommercialDeal,
-    setCurrentCommercialDeal
-}) =>{
-    useEffect(()=>{
-    },[list]);
-    return <div>
-        <ButtonGroup className="commercial-deals-top-actions">
-            <Button onClick={()=> {
-                showNewCommercialDeal(true);
-                setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
-            }}>Nuevo</Button>
-            <Button>Eliminar</Button>
-        </ButtonGroup>
-        {type === "all"? renderTable(list):
-         <div>sin resultados</div>}
-         <FormCommercialDeal />
-    </div>
-};
- 
+const columnsLines = [
+    {
+        title: 'Unidades Mínimas',
+        dataIndex: 'udsminimas',
+        key: 'udsminimas',
+        sorter: (a,b) => a.udsminimas - b.udsminimas
+    },
+    {
+        title: 'Unidades Máximas',
+        dataIndex: 'udsmaximas',
+        key: 'udsmaximas',
+        sorter: (a,b) => a.udsmaximas - b.udsmaximas
+    },
+    {
+        title: 'Descuento',
+        dataIndex: 'descuento',
+        key: 'descuento',
+        sorter: (a,b) => a.descuento - b.descuento,
+        render: (descuento) => String.Format('{0} %',descuento)
+    },
+    {
+        title: 'Texto Equivalente',
+        dataIndex: 'txtdescuento',
+        key: 'txtdescuento'
+    },
+]
 
+//methods
+const changeState = (ev) =>
+{
+    console.log(ev);
+}
 const renderTable= (items)=>{
     return <Table 
         className="commercial-deals-table" 
         dataSource={items} 
         columns={columnsToShow}
         expandedRowRender = {item => expandRow(item)}
-        rowSelection={rowSelection}
-        rowKey="id"
+        rowKey="idcondcomercial"
         pagination={{position:'both'}}
         locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
         size="middle"></Table>;
 };
-const rowSelection = {
-  };
-
-const columnsLines = [
-    {
-        title: 'Unidades Mínimas',
-        dataIndex: 'unidadesmin',
-        key: 'unidadesmin',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
-    },
-    {
-        title: 'Unidades Máximas',
-        dataIndex: 'unidadesmax',
-        key: 'unidadesmax',
-        sorter: (a,b) => a.unidadesmax - b.unidadesmax
-    },
-    {
-        title: 'Descuento',
-        dataIndex: 'descuesto',
-        key: 'descuesto',
-        sorter: (a,b) => a.descuesto - b.descuesto,
-        render: (descuesto) => String.Format('{0} %',descuesto)
-    },
-    {
-        title: 'Texto Equivalente',
-        dataIndex: 'textoequivalencia',
-        key: 'textoequivalencia'
-    },
-]
 const expandRow = (item) => {
     return (
         <Table 
         className="commercial-deals-lines"
-        dataSource={item.lineasescalado}
+        dataSource={item.escalados}
         columns={columnsLines}
         size='small'
         pagination={false}
-        rowKey='id'
+        rowKey='idescalado'
         >
         </Table>
     )
 };
 
+//components
+const ViewCommercialDeals = ({
+    list,
+    type,
+    loadFamilies,
+    loadSubFamilies,
+    loadProducts,
+    loadUsers,
+    showNewCommercialDeal,
+    setCurrentCommercialDeal,
+    token
+}) =>{
+    useEffect(()=>{
+        loadFamilies(); 
+        loadSubFamilies();
+        loadProducts();
+        loadUsers()    ;  
+    },[list, token,loadFamilies]);
+    return <div>
+        <ButtonGroup className="commercial-deals-top-actions">
+            <Button onClick={()=> {
+                showNewCommercialDeal(true);
+                setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
+            }}>Nuevo</Button>
+        </ButtonGroup>
+        {type === "all"? renderTable(list):
+         <div>sin resultados</div>}
+         <FormCommercialDeal />
+    </div>
+};
+
+//defs
 ViewCommercialDeals.propTypes = {
     list: PropTypes.arrayOf(PropTypes.shape({})),
+    families:PropTypes.arrayOf(PropTypes.shape({})),
+    subFamilies:PropTypes.arrayOf(PropTypes.shape({})),
+    products:PropTypes.arrayOf(PropTypes.shape({})),
+    users:PropTypes.arrayOf(PropTypes.shape({})),
     type: PropTypes.string.isRequired,
     showNewCommercialDeal: PropTypes.func.isRequired,
     newCommercialDealVisible: PropTypes.bool,
-    setCurrentCommercialDeal: PropTypes.func
+    setCurrentCommercialDeal: PropTypes.func,
+    loadFamilies:PropTypes.func,
+    loadSubFamilies:PropTypes.func,
+    loadProducts:PropTypes.func,
+    loadUsers:PropTypes.func
 }
 
 export default ViewCommercialDeals;

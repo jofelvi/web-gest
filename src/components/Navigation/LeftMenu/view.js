@@ -17,49 +17,40 @@ const LeftMenu = ({
     useEffect(()=>{
         loadMenuItems();
     },[loadMenuItems,itemsMenu, collapsed])
-    return  <Col md={{span:wMenu}} className="menu-container">
-                <Row>
-                    <a className="menu-toggle">
-                        <Icon type={collapsed ? 'double-right' : 'double-left'}
-                            onClick={()=>{
-                                setCollapse(!collapsed);
-                            }} />
-                    </a>
-                    <Menu
-                        mode="inline"
-                        theme="dark"
-                        inlineCollapsed={collapsed}
-                        >
-                        {itemsMenu.map(item => 
-                        {
-                            if(item.children){
-                                return  <SubMenu
-                                            key={item.id}
-                                            title={
-                                                <span>
-                                                <Icon type="appstore" />
-                                                <span>{item.label}</span>
-                                                </span>
-                                            }
-                                            >
-                                            {item.children.map(child=>
-                                                <Menu.Item key={child.id} onClick={()=>redirect(child,history)}>
-                                                    <Icon type="link" />
-                                                    <span>{child.label}</span>
-                                                </Menu.Item>
-                                            )}
-                                        </SubMenu>;
-                            } else {
-                                return  <Menu.Item key={item.id}>
+    return  (
+            <Menu
+                mode="inline"
+                theme="dark"
+                inlineCollapsed={collapsed}
+                >
+                {itemsMenu.map(item => 
+                {
+                    if(item.children){
+                        return  <SubMenu
+                                    key={item.id}
+                                    title={
+                                        <span>
+                                        <Icon type="appstore" />
+                                        <span>{item.label}</span>
+                                        </span>
+                                    }
+                                    >
+                                    {item.children.map(child=>
+                                        <Menu.Item key={child.id} onClick={()=>redirect(child,history)}>
                                             <Icon type="link" />
-                                            <span>{item.label}</span>
-                                        </Menu.Item>;
-                            }
-                        }
-                        )}
-                    </Menu>
-                </Row>
-            </Col>
+                                            <span>{child.label}</span>
+                                        </Menu.Item>
+                                    )}
+                                </SubMenu>;
+                    } else {
+                        return  <Menu.Item key={item.id}>
+                                    <Icon type="link" />
+                                    <span>{item.label}</span>
+                                </Menu.Item>;
+                    }
+                }
+                )}
+            </Menu>)
 };
 
 const redirect = (item,_history) => {

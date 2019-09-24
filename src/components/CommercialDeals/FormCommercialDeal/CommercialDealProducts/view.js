@@ -2,18 +2,25 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {Table, Switch} from 'antd';
 
+//properties
 var columnsProducts=[
     {
         title: 'Familia',
-        dataIndex: 'familia',
-        key: 'familia',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        dataIndex: 'nombrefamilia',
+        key: 'nombrefamilia',
+        sorter: (a,b) => a.unidadesmin - b.unidadesmin,
+        filterMultiple: true,
+        onFilter: (value, record) => {
+            return record.idfamilia == value
+        }
     },
     {
         title: 'Sub Familia',
-        dataIndex: 'subfamilia',
-        key: 'subfamilia',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        dataIndex: 'nombresubfamilia',
+        key: 'nombresubfamilia',
+        sorter: (a,b) => a.unidadesmin - b.unidadesmin,
+        filterMultiple: true,
+        onFilter: (value, record) => {return record.nombresubfamilia == value}
     },
     {
         title: 'Nombre',
@@ -28,16 +35,16 @@ var columnsProducts=[
         sorter: (a,b) => a.unidadesmin - b.unidadesmin
     },
     {
-        title: 'Estado',
+        title: 'Asociado',
         dataIndex: 'indactivo',
         key: 'indactivo',
         filters: [
             {
-                text:'Activo',
+                text:'SI',
                 value:true
             },
             {
-                text:"Inactivo",
+                text:"NO",
                 value:false
             }
         ],
@@ -47,17 +54,92 @@ var columnsProducts=[
     }
 ];
 
+//methods
+const getFilters = (families, subFamilies, products)=>{
+    columnsProducts.map((el)=>{
+        if(el.title == "Familia"){
+            el.filters = families.map((family)=>{
+                return {
+                    text:family.nombre,
+                    value:family.idfamilia
+                }
+            });
+        } else if(el.dataIndex == "nombresubfamilia"){
+            el.filters = subFamilies.map((subFamily)=>{
+                return {
+                    text:subFamily.nombre,
+                    value:subFamily.nombre
+                }
+            });
+        }
+        else if(el.dataIndex == "nombre"){
+            el.filters = products.map((product)=>{
+                return {
+                    text:product.nombre,
+                    value:product.nombre
+                }
+            });
+        }
+        return el;
+    });
+};
+const changeData = (filters,families, subFamilies, products, updateFilters)=>{
+    console.log(filters);
+    if(filters["nombrefamilia"] != null && filters["nombrefamilia"].length > 0){
+        getFilterFamilies(filters["nombrefamilia"], subFamilies, products, updateFilters);
+    } else if(filters["nombresubfamilia"] != null && filters["nombresubfamilia"].length > 0){
+        //getFilterSubFamilies(filters["nombresubfamilia"], subFamilies, products, updateFilters);
+    }
+    else {
+        getFilters(families, subFamilies, products); 
+    }
+};
+const getFilterFamilies = (families, subFamilies, products, updateProductsFilter)=>{
+    columnsProducts.map((el)=>{
+        if(el.dataIndex == "nombresubfamilia"){
+            const auxFilters = subFamilies.map((subFamily)=> {
+                if(families.indexOf(subFamily.idfamilia) != -1){
+                    return {
+                        text:subFamily.nombre,
+                        value:subFamily.nombre
+                    }
+                }
+            });
+            el.filters = auxFilters.filter((item)=> item != null && item != undefined); 
+        } else if(el.dataIndex == "nombre"){
+            const auxFilters = products.map((product)=> {
+                if(families.indexOf(product.idfamilia) != -1){
+                    return {
+                        text:product.nombre,
+                        value:product.nombre
+                    }
+                }
+            });
+            el.filters = auxFilters.filter((item)=> item != null && item != undefined);
+        }
+        return el;
+    });
+    updateProductsFilter(true);
+};
 
+//components
 const CommercialDealProducts = ({
-    currentCommercialDeal
+    currentCommercialDeal,
+    families,
+    subFamilies,
+    products,
+    updateProductsFilter,
+    updateFilter
 })=> {
     useEffect(()=>{
-    },[currentCommercialDeal]);
+        updateProductsFilter(false);
+    },[currentCommercialDeal,families, products,updateFilter]);
     return (
         <div>
             <Table 
                 className="commercial-deals-products"
-                dataSource={currentCommercialDeal.products}
+                dataSource={products}
+                onChange={(pagination, filters) => changeData(filters, families, subFamilies, products, updateProductsFilter)}
                 columns={columnsProducts}
                 size='small'
                 pagination={true}
@@ -66,8 +148,14 @@ const CommercialDealProducts = ({
             ></Table>
         </div>);
 };
+
+//defs
 CommercialDealProducts.propTypes = {
-    currentCommercialDeal: PropTypes.object 
+    currentCommercialDeal: PropTypes.object,
+    families:PropTypes.arrayOf(PropTypes.shape({})),
+    subFamilies:PropTypes.arrayOf(PropTypes.shape({})),
+    products:PropTypes.arrayOf(PropTypes.shape({})),
+    updateProductsFilter: PropTypes.func
 }
 
 export default CommercialDealProducts;

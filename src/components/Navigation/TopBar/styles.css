@@ -1,10 +1,13 @@
 .topbar{
-    height: 50px;
-    background-color: #001529;
+    height: 64px;
 }
 .topbar .user-container{
     max-width: 100%;
     color:rgba(255,255,255,1);
+}
+.topbar .user-desc-container{
+    line-height: 20px;
+    padding-top: 10px;
 }
 .topbar .user-container button{
     border:0px;

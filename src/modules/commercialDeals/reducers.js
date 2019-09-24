@@ -2,28 +2,31 @@ import { handleActions } from 'redux-actions';
 
 import {
   loadCommercialDealsSuccess,
-  loadOffersSuccess,
-  loadAgreementsSuccess,
-  loadPlansSuccess,
-  loadCampaignsSuccess,
+  loadFamiliesSuccess,
+  loadSubFamiliesSuccess,
+  loadProductsSuccess,
+  loadUsersSuccess,
+  createCommercialDealSuccess,
   showNewCommercialDeal,
   showEditCommercialDeal,
   showViewProductsCommercialDeal,
   showNewProductCommercialDeal,
-  setCurrentCommercialDeal
+  setCurrentCommercialDeal,
+  updateProductsFilter
 } from './actions';
 
 const defaultState = {
   list:[],
-  listAgreements:[],
-  listOffers:[],
-  listPlans:[],
-  listCampaigns:[],
+  families:[],
+  subFamilies: [],
+  products:[],
+  users:[],
   viewProductsCommercialDealVisible: false,
   newProductsCommercialDealVisible: false,
   editCommercialDealVisible: false,
   newCommercialDealVisible:false,
-  currentCommercialDeal: {}
+  currentCommercialDeal: {},
+  updateFilter: false
 };
 
 export default handleActions(
@@ -32,25 +35,21 @@ export default handleActions(
       ...state,
       list: payload.commercialDeals
     }),
-    [loadOffersSuccess]: (state,{ payload }) => ({
+    [loadFamiliesSuccess]: (state, { payload })=>({
       ...state,
-      list: payload.commercialDeals,
-      listOffers: payload.offers
+      families: payload.families
     }),
-    [loadAgreementsSuccess]: (state,{ payload }) => ({
+    [loadSubFamiliesSuccess]: (state, { payload })=>({
       ...state,
-      list: payload.commercialDeals,
-      listAgreements: payload.agreements
+      subFamilies: payload.subFamilies
     }),
-    [loadPlansSuccess]: (state,{ payload }) => ({
+    [loadProductsSuccess]: (state, { payload })=>({
       ...state,
-      list: payload.commercialDeals,
-      listPlans: payload.plans
+      products: payload.products
     }),
-    [loadCampaignsSuccess]: (state,{ payload }) => ({
+    [loadUsersSuccess]: (state, { payload })=>({
       ...state,
-      list: payload.commercialDeals,
-      listCampaigns: payload.campaigns
+      users: payload.users
     }),
     [showNewCommercialDeal]: (state, { payload}) => ({
       ...state,
@@ -71,7 +70,15 @@ export default handleActions(
     [setCurrentCommercialDeal]: (state, {payload}) => ({
       ...state,
       currentCommercialDeal: payload
-    })
+    }),
+    [createCommercialDealSuccess]: (state, { payload}) => ({
+      ...state,
+      deal: payload.deal
+    }),
+    [updateProductsFilter]:  (state, { payload}) => ({
+      ...state,
+      updateFilter: payload
+    }),
   },
   defaultState
 );
