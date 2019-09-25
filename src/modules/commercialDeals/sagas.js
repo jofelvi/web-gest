@@ -6,7 +6,10 @@ import {
   LOAD_FAMILIES,
   LOAD_SUB_FAMILIES,
   LOAD_PRODUCTS,
-  LOAD_USERS
+  LOAD_BRANDS,
+  LOAD_SUB_BRANDS,
+  LOAD_USERS,
+  LOAD_DEAL_TYPES
 } from './actionTypes';
 import {
   loadCommercialDealsSuccess,
@@ -19,8 +22,14 @@ import {
   loadSubFamiliesFailed,
   loadProductsFailed,
   loadProductsSuccess,
+  loadBrandsSuccess,
+  loadBrandsFailed,
+  loadSubBrandsSuccess,
+  loadSubBrandsFailed,
   loadUsersFailed,
-  loadUsersSuccess
+  loadUsersSuccess,
+  loadDealTypesSuccess,
+  loadDealTypesFailed
 } from './actions';
 
 import * as api from './api';
@@ -95,6 +104,32 @@ function* loadProducts() {
 export function* watchloadProducts() {
   yield takeLatest(LOAD_PRODUCTS, loadProducts);
 }
+//brands
+function* loadBrands() {
+  try {
+    const response = yield call(api.getBrands);
+    yield put(loadBrandsSuccess({ brands: response.data }));
+  } catch (e) {
+    console.error(e);
+    yield put(loadBrandsFailed());
+  }
+}
+export function* watchloadBrands() {
+  yield takeLatest(LOAD_BRANDS, loadBrands);
+}
+//subbrands
+function* loadSubBrands() {
+  try {
+    const response = yield call(api.getSubBrands);
+    yield put(loadSubBrandsSuccess({ subBrands: response.data }));
+  } catch (e) {
+    console.error(e);
+    yield put(loadSubBrandsFailed());
+  }
+}
+export function* watchloadSubBrands() {
+  yield takeLatest(LOAD_SUB_BRANDS, loadSubBrands);
+}
 //users
 function* loadUsers() {
   try {
@@ -107,4 +142,17 @@ function* loadUsers() {
 }
 export function* watchloadUsers() {
   yield takeLatest(LOAD_USERS, loadUsers);
+}
+//dealTypes
+function* loadDealTypes() {
+  try {
+    const response = yield call(api.getDealTypes);
+    yield put(loadDealTypesSuccess({ dealTypes: response.data }));
+  } catch (e) {
+    console.error(e);
+    yield put(loadDealTypesFailed());
+  }
+}
+export function* watchloadDealTypes() {
+  yield takeLatest(LOAD_DEAL_TYPES, loadDealTypes);
 }

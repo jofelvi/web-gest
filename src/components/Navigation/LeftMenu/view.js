@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types'
 import './styles.css';
-import { Col, Row, Menu, Icon, Button} from 'antd';
+import { Menu, Icon, } from 'antd';
 import { withRouter } from 'react-router-dom';
 
 const { SubMenu } = Menu;

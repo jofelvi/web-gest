@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, Button, Divider, Col, Row } from 'antd';
+import { Modal, Form} from 'antd';
 import FormDefinition from './FormDefinition';
 import './styles.css';
 

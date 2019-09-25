@@ -12,7 +12,6 @@ const CommercialDealsScreen = ({
 }) =>{
     useEffect(()=>{
         loadCommercialDeals();
-        console.log(list);
     }, [loadCommercialDeals,token]);
     return  <ViewCommercialDeals 
                 list={list} 

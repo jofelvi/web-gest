@@ -7,7 +7,10 @@ import {
   loadFamilies,
   loadSubFamilies,
   loadProducts,
-  loadUsers
+  loadBrands,
+  loadSubBrands,
+  loadUsers,
+  loadDealTypes
 } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -21,7 +24,10 @@ export default connect(
     families: state.commercialDeals.families,
     subFamilies: state.commercialDeals.subFamilies,
     products: state.commercialDeals.products,
+    brands:state.commercialDeals.brands,
+    subBrands: state.commercialDeals.subBrands,
     users: state.commercialDeals.users,
+    dealTypes: state.commercialDeals.dealTypes,
     token: state.auth.token
   }),
   { 
@@ -30,6 +36,9 @@ export default connect(
     loadFamilies,
     loadSubFamilies,
     loadProducts,
-    loadUsers
+    loadBrands,
+    loadSubBrands,
+    loadUsers,
+    loadDealTypes,
   }
 )(View);

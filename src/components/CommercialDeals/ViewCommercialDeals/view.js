@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Table, Row, Col, Button, Switch} from 'antd';
+import {Table, Button, Switch} from 'antd';
 import './styles.css';
 import { String} from 'typescript-string-operations';
 import * as dayjs from 'dayjs';
@@ -129,7 +129,7 @@ const columnsToShow = [
         title: '',
         dataIndex: 'estado',
         key: 'estado',
-        render: (estado,deal) => estado === 'Borrador'? <a onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</a> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>
+        render: (estado,deal) => estado === 'Borrador'? <div onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</div> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>
     },
     {
         title: '',
@@ -168,7 +168,6 @@ const columnsLines = [
 //methods
 const changeState = (ev) =>
 {
-    console.log(ev);
 }
 const renderTable= (items)=>{
     return <Table 
@@ -203,6 +202,9 @@ const ViewCommercialDeals = ({
     loadSubFamilies,
     loadProducts,
     loadUsers,
+    loadBrands,
+    loadSubBrands,
+    loadDealTypes,
     showNewCommercialDeal,
     setCurrentCommercialDeal,
     token
@@ -211,8 +213,11 @@ const ViewCommercialDeals = ({
         loadFamilies(); 
         loadSubFamilies();
         loadProducts();
-        loadUsers()    ;  
-    },[list, token,loadFamilies]);
+        loadBrands();
+        loadSubBrands();
+        loadUsers();  
+        loadDealTypes();
+    },[list, token,loadFamilies, loadSubFamilies, loadProducts, loadBrands, loadSubBrands, loadUsers,loadDealTypes]);
     return <div>
         <ButtonGroup className="commercial-deals-top-actions">
             <Button onClick={()=> {
@@ -240,7 +245,10 @@ ViewCommercialDeals.propTypes = {
     loadFamilies:PropTypes.func,
     loadSubFamilies:PropTypes.func,
     loadProducts:PropTypes.func,
-    loadUsers:PropTypes.func
+    loadBrands:PropTypes.func,
+    loadSubBrands:PropTypes.func,
+    loadUsers:PropTypes.func,
+    loadDealTypes: PropTypes.func
 }
 
 export default ViewCommercialDeals;

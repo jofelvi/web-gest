@@ -13,7 +13,6 @@ import {
     Switch,
     Steps} from 'antd';
 import CommercialDealProducts from '../CommercialDealProducts';
-import CommercialDealUsers from '../CommercialDealUsers';
 import locale from 'antd/lib/date-picker/locale/es_ES';
 import * as moment from 'moment';
 import CommercialDealLines from '../CommercialDealLines';
@@ -60,8 +59,6 @@ class FormDefinition extends React.Component {
         
       };
     onStepChange = currentStep => {
-        console.log(currentStep);
-        
         this.setState({ currentStep: currentStep});
     };
 
@@ -79,8 +76,8 @@ class FormDefinition extends React.Component {
                 <Step title="Datos Básicos" description=""/>                   
                 <Step title="Lineas de Escalado" description=""/>
                 
-                {this.props.currentCommercialDeal.tipo != "Campaña"? <Step title="Productos" description=""/> :''}
-                {this.props.currentCommercialDeal.tipo != "Promoción" ? <Step title="Usuarios" description=""/>: ''}
+                {this.props.currentCommercialDeal.tipo !== "Campaña"? <Step title="Productos" description=""/> :''}
+                {this.props.currentCommercialDeal.tipo !== "Promoción" ? <Step title="Usuarios" description=""/>: ''}
             </Steps>
             <Divider></Divider>
             <Form 
@@ -88,7 +85,7 @@ class FormDefinition extends React.Component {
                 wrapperCol={{span:14}}  
                 layout="vertical"
                 >
-                <div style={{display: currentStep != 0 ? 'none': 'block'}}>
+                <div style={{display: currentStep !== 0 ? 'none': 'block'}}>
                     <Row style={{marginTop:30}} gutter={18}>
                         <Col md={{span:12}} sm={{span:22}}>
                             <Form.Item label="Nombre de Condición">
@@ -128,10 +125,9 @@ class FormDefinition extends React.Component {
                                     ],
                                 })(
                                 <Select>
-                                    <Select.Option key="0" value="0">Promoción</Select.Option>
-                                    <Select.Option key="1" value="1">Acuerdo Comercial</Select.Option>
-                                    <Select.Option key="2" value="2">Plan de Compra</Select.Option>
-                                    <Select.Option key="3" value="3">Campaña</Select.Option>
+                                    {this.props.dealTypes.map((dealType)=>{
+                                        return <Select.Option key={dealType.idtipo} value={dealType.idtipo}>{dealType.nombre}</Select.Option>
+                                    })}
                                 </Select>)}
                             </Form.Item>
                         </Col>
@@ -196,27 +192,27 @@ class FormDefinition extends React.Component {
                     </Col>
                 </Row>
                 </div>
-                <div style={{display:currentStep != 1 ? 'none': 'block'}}>
+                <div style={{display:currentStep !== 1 ? 'none': 'block'}}>
                     <CommercialDealLinesForm></CommercialDealLinesForm>
                 </div>
-                <div style={{display: this.props.currentCommercialDeal.tipo != "Campaña" && currentStep === 2 ? 'block': 'none'}}>
+                <div style={{display: this.props.currentCommercialDeal.tipo !== "Campaña" && currentStep === 2 ? 'block': 'none'}}>
                     <CommercialDealProducts></CommercialDealProducts>
                 </div>
-                <div style={{display: this.props.currentCommercialDeal.tipo != "Promoción" && currentStep === 3 ? 'block': 'none'}}>
+                <div style={{display: this.props.currentCommercialDeal.tipo !== "Promoción" && currentStep === 3 ? 'block': 'none'}}>
                     <div>Usuarios</div>
                 </div>
                 <Divider></Divider>
                 <Form.Item>
-                    <Row gutter={18}>
+                    <Row gutter={8} type="flex">
                         {currentStep > 0 ?  
-                            <Col md={{span:4}} sm={{span:12}}>
+                            <Col>
                                 <Button type="primary" htmlType="submit" onClick={this.backStep}>
                                     Atrás
                                 </Button>
                             </Col>
                         : ''}
-                        {currentStep >= 0 ? 
-                            <Col md={{span:4}} sm={{span:12}}> 
+                        {currentStep == 0 || (this.props.currentCommercialDeal.idtipo !== 0 &&  this.props.currentCommercialDeal.idtipo !== 3 && currentStep < 3) || ((this.props.currentCommercialDeal.idtipo === 0 ||  this.props.currentCommercialDeal.idtipo === 3) && currentStep < 2)? 
+                            <Col> 
                                 <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                                     Siguiente
                                 </Button>

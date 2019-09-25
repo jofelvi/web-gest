@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Col,
@@ -11,7 +11,7 @@ import {
 import './styles.css'
 
 class CommercialDealLines extends React.Component {
-    handleSubmit = e => {
+    addRow = e => {
         e.preventDefault();
         const columnsToValidate = [
             'udsminimas',
@@ -112,14 +112,14 @@ class CommercialDealLines extends React.Component {
                             md={{span:4}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
+                                    <Button type="primary" htmlType="submit" onClick={this.addRow}>
                                        Agregar
                                     </Button>
                                 </Form.Item>
                             </Col>
                     </Row>
                     <Row className="commercial-deal-form-lines-body">
-
+                        
                     </Row> 
                 
             </div>);

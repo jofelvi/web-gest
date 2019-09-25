@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles.css'
-import logo from '../../../assets/logo.png';
 import usr from '../../../assets/user.svg';
 import PropTypes from 'prop-types';
 import { STATUS } from '../../../modules/auth/constants';
@@ -17,7 +16,7 @@ const TopBar = ({
                 <img src={logo} alt="logo sitio domtar indas"/>
     </div>*/}
             {status === STATUS.LOGGED ? 
-            <Col className="user-container" xs={{span:8, offset:16}} md={{span:6, offset:18}} sm={{span:6, offset:18}}>
+            <Col className="user-container" xs={{span:8, offset:16}}  xl={{span:4, offset:20}} lg={{span:5, offset:19}} md={{span:6, offset:18}} sm={{span:6, offset:18}}>
                 <Row gutter={16}>
                     <Col md={{span:5}} xs={{span:8}}>
                         <img src={usr} alt="imagen de usuario"/>

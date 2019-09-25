@@ -9,6 +9,7 @@ import {
 export default connect(
     state => ({
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
+      dealTypes: state.commercialDeals.dealTypes
     }),
     { 
       createCommercialDeal,

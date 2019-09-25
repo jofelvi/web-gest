@@ -5,6 +5,8 @@ import {
   loadFamiliesSuccess,
   loadSubFamiliesSuccess,
   loadProductsSuccess,
+  loadBrandsSuccess,
+  loadSubBrandsSuccess,
   loadUsersSuccess,
   createCommercialDealSuccess,
   showNewCommercialDeal,
@@ -12,7 +14,8 @@ import {
   showViewProductsCommercialDeal,
   showNewProductCommercialDeal,
   setCurrentCommercialDeal,
-  updateProductsFilter
+  updateProductsFilter,
+  loadDealTypesSuccess
 } from './actions';
 
 const defaultState = {
@@ -20,7 +23,10 @@ const defaultState = {
   families:[],
   subFamilies: [],
   products:[],
+  brands:[],
+  subBrands:[],
   users:[],
+  dealTypes:[],
   viewProductsCommercialDealVisible: false,
   newProductsCommercialDealVisible: false,
   editCommercialDealVisible: false,
@@ -47,9 +53,21 @@ export default handleActions(
       ...state,
       products: payload.products
     }),
+    [loadBrandsSuccess]: (state, { payload })=>({
+      ...state,
+      brands: payload.brands
+    }),
+    [loadSubBrandsSuccess]: (state, { payload })=>({
+      ...state,
+      subBrands: payload.subBrands
+    }),
     [loadUsersSuccess]: (state, { payload })=>({
       ...state,
       users: payload.users
+    }),
+    [loadDealTypesSuccess]:(state, { payload })=>({
+      ...state,
+      dealTypes: payload.dealTypes
     }),
     [showNewCommercialDeal]: (state, { payload}) => ({
       ...state,

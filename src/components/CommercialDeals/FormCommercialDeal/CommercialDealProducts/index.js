@@ -9,6 +9,8 @@ export default connect(
       families: state.commercialDeals.families,
       subFamilies: state.commercialDeals.subFamilies,
       products: state.commercialDeals.products,
+      brands:state.commercialDeals.brands,
+      subBrands:state.commercialDeals.subBrands,
       updateFilter:state.commercialDeals.updateFilter,
     }),
     { updateProductsFilter }

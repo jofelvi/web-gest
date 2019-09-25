@@ -9,3 +9,6 @@ export const getFamlies = () => get('/ntr/familia');
 export const getSubFamilies = () => get('/ntr/subfamilia');
 export const getProducts = () => get('/ntr/producto');
 export const getUsers = () => get('/ntr/usuario');
+export const getBrands = () =>get('/ntr/marca');
+export const getSubBrands = () => get('/ntr/submarca');
+export const getDealTypes = () => get('ntr/def/cctipo');

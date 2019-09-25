@@ -31,7 +31,10 @@ import {
   watchloadFamilies,
   watchloadSubFamilies,
   watchloadProducts,
-  watchloadUsers
+  watchloadUsers,
+  watchloadBrands,
+  watchloadSubBrands,
+  watchloadDealTypes
 } from './commercialDeals/sagas'
 
 import{
@@ -61,7 +64,10 @@ export default function* rootSaga() {
     watchloadFamilies(),
     watchloadSubFamilies(),
     watchloadProducts(),
+    watchloadBrands(),
+    watchloadSubBrands(),
     watchloadUsers(),
+    watchloadDealTypes(),
     watchloadMenuItems(),
     watchloadChildItems(),
     watchCreateCommercialDeal()
