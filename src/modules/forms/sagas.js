@@ -15,9 +15,6 @@ import {
   getTaskFormFailed,
   setProcId,
   continueProcessFailed,
-  setProcess,
-  getTaskInfoSuccess,
-  getTaskInfoFailed
 } from './actions';
 
 import { cleanSelectedTask, setSelectedTaskId } from '../tasks/actions';
@@ -30,7 +27,6 @@ import {
   COMPLETE_TASK,
   GET_TASK_VARIABLES,
   GET_TASK_FORM,
-  GET_TASK_INFO
 } from './actionTypes';
 
 import * as api from './api';
@@ -48,7 +44,7 @@ function* startProcessSaga({ payload }) {
         startProcessSuccess({
           key: payload.key,
           taskName: response.data,
-          process: payload.key
+          process: payload.key,
         })
       );
     } else {
@@ -64,7 +60,7 @@ function* startProcessSaga({ payload }) {
       login({
         values: { user, password },
         nextAction: startProcess,
-        nextActionPayload: payload
+        nextActionPayload: payload,
       })
     );
   }
@@ -93,7 +89,7 @@ function* continueProcess({ payload }) {
       yield put(
         continueProcessSuccess({
           taskName: newTaskName,
-          taskId: response.data.taskId
+          taskId: response.data.taskId,
         })
       );
       payload.history.push(`/process/${processKey}/${response.data.formKey}`);
@@ -140,14 +136,26 @@ function* completeTaskProcess({ payload }) {
   );
   let response;
 
-  if (taskId) {
-    response = yield call(api.completeTask, taskId, payload.variables);
+  if (taskId || payload.taskId) {
+    response = yield call(
+      api.completeTask,
+      payload.taskId !== null ? payload.taskId : taskId,
+      payload.variables
+    );
   } else {
     response = yield call(api.continueProcess, processKey, payload.variables);
   }
   procId = response.data ? response.data : procId;
   yield put(setProcId(procId));
-  response = yield call(api.checkTask, procId);
+
+  if (!procId) {
+    procId = yield select(state => state.tasks.task.processInstanceId);
+  }
+
+  response = yield call(
+    api.checkTask,
+    payload.procId ? payload.procId : procId
+  );
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
     const selectedTask = yield select(state => state.tasks.selectedTask);
@@ -157,7 +165,7 @@ function* completeTaskProcess({ payload }) {
     yield put(
       completeTaskSuccess({
         taskName: newTaskName,
-        taskId: response.data.taskId
+        taskId: response.data.taskId,
       })
     );
     payload.history.push(`/task/${response.data.taskId}/process/${procId}`);
@@ -197,7 +205,7 @@ function* getTaskForm({ payload }) {
       login({
         values: { user, password },
         nextAction: fetchTaskForm,
-        nextActionPayload: payload
+        nextActionPayload: payload,
       })
     );
   }
@@ -214,7 +222,10 @@ function* getTaskVariables({ payload }) {
         ? state.tasks.selectedTask.id
         : state.forms.taskId
     );
-    const response = yield call(api.getTaskVariables, taskId);
+    const response = yield call(
+      api.getTaskVariables,
+      payload.taskId !== null ? payload.taskId : taskId
+    );
 
     yield put(getTaskVariablesSuccess({ taskVariables: response.data }));
   } catch (e) {
