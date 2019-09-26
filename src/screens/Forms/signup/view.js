@@ -11,7 +11,7 @@ const View = ({ startProcess, history, processStep, taskId, taskName }) => {
       startProcess({ key: 'signup', history });
     }
   }, []);
-  console.log(processStep);
+
   if (taskId && taskName) {
     return <Redirect to={`/task/${taskId}/form`} />;
   }
