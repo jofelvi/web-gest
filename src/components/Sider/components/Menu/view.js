@@ -8,10 +8,7 @@ import SubMenuItemContent from './components/SubMenuItemContent';
 
 const { Item, SubMenu } = AntdMenu;
 
-const Menu = ({ location: { pathname } }) => {
-  let selectedKeys = ['1'];
-  let openKeys = [];
-
+const setSideItems = ({ pathname, selectedKeys, openKeys }) => {
   if (pathname === '/tasks/user') {
     selectedKeys = ['sub-tasks', 'task-list-1'];
     openKeys = ['sub-tasks'];
@@ -26,6 +23,22 @@ const Menu = ({ location: { pathname } }) => {
     selectedKeys = ['sub-tasks', 'task-list-3'];
     openKeys = ['sub-tasks'];
   }
+
+  return { setSelectedKeys: selectedKeys, setOpenKeys: openKeys };
+};
+
+const Menu = ({ location: { pathname } }) => {
+  let selectedKeys = ['1'];
+  let openKeys = [];
+
+  const { setSelectedKeys, setOpenKeys } = setSideItems({
+    pathname,
+    selectedKeys,
+    openKeys,
+  });
+
+  selectedKeys = setSelectedKeys;
+  openKeys = setOpenKeys;
 
   return (
     <AntdMenu
