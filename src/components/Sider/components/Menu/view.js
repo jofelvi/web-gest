@@ -24,6 +24,10 @@ const setSideItems = ({ pathname, selectedKeys, openKeys }) => {
     openKeys = ['sub-tasks'];
   }
 
+  if(pathname.includes('startForm')) {
+    selectedKeys = ['2'];
+  }
+
   return { setSelectedKeys: selectedKeys, setOpenKeys: openKeys };
 };
 
