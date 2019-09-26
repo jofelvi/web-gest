@@ -147,7 +147,15 @@ function* completeTaskProcess({ payload }) {
   }
   procId = response.data ? response.data : procId;
   yield put(setProcId(procId));
-  response = yield call(api.checkTask, procId);
+
+  if (!procId) {
+    procId = yield select(state => state.tasks.task.processInstanceId);
+  }
+
+  response = yield call(
+    api.checkTask,
+    payload.procId ? payload.procId : procId
+  );
   if (response.status === 200) {
     const newTaskName = response.data.formKey;
     const selectedTask = yield select(state => state.tasks.selectedTask);

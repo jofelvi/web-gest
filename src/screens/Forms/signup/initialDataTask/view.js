@@ -19,13 +19,18 @@ const InitialDataTask = ({
   getTaskVariables,
   taskVariables,
   completeTask,
+  fetchTask,
   history,
   match: {
-    params: { taskId },
+    params: { taskId, procId },
   },
+  task,
 }) => {
   useEffect(() => {
     getTaskVariables({ history, taskId });
+    if (!task) {
+      fetchTask(taskId);
+    }
   }, []);
 
   return (
@@ -62,7 +67,7 @@ const InitialDataTask = ({
             };
             return variables.push(taskVariable);
           });
-          completeTask({ variables, history, taskId });
+          completeTask({ variables, history, taskId, procId });
         }}
         validationSchema={validationSchema}
         enableReinitialize
