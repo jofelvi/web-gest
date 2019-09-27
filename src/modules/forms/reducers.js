@@ -9,6 +9,7 @@ import {
   getTaskVariablesSuccess,
   setComplete,
   setProcId,
+  setProcess
 } from './actions';
 
 const defaultState = {
@@ -17,7 +18,7 @@ const defaultState = {
   processKey: '',
   taskId: '',
   finishedProcess: false,
-  completed: false,
+  completed: false
 };
 
 export default handleActions(
@@ -28,29 +29,29 @@ export default handleActions(
       taskName: payload.taskName,
       processStep: 'startForm',
       processKey: payload.key,
-      finishedProcess: false,
+      finishedProcess: false
     }),
     [continueProcessSuccess]: (state, { payload }) => ({
       ...state,
       taskName: payload.taskName,
-      taskId: payload.taskId,
+      taskId: payload.taskId
     }),
     [getTaskFormSuccess]: (state, { payload }) => ({
       ...state,
-      taskName: payload.taskName,
+      taskName: payload.taskName
     }),
     [completeTaskSuccess]: (state, { payload }) => ({
       ...state,
       taskName: payload.taskName,
-      taskId: payload.taskId,
+      taskId: payload.taskId
     }),
     [changeProcessSuccess]: state => ({
       ...state,
-      finishedProcess: !state.finishedProcess,
+      finishedProcess: !state.finishedProcess
     }),
     [getTaskVariablesSuccess]: (state, { payload }) => ({
       ...state,
-      taskVariables: payload.taskVariables,
+      taskVariables: payload.taskVariables
     }),
     [setComplete]: (state, { payload }) => ({
       ...state,
@@ -60,12 +61,13 @@ export default handleActions(
       processStep: '',
       taskName: '',
       taskId: '',
-      procId: null,
+      taskVariables: null,
+      procId: null
     }),
     [setProcId]: (state, { payload }) => ({
       ...state,
-      procId: payload,
-    }),
+      procId: payload
+    })
   },
   defaultState
 );

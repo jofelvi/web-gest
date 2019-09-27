@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { SET_TOKEN } from '../modules/auth/actionTypes';
 import { refreshToken, login } from '../modules/auth/api';
+
+import utils from './utils';
 let api = null;
 let storedToken = null;
 
@@ -19,10 +21,11 @@ export const tokenMiddleware = () => next => action => {
 };
 
 const getHeaders = async () => {
+  const token = storedToken || utils.getAuthToken();
   const headers = {
     'Content-Type': 'application/json',
     accept: 'application/json',
-    Authorization: `Bearer ${storedToken}`
+    Authorization: `Bearer ${token}`
   };
   return headers;
 };

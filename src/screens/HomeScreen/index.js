@@ -7,6 +7,7 @@ import View from './view';
 export default connect(
   state => ({
     process: state.forms.process,
+    procId: state.forms.procId,
     taskName: state.forms.taskName,
     taskId: state.forms.taskId,
     completed: state.forms.completed,

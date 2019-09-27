@@ -4,17 +4,20 @@ import Loadable from 'react-loadable';
 
 const TaskFormScreen = ({
   match: {
-    params: { taskId },
+    params: { taskId }
   },
   process,
   taskName,
   fetchTaskForm,
+  fetchTask,
+  history
 }) => {
   useEffect(() => {
-    fetchTaskForm({ taskId });
+    fetchTaskForm({ taskId, history });
+    fetchTask(taskId);
   }, []);
   console.log(process);
-  const processId = process.split(':')[0] || process;
+  const processId = process ? process.processDefinitionId.split(':')[0] : null;
   console.log(processId);
   const DynamicTask = Loadable({
     loader: taskName
@@ -22,7 +25,7 @@ const TaskFormScreen = ({
       : () => import(`../../screens/Forms/${processId}`),
     loading() {
       return <div>Loading...</div>;
-    },
+    }
   });
 
   return processId && taskName ? <DynamicTask /> : <h1>Loading task!</h1>;
@@ -32,6 +35,8 @@ TaskFormScreen.propTypes = {
   taskId: PropTypes.string.isRequired,
   taskName: PropTypes.string.isRequired,
   fetchTaskForm: PropTypes.func.isRequired,
+  fetchTask: PropTypes.func.isRequired,
+  history: PropTypes.shape({}).isRequired
 };
 
 export default TaskFormScreen;

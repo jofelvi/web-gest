@@ -16,11 +16,19 @@ const RemainingDataTask = ({
   getTaskVariables,
   taskVariables,
   completeTask,
+  fetchTask,
   history,
+  match: {
+    params: { taskId, procId },
+  },
+  task,
 }) => {
   useEffect(() => {
-    getTaskVariables();
-  }, [getTaskVariables]);
+    getTaskVariables({ history, taskId });
+    if (!task) {
+      fetchTask(taskId);
+    }
+  }, []);
 
   return (
     <Row type="flex" justify="center">
@@ -37,7 +45,7 @@ const RemainingDataTask = ({
         }}
         onSubmit={values => {
           const variables = transformData(values);
-          completeTask({ variables, history });
+          completeTask({ variables, history, taskId, procId });
         }}
         validationSchema={validationSchema}
         enableReinitialize

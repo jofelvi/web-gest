@@ -4,6 +4,7 @@ import { watchFetchUsers, watchFetchUserById } from './users/sagas';
 
 import {
   watchFetchTasks,
+  watchFetchTask,
   watchFetchTasksCount,
   watchFetchTasksByUser,
   watchFetchTaskList,
@@ -47,6 +48,7 @@ export default function* rootSaga() {
     watchFetchUsers(),
     watchFetchUserById(),
     watchFetchTasks(),
+    watchFetchTask(),
     watchFetchTasksCount(),
     watchFetchTasksByUser(),
     watchFetchTaskForm(),

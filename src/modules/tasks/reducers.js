@@ -2,11 +2,14 @@ import { handleActions } from 'redux-actions';
 
 import {
   fetchTasksSuccess,
+  fetchTaskSuccess,
   fetchTasksCount,
   fetchTasksByUser,
   fetchTaskListSuccess,
   setSelectedTask,
+  setSelectedTaskId,
   setTaskListFilter,
+  cleanSelectedTask
 } from './actions';
 
 const defaultState = {
@@ -19,30 +22,42 @@ export default handleActions(
   {
     [fetchTasksSuccess]: (state, { payload }) => ({
       ...state,
-      list: payload.tasks,
+      list: payload.tasks
+    }),
+    [fetchTaskSuccess]: (state, { payload }) => ({
+      ...state,
+      task: payload
     }),
     [fetchTasksCount]: (state, { payload }) => ({
       ...state,
-      count: payload.tasksCount,
+      count: payload.tasksCount
     }),
     [fetchTasksByUser]: (state, { payload }) => ({
       ...state,
-      byUser: payload.tasksByUser,
+      byUser: payload.tasksByUser
     }),
     [fetchTaskListSuccess]: (state, { payload }) => ({
       ...state,
       selectedTask: null,
-      taskList: payload,
+      taskList: payload
     }),
     [setSelectedTask]: (state, { payload }) => ({
       ...state,
-      selectedTask: payload,
+      selectedTask: payload
     }),
+    [setSelectedTaskId]: (state, { payload }) => {
+      const selectedTask = { ...state.selectedTask, id: payload };
+      return { ...state, selectedTask };
+    },
     [setTaskListFilter]: (state, { payload }) => ({
       ...state,
       sortBy: payload.sortBy,
-      isSorted: payload.isSorted,
+      isSorted: payload.isSorted
     }),
+    [cleanSelectedTask]: state => ({
+      ...state,
+      selectedTask: null
+    })
   },
   defaultState
 );
