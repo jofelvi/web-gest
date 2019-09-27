@@ -2,72 +2,96 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {Table, Switch} from 'antd';
 
-var columnsProducts=[
+var columnsUsers=[
     {
-        title: 'Familia',
-        dataIndex: 'familia',
-        key: 'familia',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        title: 'Apellido 1',
+        dataIndex: 'apellido1',
+        key: 'apellido1',
+        sorter: (a,b) => a.apellido1 - b.apellido1
     },
     {
-        title: 'Sub Familia',
-        dataIndex: 'subfamilia',
-        key: 'subfamilia',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        title: 'Apellido 2',
+        dataIndex: 'apellido2',
+        key: 'apellido2',
+        sorter: (a,b) => a.apellido2 - b.apellido2
     },
     {
         title: 'Nombre',
-        dataIndex: 'nombre',
-        key: 'nombre',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        dataIndex: 'nomcli_cbim',
+        key: 'nomcli_cbim',
+        sorter: (a,b) => a.nomcli_cbim - b.nomcli_cbim
     },
     {
-        title: 'Descripción',
-        dataIndex: 'descripcioncorta',
-        key: 'descripcioncorta',
-        sorter: (a,b) => a.unidadesmin - b.unidadesmin
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+        sorter: (a,b) => a.email - b.email
     },
     {
-        title: 'Estado',
-        dataIndex: 'indactivo',
-        key: 'indactivo',
-        filters: [
-            {
-                text:'Activo',
-                value:true
-            },
-            {
-                text:"Inactivo",
-                value:false
-            }
-        ],
-        filterMultiple: false,
-        onFilter: (value, record) => record.indactivo == value,
-        render: (indactivo) => <Switch checked={indactivo}></Switch>
+        title: 'Asociado',
+        dataIndex: 'idestado',
+        key: 'idestado',
+        render: (colVal, record) => {}
     }
 ];
 
+//methods
+const getRender = (currentCommercialDeal, record) => {
+    console.log("entra al render");
+    if(currentCommercialDeal.clientes !== null && currentCommercialDeal.clientes !== undefined){
+        const exist = currentCommercialDeal.clientes.filter((cliente) => {
+            return cliente.idcliente === record.idcliente
+        }).length > 0;
 
+        if(exist){
+            return <Switch defaultChecked/>
+        }  
+    }
+    return <Switch/>
+    
+}
+const change = (currentCommercialDeal,updateClientsFilter)=>{
+    columnsUsers.map((el)=>{
+        if(el.dataIndex === 'idestado'){
+            el.render = ({},record) =>{ return getRender(currentCommercialDeal, record)};
+        }
+        return el;
+    });
+    updateClientsFilter(true);
+}
+
+//componet
 const CommercialDealsUsers = ({
-    currentCommercialDeal
+    currentCommercialDeal,
+    users,
+    updateClientsFilter,
+    updateFilterOfClient
 })=> {
     useEffect(()=>{
-    },[currentCommercialDeal]);
+        if(!updateFilterOfClient){
+            change(currentCommercialDeal, updateClientsFilter)
+        } else {
+            updateClientsFilter(false);
+        }
+        
+    },[currentCommercialDeal, users, updateFilterOfClient]);
     return (
         <div>
             <Table 
                 className="commercial-deals-products"
-                dataSource={currentCommercialDeal.products}
-                columns={columnsProducts}
+                dataSource={users}
+                onChange = {() => change(currentCommercialDeal,updateClientsFilter)}
+                columns={columnsUsers}
                 size='small'
                 pagination={true}
-                rowKey='codindas'
+                rowKey='idcliente'
                 locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
             ></Table>
         </div>);
 };
 CommercialDealsUsers.propTypes = {
-    currentCommercialDeal: PropTypes.object 
+    currentCommercialDeal: PropTypes.object ,
+    users:PropTypes.arrayOf(PropTypes.shape({}))
 }
 
 export default CommercialDealsUsers;

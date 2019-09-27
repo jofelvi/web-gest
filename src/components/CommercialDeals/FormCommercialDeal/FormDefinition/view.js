@@ -16,6 +16,7 @@ import CommercialDealProducts from '../CommercialDealProducts';
 import locale from 'antd/lib/date-picker/locale/es_ES';
 import * as moment from 'moment';
 import CommercialDealLines from '../CommercialDealLines';
+import CommercialDealUsers from '../CommercialDealUsers';
 
 const {Step} = Steps;
 
@@ -199,7 +200,7 @@ class FormDefinition extends React.Component {
                     <CommercialDealProducts></CommercialDealProducts>
                 </div>
                 <div style={{display: this.props.currentCommercialDeal.tipo !== "Promoción" && currentStep === 3 ? 'block': 'none'}}>
-                    <div>Usuarios</div>
+                    <CommercialDealUsers></CommercialDealUsers>
                 </div>
                 <Divider></Divider>
                 <Form.Item>

@@ -33,7 +33,8 @@ import {
   SHOW_VIEW_PRODUCTS_COMMERCIAL_DEAL,
   SHOW_NEW_PRODUCT_COMMERCIAL_DEAL,
   SET_CURRENT_COMMERCIAL_DEAL,
-  UPDATE_PRODUCTS_FILTER
+  UPDATE_PRODUCTS_FILTER,
+  UPDATE_CLIENTS_FILTER
 } from './actionTypes';
 
 export const {
@@ -69,7 +70,8 @@ export const {
   showViewProductsCommercialDeal,
   showNewProductCommercialDeal,
   setCurrentCommercialDeal,
-  updateProductsFilter
+  updateProductsFilter,
+  updateClientsFilter
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
@@ -103,5 +105,6 @@ export const {
   SHOW_VIEW_PRODUCTS_COMMERCIAL_DEAL,
   SHOW_NEW_PRODUCT_COMMERCIAL_DEAL,
   SET_CURRENT_COMMERCIAL_DEAL,
-  UPDATE_PRODUCTS_FILTER
+  UPDATE_PRODUCTS_FILTER,
+  UPDATE_CLIENTS_FILTER
 );

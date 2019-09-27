@@ -6,11 +6,15 @@ import {
     Form,
     Input,
     InputNumber,
-    Button
+    Button,
+    Icon
 } from 'antd';
 import './styles.css'
 
 class CommercialDealLines extends React.Component {
+    state = {
+        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : []
+    }
     addRow = e => {
         e.preventDefault();
         const columnsToValidate = [
@@ -21,12 +25,16 @@ class CommercialDealLines extends React.Component {
         ];
         this.props.form.validateFields(columnsToValidate,(err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
+            var {lines} = this.state;
+            lines.push(values);
+            this.setState({lines: lines});
           }
         });
       };
     render(){
         const { getFieldDecorator } = this.props.form;
+        const lines = this.props.currentCommercialDeal.escalados;
+        //this.setState({lines: lines});
         return (
             <div>
                    <Row 
@@ -119,8 +127,34 @@ class CommercialDealLines extends React.Component {
                             </Col>
                     </Row>
                     <Row className="commercial-deal-form-lines-body">
-                        
+                        {this.state.lines.map((line) =>
+                           <Row 
+                           style={{marginTop:10, paddingTop:'10px', borderWidth:'2px 0 0 0', borderStyle:'solid', borderColor:'rgba(0,0,0,0.2)'}}
+                           gutter={18}>
+                                <Col 
+                                md={{span:5}}
+                                sm={{span:22}}>{line.udsminimas}</Col>
+                                <Col 
+                                md={{span:5}}
+                                sm={{span:22}}>{line.udsmaximas}
+                                </Col>
+                                <Col 
+                                md={{span:5}}
+                                sm={{span:22}}>{line.descuento}</Col>
+                                <Col 
+                                md={{span:5}}
+                                sm={{span:22}}>{line.txtdescuento}</Col>
+                                <Col 
+                                md={{span:4}}
+                                sm={{span:22}}>
+                                    <Button type="primary" htmlType="submit" onClick={this.deleteRow}>
+                                    <Icon type="delete" />
+                                    </Button>
+                                </Col>
+                            </Row> 
+                        )}
                     </Row> 
+                        
                 
             </div>);
     };

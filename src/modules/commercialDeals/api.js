@@ -8,7 +8,7 @@ export const createCommercialDeal = (dealDef) => post('/ntr/condcomercial/create
 export const getFamlies = () => get('/ntr/familia');
 export const getSubFamilies = () => get('/ntr/subfamilia');
 export const getProducts = () => get('/ntr/producto');
-export const getUsers = () => get('/ntr/usuario');
+export const getUsers = () => get('/ntr/cliente');
 export const getBrands = () =>get('/ntr/marca');
 export const getSubBrands = () => get('/ntr/submarca');
 export const getDealTypes = () => get('ntr/def/cctipo');

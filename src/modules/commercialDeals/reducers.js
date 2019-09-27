@@ -15,7 +15,8 @@ import {
   showNewProductCommercialDeal,
   setCurrentCommercialDeal,
   updateProductsFilter,
-  loadDealTypesSuccess
+  loadDealTypesSuccess,
+  updateClientsFilter
 } from './actions';
 
 const defaultState = {
@@ -32,7 +33,8 @@ const defaultState = {
   editCommercialDealVisible: false,
   newCommercialDealVisible:false,
   currentCommercialDeal: {},
-  updateFilter: false
+  updateFilter: false,
+  updateFilterOfClient: false
 };
 
 export default handleActions(
@@ -96,6 +98,10 @@ export default handleActions(
     [updateProductsFilter]:  (state, { payload}) => ({
       ...state,
       updateFilter: payload
+    }),
+    [updateClientsFilter]:  (state, { payload}) => ({
+      ...state,
+      updateFilterOfClient: payload
     }),
   },
   defaultState

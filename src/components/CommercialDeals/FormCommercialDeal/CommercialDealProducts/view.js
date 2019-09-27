@@ -41,7 +41,9 @@ var columnsProducts=[
         title: 'Nombre',
         dataIndex: 'nombre',
         key: 'nombre',
-        sorter: (a,b) => a.nombre - b.nombre
+        sorter: (a,b) => a.nombre - b.nombre,
+        filterMultiple: true,
+        onFilter: (value, record) => {return record.nombre === value}
     },
     /*{
         title: 'Descripción',
@@ -55,7 +57,12 @@ var columnsProducts=[
         render: (colVal, record) => {}
     }
 ];
-
+const filterColumns = {
+    "nombrefamilia":"idfamilia",
+    "nombresubfamilia":"idsubfamilia",
+    "nombremarca":"idmarca",
+    "nombresubmarca":"idsubmarca"
+};
 //methods
 const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal)=>{
     columnsProducts.map((el)=>{
@@ -122,27 +129,86 @@ const filterProductByColumn = (filters, product, columnName, property) => {
                 text:product.nombre,
                 value:product.codindas
             }
+        } else {
+            return null;
+        }
+    } else {
+        return {
+            text:product.nombre,
+            value:product.codindas
         }
     }
-    return null;
+    
 }
 const applyFiltersToProduct = (pColumn, filters, products)=>{
+    
     const auxFilters = products.map((product)=> {
         var validProduct = filterProductByColumn(filters,product,'nombrefamilia','idfamilia');
+        if(validProduct === null) return null;
         validProduct = filterProductByColumn(filters,product,'nombresubfamilia','idsubfamilia');
+        if(validProduct === null) return null;
         validProduct = filterProductByColumn(filters,product,'nombremarca','idmarca');
+        if(validProduct === null) return null;
         validProduct = filterProductByColumn(filters,product,'nombresubmarca','idsubmarca');
         return validProduct;
     });
     pColumn.filters = auxFilters.filter((item)=> item !== null && item !== undefined);
+    return pColumn;
 }
-const validateFilter = (filterValues) => {
+const validateFilter = (filterValues,currentData) => {
     if(filterValues !== undefined && filterValues !== null){
-        return filterValues.length > 0;
+        return filterValues.length > 0
     }
     return false;
 }
-const changeData = (filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter)=>{
+const updateFilter = (currentData, filters, column, columnName, columnNameId) =>{
+    if(column.dataIndex === columnName && (filters[columnName] === null || filters[columnName] === undefined)){
+        var values = [];
+        var currentValue = null;
+        currentData.forEach((product, i) => { 
+            if(currentValue !== product[columnName]){
+                currentValue = product[columnName];
+                values.push({
+                    text:product[columnName],
+                    value:product[columnNameId]
+                });
+            }
+        });
+        console.log(values);
+        column.filters = values;
+        return true;  
+    } else if(column.dataIndex === columnName && (filters[columnName] !== null || filters[columnName] !== undefined)){
+        if(filters[columnName].length === 0){
+            var values = [];
+            var currentValue = null;
+            currentData.forEach((product, i) => { 
+                if(currentValue !== product[columnName]){
+                    currentValue = product[columnName];
+                    values.push({
+                        text:product[columnName],
+                        value:product[columnNameId]
+                    });
+                }
+            });
+            console.log(values);
+            column.filters = values;
+            return true; 
+        }
+    }
+    
+
+    return false;
+}
+const updateFilters = (currentData, filters, column) =>{
+    var applyFilters = false;
+    Object.keys(filterColumns).forEach((key)=>{
+        if(updateFilter(currentData, filters, column, key,filterColumns[key])){
+            applyFilters = true;
+        } 
+    });
+    return applyFilters;
+}
+const changeData = (currentData,filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter)=>{
     var applyFilters = false;
     if(Object.keys(filters).length > 0){
         columnsProducts.map((column)=> {
@@ -151,10 +217,18 @@ const changeData = (filters,families, subFamilies, products, brands, subBrands, 
                 applyFilters = validColumn !== null;
             } else if(column.dataIndex === 'Asociado'){
                 column.render = (colVal, record) =>{ return getRender(currentCommercialDeal, record)};
+            } 
+            if(currentData.length !== products.length){
+                if(updateFilters(currentData, filters, column)){
+                    applyFilters = true;
+                }
+            } else {
+                applyFilters = false;
             }
-            return null;
+            return column;
         });
     }
+    console.log(applyFilters);
     if(!applyFilters){
         getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal); 
         updateProductsFilter(true);
@@ -206,8 +280,7 @@ const CommercialDealProducts = ({
 })=> {
     useEffect(()=>{
         if(!updateFilter){
-            console.log(updateFilter);
-            changeData({},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter);
+            changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter);
         }
         updateProductsFilter(false);
     },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter]);
@@ -216,8 +289,8 @@ const CommercialDealProducts = ({
             <Table 
                 className="commercial-deals-products"
                 dataSource={products}
-                onChange={(pagination, filters) => 
-                    changeData(filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal, updateProductsFilter)}
+                onChange={(pagination, filters, sorter, data) => 
+                    changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal, updateProductsFilter)}
                 columns={columnsProducts}
                 size='small'
                 pagination={true}
