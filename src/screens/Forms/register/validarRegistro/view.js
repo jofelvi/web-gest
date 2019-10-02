@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 
 import { Form, Input, Checkbox, Row, Col, Button } from 'antd';
 
-import { selectTaskVariable } from '../../lib';
+import { transformData, selectTaskVariable } from '../../lib';
 
 const validationSchema = Yup.object().shape({
 	// Datos del cliente
@@ -126,18 +126,7 @@ const ValidarRegistro = ({
 						: '',
 			}}
 			onSubmit={values => {
-				const variables = [];
-				Object.entries(values).map(value => {
-					const taskVariable = {
-						name: value[0],
-						value: value[1],
-						type: `${(typeof value[1])
-							.charAt(0)
-							.toUpperCase()}${(typeof value[1]).slice(1)}`,
-						transient: false,
-					};
-					return variables.push(taskVariable);
-				});
+				const variables = transformData(values, taskVariables);
 				completeTask({ variables, history, taskId, procId });
 			}}
 			validationSchema={validationSchema}
