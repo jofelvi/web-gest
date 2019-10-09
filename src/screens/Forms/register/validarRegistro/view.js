@@ -97,13 +97,6 @@ const ValidarRegistro = ({
 								</Form.Item>
 								<ErrorMessage component="div" name="ind_acepta_emailComercial"/>
 							</Col></Row>
-							<Row><Col>
-								<Form.Item name="ind_acepta_newsletter"
-									label="Desea recibir la publicación Newsletter">
-									<Checkbox checked={values.ind_acepta_newsletter} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="ind_acepta_newsletter"/>
-							</Col></Row>
 						</Col>
 						<Col span={12}>
 							<Row><Col><h2>Datos de Entidad</h2></Col></Row>
@@ -138,28 +131,28 @@ const ValidarRegistro = ({
 								<ErrorMessage component="div" name="entidad_telefono"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="dir_via" label="Dirección">
-									<Input value={values.dir_via} disabled="true"/>
+								<Form.Item name="direccion" label="Dirección">
+									<Input value={values.direccion} disabled="true"/>
 								</Form.Item>
-								<ErrorMessage component="div" name="dir_via"/>
+								<ErrorMessage component="div" name="direccion"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="dir_poblacion" label="Ciudad">
-									<Input value={values.dir_poblacion} disabled="true"/>
+								<Form.Item name="poblacion" label="Ciudad">
+									<Input value={values.poblacion} disabled="true"/>
 								</Form.Item>
-								<ErrorMessage component="div" name="dir_poblacion"/>
+								<ErrorMessage component="div" name="poblacion"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="dir_cp" label="CP">
-									<Input value={values.dir_cp} disabled="true"/>
+								<Form.Item name="codigo_postal" label="CP">
+									<Input value={values.codigo_postal} disabled="true"/>
 								</Form.Item>
-								<ErrorMessage component="div" name="dir_cp"/>
+								<ErrorMessage component="div" name="codigo_postal"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="dir_provincia" label="Provincia">
-									<Input value={values.dir_provincia} disabled="true"/>
+								<Form.Item name="provincia" label="Provincia">
+									<Input value={values.provincia} disabled="true"/>
 								</Form.Item>
-								<ErrorMessage component="div" name="dir_provincia"/>
+								<ErrorMessage component="div" name="provincia"/>
 							</Col></Row>
 							<Row><Col>
 								<Form.Item name="entidad_email" label="Correo electrónico">

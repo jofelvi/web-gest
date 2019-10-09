@@ -11,7 +11,6 @@ export const formData = [
 {name:"cliente_nif", type:"String", validation: Yup.string().required()},
 {name:"cliente_email", type:"String", validation: Yup.string().required()},
 {name:"cliente_telefono", type:"String", validation: Yup.string().required()},
-{name:"ind_acepta_newsletter", type:"Boolean", validation: Yup.bool().required()},
 {name:"ind_acepta_emailcomercial", type:"Boolean", validation: Yup.bool().required()},
 // Entidad
 {name:"codentidad_cbim", type:"Integer", validation: Yup.number().integer().required()},
@@ -19,12 +18,12 @@ export const formData = [
 {name:"entidad_nif", type:"String", validation: undefined},
 {name:"entidad_tipo", type:"String", validation: Yup.string().required()},
 {name:"entidad_telefono", type:"String", validation: Yup.string().required()},
-{name:"dir_via", type:"String", validation: Yup.string().required()},
-{name:"dir_poblacion", type:"String", validation: Yup.string().required()},
-{name:"dir_cp", type:"String", validation: Yup.string().required()},
-{name:"dir_provincia", type:"String", validation: Yup.string().required()},
+{name:"direccion", type:"String", validation: Yup.string().required()},
+{name:"poblacion", type:"String", validation: Yup.string().required()},
+{name:"codigo_postal", type:"String", validation: Yup.string().required()},
+{name:"provincia", type:"String", validation: Yup.string().required()},
 {name:"entidad_email", type:"String", validation: undefined},
-{name:"coddelegado", type:"String", validation: undefined},
+{name:"coddelegado", type:"Integer", validation: undefined},
 ];
 export const obtenerValoresIniciales = function(taskVariables) {
 	let initValue = formData.reduce(function(result, item, i) {
