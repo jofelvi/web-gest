@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
 import { Form, Input, Checkbox, Row, Col, Button } from 'antd';
-import { transformData, selectTaskVariable } from '../../lib';
+import { transformData } from '../../lib';
 import { formData, obtenerValoresIniciales, obtenerValidacionSchema } from './data';
 
 const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
-
 const ValidarRegistro = ({
   getTaskVariables,
   taskVariables,
@@ -31,20 +30,22 @@ const ValidarRegistro = ({
 		<Formik
 			initialValues={ obtenerValoresIniciales(taskVariables) }
 			onSubmit={values => {
+				values.aceptado = true;
 				const variables = transformData(values, formData);
 				completeTask({ variables, history, taskId, procId });
 			}}
-			validationSchema={validationSchema}
+		validationSchema={validationSchema}
 			enableReinitialize
 		>
 			{({ values, handleSubmit, errors }) => (
-				<Form onSubmit={handleSubmit} colon="false">
+				<Form onSubmit={handleSubmit} colon={false}>
 					<Row type="flex" justify="left" gutter={8}>
 						<Col span={12}>
 							<Row><Col><h2>Datos de Cliente</h2></Col></Row>
 							<Row><Col>
-								<Form.Item name="codcli_cbim" label="Código CBIM">
-									<Input value={values.codcli_cbim} disabled="true"/>
+								<Form.Item name="codcli_cbim" label="Código CBIM" 
+									required={true} whitespace={true}>
+									<Input value={values.codcli_cbim} disabled="true" size={10}/>
 								</Form.Item>
 								<ErrorMessage component="div" name="codcli_cbim"/>
 							</Col></Row>
@@ -166,11 +167,29 @@ const ValidarRegistro = ({
 								</Form.Item>
 								<ErrorMessage component="div" name="coddelegado"/>
 							</Col></Row>
+							<Row><Col>
+								<Form.Item name="nombre_delegado" label="Nombre delegado">
+									<Input value={values.nombre_delegado} disabled="true"/>
+								</Form.Item>
+								<ErrorMessage component="div" name="nombre_delegado"/>
+							</Col></Row>
 						</Col>
 					</Row>
 					<Row type="flex" justify="center">
-						<Col span={24}>
-							<Button type="primary" htmlType="submit">Validar</Button>
+						<Col span={12}>
+							<Button type="primary">Cancelar</Button>
+						</Col>
+						<Col span={12}>
+							<Row type="flex" justify="end" gutter={8}>
+							<Col><Button type="primary" onClick={() => {
+										values.aceptado = false;
+										const variables = transformData(values, formData);
+										completeTask({ variables, history, taskId, procId });
+									 }}>
+								Rechazar
+							</Button></Col>
+							<Col><Button type="primary" htmlType="submit">Validar</Button></Col>
+							</Row>
 						</Col>
 					</Row>
 				</Form>
