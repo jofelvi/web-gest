@@ -188,7 +188,7 @@ const ValidarRegistro = ({
 									 }}>
 								Rechazar
 							</Button></Col>
-							<Col><Button type="primary" htmlType="submit">Validar</Button></Col>
+							<Col><Button type="primary" htmlType="submit">Aceptar</Button></Col>
 							</Row>
 						</Col>
 					</Row>
