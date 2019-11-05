@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
-import { Form, Input, Checkbox, Row, Col, Button } from 'antd';
+import { Form, Input, Checkbox, Row, Col, Button, Radio } from 'antd';
 import { transformData } from '../../lib';
 import { formData, obtenerValoresIniciales, obtenerValidacionSchema } from './data';
 
@@ -29,16 +29,11 @@ const ValidarRegistro = ({
   return (
 		<Formik
 			initialValues={ obtenerValoresIniciales(taskVariables) }
-			onSubmit={values => {
-				values.aceptado = true;
-				const variables = transformData(values, formData);
-				completeTask({ variables, history, taskId, procId });
-			}}
 		validationSchema={validationSchema}
 			enableReinitialize
 		>
-			{({ values, handleSubmit, errors }) => (
-				<Form onSubmit={handleSubmit} colon={false}>
+			{({ values, errors }) => (
+				<Form colon={false}>
 					<Row type="flex" justify="left" gutter={8}>
 						<Col span={12}>
 							<Row><Col><h2>Datos de Cliente</h2></Col></Row>
@@ -121,7 +116,10 @@ const ValidarRegistro = ({
 							</Col></Row>
 							<Row><Col>
 								<Form.Item name="entidad_tipo" label="Tipo de entidad">
-									<Input value={values.entidad_tipo} disabled="true"/>
+									<Radio.Group value={values.entidad_tipo}>
+										<Radio value='FARMACIA' disabled="true">Farmacia</Radio>
+										<Radio value='SOCIEDAD' disabled="true">Sociedad</Radio>
+									</Radio.Group>
 								</Form.Item>
 								<ErrorMessage component="div" name="entidad_tipo"/>
 							</Col></Row>
@@ -188,7 +186,12 @@ const ValidarRegistro = ({
 									 }}>
 								Rechazar
 							</Button></Col>
-							<Col><Button type="primary" htmlType="submit">Aceptar</Button></Col>
+							<Col><Button type="primary" onClick={() => {
+										values.aceptado = true;
+										const variables = transformData(values, formData);
+										completeTask({ variables, history, taskId, procId });
+									 }}>
+								Aceptar</Button></Col>
 							</Row>
 						</Col>
 					</Row>
