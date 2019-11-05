@@ -29,7 +29,7 @@ const ValidarRegistro = ({
   return (
 		<Formik
 			initialValues={ obtenerValoresIniciales(taskVariables) }
-		validationSchema={validationSchema}
+			validationSchema={validationSchema}
 			enableReinitialize
 		>
 			{({ values, errors }) => (
@@ -45,19 +45,15 @@ const ValidarRegistro = ({
 								<ErrorMessage component="div" name="codcli_cbim"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="nomcli_cbim" label="Nombre CBIM">
-									<Input value={values.nomcli_cbim} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="nomcli_cbim"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_nombre" label="Nombre">
+								<Form.Item name="cliente_nombre" label="Nombre"
+									required={true} whitespace={true}>
 									<Input value={values.cliente_nombre} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="cliente_nombre"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="cliente_apellido1" label="Primer apellido">
+								<Form.Item name="cliente_apellido1" label="Primer apellido"
+									required={true} whitespace={true}>
 									<Input value={values.cliente_apellido1} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="cliente_apellido1"/>
@@ -69,19 +65,22 @@ const ValidarRegistro = ({
 								<ErrorMessage component="div" name="cliente_apellido2"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="cliente_nif" label="NIF">
+								<Form.Item name="cliente_nif" label="NIF"
+									required={true} whitespace={true}>
 									<Input value={values.cliente_nif} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="cliente_nif"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="cliente_email" label="Correo electrónico">
+								<Form.Item name="cliente_email" label="Correo electrónico"
+									required={true} whitespace={true}>
 									<Input value={values.cliente_email} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="cliente_email"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="cliente_telefono" label="Teléfono">
+								<Form.Item name="cliente_telefono" label="Teléfono"
+									required={true} whitespace={true}>
 									<Input value={values.cliente_telefono} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="cliente_telefono"/>
@@ -97,68 +96,82 @@ const ValidarRegistro = ({
 						<Col span={12}>
 							<Row><Col><h2>Datos de Entidad</h2></Col></Row>
 							<Row><Col>
-								<Form.Item name="codentidad_cbim" label="Código entidad">
+								<Form.Item name="codentidad_cbim" label="Código entidad"
+									required={true} whitespace={true}>
 									<Input value={values.codentidad_cbim} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="codentidad_cbim"/>
 							</Col></Row>
 							<Row><Col>
-								<Form.Item name="nomentidad_cbim" label="Razón Social">
+								<Form.Item name="nomentidad_cbim" label="Razón Social"
+									required={true} whitespace={true}>
 									<Input value={values.nomentidad_cbim} disabled="true"/>
 								</Form.Item>
 								<ErrorMessage component="div" name="nomentidad_cbim"/>
 							</Col></Row>
-							<Row><Col>
-								<Form.Item name="entidad_nif" label="NIF">
-									<Input value={values.entidad_nif} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="entidad_nif"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="entidad_tipo" label="Tipo de entidad">
-									<Radio.Group value={values.entidad_tipo}>
-										<Radio value='FARMACIA' disabled="true">Farmacia</Radio>
-										<Radio value='SOCIEDAD' disabled="true">Sociedad</Radio>
-									</Radio.Group>
-								</Form.Item>
-								<ErrorMessage component="div" name="entidad_tipo"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="entidad_telefono" label="Teléfono">
-									<Input value={values.entidad_telefono} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="entidad_telefono"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="direccion" label="Dirección">
-									<Input value={values.direccion} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="direccion"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="poblacion" label="Ciudad">
-									<Input value={values.poblacion} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="poblacion"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="codigo_postal" label="CP">
-									<Input value={values.codigo_postal} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="codigo_postal"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="provincia" label="Provincia">
-									<Input value={values.provincia} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="provincia"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="entidad_email" label="Correo electrónico">
-									<Input value={values.entidad_email} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="entidad_email"/>
-							</Col></Row>
+							<Row type="flex" justify="left" gutter={8}>
+								<Col span={12}>
+									<Row><Col>
+										<Form.Item name="entidad_nif" label="NIF">
+											<Input value={values.entidad_nif} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="entidad_nif"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="entidad_tipo" label="Tipo de entidad"
+											required={true} whitespace={true}>
+											<Radio.Group value={values.entidad_tipo}>
+												<Radio value='FARMACIA' disabled="true">Farmacia</Radio>
+												<Radio value='SOCIEDAD' disabled="true">Sociedad</Radio>
+											</Radio.Group>
+										</Form.Item>
+										<ErrorMessage component="div" name="entidad_tipo"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="entidad_telefono" label="Teléfono"
+											required={true} whitespace={true}>
+											<Input value={values.entidad_telefono} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="entidad_telefono"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="entidad_email" label="Correo electrónico">
+											<Input value={values.entidad_email} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="entidad_email"/>
+									</Col></Row>
+								</Col>
+								<Col span={12}>
+									<Row><Col>
+										<Form.Item name="direccion" label="Dirección"
+											required={true} whitespace={true}>
+											<Input value={values.direccion} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="direccion"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="codigo_postal" label="CP"
+											required={true} whitespace={true}>
+											<Input value={values.codigo_postal} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="codigo_postal"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="poblacion" label="Ciudad"
+											required={true} whitespace={true}>
+											<Input value={values.poblacion} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="poblacion"/>
+									</Col></Row>
+									<Row><Col>
+										<Form.Item name="provincia" label="Provincia"
+											required={true} whitespace={true}>
+											<Input value={values.provincia} disabled="true"/>
+										</Form.Item>
+										<ErrorMessage component="div" name="provincia"/>
+									</Col></Row>
+								</Col>
+							</Row>
 							<Row><Col>
 								<Form.Item name="coddelegado" label="Código delegado">
 									<Input value={values.coddelegado} disabled="true"/>
