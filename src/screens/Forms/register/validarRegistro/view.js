@@ -5,9 +5,10 @@ import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
 import { Form, Input, Checkbox, Row, Col, Button, Radio } from 'antd';
 import { transformData } from '../../lib';
-import { formData, obtenerValoresIniciales, obtenerValidacionSchema } from './data';
+import { formData } from './data';
+import { obtenerValoresIniciales, obtenerValidacionSchema } from '../comunes';
 
-const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
+const validationSchema = Yup.object().shape( obtenerValidacionSchema(formData) );
 const ValidarRegistro = ({
   getTaskVariables,
   taskVariables,
@@ -28,12 +29,18 @@ const ValidarRegistro = ({
 
   return (
 		<Formik
-			initialValues={ obtenerValoresIniciales(taskVariables) }
+			initialValues={ obtenerValoresIniciales(taskVariables, formData) }
 			validationSchema={validationSchema}
+			onSubmit={values => {
+				values.aceptado = true;
+				const variables = transformData(values, formData);
+				console.log("Aceptar: ", variables);
+				completeTask({ variables, history, taskId, procId });
+			}}
 			enableReinitialize
 		>
-			{({ values, errors }) => (
-				<Form colon={false}>
+			{({ values, handleSubmit, errors }) => (
+				<Form onSubmit={handleSubmit} colon={false}>
 					<Row type="flex" justify="left" gutter={8}>
 						<Col span={12}>
 							<Row><Col><h2>Datos de Cliente</h2></Col></Row>
@@ -195,16 +202,12 @@ const ValidarRegistro = ({
 							<Col><Button type="primary" onClick={() => {
 										values.aceptado = false;
 										const variables = transformData(values, formData);
+										console.log("Rechazar: ", variables);
 										completeTask({ variables, history, taskId, procId });
 									 }}>
 								Rechazar
 							</Button></Col>
-							<Col><Button type="primary" onClick={() => {
-										values.aceptado = true;
-										const variables = transformData(values, formData);
-										completeTask({ variables, history, taskId, procId });
-									 }}>
-								Aceptar</Button></Col>
+							<Col><Button type="primary" htmlType="submit">Aceptar</Button></Col>
 							</Row>
 						</Col>
 					</Row>
