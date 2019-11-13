@@ -10,7 +10,7 @@ export const formData = [
 	{name:"cliente_nif", type:"String", validation:Yup.string().required()},
 	{name:"cliente_email", type:"String", validation:Yup.string().required()},
 	{name:"cliente_telefono", type:"String", validation:Yup.string().required()},
-	{name:"ind_acepta_emailcomercial", type:"Integer", validation:undefined},
+	{name:"ind_acepta_emailcomercial", type:"Boolean", validation:undefined},
 	// Entidad
 	{name:"codentidad_cbim", type:"Integer", validation:Yup.number().integer().required()},
 	{name:"nomentidad_cbim", type:"String", validation:Yup.string().required()},
