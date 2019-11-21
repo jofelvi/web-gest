@@ -10,8 +10,6 @@ const LeftMenu = ({
     itemsMenu,
     loadMenuItems,
     collapsed,
-    setCollapse,
-    wMenu,
     history,
 }) => {
     useEffect(()=>{
@@ -43,7 +41,7 @@ const LeftMenu = ({
                                     )}
                                 </SubMenu>;
                     } else {
-                        return  <Menu.Item key={item.id}>
+                        return  <Menu.Item key={item.id} onClick={()=>redirect(item,history)}>
                                     <Icon type="link" />
                                     <span>{item.label}</span>
                                 </Menu.Item>;

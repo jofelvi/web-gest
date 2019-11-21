@@ -11,119 +11,70 @@ const mockMenu ={
       label:"Gestión Tareas",
       children:[
         {
-          id:11,
-          label:"Mis tareas",
-          url:'/tasks/user'
+          id:8,
+          label:"Mis Tareas",
+          url:"/tasks/user"
         },
         {
-          id:12,
-          label:"Tareas de mi Equipo",
-          url:'/tasks/group'
-        },
-        {
-          id:13,
+          id:9,
           label:"Todas las tareas",
-          url:'/tasks'
-        }
+          url:"/tasks"
+        },
       ]
     },
     {
       id:3,
-      label:"Usuarios Farmacia",
-      url:'/process/signup'
+      label:"Catálogo",
+      url:"/catalog-list"
     },
     {
       id:4,
-      label:"Gestión",
+      label:"Clientes",
       children:[
         {
-          id:14,
-          label:"Gestión",
-          url:'/management/group'
+          id:10,
+          label:"Clientes en TR",
+          url:"/clients/tr"
         },
         {
-          id:15,
-          label:"Grupo Empresarial",
-          url:'/management/enterprise-group'
-        },
-        {
-          id:16,
-          label:"Delegado",
-          url:'/management/delegate'
-        },
-        {
-          id:17,
-          label:"Jefes de Zona",
-          url:'/management/area-managers'
-        },
-        {
-          id:18,
-          label:"Producto",
-          url:'/management/products'
-        },
-        {
-          id:19,
-          label:"Subgrupo",
-          url:'/management/subgroup'
-        },
-        {
-          id:20,
-          label:"Pedidos Embargados",
-          url:'/management/foreclosed-orders'
-        },
-        {
-          id:21,
-          label:"Acuerdos Comerciales",
-          url:'/management/commercial-deals'
+          id:11,
+          label:"Clientes en CBIM",
+          url:"/clients/cbim"
         }
       ]
     },
     {
       id:5,
-      label:"Mayorista Farmacia",
-      url:'/management/wholesaler-pharmacy'
+      label:"Condiciones Comerciales",
+      url:"/commercial-deals"
     },
     {
       id:6,
-      label:"Ofertas",
-      url:"/deals"
+      label:"Pedidos",
+      url:"/orders"
     },
     {
       id:7,
-      label:"Gestión Masiva",
+      label:"Configuración",
       children:[
         {
-          id:22,
-          label:"Delegados y Farmacias",
-          url:'/massive-management/delegates-pharmacy'
+          id:12,
+          label:"Mi perfil",
+          url:"/management/profile"
         },
         {
-          id:23,
-          label:"Relaciones",
-          url:'/massive-management/relationships'
+          id:13,
+          label:"Gestión de usuarios",
+          url:"/management/users"
         },
         {
-          id:24,
-          label:"Limitación de compras",
-          url:'/massive-management/purchase-limit'
+          id:14,
+          label:"Ayuda Online",
+          url:"/management/online-help"
         }
       ]
     },
-    {
-      id:8,
-      label:"CMI",
-      url:'/cmi'
-    },
-    {
-      id:9,
-      label:"Informes",
-      url:'/reports'
-    },
-    {
-      id:10,
-      label:"Ayuda Online",
-      url:'/online-help'
-    }
+    
   ]
 };
 

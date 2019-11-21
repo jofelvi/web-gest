@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Table, Button, Switch} from 'antd';
+import {Table, Button, Switch, Layout} from 'antd';
 import './styles.css';
 import { String} from 'typescript-string-operations';
 import * as dayjs from 'dayjs';
@@ -10,6 +10,8 @@ import ItemActions from './ItemActions';
 import FormCommercialDeal from '../FormCommercialDeal';
 dayjs.extend(customParseFormat)
 
+const {Content} = Layout;
+
 //properties
 const columnsToShow = [
     {
@@ -18,16 +20,21 @@ const columnsToShow = [
         key: 'idcondcomercial',
         sorter: (a,b) => a.idcondcomercial - b.idcondcomercial,
         sortDirections: ['descend', 'ascend'],
+        fixed: 'left',
+        width:50
     },
     {
         title: 'Nombre',
         dataIndex: 'nombre',
         key: 'nombre',
+        width:200,
+        fixed: 'left',
     },
     {
         title: 'Descripción',
         dataIndex: 'descripcion',
         key: 'descripcion',
+        width:200
     },
     {
         title: 'Tipo de Condición',
@@ -52,6 +59,7 @@ const columnsToShow = [
             }
         ],
         onFilter: (value, record) => record.tipo.indexOf(value) === 0,
+        width:150
     },
     {
         title: 'Fecha de Inicio',
@@ -67,7 +75,8 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
-        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY'),
+        width:150
     },
     {
         title: 'Fecha Fin',
@@ -83,24 +92,28 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
-        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY'),
+        width:100
     },
     {
         title: 'Código Campaña',
         dataIndex: 'codcupon',
         key: 'codcupon',
+        width:150
     },
     {
         title: 'Margen',
         dataIndex: 'margen',
         key: 'margen',
-        render: (data) => String.Format('{0}%',data)
+        render: (data) => String.Format('{0}%',data),
+        width:150
     },
     {
         title: 'Surtido',
         dataIndex: 'ind_surtido',
         key: 'ind_surtido',
-        render: (data) => data ? 'SI': 'NO'
+        render: (data) => data ? 'SI': 'NO',
+        width:100
     },
     {
         title: 'Estado',
@@ -123,19 +136,25 @@ const columnsToShow = [
         filterMultiple: false,
         onFilter: (value, record) => record.estado.indexOf(value) === 0,
         sorter: (a,b) => a.estado.length - b.estado.length,
-        sortDirections: ['descend', 'ascend']
+        sortDirections: ['descend', 'ascend'],
+        fixed: 'right',
+        width:100
     },
     {
         title: '',
         dataIndex: 'estado',
         key: 'estado',
-        render: (estado,deal) => estado === 'Borrador'? <div onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</div> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>
+        render: (estado,deal) => estado === 'Borrador'? <div onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</div> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>,
+        fixed: 'right',
+        width:100
     },
     {
         title: '',
         dataIndex: '',
         key: 'Actions',
-        render: (deal) => <ItemActions key={String.Format('commercial-deals-{0}-actions',deal.id)} deal={deal}/>
+        render: (deal) => <ItemActions key={String.Format('commercial-deals-{0}-actions',deal.id)} deal={deal}/>,
+        fixed: 'right',
+        width:100
     }
 ]
 const columnsLines = [
@@ -165,20 +184,26 @@ const columnsLines = [
     },
 ]
 
-//methods
-const changeState = (ev) =>
-{
-}
-const renderTable= (items)=>{
-    return <Table 
-        className="commercial-deals-table" 
-        dataSource={items} 
-        columns={columnsToShow}
-        expandedRowRender = {item => expandRow(item)}
-        rowKey="idcondcomercial"
-        pagination={{position:'both'}}
-        locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
-        size="middle"></Table>;
+const changeState =(ev)=>{}
+
+const renderTable= (items, loading)=>{
+    return (
+        <Layout>
+            <Content className="commercial-deals-container">
+                <Table 
+                    className="commercial-deals-table" 
+                    dataSource={items} 
+                    columns={columnsToShow}
+                    expandedRowRender = {item => expandRow(item)}
+                    rowKey="idcondcomercial"
+                    pagination={{position:'both', pageSize:20}}
+                    locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
+                    size="middle"
+                    loading={loading}
+                    scroll={{x:700, y:320}}></Table>
+            </Content>   
+        </Layout>
+    );
 };
 const expandRow = (item) => {
     return (
@@ -209,7 +234,11 @@ const ViewCommercialDeals = ({
     setCurrentCommercialDeal,
     token
 }) =>{
+    const [loading, setLoading] = useState(true);
     useEffect(()=>{
+        if(list.length > 0){
+            setLoading(false);
+        }
         loadFamilies(); 
         loadSubFamilies();
         loadProducts();
@@ -223,9 +252,9 @@ const ViewCommercialDeals = ({
             <Button onClick={()=> {
                 showNewCommercialDeal(true);
                 setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
-            }}>Nuevo</Button>
+            }} hidden={loading}>Nuevo</Button>
         </ButtonGroup>
-        {type === "all"? renderTable(list):
+        {type === "all"? renderTable(list, loading):
          <div>sin resultados</div>}
          <FormCommercialDeal />
     </div>

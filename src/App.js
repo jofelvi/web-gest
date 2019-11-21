@@ -28,6 +28,7 @@ const App = ({
   token,
   setToken,
 }) => {
+  const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
     if (!token) {
       setToken({ token: utils.getAuthToken() });
@@ -47,7 +48,7 @@ const App = ({
         <TopBar></TopBar>
       </Header>
       <Layout>
-        <Sider breakpoint="lg" width="300">
+        <Sider breakpoint="lg" width="300" collapsible collapsed={collapsed} onCollapse={(collapsed) => setCollapsed(collapsed)}>
           <LeftMenu></LeftMenu>
         </Sider>
         <Content className='principal-content'>
