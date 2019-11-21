@@ -40,68 +40,78 @@ const ValidarRegistro = ({
 			enableReinitialize
 		>
 			{({ values, handleSubmit, errors }) => (
-				<Form onSubmit={handleSubmit} colon={false}>
+				<Form 
+					onSubmit={handleSubmit} 
+					olon={false} 
+					className="form-indas">
+					<h2 className="form-indas-main-title">Solicitud registro de cliente</h2>
 					<Row type="flex" justify="left" gutter={8}>
-						<Col span={12}>
-							<Row><Col><h2>Datos de Cliente</h2></Col></Row>
-							<Row><Col>
-								<Form.Item name="codcli_cbim" label="Código CBIM" 
-									required={true} whitespace={true}>
-									<Input value={values.codcli_cbim} disabled="true" size={10}/>
-								</Form.Item>
-								<ErrorMessage component="div" name="codcli_cbim"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_nombre" label="Nombre"
-									required={true} whitespace={true}>
-									<Input value={values.cliente_nombre} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_nombre"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_apellido1" label="Primer apellido"
-									required={true} whitespace={true}>
-									<Input value={values.cliente_apellido1} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_apellido1"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_apellido2" label="Segundo apellido">
-									<Input value={values.cliente_apellido2} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_apellido2"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_nif" label="NIF"
-									required={true} whitespace={true}>
-									<Input value={values.cliente_nif} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_nif"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_email" label="Correo electrónico"
-									required={true} whitespace={true}>
-									<Input value={values.cliente_email} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_email"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="cliente_telefono" label="Teléfono"
-									required={true} whitespace={true}>
-									<Input value={values.cliente_telefono} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="cliente_telefono"/>
-							</Col></Row>
-							<Row><Col>
-								<Form.Item name="ind_acepta_emailComercial"
-									label="Admite el envío de emails comerciales">
-									<Checkbox checked={values.ind_acepta_emailcomercial} disabled="true"/>
-								</Form.Item>
-								<ErrorMessage component="div" name="ind_acepta_emailComercial"/>
-							</Col></Row>
+						
+						<Col md={{span:12}}
+							 xs={{span:24}}>
+							<section className="form-indas-section">
+								<h4 className="form-indas-main-title-section">Datos de Cliente Transferindas</h4>
+								<Row><Col>
+									<Form.Item name="codcli_cbim" label="Código CBIM" 
+										required={true} whitespace={true}>
+										<Input value={values.codcli_cbim} disabled="true" size={10}/>
+									</Form.Item>
+									<ErrorMessage component="div" name="codcli_cbim"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_nombre" label="Nombre"
+										required={true} whitespace={true}>
+										<Input value={values.cliente_nombre} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_nombre"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_apellido1" label="Primer apellido"
+										required={true} whitespace={true}>
+										<Input value={values.cliente_apellido1} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_apellido1"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_apellido2" label="Segundo apellido">
+										<Input value={values.cliente_apellido2} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_apellido2"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_nif" label="NIF"
+										required={true} whitespace={true}>
+										<Input value={values.cliente_nif} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_nif"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_email" label="Correo electrónico"
+										required={true} whitespace={true}>
+										<Input value={values.cliente_email} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_email"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="cliente_telefono" label="Teléfono"
+										required={true} whitespace={true}>
+										<Input value={values.cliente_telefono} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="cliente_telefono"/>
+								</Col></Row>
+								<Row><Col>
+									<Form.Item name="ind_acepta_emailComercial"
+										label="Admite el envío de emails comerciales">
+										<Checkbox checked={values.ind_acepta_emailcomercial} disabled="true"/>
+									</Form.Item>
+									<ErrorMessage component="div" name="ind_acepta_emailComercial"/>
+								</Col></Row>
+							</section>
 						</Col>
-						<Col span={12}>
-							<Row><Col><h2>Datos de Entidad</h2></Col></Row>
+						<Col md={{span:12}}
+							 xs={{span:24}}>
+						<section className="form-indas-section">
+							<h4 className="form-indas-main-title-section">Datos de Entidad principal</h4>
 							<Row><Col>
 								<Form.Item name="codentidad_cbim" label="Código entidad"
 									required={true} whitespace={true}>
@@ -117,7 +127,7 @@ const ValidarRegistro = ({
 								<ErrorMessage component="div" name="nomentidad_cbim"/>
 							</Col></Row>
 							<Row type="flex" justify="left" gutter={8}>
-								<Col span={12}>
+								<Col xs={{span:24}} sm={{span:12}}>
 									<Row><Col>
 										<Form.Item name="entidad_nif" label="NIF">
 											<Input value={values.entidad_nif} disabled="true"/>
@@ -148,7 +158,7 @@ const ValidarRegistro = ({
 										<ErrorMessage component="div" name="entidad_email"/>
 									</Col></Row>
 								</Col>
-								<Col span={12}>
+								<Col xs={{span:24}} sm={{span:12}}>
 									<Row><Col>
 										<Form.Item name="direccion" label="Dirección"
 											required={true} whitespace={true}>
@@ -191,24 +201,26 @@ const ValidarRegistro = ({
 								</Form.Item>
 								<ErrorMessage component="div" name="nombre_delegado"/>
 							</Col></Row>
+						</section>
+							
 						</Col>
 					</Row>
-					<Row type="flex" justify="center">
-						<Col span={12}>
+					<Row type="flex" justify="left" gutter={16}>
+						<Col>
 							<Button type="primary">Cancelar</Button>
 						</Col>
-						<Col span={12}>
-							<Row type="flex" justify="end" gutter={8}>
-							<Col><Button type="primary" onClick={() => {
+						<Col>
+							<Button type="primary" onClick={() => {
 										values.aceptado = false;
 										const variables = transformData(values, formData);
 										console.log("Rechazar: ", variables);
 										completeTask({ variables, history, taskId, procId });
 									 }}>
 								Rechazar
-							</Button></Col>
-							<Col><Button type="primary" htmlType="submit">Aceptar</Button></Col>
-							</Row>
+							</Button>
+						</Col>
+						<Col>
+							<Button type="primary" htmlType="submit">Aceptar</Button>
 						</Col>
 					</Row>
 				</Form>

@@ -15,3 +15,8 @@
     color:rgb(3, 159, 250);
     padding: 0px 8px;
 }
+@media (max-width: 572px) {
+    .topbar .user-desc-container{
+        
+    }
+}

@@ -16,12 +16,12 @@ const TopBar = ({
                 <img src={logo} alt="logo sitio domtar indas"/>
     </div>*/}
             {status === STATUS.LOGGED ? 
-            <Col className="user-container" xs={{span:8, offset:16}}  xl={{span:4, offset:20}} lg={{span:5, offset:19}} md={{span:6, offset:18}} sm={{span:6, offset:18}}>
+            <Col className="user-container" xxl={{span:3, offset:21}}  xs={{span:16, offset:8}}  xl={{span:4, offset:20}} lg={{span:5, offset:19}} md={{span:6, offset:18}} sm={{span:10, offset:14}}>
                 <Row gutter={16}>
-                    <Col md={{span:5}} xs={{span:8}}>
+                    <Col xxl={{span:7}} lg={{span:8}} md={{span:8}} xs={{span:8}}>
                         <img src={usr} alt="imagen de usuario"/>
                     </Col>
-                    <Col md={{span:19}} className="user-desc-container">
+                    <Col xxl={{span:17}} lg={{span:16}} md={{span:16}} xs={{span:16}} className="user-desc-container">
                         <Col>Rafael Lucia</Col>
                         <Button onClick={() => {
                             logout();

@@ -11,5 +11,94 @@ body{
 .principal-content{
     margin-top:30px;
     margin-left: 30px;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-bottom: 30px;
 }
+
+/*Inicio estilos de controles de formulario*/
+.form-indas{
+    padding: 20px 40px 20px 40px;
+    margin-right: 20px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+.form-indas .ant-form-item-control{
+    padding-right: 40px;
+}
+.form-indas .ant-input:not(.ant-input-disabled){
+    background-color: rgba(211, 211, 211, 0.2);
+    border:1px solid rgba(13, 83, 148, 0.5);
+}
+.form-indas .ant-input:hover:not(.ant-input-disabled),
+.form-indas .ant-input:focus:not(.ant-input-disabled){
+    box-shadow: 0px 0px 10px rgba(13, 83, 148, 0.4);
+    border:1px solid rgba(13, 83, 148, 0.8);
+}
+.form-indas .ant-input-disabled,
+.form-indas .ant-input-disabled:hover{
+    background-color: rgba(211, 211, 211, 0.8);
+    border:1px solid rgba(13, 83, 148, 0.5);
+}
+.form-indas .form-indas-main-title{
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+}
+.form-indas .form-indas-search-btn-container{
+    padding-top: 30px;
+}
+.form-indas .form-indas-btn-search{
+    background-color: rgba(0, 33, 64, 0.85);
+    color:rgba(255,255,255,1);
+}
+.form-indas .form-indas-body-container{
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:2px solid rgba(0, 0, 0, 0.2);
+}
+.form-indas .form-indas-main-sub-title{
+    font-size:1.2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.form-indas .form-indas-main-title-section{
+    font-size:0.9rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color:rgba(0, 33, 64, 0.85);
+}
+.form-indas .form-indas-section{
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+    border-left: 2px solid rgba(0,0,0,0.2);
+}
+.form-indas .ant-form-item-label{
+    max-height: 30px;
+}
+.form-indas .ant-form-item-label label{
+    font-size: 0.8rem;
+}
+.form-indas .ant-row.ant-form-item{
+    margin-bottom:5px;
+}
+
+@media (max-width: 992px) {
+    .form-indas{
+      padding: 20px 10px 20px 10px;
+    }
+    .form-indas .form-indas-section{
+        padding-left: 5px;
+        padding-right: 5px; 
+    }
+    .form-indas .ant-form-item-control{
+        padding-right: 10px;
+    }
+    .form-indas .form-indas-section{
+        border:0px;
+    }
+    .ant-btn.ant-btn-primary{
+        margin-top: 10px;
+    }
+  }
+
+/*Fin estilos de controles de formulario*/
