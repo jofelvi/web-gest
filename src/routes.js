@@ -15,7 +15,7 @@ import SignupScreen from './screens/SignupScreen';
 import CompletedForm from './screens/Forms/completedForm';
 import TaskFormScreen from './screens/TaskFormScreen';
 import CommercialDealsScreen from './screens/CommercialDealsScreen';
-import ValidarRegistroSinCBIM from './screens/Forms/register/validarRegistro'
+import ValidarRegistroSinCBIM from './screens/Forms/register/validarRegistroSinCBIM'
 
 const { capitalizeWord } = utils;
 
