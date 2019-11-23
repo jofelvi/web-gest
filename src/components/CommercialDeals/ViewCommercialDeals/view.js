@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Table, Button, Switch, Layout} from 'antd';
-import './styles.css';
 import { String} from 'typescript-string-operations';
 import * as dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -19,22 +18,19 @@ const columnsToShow = [
         dataIndex: 'idcondcomercial',
         key: 'idcondcomercial',
         sorter: (a,b) => a.idcondcomercial - b.idcondcomercial,
-        sortDirections: ['descend', 'ascend'],
-        fixed: 'left',
-        width:50
+        sortDirections: ['descend', 'ascend']
     },
     {
         title: 'Nombre',
         dataIndex: 'nombre',
         key: 'nombre',
-        width:200,
-        fixed: 'left',
+        sorter: (a,b) => a.nombre - b.nombre,
+        sortDirections: ['descend', 'ascend']
     },
     {
         title: 'Descripción',
         dataIndex: 'descripcion',
-        key: 'descripcion',
-        width:200
+        key: 'descripcion'
     },
     {
         title: 'Tipo de Condición',
@@ -58,8 +54,7 @@ const columnsToShow = [
                 value:'Campaña'
             }
         ],
-        onFilter: (value, record) => record.tipo.indexOf(value) === 0,
-        width:150
+        onFilter: (value, record) => record.tipo.indexOf(value) === 0
     },
     {
         title: 'Fecha de Inicio',
@@ -75,8 +70,7 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
-        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY'),
-        width:150
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
     },
     {
         title: 'Fecha Fin',
@@ -92,28 +86,24 @@ const columnsToShow = [
             }
         },
         sortDirections: ['descend', 'ascend'],
-        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY'),
-        width:100
+        render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
     },
     {
         title: 'Código Campaña',
         dataIndex: 'codcupon',
-        key: 'codcupon',
-        width:150
+        key: 'codcupon'
     },
     {
         title: 'Margen',
         dataIndex: 'margen',
         key: 'margen',
-        render: (data) => String.Format('{0}%',data),
-        width:150
+        render: (data) => String.Format('{0}%',data)
     },
     {
         title: 'Surtido',
         dataIndex: 'ind_surtido',
         key: 'ind_surtido',
-        render: (data) => data ? 'SI': 'NO',
-        width:100
+        render: (data) => data ? 'SI': 'NO'
     },
     {
         title: 'Estado',
@@ -136,25 +126,21 @@ const columnsToShow = [
         filterMultiple: false,
         onFilter: (value, record) => record.estado.indexOf(value) === 0,
         sorter: (a,b) => a.estado.length - b.estado.length,
-        sortDirections: ['descend', 'ascend'],
-        fixed: 'right',
-        width:100
+        sortDirections: ['descend', 'ascend']
+        
     },
     {
         title: '',
         dataIndex: 'estado',
         key: 'estado',
-        render: (estado,deal) => estado === 'Borrador'? <div onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</div> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>,
-        fixed: 'right',
-        width:100
+        render: (estado,deal) => estado === 'Borrador'? <div onClick={(ev) => changeState(ev)} disabled={deal.productos.length === 0 && deal.clientes.length === 0}>Activar</div> : <Switch onChange={(ev) => {changeState(ev)}} checked={estado === 'Activo'}></Switch>
+
     },
     {
         title: '',
         dataIndex: '',
         key: 'Actions',
-        render: (deal) => <ItemActions key={String.Format('commercial-deals-{0}-actions',deal.id)} deal={deal}/>,
-        fixed: 'right',
-        width:100
+        render: (deal) => <ItemActions key={String.Format('commercial-deals-{0}-actions',deal.id)} deal={deal}/>
     }
 ]
 const columnsLines = [
@@ -186,38 +172,8 @@ const columnsLines = [
 
 const changeState =(ev)=>{}
 
-const renderTable= (items, loading)=>{
-    return (
-        <Layout>
-            <Content className="commercial-deals-container">
-                <Table 
-                    className="commercial-deals-table" 
-                    dataSource={items} 
-                    columns={columnsToShow}
-                    expandedRowRender = {item => expandRow(item)}
-                    rowKey="idcondcomercial"
-                    pagination={{position:'both', pageSize:20}}
-                    locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
-                    size="middle"
-                    loading={loading}
-                    scroll={{x:700, y:320}}></Table>
-            </Content>   
-        </Layout>
-    );
-};
-const expandRow = (item) => {
-    return (
-        <Table 
-        className="commercial-deals-lines"
-        dataSource={item.escalados}
-        columns={columnsLines}
-        size='small'
-        pagination={false}
-        rowKey='idescalado'
-        >
-        </Table>
-    )
-};
+
+
 
 //components
 const ViewCommercialDeals = ({
@@ -235,6 +191,49 @@ const ViewCommercialDeals = ({
     token
 }) =>{
     const [loading, setLoading] = useState(true);
+    const renderTable= (items, loading)=>{
+        return (
+            <div className="table-indas">
+                <h2 className="table-indas-title">Condiciones comerciales</h2>
+                
+                 
+            <ButtonGroup className="commercial-deals-top-actions">
+                <Button onClick={()=> {
+                    showNewCommercialDeal(true);
+                    setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
+                }} hidden={loading}>Nuevo</Button>
+            </ButtonGroup>
+                    <Table 
+                        className="commercial-deals-table" 
+                        dataSource={items} 
+                        columns={columnsToShow}
+                        expandedRowRender = {item => expandRow(item)}
+                        rowKey="idcondcomercial"
+                        pagination={{position:'both', pageSize:20}}
+                        locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
+                        size="middle"
+                        loading={loading}
+                        scroll={{x:true}}></Table>
+            </div>
+        );
+    };
+    const expandRow = (item) => {
+        return (
+            <div className="table-indas-expand">
+                 <h4 className="table-indas-title">Lineas</h4>
+                <Table 
+                className="commercial-deals-lines"
+                dataSource={item.escalados}
+                columns={columnsLines}
+                size='small'
+                pagination={false}
+                rowKey='idescalado'
+                >
+                </Table>
+            </div>
+        )
+    };
+
     useEffect(()=>{
         if(list.length > 0){
             setLoading(false);
@@ -248,12 +247,6 @@ const ViewCommercialDeals = ({
         loadDealTypes();
     },[list, token,loadFamilies, loadSubFamilies, loadProducts, loadBrands, loadSubBrands, loadUsers,loadDealTypes]);
     return <div>
-        <ButtonGroup className="commercial-deals-top-actions">
-            <Button onClick={()=> {
-                showNewCommercialDeal(true);
-                setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
-            }} hidden={loading}>Nuevo</Button>
-        </ButtonGroup>
         {type === "all"? renderTable(list, loading):
          <div>sin resultados</div>}
          <FormCommercialDeal />

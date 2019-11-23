@@ -6,6 +6,7 @@ import tasks from './tasks/reducers';
 import forms from './forms/reducers';
 import commercialDeals from './commercialDeals/reducers';
 import menu from './menu/reducers'
+import clientsIndas from './clients-indas/reducers';
 
 export default combineReducers({
   auth,
@@ -13,5 +14,6 @@ export default combineReducers({
   tasks,
   forms,
   commercialDeals,
-  menu
+  menu,
+  clientsIndas
 });

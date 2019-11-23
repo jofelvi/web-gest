@@ -43,6 +43,12 @@ import{
   watchloadChildItems
 } from './menu/sagas'
 
+import {
+  watchloadClientsIndas,
+  watchloadEntitiesInda,
+  watchloadWholesalersIndas
+} from './clients-indas/sagas';
+
 export default function* rootSaga() {
   yield all([
     watchFetchUsers(),
@@ -72,6 +78,9 @@ export default function* rootSaga() {
     watchloadDealTypes(),
     watchloadMenuItems(),
     watchloadChildItems(),
-    watchCreateCommercialDeal()
+    watchCreateCommercialDeal(),
+    watchloadClientsIndas(),
+    watchloadEntitiesInda(),
+    watchloadWholesalersIndas()
   ]);
 }
