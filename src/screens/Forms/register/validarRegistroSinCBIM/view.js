@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, ErrorMessage } from 'formik';
-import { Form, Input, Checkbox, Row, Col, Button, Radio, Divider } from 'antd';
+import { Form, Input, Row, Col, Button, Radio } from 'antd';
 import { transformData } from '../../lib';
 import { formData } from './data';
 import { obtenerValoresIniciales, obtenerValidacionSchema } from '../comunes';
