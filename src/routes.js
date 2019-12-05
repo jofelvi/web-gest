@@ -20,7 +20,7 @@ import ClientsIndasScreen from './screens/ClientsScreen';
 import ValidarRegistroSinCBIM from './screens/Forms/register/validarRegistroSinCBIM'
 import ValidarRegistro from './screens/Forms/register/validarRegistro'
 
-import GestionarIncidencia from './screens/Forms/order/gestionarIncidencia'
+import ValidarPedido from './screens/Forms/pedido/validarPedido'
 
 const { capitalizeWord } = utils;
 
@@ -79,7 +79,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path="/clients/tr" exact component={ClientsIndasScreen}/> 
       <PrivateRoute path="/pruebaform" exact component={ValidarRegistroSinCBIM}/>
       <PrivateRoute path="/pruebaform2" exact component={ValidarRegistro}/>
-      <PrivateRoute path="/pruebaform3" exact component={GestionarIncidencia}/>
+      <PrivateRoute path="/pruebaform3" exact component={ValidarPedido}/>
     </Switch>
   );
 };

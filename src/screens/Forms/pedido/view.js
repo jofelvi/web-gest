@@ -8,7 +8,7 @@ import Start from '../components/Start';
 const View = ({ startProcess, history, processStep, taskId, taskName }) => {
   useEffect(() => {
     if (processStep === '') {
-      startProcess({ key: 'order', history });
+      startProcess({ key: 'pedido', history });
     }
   }, []);
 

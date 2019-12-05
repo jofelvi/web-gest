@@ -18,7 +18,7 @@ const tableComponents = {
 	},
 };
 const validationSchema = Yup.object().shape( obtenerValidacionSchema(formData) );
-const GestionarIncidencia = ({
+const ValidarPedido = ({
   getTaskVariables,
   taskVariables,
   completeTask,
@@ -68,7 +68,7 @@ const GestionarIncidencia = ({
 						<Col span={4}><b>Estado</b></Col>
 					</Row>
 					<Row type="flex" justify="left" gutter={8}>
-						<Col span={4}>{values.origen}-{values.idpedido}</Col>
+						<Col span={4}>{values.origen}-{values.drupal_order_id}</Col>
 						<Col span={4}>{values.fecha_alta}</Col>
 						<Col span={12}>{values.codentidad_cbim} - {values.nomentidad_cbim}</Col>
 						<Col span={4}>{values.nomestado}</Col>
@@ -105,8 +105,8 @@ const GestionarIncidencia = ({
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
-							<Form.Item name="codcompañia" label="Compañia">
-								<Input value={values.codcompañia}/>
+							<Form.Item name="codcupon" label="Compañia">
+								<Input value={values.codcupon}/>
 							</Form.Item>
 						</Col>
 						<Col xs={{span:24}} md={{span:14}}>
@@ -121,8 +121,8 @@ const GestionarIncidencia = ({
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col span={24}>
-							<Form.Item name="incidencia" label="Incidencia">
-								<TextArea rows={2} disabled="true" value={values.incidencia}/>
+							<Form.Item name="mensaje_error" label="Incidencia">
+								<TextArea rows={2} disabled="true" value={values.mensaje_error}/>
 							</Form.Item>
 						</Col>
 					</Row>
@@ -157,8 +157,8 @@ const GestionarIncidencia = ({
   );
 };
 
-GestionarIncidencia.propTypes = {
+ValidarPedido.propTypes = {
   completeTask: PropTypes.func.isRequired,
 };
 
-export default withRouter(GestionarIncidencia);
+export default withRouter(ValidarPedido);
