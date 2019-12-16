@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
 import { Form, Row, Col, Button, Input, Select, Divider, Table } from 'antd';
-import { transformData } from '../../lib';
-import { formData, tableCols, values } from './data';
-import { obtenerValoresIniciales, obtenerValidacionSchema } from '../comunes';
+import { transformData, selectTaskVariable } from '../../lib';
+import { tableCols } from './data';
+import { obtenerValoresIniciales, obtenerValidacionSchema } from './lib';
 import { EditableFormRow, EditableCell } from './editableRow';
 
 const { Option } = Select;
@@ -17,7 +17,7 @@ const tableComponents = {
 		cell: EditableCell,
 	},
 };
-const validationSchema = Yup.object().shape( obtenerValidacionSchema(formData) );
+const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
 const ValidarPedido = ({
   getTaskVariables,
   taskVariables,
@@ -28,6 +28,9 @@ const ValidarPedido = ({
     params: { taskId, procId },
   },
   task,
+	token,
+	loadWholesalersIndas,
+	wholesalersIndas,
 }) => {
   useEffect(() => {
     getTaskVariables({ history, taskId });
@@ -35,15 +38,22 @@ const ValidarPedido = ({
       fetchTask(taskId);
     }
   }, []);
+	useEffect(() => {
+		if(taskVariables) {
+			let codEntidadCbim = selectTaskVariable(taskVariables, "codentidad_cbim");
+			if(codEntidadCbim) {
+				loadWholesalersIndas(codEntidadCbim.value);
+			}
+		}
+	}, [ token, taskVariables ]);
 
   return (
 		<Formik
-			//initialValues={ obtenerValoresIniciales(taskVariables, formData) }
-			initialValues={ values }
+			initialValues={ obtenerValoresIniciales(taskVariables) }
 			validationSchema={validationSchema}
 			onSubmit={values => {
 				values.aceptado = true;
-				const variables = transformData(values, formData);
+				const variables = transformData(values);
 				console.log("Aceptar: ", variables);
 				completeTask({ variables, history, taskId, procId });
 			}}
@@ -87,7 +97,7 @@ const ValidarPedido = ({
 																	dataIndex: col.dataIndex,
 																	title: col.title,
 																	handleSave: row => {
-																		let lineas = values.lineas;
+																		let lineas = values.items;
 																		console.log("Salvando fila ", row);
 																		console.log("Salvando lineas ", lineas);
 																		values.lineas = lineas.map(linea => {
@@ -98,7 +108,7 @@ const ValidarPedido = ({
 																}),
 															};
 														})}
-							dataSource={values.lineas} 
+							dataSource={values.items} 
 							components={tableComponents}
 							borderred
 							pagination={{ pageSize: 4 }}/>
@@ -112,7 +122,7 @@ const ValidarPedido = ({
 						<Col xs={{span:24}} md={{span:14}}>
 							<Form.Item name="codmayorista" label="Mayorista">
 								<Select defaultValue={values.codmayorista}>
-									{values.mayoristas.map(item => (
+									{wholesalersIndas.map(item => (
 										<Option value={item.codmayorista}>{item.nombre}</Option>
 									))}
 								</Select>

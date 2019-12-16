@@ -1,29 +1,35 @@
 import * as Yup from 'yup';
 
+// Datos esperados del proceso
 export const formData = [
-	{name:"codcli_cbim",         type:"Integer", validation:undefined},
-	{name:"nomcli_cbim",         type:"String",  validation:undefined},
-	{name:"drupal_order_id",     type:"Integer", validation:undefined},
-	{name:"origen",              type:"String",  validation:undefined},
-	{name:"fecha_alta",          type:"Date",    validation:undefined},
-	{name:"codentidad_cbim",     type:"Integer", validation:undefined},
-	{name:"nomentidad_cbim",     type:"String",  validation:undefined},
-	{name:"codestado",           type:"String",  validation:undefined},
-	{name:"nomestado",           type:"String",  validation:undefined},
-	{name:"codcupon",            type:"String",  validation:undefined},
-	{name:"codmayorista",        type:"Integer", validation:undefined},
-	{name:"mensaje_error",       type:"String",  validation:undefined},
-// Describe cada uno de los campos que forman una linea de pedido
-	{name:"drupal_order_item_id",type:"Strng",   validation:undefined},
-	{name:"codindas",            type:"String",  validation:undefined},
-	{name:"cantidad",            type:"Double",  validation:undefined},
-  {name:"descuento",           type:"Double",  validation:undefined},
-	{name:"puntos",              type:"Integer", validation:undefined},
-	{name:"lineas",              type:"Integer", validation:undefined},
-	{name:"tipo",                type:"String",  validation:undefined},
-	{name:"aceptado",            type:"Boolean", validation: undefined},
+	{name:"codcli_cbim",         type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"nomcli_cbim",         type:"String",  validation:undefined, defaultValue: ''},
+	{name:"drupal_order_id",     type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"origen",              type:"String",  validation:undefined, defaultValue: ''},
+	{name:"fecha_alta",          type:"Date",    validation:undefined, defaultValue: ''},
+	{name:"codentidad_cbim",     type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"nomentidad_cbim",     type:"String",  validation:undefined, defaultValue: ''},
+	{name:"codestado",           type:"String",  validation:undefined, defaultValue: ''},
+	{name:"nomestado",           type:"String",  validation:undefined, defaultValue: ''},
+	{name:"codcupon",            type:"String",  validation:undefined, defaultValue: ''},
+	{name:"codmayorista",        type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"mensaje_error",       type:"String",  validation:undefined, defaultValue: ''},
+// Número de items del pedido
+	{name:"lineas",              type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"tipo",                type:"String",  validation:undefined, defaultValue: ''},
+	{name:"aceptado",            type:"Boolean", validation: undefined, defaultValue: ''},
 ];
 
+export const formDataItem = [
+// Describe cada uno de los campos que forman una linea de pedido
+	{name:"drupal_order_item_id",type:"Strng",   validation:undefined, defaultValue: ''},
+	{name:"codindas",            type:"String",  validation:undefined, defaultValue: ''},
+	{name:"cantidad",            type:"Double",  validation:undefined, defaultValue: 0},
+  {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
+	{name:"puntos",              type:"Integer", validation:undefined, defaultValue: 0},
+];
+	
+// Definición de la tabla de pedidos
 export const tableCols = [
 	{ title: "Item",
 		key: "index", 
@@ -60,62 +66,3 @@ export const tableCols = [
 		editable: true,
 	}
 ];
-
-export const values = {
-  "codcli_cbim": 111111,
-  "nomcli_cbim": "Nombre del cliente en CBIM",
-  "drupal_order_id": 999999,
-	"origen": "NTR",
-  "fecha_alta": "11/01/2019",
-  "codentidad_cbim": 2222,
-  "nomentidad_cbim": "Nombre de la entidad en CBIM",
-  "codestado": "valiating",
-  "nomestado": "En revisión",
-  "codcupon": "xxxxxxx",
-  "codmayorista": 1,
-  "mensaje_error": "Descripción de la incidencia",
-  "lineas": [
-    {"drupal_order_item_id": "31d644b6-556f-43b5-8ab2-e6e847c7be59",
-		 "codindas": 2820001,
-     "nomproducto": "Nombre del producto 1",
-     "cantidad": 12,
-     "descuento": 10,
-     "puntos": 0},
-    {"drupal_order_item_id": "4677210-45fa-a943-43b5-767abc87aa23",
-     "codindas": 2820002,
-     "nomproducto": "Nombre del producto 2",
-     "cantidad": 1,
-     "descuento": 20,
-     "puntos": 2},
-    {"drupal_order_item_id": "555555-523h-eeeee-4444.eeeeeeeeee",
-     "codindas": 2820003,
-     "nomproducto": "Nombre del producto 3",
-     "cantidad": 14,
-     "descuento": 20,
-     "puntos": 2},
-    {"drupal_order_item_id": "555555-523h-eeeee-4444.12455deet6",
-     "codindas": 2820004,
-     "nomproducto": "Nombre del producto 4",
-     "cantidad": 11,
-     "descuento": 10,
-     "puntos": 2},
-    {"drupal_order_item_id": "44o4ou-45rf-akk0.iir0-999999999",
-     "codindas": 2820006,
-     "nomproducto": "Nombre del producto 6",
-     "cantidad": 1,
-     "descuento": 5,
-     "puntos": 0},
-  ],
-	"mayoristas": [
-		{ "codmayorista": 1,
-		 "nombre": "Mayorista 1" },
-		{ "codmayorista": 2,
-		 "nombre": "Mayorista 2" },
-		{ "codmayorista": 3,
-		 "nombre": "Mayorista 3" },
-		{ "codmayorista": 4,
-		 "nombre": "Mayorista 4" },
-		{ "codmayorista": 5,
-		 "nombre": "Mayorista 5" },
-	]
-}

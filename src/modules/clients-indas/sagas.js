@@ -48,7 +48,7 @@ function* loadClientsIndas() {
   //wholesalers indas
   function* loadWholesalersIndas(idEntity) {
     try {
-      const response = yield call(api.getWholesalersIndas,idEntity);
+      const response = yield call(api.getWholesalersIndas,idEntity.payload);
       yield put(loadWholesalersIndasSuccess({ wholesalersIndas: response.data }));
     } catch (e) {
       console.error(e);

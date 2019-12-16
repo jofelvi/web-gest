@@ -17,6 +17,5 @@ export const transformData = (values, taskVar) => {
 export const selectTaskVariable = (taskVariables, value) => {
   const taskVariable =
     taskVariables.find(taskVariable => taskVariable.name === value) || null;
-  console.log(taskVariable);
   return taskVariable;
 };
