@@ -3,11 +3,12 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
-import { Form, Row, Col, Button, Input, Select, Divider, Table } from 'antd';
+import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon } from 'antd';
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
 import { obtenerValoresIniciales, obtenerValidacionSchema } from './lib';
 import { EditableFormRow, EditableCell } from './editableRow';
+import './styles.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -65,7 +66,6 @@ const ValidarPedido = ({
 					olon={false} 
 					className="form-indas">
 					<h2 className="form-indas-main-title">Gestionar incidencia en pedido</h2>
-					<Divider/>
 					<Row type="flex" justify="left">
 						<Col span={24}>
 							<b>Cliente:&nbsp;</b>{values.codcli_cbim} - {values.nomcli_cbim}
@@ -78,12 +78,12 @@ const ValidarPedido = ({
 						<Col span={4}><b>Estado</b></Col>
 					</Row>
 					<Row type="flex" justify="left" gutter={8}>
-						<Col span={4}>{values.origen}-{values.drupal_order_id}</Col>
+						<Col span={4} className="ant-table-row-cell-ellipsis">
+							{values.origen}-{values.drupal_order_id}</Col>
 						<Col span={4}>{values.fecha_alta}</Col>
 						<Col span={12}>{values.codentidad_cbim} - {values.nomentidad_cbim}</Col>
 						<Col span={4}>{values.nomestado}</Col>
 					</Row>
-					<Divider/>
 					<Row type="flex" justify="left" gutter={16}>
 						<Table columns={tableCols.map(col => {
 															if (!col.editable) {
@@ -108,6 +108,7 @@ const ValidarPedido = ({
 																}),
 															};
 														})}
+							className="table-indas"
 							dataSource={values.items} 
 							components={tableComponents}
 							borderred
@@ -115,7 +116,7 @@ const ValidarPedido = ({
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
-							<Form.Item name="codcupon" label="Compañia">
+							<Form.Item name="codcupon" label="Campaña">
 								<Input value={values.codcupon}/>
 							</Form.Item>
 						</Col>
@@ -135,6 +136,17 @@ const ValidarPedido = ({
 								<TextArea rows={2} disabled="true" value={values.mensaje_error}/>
 							</Form.Item>
 						</Col>
+					</Row>
+					<Row type="flex" justify="left" gutter={16}>
+						<Col><Button type="link" onClick={() => { console.og("Guardar cambios"); }}>
+							<Icon type="save" />Guardar
+						</Button></Col>	
+						<Col><Button type="link" onClick={() => { console.og("Validar descuentos"); }}>
+							<Icon type="percentage" />Validar
+						</Button></Col>	
+						<Col><Button type="link" onClick={() => { console.og("Restablecer valores"); }}>
+							<Icon type="redo" />Restablecer
+						</Button></Col>	
 					</Row>
 					<Divider/>
 					<Row type="flex" justify="left" gutter={16}>

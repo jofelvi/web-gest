@@ -24,6 +24,7 @@ export const formDataItem = [
 // Describe cada uno de los campos que forman una linea de pedido
 	{name:"drupal_order_item_id",type:"Strng",   validation:undefined, defaultValue: ''},
 	{name:"codindas",            type:"String",  validation:undefined, defaultValue: ''},
+	{name:"nomproducto",         type:"String",  validation:undefined, defaultValue: ''},
 	{name:"cantidad",            type:"Double",  validation:undefined, defaultValue: 0},
   {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
 	{name:"puntos",              type:"Integer", validation:undefined, defaultValue: 0},
@@ -44,6 +45,7 @@ export const tableCols = [
 	{ title: "Producto",
 		dataIndex: "nomproducto",
 		key: "nomproducto", 
+		render: (text) => { return !text || text == ''? 'N.D.': text; },
 		ellipsis: true,
 	},
 	{ title: "Unidades",
