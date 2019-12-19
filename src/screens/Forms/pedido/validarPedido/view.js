@@ -3,10 +3,10 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, ErrorMessage } from 'formik';
-import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon } from 'antd';
+import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon, Tooltip } from 'antd';
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
-import { obtenerValoresIniciales, obtenerValidacionSchema } from './lib';
+import { obtenerValoresIniciales, obtenerValidacionSchema, fechaView } from './lib';
 import { EditableFormRow, EditableCell } from './editableRow';
 import './styles.css';
 
@@ -66,25 +66,31 @@ const ValidarPedido = ({
 					olon={false} 
 					className="form-indas">
 					<h2 className="form-indas-main-title">Gestionar incidencia en pedido</h2>
-					<Row type="flex" justify="left">
+					<Row>
 						<Col span={24}>
-							<b>Cliente:&nbsp;</b>{values.codcli_cbim} - {values.nomcli_cbim}
+							<span class="label-title-indas">Cliente</span>
+							{values.codcli_cbim} - {values.nomcli_cbim}
+						</Col>
+						<Col span={24}>
+							<Row gutter={8}>
+								<Col span={4} className="label-title-indas">Id. Pedido</Col>
+								<Col span={4} className="label-title-indas">Fecha</Col>
+								<Col span={12} className="label-title-indas">Entidad</Col>
+								<Col span={4} className="label-title-indas">Estado</Col>
+							</Row>
+							<Row gutter={8}>
+								<Tooltip title={"id: " + values.origen + "-" + values.drupal_order_id}>
+								<Col span={4} className="label-ellipsis-indas">
+									{values.origen}-{values.drupal_order_id}
+								</Col>
+								</Tooltip>
+								<Col span={4}>{fechaView(values.fecha_alta)}</Col>
+								<Col span={12}>{values.codentidad_cbim} - {values.nomentidad_cbim}</Col>
+								<Col span={4}>{values.nomestado}</Col>
+							</Row>
 						</Col>
 					</Row>
-					<Row type="flex" justify="left" gutter={8}>
-						<Col span={4}><b>Id. Pedido</b></Col>
-						<Col span={4}><b>Fecha</b></Col>
-						<Col span={12}><b>Entidad</b></Col>
-						<Col span={4}><b>Estado</b></Col>
-					</Row>
-					<Row type="flex" justify="left" gutter={8}>
-						<Col span={4} className="ant-table-row-cell-ellipsis">
-							{values.origen}-{values.drupal_order_id}</Col>
-						<Col span={4}>{values.fecha_alta}</Col>
-						<Col span={12}>{values.codentidad_cbim} - {values.nomentidad_cbim}</Col>
-						<Col span={4}>{values.nomestado}</Col>
-					</Row>
-					<Row type="flex" justify="left" gutter={16}>
+					<Row>
 						<Table columns={tableCols.map(col => {
 															if (!col.editable) {
 																return col;
@@ -97,13 +103,14 @@ const ValidarPedido = ({
 																	dataIndex: col.dataIndex,
 																	title: col.title,
 																	handleSave: row => {
-																		let lineas = values.items;
-																		console.log("Salvando fila ", row);
-																		console.log("Salvando lineas ", lineas);
-																		values.lineas = lineas.map(linea => {
+																		let lineas = values.items.map(linea => {
 																			return linea.codindas == row.codindas? row: linea;
 																		});
-																		console.log("Salvando values ", values.lineas);
+																		values.items = lineas;
+																		console.log("Salvando fila ", row);
+																		console.log("Salvando items ", values.items);
+																		console.log("Salvando lineas ", lineas);
+																		console.log("this  ", this);
 																	}
 																}),
 															};
@@ -122,7 +129,7 @@ const ValidarPedido = ({
 						</Col>
 						<Col xs={{span:24}} md={{span:14}}>
 							<Form.Item name="codmayorista" label="Mayorista">
-								<Select defaultValue={values.codmayorista}>
+								<Select value={values.codmayorista}>
 									{wholesalersIndas.map(item => (
 										<Option value={item.codmayorista}>{item.nombre}</Option>
 									))}

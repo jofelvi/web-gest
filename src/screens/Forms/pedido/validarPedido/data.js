@@ -58,7 +58,7 @@ export const tableCols = [
 		dataIndex: "descuento",
 		key: "descuento", 
 		align: "center",
-		render: (text) => text + ' %',
+		render: (text) => {return !text || text == ''? '': text + ' %'; },
 		editable: true,
 	},
 	{ title: "Puntos",

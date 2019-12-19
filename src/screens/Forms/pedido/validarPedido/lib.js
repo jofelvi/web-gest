@@ -55,3 +55,19 @@ export const obtenerValidacionSchema = function() {
 		}, {});
 	return validaciones;	
 };
+
+export const fechaView = function (fecha) {
+	let d = undefined;
+	if(typeof fecha === 'string') {
+		d = new Date(fecha);
+	} else if(typeof fecha === 'Date') {
+		d = fecha;
+	} else {
+		return fecha;
+	}
+	let day = d.getDate();
+	let month = d.getMonth() + 1;
+	let year = d.getFullYear();
+	let s = (day < 10? '0':'') + day + '/' + (month < 10? '0': '') + month + '/' + year;
+	return s;
+};

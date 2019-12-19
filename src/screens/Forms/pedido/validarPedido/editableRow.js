@@ -27,7 +27,6 @@ class EditableCell extends React.Component {
   };
 
   save = e => {
-		console.log("save: ", e);
     const { record, handleSave } = this.props;
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
@@ -48,12 +47,14 @@ class EditableCell extends React.Component {
           rules: [
             {
               required: true,
-              message: `${title} is required.`,
+              message: `${title} is obligatorio`,
             },
           ],
           initialValue: record[dataIndex],
         })(
-					<InputNumber ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />
+					<InputNumber ref={node => (this.input = node)} 
+											 onPressEnter={this.save} 
+											 onBlur={this.save} />
 				)}
       </Form.Item>
     ) : (
