@@ -8,7 +8,8 @@ import {
   watchFetchTasksCount,
   watchFetchTasksByUser,
   watchFetchTaskList,
-  watchFetchTaskForm
+  watchFetchTaskForm,
+ 
 } from './tasks/sagas';
 
 import {
@@ -42,6 +43,11 @@ import{
   watchloadMenuItems,
   watchloadChildItems
 } from './menu/sagas'
+
+import{
+  watchfetchOrders,
+  watchsearchOrder,
+} from './orders/sagas'
 
 import {
   watchloadClientsIndas,
@@ -81,6 +87,8 @@ export default function* rootSaga() {
     watchCreateCommercialDeal(),
     watchloadClientsIndas(),
     watchloadEntitiesInda(),
-    watchloadWholesalersIndas()
+    watchloadWholesalersIndas(),
+    watchfetchOrders(),
+    watchsearchOrder(),
   ]);
 }
