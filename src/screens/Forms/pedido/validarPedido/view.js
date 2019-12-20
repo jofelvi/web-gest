@@ -7,17 +7,11 @@ import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon, Tooltip } 
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
 import { obtenerValoresIniciales, obtenerValidacionSchema, fechaView } from './lib';
-import { EditableFormRow, EditableCell } from './editableRow';
+import { EditableTable } from './editableTable';
 import './styles.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
-const tableComponents = {
-	body: {
-		row: EditableFormRow,
-		cell: EditableCell,
-	},
-};
 const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
 const ValidarPedido = ({
   getTaskVariables,
@@ -91,35 +85,8 @@ const ValidarPedido = ({
 						</Col>
 					</Row>
 					<Row>
-						<Table columns={tableCols.map(col => {
-															if (!col.editable) {
-																return col;
-															}
-															return {
-																...col,
-																onCell: record => ({
-																	record,
-																	editable: col.editable,
-																	dataIndex: col.dataIndex,
-																	title: col.title,
-																	handleSave: row => {
-																		let lineas = values.items.map(linea => {
-																			return linea.codindas == row.codindas? row: linea;
-																		});
-																		values.items = lineas;
-																		console.log("Salvando fila ", row);
-																		console.log("Salvando items ", values.items);
-																		console.log("Salvando lineas ", lineas);
-																		console.log("this  ", this);
-																	}
-																}),
-															};
-														})}
-							className="table-indas"
-							dataSource={values.items} 
-							components={tableComponents}
-							borderred
-							pagination={{ pageSize: 4 }}/>
+						<EditableTable columns={tableCols} dataSource={values.items}
+							updateData={ (newData) => { values.items = newData; }}/>
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
@@ -145,13 +112,24 @@ const ValidarPedido = ({
 						</Col>
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
-						<Col><Button type="link" onClick={() => { console.og("Guardar cambios"); }}>
+						<Col><Button type="link" 
+										onClick={() => { 
+											console.log("Guardar cambios: ", values); 
+								 }}>
 							<Icon type="save" />Guardar
 						</Button></Col>	
-						<Col><Button type="link" onClick={() => { console.og("Validar descuentos"); }}>
+						<Col><Button type="link"
+										onClick={() => { 
+											console.log("Validar procetaje cambios: ", values); 
+								 }}>
 							<Icon type="percentage" />Validar
 						</Button></Col>	
-						<Col><Button type="link" onClick={() => { console.og("Restablecer valores"); }}>
+						<Col><Button type="link"
+										onClick={() => { 
+											//window.location.reload();
+											values = obtenerValoresIniciales(taskVariables);
+											console.log("Restablecer valores: ", values); 
+								 }}>
 							<Icon type="redo" />Restablecer
 						</Button></Col>	
 					</Row>

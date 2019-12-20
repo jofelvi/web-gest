@@ -17,7 +17,6 @@ class EditableCell extends React.Component {
   };
 
   toggleEdit = () => {
-		console.log("toggleEdit,state: ", this.state);
     const editing = !this.state.editing;
     this.setState({ editing }, () => {
       if (editing) {
@@ -58,11 +57,8 @@ class EditableCell extends React.Component {
 				)}
       </Form.Item>
     ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={this.toggleEdit}
-      >
+      <div style={{ paddingRight: 24 }}
+        onClick={this.toggleEdit} >
         {children}
       </div>
     );
