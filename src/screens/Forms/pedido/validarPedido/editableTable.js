@@ -5,37 +5,21 @@ import { Table } from 'antd';
 class EditableTable extends React.Component {
 	constructor(props) {
 		super(props);
+		if(!this.props.handleSave || typeof this.props.handleSave !== 'function') {
+			throw "EditableTable: la propiedada 'handleSave' debe definirse";
+		}
 		this.columns = this.props.columns;
-		this.isDidUpdate = false;
 		this.state = {
 			dataSource: this.props.dataSources,
 		}
 	};
 
-	componentDidUpdate(prevProps, prevState) {
-		if(!this.isDidUpdate && 
-				Array.isArray(prevProps.dataSource) && prevProps.dataSource.length !== 0 &&
-				prevState.dataSource !== prevProps.dataSource) {
-			this.setState({ dataSource: prevProps.dataSource });
-			this.isDidUpdate = true;
-		}
-	}
-
 	handleSave = row => {
-		//console.log("handleSave.row:", row);
-		const newData = [...this.state.dataSource];
-		const index = newData.findIndex(item => row.codindas === item.codindas);
-		const item = newData[index];
-		//console.log("handleSave.newData:", newData);
-		//console.log("handleSave.item:", item);
-		newData.splice(index, 1, {
-			...item,
-			...row,
-		});
-		this.setState({ dataSource: newData });
-		//console.log("handleSave.dataSource:", this.state.dataSource);
-		if(this.props.updateData && typeof this.props.updateData === 'function') {
-			this.props.updateData(newData);
+		if(this.props.handleSave && typeof this.props.handleSave === 'function') {
+			this.props.handleSave(row);
+			this.setState({ dataSource: this.props.dataSource });
+		}	else {
+			throw "EditableTable: la propiedada 'handleSave' debe definirse";
 		}
 	};
 
@@ -46,7 +30,7 @@ class EditableTable extends React.Component {
 				cell: EditableCell,
 			},
 		};
-		const { dataSource } = this.state;
+		const { dataSource } = this.props;
 		const cols = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -65,8 +49,9 @@ class EditableTable extends React.Component {
     return (
         <Table
 					className="table-indas"
+					rowClassName={() => 'editable-row'}
           components={tableComponents}
-          dataSource={this.state.dataSource}
+          dataSource={dataSource}
           columns={cols}
 					pagination={{ pageSize: 4 }}
         />

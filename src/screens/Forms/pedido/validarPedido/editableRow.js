@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, InputNumber } from 'antd';
+import './styles-cell.css';
 
 const EditableContext = React.createContext();
 
@@ -46,7 +47,7 @@ class EditableCell extends React.Component {
           rules: [
             {
               required: true,
-              message: `${title} is obligatorio`,
+              message: `Obligatorio`,
             },
           ],
           initialValue: record[dataIndex],
@@ -57,8 +58,9 @@ class EditableCell extends React.Component {
 				)}
       </Form.Item>
     ) : (
-      <div style={{ paddingRight: 24 }}
-        onClick={this.toggleEdit} >
+      <div className="editable-cell-value-wrap"
+				style={{ paddingRight: 24 }}
+        onClick={ this.toggleEdit } >
         {children}
       </div>
     );

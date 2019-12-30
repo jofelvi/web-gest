@@ -7,11 +7,17 @@ import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon, Tooltip } 
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
 import { obtenerValoresIniciales, obtenerValidacionSchema, fechaView } from './lib';
-import { EditableTable } from './editableTable';
+import { EditableFormRow, EditableCell } from './editableRow';
 import './styles.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
+const tableComponents = {
+	body: {
+		row: EditableFormRow,
+		cell: EditableCell,
+	},
+};
 const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
 const ValidarPedido = ({
   getTaskVariables,
@@ -59,9 +65,7 @@ const ValidarPedido = ({
 					onSubmit={handleSubmit} 
 					olon={false} 
 					className="form-indas">
-					<h2 className="form-indas-main-title">
-						Gestionar incidencia en pedido
-					</h2>
+					<h2 className="form-indas-main-title">Gestionar incidencia en pedido</h2>
 					<Row>
 						<Col span={24}>
 							<span class="label-title-indas">Cliente</span>
@@ -87,18 +91,34 @@ const ValidarPedido = ({
 						</Col>
 					</Row>
 					<Row>
-						<EditableTable columns={tableCols} dataSource={values.items}
-							handleSave = { (row) => {
-								const newData = values.items;
-								const index = newData.findIndex(item => row.codindas === item.codindas);
-								const item = newData[index];
-								newData.splice(index, 1, {
-									...item,
-									...row,
-								});
-								values.items = newData;
-							}}
-							/>
+						<Table columns={tableCols.map(col => {
+															if (!col.editable) {
+																return col;
+															}
+															return {
+																...col,
+																onCell: record => ({
+																	record,
+																	editable: col.editable,
+																	dataIndex: col.dataIndex,
+																	title: col.title,
+																	handleSave: row => {
+																		let lineas = values.items.map(linea => {
+																			return linea.codindas == row.codindas? row: linea;
+																		});
+																		values.items = lineas;
+																		console.log("handlSave.row", row);
+																		console.log("handlSave.items ", values.items);
+																		console.log("handlSave.lineas ", lineas);
+																	}
+																}),
+															};
+														})}
+							className="table-indas"
+							dataSource={values.items} 
+							components={tableComponents}
+							borderred
+							pagination={{ pageSize: 4 }}/>
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
@@ -138,11 +158,9 @@ const ValidarPedido = ({
 						</Button></Col>	
 						<Col><Button type="link"
 										onClick={() => { 
-											getTaskVariables({ history, taskId });
-											if (taskId) {
-												fetchTask(taskId);
-											}
-										}}>
+											values = obtenerValoresIniciales(taskVariables);
+											console.log("Restablecer valores: ", values); 
+								 }}>
 							<Icon type="redo" />Restablecer
 						</Button></Col>	
 					</Row>
@@ -152,6 +170,7 @@ const ValidarPedido = ({
 							<Button type="primary" onClick={() => {
 										console.log("Cancelar");
 									 }}>
+
 								Cancelar
 							</Button>
 						</Col>
