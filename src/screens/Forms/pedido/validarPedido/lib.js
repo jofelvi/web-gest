@@ -17,7 +17,7 @@
  *	];
  *
  **/
-import { selectTaskVariable } from '../../lib';
+import { selectTaskVariable, transformData } from '../../lib';
 import { formData, formDataItem } from './data';
 
 export const obtenerValoresIniciales = function(taskVariables) {
@@ -71,3 +71,26 @@ export const fechaView = function (fecha) {
 	let s = (day < 10? '0':'') + day + '/' + (month < 10? '0': '') + month + '/' + year;
 	return s;
 };
+
+export const  establecerValoresEnvio = (values) => {
+	let variables = transformData(values, formData);
+	// Eliminamos la lista que se muestra en pantalla. No se manda al proceso
+	variables.splice(variables.findIndex(t => t.name === 'items'),1)
+	// Incorporamos los valores del detalle del pedido
+	let i = 1;
+	values.items.map(linea => {
+		Object.entries(linea).map(l => {
+			const tipo = formDataItem.find(f => f.name === l[0]) ||
+				{type: (typeof(l[1])).charAt(0).toUpperCase() + (typeof(l[1])).slice(1)};
+			const tv = {
+				name: "l" + i + "_" + l[0],
+				value: l[1],
+				type: tipo.type,
+				transient: false,
+			};
+			variables.push(tv);
+		});
+		i++;
+	});
+	return variables;
+}

@@ -6,7 +6,8 @@ import { Formik, ErrorMessage } from 'formik';
 import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon, Tooltip } from 'antd';
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
-import { obtenerValoresIniciales, obtenerValidacionSchema, fechaView } from './lib';
+import { obtenerValoresIniciales, obtenerValidacionSchema, 
+         fechaView, establecerValoresEnvio} from './lib';
 import { EditableTable } from './editableTable';
 import './styles.css';
 
@@ -103,7 +104,7 @@ const ValidarPedido = ({
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
 							<Form.Item name="codcupon" label="Campaña">
-								<Input value={values.codcupon}/>
+								<Input value={values.codcupon} disable="false"/>
 							</Form.Item>
 						</Col>
 						<Col xs={{span:24}} md={{span:14}}>
@@ -138,10 +139,8 @@ const ValidarPedido = ({
 						</Button></Col>	
 						<Col><Button type="link"
 										onClick={() => { 
-											getTaskVariables({ history, taskId });
-											if (taskId) {
-												fetchTask(taskId);
-											}
+											getTaskVariables({ taskId });
+											if (taskId)  fetchTask(taskId);
 										}}>
 							<Icon type="redo" />Restablecer
 						</Button></Col>	
@@ -150,21 +149,28 @@ const ValidarPedido = ({
 					<Row type="flex" justify="left" gutter={16}>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Cancelar");
-									 }}>
+										getTaskVariables({ history });
+										if(history) history.goBack();	
+									}}>
 								Cancelar
 							</Button>
 						</Col>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Rechazar");
+										values.aceptado = false;
+										const variables = establecerValoresEnvio(values);
+										console.log("Rechazar variables: ", variables);
+										//completeTask({ variables, history, taskId, procId });
 									 }}>
 								Rechazar
 							</Button>
 						</Col>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Validar");
+										values.aceptado = true;
+										const variables = establecerValoresEnvio(values);
+										console.log("Validar variables: ", variables);
+										//completeTask({ variables, history, taskId, procId });
 									 }}>
 								Validar
 							</Button>
