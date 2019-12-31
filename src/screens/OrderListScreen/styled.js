@@ -10,6 +10,7 @@ export const Maincontainer = styled.div`
   justify-content: center;
 `;
 
+
 export const InputsContainer = styled.div`
 width: 96%;
  display: flex;
@@ -23,6 +24,13 @@ export const InputBox = styled(Input)`
   width: 200px;
   height: 32px;
   margin: 10px;
+`;
+
+export const MainContainerModal = styled.div`
+ display: flex;
+ flex-direction: column;
+ max-height: 95%;
+ overflow: auto;
 `;
 
 export const DatePickerFromTo = styled(RangePicker)`

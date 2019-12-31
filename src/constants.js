@@ -111,3 +111,22 @@ export const pedidos = [
 },
 
 ]
+
+export const cliente =  {
+        apellido1: "ABAURRE",
+        apellido2: "MORALES",
+        codcli_cbim: 1022,
+        email: "farmacia245@cofcordoba.com",
+        estado: "Activo",
+        fecha_alta: "2008-07-14T00:00:00+02:00",
+        fecha_baja: null,
+        fecha_modif: null,
+        idcliente: 1,
+        idestado: 1,
+        ind_acepta_emailcomercial: true,
+        nif: null,
+        nombre: "Julio",
+        nomcli_cbim: "MATIULDE",
+        telefono: 957601124
+      }
+            

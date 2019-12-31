@@ -59,3 +59,12 @@ let queryParams = generatingOffset(pages, offset)
   }
   return get(`ntr/pedido?${queryParams}`);
 };
+
+//GEt ntr/cliente/{idcliente} o GEt ntr/cliente/{codcli_cbim}
+export const fetchClientById = (idClient) => get(`/ntr/cliente/${idClient}`);
+
+//Get ntr/entidad/{codentidad_cbim}
+export const fetchEntitiesById = (idEntity) => get(`/ntr/entidad/${idEntity}`);
+
+//Get ntr/pedido/{idPedido}
+export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);

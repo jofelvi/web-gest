@@ -1,10 +1,28 @@
 import React, { useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Avatar, Input, DatePicker, Pagination, Icon } from 'antd';
+import { Table, Descriptions, Icon } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../constants';
 import './styles.css'
-import { InputsContainer, Maincontainer, InputBox, DatePickerFromTo, PaginationButton, ButtonsContainer, SerachOrdersButton } from './styled';
+import { 
+  InputsContainer, 
+  Maincontainer, 
+  InputBox, 
+  DatePickerFromTo, 
+  PaginationButton, 
+  ButtonsContainer, 
+  SerachOrdersButton, 
+  InfoContainer, 
+  MainContainerModal } from './styled';
+import Utils from '../../lib/utils';
+import {pedidos} from '../../constants';
+import {cliente} from '../../constants';
+import ModalDetailOrder from '../../components/ModalDetailOrder';
+import {} from './styled'
+import InfoCardEntity from '../../components/InfoCardEntity/view';
+import InfoCardClient from '../../components/InfoCardClient/view';
+import InfoCardOrder from '../../components/InfoCardOrder/view';
+
 const dateFormat = 'YYYY/MM/DD';
 const { Column, ColumnGroup } = Table;
 
@@ -18,7 +36,8 @@ class OrderListScreen extends React.Component {
     searchByType: '',
     pag: 0,
     buttonIsvisible: false,
-    searchByOrderDate: []
+    searchByOrderDate: [],
+    visible: false,
   }
 
 
@@ -27,6 +46,47 @@ class OrderListScreen extends React.Component {
     this.props.fetchOrders(this.state.pag)
 
   }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+
+  modifyOrderDate = (order) =>{
+    const newOderList = [];
+    
+   let orderFilterd={}
+  order.map( ord => {
+      let date = ord.fecha_alta
+      
+    orderFilterd = {...ord,
+    fecha_alta: Utils.renderDate(date)
+    };
+    
+   
+   return newOderList.push(orderFilterd);
+  })
+  
+  return newOderList;
+  
+  }
+  
+  
 
   searchedValue = (key, value) => {
 
@@ -68,6 +128,7 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByEntity, searchByType } = this.state;
     const { orders } = this.props;   
    
+
     return (
       <Maincontainer>
  <div className="table-indas">
@@ -108,7 +169,7 @@ class OrderListScreen extends React.Component {
 
         </InputsContainer>
 
-        <Table dataSource={orders} className="table" pagination={false} >
+        <Table dataSource={this.modifyOrderDate(pedidos)} className="table" pagination={false} >
 
           <Column
             title="nº pedido"
@@ -143,9 +204,28 @@ class OrderListScreen extends React.Component {
             dataIndex="estado"
             key="estado" />
 
+          <Column
+            title="Ver detalle"
+            key="operation" 
+            render ={() => <button onClick= {() => {this.showModal();
+             console.log("Hola soy el modal");}}>Ver detalle</button>} />
 
         </Table>
-   
+
+   <ModalDetailOrder 
+   visibility ={this.state.visible} 
+   ok= {this.handleOk} 
+   cancel= {this.handleCancel}
+   customFooter = {[]}
+   content = { 
+     <MainContainerModal>
+       
+   <InfoCardClient/>
+   <InfoCardEntity/>
+   <InfoCardOrder/>
+    </MainContainerModal>
+  }
+   ></ModalDetailOrder>
 
         <ButtonsContainer>
           <PaginationButton
