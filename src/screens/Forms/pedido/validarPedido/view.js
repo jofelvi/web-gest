@@ -14,15 +14,12 @@ import './styles.css';
 const { Option } = Select;
 const { TextArea } = Input;
 const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
-const ValidarPedido = ({
-  getTaskVariables,
+const ValidarPedido = ({getTaskVariables,
   taskVariables,
   completeTask,
   fetchTask,
   history,
-  match: {
-    params: { taskId, procId },
-  },
+  match: { params: { taskId, procId }, },
   task,
 	token,
 	loadWholesalersIndas,
@@ -42,24 +39,14 @@ const ValidarPedido = ({
 			}
 		}
 	}, [ token, taskVariables ]);
-
   return (
 		<Formik
 			initialValues={ obtenerValoresIniciales(taskVariables) }
 			validationSchema={validationSchema}
-			onSubmit={values => {
-				values.aceptado = true;
-				const variables = transformData(values);
-				console.log("Aceptar: ", variables);
-				completeTask({ variables, history, taskId, procId });
-			}}
 			enableReinitialize
 		>
-			{({ values, handleSubmit, errors }) => (
-				<Form 
-					onSubmit={handleSubmit} 
-					olon={false} 
-					className="form-indas">
+			{({ values, errors, handleChange, setFieldValue }) => (
+				<Form className="form-indas">
 					<h2 className="form-indas-main-title">
 						Gestionar incidencia en pedido
 					</h2>
@@ -104,12 +91,14 @@ const ValidarPedido = ({
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
 							<Form.Item name="codcupon" label="Campaña">
-								<Input value={values.codcupon} disable="false"/>
+								<Input id="codcupon" value={values.codcupon}
+									onChange={ev => {handleChange(ev);}}/>
 							</Form.Item>
 						</Col>
 						<Col xs={{span:24}} md={{span:14}}>
 							<Form.Item name="codmayorista" label="Mayorista">
-								<Select value={values.codmayorista}>
+								<Select value={values.codmayorista}
+									onChange={v => {setFieldValue('codmayorista', v); }}>
 									{wholesalersIndas.map(item => (
 										<Option value={item.codmayorista}>{item.nombre}</Option>
 									))}

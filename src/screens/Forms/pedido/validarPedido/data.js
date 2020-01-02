@@ -19,9 +19,8 @@ export const formData = [
 	{name:"tipo",                type:"String",  validation:undefined, defaultValue: ''},
 	{name:"aceptado",            type:"Boolean", validation: undefined, defaultValue: ''},
 ];
-
-export const formDataItem = [
 // Describe cada uno de los campos que forman una linea de pedido
+export const formDataItem = [
 	{name:"drupal_order_item_id",type:"Strng",   validation:undefined, defaultValue: ''},
 	{name:"codindas",            type:"String",  validation:undefined, defaultValue: ''},
 	{name:"nomproducto",         type:"String",  validation:undefined, defaultValue: ''},
@@ -29,7 +28,6 @@ export const formDataItem = [
   {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
 	{name:"puntos",              type:"Integer", validation:undefined, defaultValue: 0},
 ];
-	
 // Definición de la tabla de pedidos
 export const tableCols = [
 	{ title: "Item",
