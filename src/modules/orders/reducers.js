@@ -1,6 +1,9 @@
 import { handleActions } from 'redux-actions';
 
-import { fetchOrdersSuccess, 
+import { 
+  fetchOrdersSuccess, 
+  fetchOrderByIdSuccess,
+  fetchEntityByIdSuccess,
   
 } from './actions';
 
@@ -14,7 +17,16 @@ export default handleActions(
       ...state,
       list: payload.orders
     }),
+
+    [fetchOrderByIdSuccess]: (state, { payload }) => ({
+      ...state,
+      byId: payload.order
+    }),
     
+    [fetchEntityByIdSuccess]: (state, { payload }) => ({
+      ...state,
+      byCodEntity: payload.entity
+    })
   },
   defaultState
 );

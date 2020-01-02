@@ -6,33 +6,16 @@ import {InfoContainer} from './styles'
 import { Modal, Button } from 'antd';
 
 class ModalDetailOrder extends React.Component {
-  state = { visible: false };
+ 
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
+  
 
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
-
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
-  };
 
   render() {
     return (
       <div>
         <Modal
-          title="Basic Modal"
+          title="Detalles"
           visible={this.props.visibility}
           destroyOnClose={true}
           onOk={this.props.ok}

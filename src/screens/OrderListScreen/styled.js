@@ -39,6 +39,11 @@ margin: 10px
 
 `;
 
+export const TableContainer = styled.div`
+max-width: 100%;
+overflow: scroll;
+`;
+
 export const ButtonsContainer = styled.div`
 display: flex;
 align-items: center;

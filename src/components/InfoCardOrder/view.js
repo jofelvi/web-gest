@@ -14,7 +14,14 @@ const { Column } = Table;
 
 
 const InfoCardOrder = ({
-
+orders,
+numOrder,
+dateOrder,
+stateOrder,
+dateModOrder,
+typeOrder,
+codDiscountOrder,
+detailOrder
 }) => {
 
   return (
@@ -22,15 +29,17 @@ const InfoCardOrder = ({
       <InfoContainer>
         <DescriptionContainer>
         <Descriptions title="Datos Pedido" layout="horizontal">
-          <Descriptions.Item label="Num. Pedido">dato1</Descriptions.Item>
-          <Descriptions.Item label="Fecha Pedido">dato2</Descriptions.Item>
-          <Descriptions.Item label="Estado">dato3</Descriptions.Item>
-          <Descriptions.Item label="Fecha Modificación">dato4</Descriptions.Item>
-          <Descriptions.Item label="Tipo">dato5 </Descriptions.Item>
-          <Descriptions.Item label="Cod. Compañia">dato6 </Descriptions.Item>
+          <Descriptions.Item label="Num. Pedido">{numOrder}</Descriptions.Item>
+          <Descriptions.Item label="Fecha Pedido">{dateOrder}</Descriptions.Item>
+          <Descriptions.Item label="Estado">{stateOrder}</Descriptions.Item>
+          <Descriptions.Item label="Fecha Modificación">{dateModOrder}</Descriptions.Item>
+          <Descriptions.Item label="Tipo">{typeOrder} </Descriptions.Item>
+          <Descriptions.Item label="Cod. Campaña">{codDiscountOrder} </Descriptions.Item>
         </Descriptions>
         </DescriptionContainer>
-        <Table>
+       
+      </InfoContainer>
+      <Table dataSource= {detailOrder}>
           <Column
             title="Item"
             dataIndex="idpedido"
@@ -41,12 +50,6 @@ const InfoCardOrder = ({
             title="Cod. Producto"
             dataIndex="codindas"
             key="codindas"
-          />
-
-          <Column
-            title="Nombre Producto"
-            dataIndex="nombre"
-            key="nombre"
           />
 
           <Column
@@ -74,7 +77,6 @@ const InfoCardOrder = ({
           />
 
         </Table>
-      </InfoContainer>
     </div>
   )
 

@@ -1,6 +1,6 @@
 import React, { useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Descriptions, Icon } from 'antd';
+import { Table, Descriptions, Icon, Button } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../constants';
 import './styles.css'
@@ -13,7 +13,9 @@ import {
   ButtonsContainer, 
   SerachOrdersButton, 
   InfoContainer, 
-  MainContainerModal } from './styled';
+  MainContainerModal,
+  TableContainer,
+} from './styled';
 import Utils from '../../lib/utils';
 import {pedidos} from '../../constants';
 import {cliente} from '../../constants';
@@ -39,7 +41,23 @@ class OrderListScreen extends React.Component {
     searchByOrderDate: [],
     visible: false,
   }
-
+  columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+  ]
 
   componentDidMount() {
 
@@ -126,9 +144,9 @@ class OrderListScreen extends React.Component {
   
   render() {
     const { searchByClient, searchByEntity, searchByType } = this.state;
-    const { orders } = this.props;   
+    const { orders, order, fetchOrderById, entity } = this.props;   
    
-
+ 
     return (
       <Maincontainer>
  <div className="table-indas">
@@ -168,14 +186,13 @@ class OrderListScreen extends React.Component {
             }} />
 
         </InputsContainer>
-
-        <Table dataSource={this.modifyOrderDate(pedidos)} className="table" pagination={false} >
-
+            <TableContainer>
+        <Table dataSource={this.modifyOrderDate(orders)} className="table" pagination={false} scroll={{x:true}}>
+              
           <Column
             title="nº pedido"
             dataIndex="idpedido"
             key="idpedido"
-
           />
 
           <Column
@@ -188,6 +205,12 @@ class OrderListScreen extends React.Component {
             dataIndex="nomentidad_cbim"
             key="nomentidad_cbim" />
 
+          <Column
+            title="Cod. Cliente"
+            dataIndex="codcli_cbim"
+            key="codcli_cbim"
+
+          />
 
           <Column
             title="Tipo"
@@ -207,11 +230,14 @@ class OrderListScreen extends React.Component {
           <Column
             title="Ver detalle"
             key="operation" 
-            render ={() => <button onClick= {() => {this.showModal();
-             console.log("Hola soy el modal");}}>Ver detalle</button>} />
+            render ={(text, row) => <Button onClick= {() => {
+              const id = row.idpedido
+              this.showModal();
+              fetchOrderById({ id });
+             }}>Ver detalle</Button>} />
 
         </Table>
-
+        </TableContainer>
    <ModalDetailOrder 
    visibility ={this.state.visible} 
    ok= {this.handleOk} 
@@ -219,10 +245,31 @@ class OrderListScreen extends React.Component {
    customFooter = {[]}
    content = { 
      <MainContainerModal>
-       
+   {order && entity ? 
+   <div>    
    <InfoCardClient/>
-   <InfoCardEntity/>
-   <InfoCardOrder/>
+   <InfoCardEntity
+   codEntity = {entity.codentidad_cbim}
+   company = {entity.nomentidad_cbim}
+   tEntity = {''}
+   stateEntity = {entity.estado}
+   addressEntity = {entity.direccion}
+   zipcodeEntity = {''}
+  //  cityEntity = {}
+  //  provinceEntity = {}
+   />
+   
+   <InfoCardOrder
+   numOrder = {order.idpedido}
+   dateOrder = {Utils.renderDate(order.fecha_alta)}
+   stateOrder = {order.estado}
+   dateModOrder = {order.fecha_modif === null? '' : Utils.renderDate(order.fecha_modif)}
+   typeOrder = {order.tipo}
+   codDiscountOrder = {order.codcupon}
+   detailOrder = {order.lineas}
+  />
+  
+   </div> : ''}
     </MainContainerModal>
   }
    ></ModalDetailOrder>
