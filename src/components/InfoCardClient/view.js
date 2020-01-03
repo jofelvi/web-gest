@@ -15,17 +15,23 @@ import { DatePickerFromTo } from '../../screens/OrderListScreen/styled';
 
 
 const InfoCardClient = ({ 
+  codClient,
+  nombreClient,
+  emailClient,
+  dateClient,
+  stateClient,
+
   }) => {
 
 return(
   <div>
     <InfoContainer>
     <Descriptions title="Datos Cliente" layout="horizontal">
-    <Descriptions.Item label="Código Cliente">dato1</Descriptions.Item>
-    <Descriptions.Item label="Nombre">dato2</Descriptions.Item>
-    <Descriptions.Item label="Correo electrónico">dato3</Descriptions.Item>
-    <Descriptions.Item label="Fecha de alta">dato4</Descriptions.Item>
-    <Descriptions.Item label="Estado">dato5 </Descriptions.Item>
+<Descriptions.Item label="Código Cliente">{codClient}</Descriptions.Item>
+    <Descriptions.Item label="Nombre">{nombreClient}</Descriptions.Item>
+    <Descriptions.Item label="Correo electrónico">{emailClient}</Descriptions.Item>
+    <Descriptions.Item label="Fecha de alta">{dateClient}</Descriptions.Item>
+<Descriptions.Item label="Estado">{stateClient}</Descriptions.Item>
   </Descriptions>
     </InfoContainer>
     </div>

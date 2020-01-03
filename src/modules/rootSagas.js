@@ -48,7 +48,7 @@ import{
   watchfetchOrders,
   watchsearchOrder,
   watchfetchOrdersById,
-  watchfetchEntityById,
+  
 } from './orders/sagas'
 
 import {
@@ -93,6 +93,6 @@ export default function* rootSaga() {
     watchfetchOrders(),
     watchsearchOrder(),
     watchfetchOrdersById(),
-    watchfetchEntityById(),
+    
   ]);
 }

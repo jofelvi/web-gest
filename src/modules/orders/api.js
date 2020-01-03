@@ -17,8 +17,7 @@ return queryParams;
 }
 
 
-export const fetchOrders = async (page) => {
-    
+export const fetchOrders = async (page) => { 
   let offset;
   offset = page;
   let queryParams = generatingOffset(page, offset)
@@ -26,7 +25,6 @@ export const fetchOrders = async (page) => {
 
 }
 
-export const searchOrderBY = (tipo) => get(`&tipo=${tipo}`);
 
 export const searchOrder = async ({
   codentidad_cbim, codcli_cbim, tipo, pages, fecha_desde, fecha_hasta, dates
@@ -68,3 +66,5 @@ export const fetchEntityById = (idEntity) => get(`/ntr/entidad/${idEntity}`);
 
 
 export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);
+
+export const fetchProductById = (idProduct) => get(`/ntr/producto/${idProduct}`);

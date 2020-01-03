@@ -8,7 +8,9 @@ export default connect(
   state => ({ 
     orders: state.orders.list,
     order: state.orders.byId,
-    entity: state.orders.byCodEntity
+    entity: state.orders.byCodEntity,
+    client: state.orders.byIdClient,
+    product: state.orders.byIdProduct
   }),
   {fetchOrders, searchOrder, fetchOrderById}
 )(View);

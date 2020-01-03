@@ -7,8 +7,10 @@ import {
   FETCH_ENTITY_BY_ID,
   FETCH_ENTITY_BY_ID_SUCCESS,
   FETCH_ORDER_BY_ID_SUCCESS,
+  FETCH_PRODUCT_BY_ID_SUCCESS,
   FETCH_ORDERS_FAILED,
   SEARCH_ORDER,
+  FETCH_CLIENT_BY_ID_SUCCESS
 } from './actionTypes';
 
 export const {
@@ -16,6 +18,8 @@ export const {
   fetchOrderById,
   fetchEntityById,
   fetchEntityByIdSuccess,
+  fetchClientByIdSuccess,
+  fetchProductByIdSuccess,
   fetchOrdersSuccess,
   fetchOrderByIdSuccess,
   fetchOrdersFailed,
@@ -28,6 +32,8 @@ export const {
   FETCH_ENTITY_BY_ID,
   FETCH_ENTITY_BY_ID_SUCCESS,
   FETCH_ORDER_BY_ID_SUCCESS,
+  FETCH_PRODUCT_BY_ID_SUCCESS,
+  FETCH_CLIENT_BY_ID_SUCCESS,
   FETCH_ORDERS_FAILED,
   SEARCH_ORDER,
   

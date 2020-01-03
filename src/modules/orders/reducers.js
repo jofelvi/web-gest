@@ -4,6 +4,8 @@ import {
   fetchOrdersSuccess, 
   fetchOrderByIdSuccess,
   fetchEntityByIdSuccess,
+  fetchClientByIdSuccess,
+  fetchProductByIdSuccess
   
 } from './actions';
 
@@ -26,7 +28,18 @@ export default handleActions(
     [fetchEntityByIdSuccess]: (state, { payload }) => ({
       ...state,
       byCodEntity: payload.entity
+    }),
+
+    [fetchClientByIdSuccess]: (state, { payload }) => ({
+      ...state,
+      byIdClient: payload.client
+    }),
+
+    [fetchProductByIdSuccess]: (state, { payload }) => ({
+      ...state,
+      byIdProduct: payload.product
     })
+    
   },
   defaultState
 );

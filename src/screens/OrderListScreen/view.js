@@ -27,7 +27,7 @@ import InfoCardOrder from '../../components/InfoCardOrder/view';
 
 const dateFormat = 'YYYY/MM/DD';
 const { Column, ColumnGroup } = Table;
-
+let productArray = [];
 class OrderListScreen extends React.Component {
 
   state = {
@@ -144,9 +144,9 @@ class OrderListScreen extends React.Component {
   
   render() {
     const { searchByClient, searchByEntity, searchByType } = this.state;
-    const { orders, order, fetchOrderById, entity } = this.props;   
-   
+    const { orders, order, fetchOrderById, entity, client, product } = this.props;  
  
+   
     return (
       <Maincontainer>
  <div className="table-indas">
@@ -245,20 +245,26 @@ class OrderListScreen extends React.Component {
    customFooter = {[]}
    content = { 
      <MainContainerModal>
-   {order && entity ? 
+   {order && entity && client ? 
    <div>    
-   <InfoCardClient/>
+   <InfoCardClient
+   codClient = {client.codcli_cbim}
+   nombreClient = {client.nombre.includes("0") && client.apellido1.includes("0") && client.apellido2.includes("0")? '' : client.nombre + ' ' + client.apellido1 + ' ' + client.apellido2 }
+   emailClient = {client.email}
+   dateClient = {Utils.renderDate(client.fecha_alta)}
+   stateClient = {client.estado}
+   />
    <InfoCardEntity
    codEntity = {entity.codentidad_cbim}
    company = {entity.nomentidad_cbim}
-   tEntity = {''}
+   tEntity = {entity.ind_esfarmacia === true? 'FARMACIA': 'SOCIEDAD'}
    stateEntity = {entity.estado}
    addressEntity = {entity.direccion}
-   zipcodeEntity = {''}
-  //  cityEntity = {}
-  //  provinceEntity = {}
+   zipcodeEntity = {entity.codigo_postal}
+   cityEntity = {entity.plobacion}
+   provinceEntity = {entity.province}
    />
-   
+   {/* { InfoCardOrder detailOrder falta el dato de nombre de producto} */}
    <InfoCardOrder
    numOrder = {order.idpedido}
    dateOrder = {Utils.renderDate(order.fecha_alta)}
