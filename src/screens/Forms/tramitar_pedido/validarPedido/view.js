@@ -6,28 +6,20 @@ import { Formik, ErrorMessage } from 'formik';
 import { Form, Row, Col, Button, Input, Select, Divider, Table, Icon, Tooltip } from 'antd';
 import { transformData, selectTaskVariable } from '../../lib';
 import { tableCols } from './data';
-import { obtenerValoresIniciales, obtenerValidacionSchema, fechaView } from './lib';
-import { EditableFormRow, EditableCell } from './editableRow';
+import { obtenerValoresIniciales, obtenerValidacionSchema, 
+         fechaView, establecerValoresEnvio, esModificado } from './lib';
+import { EditableTable } from './editableTable';
 import './styles.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
-const tableComponents = {
-	body: {
-		row: EditableFormRow,
-		cell: EditableCell,
-	},
-};
 const validationSchema = Yup.object().shape( obtenerValidacionSchema() );
-const ValidarPedido = ({
-  getTaskVariables,
+const ValidarPedido = ({getTaskVariables,
   taskVariables,
   completeTask,
   fetchTask,
   history,
-  match: {
-    params: { taskId, procId },
-  },
+  match: { params: { taskId, procId }, },
   task,
 	token,
 	loadWholesalersIndas,
@@ -47,25 +39,17 @@ const ValidarPedido = ({
 			}
 		}
 	}, [ token, taskVariables ]);
-
   return (
 		<Formik
 			initialValues={ obtenerValoresIniciales(taskVariables) }
 			validationSchema={validationSchema}
-			onSubmit={values => {
-				values.aceptado = true;
-				const variables = transformData(values);
-				console.log("Aceptar: ", variables);
-				completeTask({ variables, history, taskId, procId });
-			}}
 			enableReinitialize
 		>
-			{({ values, handleSubmit, errors }) => (
-				<Form 
-					onSubmit={handleSubmit} 
-					olon={false} 
-					className="form-indas">
-					<h2 className="form-indas-main-title">Gestionar incidencia en pedido</h2>
+			{({ values, errors, handleChange, setFieldValue }) => (
+				<Form className="form-indas">
+					<h2 className="form-indas-main-title">
+						Gestionar incidencia en pedido
+					</h2>
 					<Row>
 						<Col span={24}>
 							<span class="label-title-indas">Cliente</span>
@@ -79,56 +63,42 @@ const ValidarPedido = ({
 								<Col span={4} className="label-title-indas">Estado</Col>
 							</Row>
 							<Row gutter={8}>
-								<Tooltip title={"id: " + values.origen + "-" + values.drupal_order_id}>
+								<Tooltip title={"id: " + values.origen + "-" + values.codpedido_origen}>
 								<Col span={4} className="label-ellipsis-indas">
 									{values.origen}-{values.drupal_order_id}
 								</Col>
 								</Tooltip>
 								<Col span={4}>{fechaView(values.fecha_alta)}</Col>
-								<Col span={12}>{values.codentidad_cbim} - {values.nomentidad_cbim}</Col>
-								<Col span={4}>{values.nomestado}</Col>
+								<Col span={12}>{values.codentidad_cbim} - {values.ind_esfarmacia? 'Farmacia': 'Sociedad'} - {values.nomentidad_cbim}</Col>
+								<Col span={4}>{values.nombre_estado}</Col>
 							</Row>
 						</Col>
 					</Row>
 					<Row>
-						<Table columns={tableCols.map(col => {
-															if (!col.editable) {
-																return col;
-															}
-															return {
-																...col,
-																onCell: record => ({
-																	record,
-																	editable: col.editable,
-																	dataIndex: col.dataIndex,
-																	title: col.title,
-																	handleSave: row => {
-																		let lineas = values.items.map(linea => {
-																			return linea.codindas == row.codindas? row: linea;
-																		});
-																		values.items = lineas;
-																		console.log("handlSave.row", row);
-																		console.log("handlSave.items ", values.items);
-																		console.log("handlSave.lineas ", lineas);
-																	}
-																}),
-															};
-														})}
-							className="table-indas"
-							dataSource={values.items} 
-							components={tableComponents}
-							borderred
-							pagination={{ pageSize: 4 }}/>
+						<EditableTable columns={tableCols(values.tipo)} dataSource={values.items}
+							handleSave = { (row) => {
+								const newData = values.items;
+								const index = newData.findIndex(item => row.codindas === item.codindas);
+								const item = newData[index];
+								newData.splice(index, 1, {
+									...item,
+									...row,
+								});
+								values.items = newData;
+							}}
+							/>
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
 						<Col xs={{span:24}} md={{span:10}}>
 							<Form.Item name="codcupon" label="Campaña">
-								<Input value={values.codcupon}/>
+								<Input id="codcupon" value={values.codcupon}
+									onChange={ev => {handleChange(ev);}}/>
 							</Form.Item>
 						</Col>
 						<Col xs={{span:24}} md={{span:14}}>
 							<Form.Item name="codmayorista" label="Mayorista">
-								<Select value={values.codmayorista}>
+								<Select value={values.codmayorista}
+									onChange={v => {setFieldValue('codmayorista', v); }}>
 									{wholesalersIndas.map(item => (
 										<Option value={item.codmayorista}>{item.nombre}</Option>
 									))}
@@ -144,23 +114,11 @@ const ValidarPedido = ({
 						</Col>
 					</Row>
 					<Row type="flex" justify="left" gutter={16}>
-						<Col><Button type="link" 
-										onClick={() => { 
-											console.log("Guardar cambios: ", values); 
-								 }}>
-							<Icon type="save" />Guardar
-						</Button></Col>	
 						<Col><Button type="link"
 										onClick={() => { 
-											console.log("Validar procetaje cambios: ", values); 
-								 }}>
-							<Icon type="percentage" />Validar
-						</Button></Col>	
-						<Col><Button type="link"
-										onClick={() => { 
-											values = obtenerValoresIniciales(taskVariables);
-											console.log("Restablecer valores: ", values); 
-								 }}>
+											getTaskVariables({ taskId });
+											if (taskId)  fetchTask(taskId);
+										}}>
 							<Icon type="redo" />Restablecer
 						</Button></Col>	
 					</Row>
@@ -168,22 +126,31 @@ const ValidarPedido = ({
 					<Row type="flex" justify="left" gutter={16}>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Cancelar");
-									 }}>
-
+										getTaskVariables({ history });
+										if(history) history.goBack();	
+									}}>
 								Cancelar
 							</Button>
 						</Col>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Rechazar");
+										const iniValues = obtenerValoresIniciales(taskVariables);
+										iniValues.aceptado = false;
+										iniValues.actualizado = false;
+										const variables = establecerValoresEnvio(iniValues);
+										console.log("Rechazar variables: ", variables);
+										//completeTask({ variables, history, taskId, procId });
 									 }}>
 								Rechazar
 							</Button>
 						</Col>
 						<Col>
 							<Button type="primary" onClick={() => {
-										console.log("Validar");
+										values.aceptado = true;
+										values.actualizado = esModificado(values, taskVariables);
+										const variables = establecerValoresEnvio(values);
+										console.log("Validar variables: ", variables);
+										//completeTask({ variables, history, taskId, procId });
 									 }}>
 								Validar
 							</Button>

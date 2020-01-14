@@ -20,7 +20,7 @@ import ClientsIndasScreen from './screens/ClientsScreen';
 import ValidarRegistroSinCBIM from './screens/Forms/register/validarRegistroSinCBIM'
 import ValidarRegistro from './screens/Forms/register/validarRegistro'
 
-import ValidarPedido from './screens/Forms/pedido/validarPedido'
+import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
 
 const { capitalizeWord } = utils;
 

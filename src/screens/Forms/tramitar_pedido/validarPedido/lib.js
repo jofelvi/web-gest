@@ -18,9 +18,10 @@
  *
  **/
 import { selectTaskVariable, transformData } from '../../lib';
-import { formData, formDataItem } from './data';
+import { formData, formDataItem, tableCols } from './data';
 
 export const obtenerValoresIniciales = function(taskVariables) {
+	console.log("obtenerValoresIniciales.taskVariables", taskVariables);
 	let initValue = formData.reduce(function(result, item, i) {
 		result[item.name] = taskVariables && selectTaskVariable(taskVariables, item.name)
 				? selectTaskVariable(taskVariables, item.name).value : '';
@@ -45,6 +46,7 @@ export const obtenerValoresIniciales = function(taskVariables) {
 			initValue.items.push(linea);
 		}
 	}
+	// Añadimos una variable nueva la definición de las columnas de la tabla
 	return initValue;	
 };
 export const obtenerValidacionSchema = function() {
@@ -72,6 +74,9 @@ export const fechaView = function (fecha) {
 	return s;
 };
 
+/**
+ * Establece los valores a enviar a Camunda.
+ */
 export const  establecerValoresEnvio = (values) => {
 	let variables = transformData(values, formData);
 	// Eliminamos la lista que se muestra en pantalla. No se manda al proceso
@@ -93,4 +98,23 @@ export const  establecerValoresEnvio = (values) => {
 		i++;
 	});
 	return variables;
+}
+
+/**
+ * Comprueba si se han modificado datos en los valores del formulario
+ * @param values valores de formulario
+ * @param taskVariables datos enviados desde el proceso de Camunda
+ * @return true si se ha modificado algún dato, false en cualquier otro caso.
+ */
+export const esModificado = (values, taskVariables) => {
+	const iniValues = obtenerValoresIniciales(taskVariables);
+	if(values.codcupon !== iniValues.codcupon) return true;
+	if(values.codmayorista !== iniValues.codmayorista) return true;
+	// Comprobamos la líneas del pedido
+	const itemMod = values.items.find(item => {
+			const i = iniValues.items.find(item2 => item2.codindas === item.codindas);
+			if(i && (i.cantidad !== item.cantidad || i.puntos !== item.puntos || i.descuento !== item.descuento))
+					return item;
+	});
+	return itemMod? true: false;	
 }
