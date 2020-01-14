@@ -3,6 +3,9 @@
     background-color: #FFF;
    
 }
+.table tbody{
+    overflow: scroll;
+}
 .table .table-title{
     font-size: 1.8rem;
 }

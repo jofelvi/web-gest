@@ -107,6 +107,7 @@ body{
     margin-right: 20px;
     background-color: #FFF;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    width: 100%;
 }
 .table-indas .table-indas-title{
     font-size: 1.8rem;

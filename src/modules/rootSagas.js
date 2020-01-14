@@ -47,6 +47,8 @@ import{
 import{
   watchfetchOrders,
   watchsearchOrder,
+  watchfetchOrdersById,
+  
 } from './orders/sagas'
 
 import {
@@ -90,5 +92,7 @@ export default function* rootSaga() {
     watchloadWholesalersIndas(),
     watchfetchOrders(),
     watchsearchOrder(),
+    watchfetchOrdersById(),
+    
   ]);
 }

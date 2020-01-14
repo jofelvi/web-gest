@@ -1,13 +1,33 @@
 import React, { useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Avatar, Input, DatePicker, Pagination, Icon } from 'antd';
+import { Table, Descriptions, Icon, Button } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../constants';
 import './styles.css'
-import { InputsContainer, Maincontainer, InputBox, DatePickerFromTo, PaginationButton, ButtonsContainer, SerachOrdersButton } from './styled';
+import { 
+  InputsContainer, 
+  Maincontainer, 
+  InputBox, 
+  DatePickerFromTo, 
+  PaginationButton, 
+  ButtonsContainer, 
+  SerachOrdersButton, 
+  InfoContainer, 
+  MainContainerModal,
+  TableContainer,
+} from './styled';
+import Utils from '../../lib/utils';
+import {pedidos} from '../../constants';
+import {cliente} from '../../constants';
+import ModalDetailOrder from '../../components/ModalDetailOrder';
+import {} from './styled'
+import InfoCardEntity from '../../components/InfoCardEntity/view';
+import InfoCardClient from '../../components/InfoCardClient/view';
+import InfoCardOrder from '../../components/InfoCardOrder/view';
+
 const dateFormat = 'YYYY/MM/DD';
 const { Column, ColumnGroup } = Table;
-
+let productArray = [];
 class OrderListScreen extends React.Component {
 
   state = {
@@ -18,15 +38,73 @@ class OrderListScreen extends React.Component {
     searchByType: '',
     pag: 0,
     buttonIsvisible: false,
-    searchByOrderDate: []
+    searchByOrderDate: [],
+    visible: false,
   }
-
+  columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+  ]
 
   componentDidMount() {
 
     this.props.fetchOrders(this.state.pag)
 
   }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+
+  modifyOrderDate = (order) =>{
+    const newOderList = [];
+    
+   let orderFilterd={}
+  order.map( ord => {
+      let date = ord.fecha_alta
+      
+    orderFilterd = {...ord,
+    fecha_alta: Utils.renderDate(date)
+    };
+    
+   
+   return newOderList.push(orderFilterd);
+  })
+  
+  return newOderList;
+  
+  }
+  
+  
 
   searchedValue = (key, value) => {
 
@@ -66,7 +144,8 @@ class OrderListScreen extends React.Component {
   
   render() {
     const { searchByClient, searchByEntity, searchByType } = this.state;
-    const { orders } = this.props;   
+    const { orders, order, fetchOrderById, entity, client, product } = this.props;  
+ 
    
     return (
       <Maincontainer>
@@ -107,14 +186,13 @@ class OrderListScreen extends React.Component {
             }} />
 
         </InputsContainer>
-
-        <Table dataSource={orders} className="table" pagination={false} >
-
+            <TableContainer>
+        <Table dataSource={this.modifyOrderDate(orders)} className="table" pagination={false} scroll={{x:true}}>
+              
           <Column
             title="nº pedido"
             dataIndex="idpedido"
             key="idpedido"
-
           />
 
           <Column
@@ -127,6 +205,12 @@ class OrderListScreen extends React.Component {
             dataIndex="nomentidad_cbim"
             key="nomentidad_cbim" />
 
+          <Column
+            title="Cod. Cliente"
+            dataIndex="codcli_cbim"
+            key="codcli_cbim"
+
+          />
 
           <Column
             title="Tipo"
@@ -143,9 +227,58 @@ class OrderListScreen extends React.Component {
             dataIndex="estado"
             key="estado" />
 
+          <Column
+            title="Ver detalle"
+            key="operation" 
+            render ={(text, row) => <Button onClick= {() => {
+              const id = row.idpedido
+              this.showModal();
+              fetchOrderById({ id });
+             }}>Ver detalle</Button>} />
 
         </Table>
-   
+        </TableContainer>
+   <ModalDetailOrder 
+   visibility ={this.state.visible} 
+   ok= {this.handleOk} 
+   cancel= {this.handleCancel}
+   customFooter = {[]}
+   content = { 
+     <MainContainerModal>
+   {order && entity && client ? 
+   <div>    
+   <InfoCardClient
+   codClient = {client.codcli_cbim}
+   nombreClient = {client.nombre.includes("0") && client.apellido1.includes("0") && client.apellido2.includes("0")? '' : client.nombre + ' ' + client.apellido1 + ' ' + client.apellido2 }
+   emailClient = {client.email}
+   dateClient = {Utils.renderDate(client.fecha_alta)}
+   stateClient = {client.estado}
+   />
+   <InfoCardEntity
+   codEntity = {entity.codentidad_cbim}
+   company = {entity.nomentidad_cbim}
+   tEntity = {entity.ind_esfarmacia === true? 'FARMACIA': 'SOCIEDAD'}
+   stateEntity = {entity.estado}
+   addressEntity = {entity.direccion}
+   zipcodeEntity = {entity.codigo_postal}
+   cityEntity = {entity.plobacion}
+   provinceEntity = {entity.province}
+   />
+   {/* { InfoCardOrder detailOrder falta el dato de nombre de producto} */}
+   <InfoCardOrder
+   numOrder = {order.idpedido}
+   dateOrder = {Utils.renderDate(order.fecha_alta)}
+   stateOrder = {order.estado}
+   dateModOrder = {order.fecha_modif === null? '' : Utils.renderDate(order.fecha_modif)}
+   typeOrder = {order.tipo}
+   codDiscountOrder = {order.codcupon}
+   detailOrder = {order.lineas}
+  />
+  
+   </div> : ''}
+    </MainContainerModal>
+  }
+   ></ModalDetailOrder>
 
         <ButtonsContainer>
           <PaginationButton
