@@ -7,7 +7,8 @@ import { Descriptions, Table } from 'antd';
 
 import {
   InfoContainer,
-  DescriptionContainer
+  DescriptionContainer,
+  TableContainer,
 } from './styles';
 
 const { Column } = Table;
@@ -22,9 +23,7 @@ dateModOrder,
 typeOrder,
 codDiscountOrder,
 detailOrder
-}) => {
-
-  return (
+}) => (
     <div>
       <InfoContainer>
         <DescriptionContainer>
@@ -37,9 +36,8 @@ detailOrder
           <Descriptions.Item label="Cod. Campaña">{codDiscountOrder} </Descriptions.Item>
         </Descriptions>
         </DescriptionContainer>
-       
-      </InfoContainer>
-      <Table dataSource= {detailOrder}>
+        <TableContainer>
+      <Table dataSource= {detailOrder} pagination= {false}>
           <Column
             title="Item"
             dataIndex="idpedido"
@@ -77,10 +75,13 @@ detailOrder
           />
 
         </Table>
+        </TableContainer>
+      </InfoContainer>
+      
     </div>
   )
 
-}
+
 
 
 

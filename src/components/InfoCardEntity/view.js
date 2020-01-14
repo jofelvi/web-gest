@@ -23,9 +23,9 @@ const InfoCardEntity = ({
   zipcodeEntity,
   cityEntity,
   provinceEntity,
-}) => {
+}) => 
 
-return(
+(
   <div>
     <InfoContainer>
     <Descriptions title="Datos Entidad" layout="horizontal" colon={false}>
@@ -42,7 +42,7 @@ return(
     </div>
 )
 
-} 
+
   
 InfoCardEntity.propTypes = {
   logout: PropTypes.func.isRequired,

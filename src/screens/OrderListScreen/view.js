@@ -4,23 +4,23 @@ import { Table, Descriptions, Icon, Button } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../constants';
 import './styles.css'
-import { 
-  InputsContainer, 
-  Maincontainer, 
-  InputBox, 
-  DatePickerFromTo, 
-  PaginationButton, 
-  ButtonsContainer, 
-  SerachOrdersButton, 
-  InfoContainer, 
+import {
+  InputsContainer,
+  Maincontainer,
+  InputBox,
+  DatePickerFromTo,
+  PaginationButton,
+  ButtonsContainer,
+  SerachOrdersButton,
+  InfoContainer,
   MainContainerModal,
   TableContainer,
 } from './styled';
 import Utils from '../../lib/utils';
-import {pedidos} from '../../constants';
-import {cliente} from '../../constants';
+import { pedidos } from '../../constants';
+import { cliente } from '../../constants';
 import ModalDetailOrder from '../../components/ModalDetailOrder';
-import {} from './styled'
+import { } from './styled'
 import InfoCardEntity from '../../components/InfoCardEntity/view';
 import InfoCardClient from '../../components/InfoCardClient/view';
 import InfoCardOrder from '../../components/InfoCardOrder/view';
@@ -70,49 +70,50 @@ class OrderListScreen extends React.Component {
       visible: true,
     });
   };
-  handleOk = e => {
-    console.log(e);
+  handleOk = () => {
+
     this.setState({
       visible: false,
     });
   };
 
-  handleCancel = e => {
-    console.log(e);
+  handleCancel = () => {
+
     this.setState({
       visible: false,
     });
   };
 
 
-  modifyOrderDate = (order) =>{
+  modifyOrderDate = (order) => {
     const newOderList = [];
-    
-   let orderFilterd={}
-  order.map( ord => {
+
+    let orderFilterd = {}
+    order.map(ord => {
       let date = ord.fecha_alta
-      
-    orderFilterd = {...ord,
-    fecha_alta: Utils.renderDate(date)
-    };
-    
-   
-   return newOderList.push(orderFilterd);
-  })
-  
-  return newOderList;
-  
+
+      orderFilterd = {
+        ...ord,
+        fecha_alta: Utils.renderDate(date)
+      };
+
+
+      return newOderList.push(orderFilterd);
+    })
+
+    return newOderList;
+
   }
-  
-  
+
+
 
   searchedValue = (key, value) => {
 
     this.setState({ [key]: value })
   }
   searchedValueDate = (date, dateString) => {
-    if (dateString[0]&& dateString[1]) {
-      
+    if (dateString[0] && dateString[1]) {
+
       this.setState({
         ...this.state,
         searchByOrderDate: [
@@ -121,13 +122,13 @@ class OrderListScreen extends React.Component {
         ],
       });
     }
-    
+
   }
 
   handleSubmitOrdersSearch = () => {
-  
+
     const { searchOrder } = this.props;
-    const { searchByDateFrom, pag, searchByDateTo,searchByOrderDate, searchByClient, searchByEntity, searchByType } = this.state;
+    const { searchByDateFrom, pag, searchByDateTo, searchByOrderDate, searchByClient, searchByEntity, searchByType } = this.state;
 
     searchOrder({
       fecha_desde: searchByDateFrom,
@@ -136,164 +137,167 @@ class OrderListScreen extends React.Component {
       tipo: searchByType,
       codcli_cbim: searchByClient,
       pages: pag,
-      dates : searchByOrderDate
+      dates: searchByOrderDate
 
     })
 
   }
-  
+
   render() {
     const { searchByClient, searchByEntity, searchByType } = this.state;
-    const { orders, order, fetchOrderById, entity, client, product } = this.props;  
- 
-   
+    const { orders, order, fetchOrderById, entity, client } = this.props;
+
+
     return (
       <Maincontainer>
- <div className="table-indas">
-                <h2 className="table-indas-title">Pedidos</h2>
-        <InputsContainer>
+        <div className="table-indas">
+          <h2 className="table-indas-title">Pedidos</h2>
+          <InputsContainer>
 
-          <DatePickerFromTo
-            format={dateFormat}
-            onChange={this.searchedValueDate}
-            placeholder = {['desde', 'hasta']}
-          />
+            <DatePickerFromTo
+              format={dateFormat}
+              onChange={this.searchedValueDate}
+              placeholder={['desde', 'hasta']}
+            />
 
-          <InputBox
-            placeholder="Código Cliente"
-            value={searchByClient}
-            onChange={(event) => this.searchedValue('searchByClient', event.target.value)}
-          />
+            <InputBox
+              placeholder="Código Cliente"
+              value={searchByClient}
+              onChange={(event) => this.searchedValue('searchByClient', event.target.value)}
+            />
 
-          <InputBox
-            placeholder="Código Entidad"
-            value={searchByEntity}
-            onChange={(event) => this.searchedValue('searchByEntity', event.target.value)}
-          />
+            <InputBox
+              placeholder="Código Entidad"
+              value={searchByEntity}
+              onChange={(event) => this.searchedValue('searchByEntity', event.target.value)}
+            />
 
-          <InputBox
-            placeholder="Tipo"
-            value={searchByType}
-            onChange={(event) => this.searchedValue('searchByType', event.target.value)}
-          />
+            <InputBox
+              placeholder="Tipo"
+              value={searchByType}
+              onChange={(event) => this.searchedValue('searchByType', event.target.value)}
+            />
 
-          <SerachOrdersButton
-            icon="search"
-            onClick={() => {
-              this.setState({ pag: 0 }, function () {
-                this.handleSubmitOrdersSearch()
-              })
-            }} />
+            <SerachOrdersButton
+              icon="search"
+              onClick={() => {
+                this.setState({ pag: 0 }, function () {
+                  this.handleSubmitOrdersSearch()
+                })
+              }} />
 
-        </InputsContainer>
-            <TableContainer>
-        <Table dataSource={this.modifyOrderDate(orders)} className="table" pagination={false} scroll={{x:true}}>
-              
-          <Column
-            title="nº pedido"
-            dataIndex="idpedido"
-            key="idpedido"
-          />
+          </InputsContainer>
+          <TableContainer>
+            <Table dataSource={this.modifyOrderDate(orders)} className="table" pagination={false} scroll={{ x: true }}>
 
-          <Column
-            title="Fecha"
-            dataIndex="fecha_alta"
-            key="fecha_alta" />
+              <Column
+                title="nº pedido"
+                dataIndex="idpedido"
+                key="idpedido"
+              />
 
-          <Column
-            title="Entidad"
-            dataIndex="nomentidad_cbim"
-            key="nomentidad_cbim" />
+              <Column
+                title="Fecha"
+                dataIndex="fecha_alta"
+                key="fecha_alta" />
 
-          <Column
-            title="Cod. Cliente"
-            dataIndex="codcli_cbim"
-            key="codcli_cbim"
+              <Column
+                title="Entidad"
+                dataIndex="nomentidad_cbim"
+                key="nomentidad_cbim" />
 
-          />
+              <Column
+                title="Cod. Cliente"
+                dataIndex="codcli_cbim"
+                key="codcli_cbim"
 
-          <Column
-            title="Tipo"
-            dataIndex="tipo"
-            key="tipo" />
+              />
 
-          <Column
-            title="Mayorista"
-            dataIndex="nombre_mayorista"
-            key="nombre_mayorista" />
+              <Column
+                title="Tipo"
+                dataIndex="tipo"
+                key="tipo" />
 
-          <Column
-            title="Estado"
-            dataIndex="estado"
-            key="estado" />
+              <Column
+                title="Mayorista"
+                dataIndex="nombre_mayorista"
+                key="nombre_mayorista" />
 
-          <Column
-            title="Ver detalle"
-            key="operation" 
-            render ={(text, row) => <Button onClick= {() => {
-              const id = row.idpedido
-              this.showModal();
-              fetchOrderById({ id });
-             }}>Ver detalle</Button>} />
+              <Column
+                title="Estado"
+                dataIndex="estado"
+                key="estado" />
 
-        </Table>
-        </TableContainer>
-   <ModalDetailOrder 
-   visibility ={this.state.visible} 
-   ok= {this.handleOk} 
-   cancel= {this.handleCancel}
-   customFooter = {[]}
-   content = { 
-     <MainContainerModal>
-   {order && entity && client ? 
-   <div>    
-   <InfoCardClient
-   codClient = {client.codcli_cbim}
-   nombreClient = {client.nombre.includes("0") && client.apellido1.includes("0") && client.apellido2.includes("0")? '' : client.nombre + ' ' + client.apellido1 + ' ' + client.apellido2 }
-   emailClient = {client.email}
-   dateClient = {Utils.renderDate(client.fecha_alta)}
-   stateClient = {client.estado}
-   />
-   <InfoCardEntity
-   codEntity = {entity.codentidad_cbim}
-   company = {entity.nomentidad_cbim}
-   tEntity = {entity.ind_esfarmacia === true? 'FARMACIA': 'SOCIEDAD'}
-   stateEntity = {entity.estado}
-   addressEntity = {entity.direccion}
-   zipcodeEntity = {entity.codigo_postal}
-   cityEntity = {entity.plobacion}
-   provinceEntity = {entity.province}
-   />
-   {/* { InfoCardOrder detailOrder falta el dato de nombre de producto} */}
-   <InfoCardOrder
-   numOrder = {order.idpedido}
-   dateOrder = {Utils.renderDate(order.fecha_alta)}
-   stateOrder = {order.estado}
-   dateModOrder = {order.fecha_modif === null? '' : Utils.renderDate(order.fecha_modif)}
-   typeOrder = {order.tipo}
-   codDiscountOrder = {order.codcupon}
-   detailOrder = {order.lineas}
-  />
-  
-   </div> : ''}
-    </MainContainerModal>
-  }
-   ></ModalDetailOrder>
+              <Column
+                title="Ver detalle"
+                key="operation"
+                render={(text, row) => <Button onClick={() => {
+                  const id = row.idpedido
+                  this.showModal();
+                  fetchOrderById({ id });
+                }}>Ver detalle</Button>} />
 
-        <ButtonsContainer>
-          <PaginationButton
-            icon="arrow"
-            onClick={() => { Math.sign(this.state.pag) <= 0 ? this.setState({ pag: 0 }) : this.setState({ pag: this.state.pag - LIMIT }, function () { this.handleSubmitOrdersSearch() }) }}>
-            <Icon type="left" /></PaginationButton>
-          <PaginationButton
-            icon="arrow"
-            onClick={() => {
-              this.setState({ pag: this.state.pag + LIMIT }, function () { this.handleSubmitOrdersSearch() })
-            }}>
-            <Icon type="right" /></PaginationButton>
+            </Table>
+          </TableContainer>
+          <ModalDetailOrder
+            visibility={this.state.visible}
+            ok={this.handleOk}
+            cancel={this.handleCancel}
+            customFooter={[]}
+            content={
+              <MainContainerModal>
 
-        </ButtonsContainer>
-</div>
+                {client ?
+                  <InfoCardClient
+                    codClient={client.codcli_cbim}
+                    nombreClient={client.nombre}
+                    emailClient={client.email}
+                    dateClient={Utils.renderDate(client.fecha_alta)}
+                    stateClient={client.estado}
+                  /> : ''}
+                  
+                {entity ?
+                  <InfoCardEntity
+                    codEntity={entity.codentidad_cbim}
+                    company={entity.nomentidad_cbim}
+                    tEntity={entity.ind_esfarmacia === true ? 'FARMACIA' : 'SOCIEDAD'}
+                    stateEntity={entity.estado}
+                    addressEntity={entity.direccion}
+                    zipcodeEntity={entity.codigo_postal}
+                    cityEntity={entity.plobacion}
+                    provinceEntity={entity.province}
+                  /> : ''}
+                
+                {order ?
+                  <InfoCardOrder
+                    numOrder={order.idpedido}
+                    dateOrder={Utils.renderDate(order.fecha_alta)}
+                    stateOrder={order.estado}
+                    dateModOrder={order.fecha_modif === null ? '' : Utils.renderDate(order.fecha_modif)}
+                    typeOrder={order.tipo}
+                    codDiscountOrder={order.codcupon}
+                    detailOrder={order.lineas}
+                  /> : ''}
+
+
+              </MainContainerModal>
+            }
+          ></ModalDetailOrder>
+
+          <ButtonsContainer>
+            <PaginationButton
+              icon="arrow"
+              onClick={() => { Math.sign(this.state.pag) <= 0 ? this.setState({ pag: 0 }) : this.setState({ pag: this.state.pag - LIMIT }, function () { this.handleSubmitOrdersSearch() }) }}>
+              <Icon type="left" /></PaginationButton>
+            <PaginationButton
+              icon="arrow"
+              onClick={() => {
+                this.setState({ pag: this.state.pag + LIMIT }, function () { this.handleSubmitOrdersSearch() })
+              }}>
+              <Icon type="right" /></PaginationButton>
+
+          </ButtonsContainer>
+        </div>
       </Maincontainer>
     );
   }
