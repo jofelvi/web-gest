@@ -39,14 +39,19 @@ export const formDataItem = [
 export const tableCols = (tipo) => {
 	let cols = [];
 	const esPedido = typeof tipo === "string" && tipo.search(/pedidos/i) !== -1;
-	console.log("tableCols.tipo: ", tipo, " esPedido: " , esPedido);
-	cols.push({ title: "Item", key: "index", align: "center", render: (text, record, index) => index + 1, });
-	cols.push({ title: "Cód INDAS", dataIndex: "codindas", key: "codindas", align: "center", });
+	cols.push({ title: "Item", key: "index", align: "center", 
+			        render: (text, record, index) => index + 1, });
+	cols.push({ title: "Cód INDAS", dataIndex: "codindas", key: "codindas", 
+		          align: "center", });
 	cols.push({ title: "Producto", dataIndex: "nombre", key: "nombre", 
-							render: (text) => { return !text || text == ''? 'N.D.': text; }, ellipsis: true, });
-	cols.push({ title: "Unidades", dataIndex: "cantidad", key: "cantidad", align: "center", editable: true, });
-	cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", align: "center", 
-							render: (text) => { return  esPedido? !text || text == ''? '': text + '%': 'N/A'; }, 
+							render: (text) => { return !text || text == ''? 'N.D.': text; }, 
+		          ellipsis: true, });
+	cols.push({ title: "Unidades", dataIndex: "cantidad", key: "cantidad", 
+		          align: "center", editable: true, });
+	cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", 
+						  align: "center", 
+							render: (text) => { 
+								return  esPedido? !text || text == ''? '': text + '%': 'N/A'; }, 
 							editable: esPedido? true: false, });
 	cols.push({ title: esPedido? "Puntos acumulados": "Puntos coste", 
 							dataIndex: "puntos", key: "puntos", align: "center", 
