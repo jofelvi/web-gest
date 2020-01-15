@@ -37,6 +37,7 @@ detailOrder
         </Descriptions>
         </DescriptionContainer>
         <TableContainer>
+         
       <Table dataSource= {detailOrder} pagination= {false}>
           <Column
             title="Item"
@@ -61,19 +62,32 @@ detailOrder
             dataIndex="cantidad"
             key="cantidad"
           />
-
+          
+         
+        
           <Column
             title="Descuento"
             dataIndex="descuento"
             key="descuento"
           />
 
+        {typeOrder === 'Pedidos'?
           <Column
-            title="Puntos"
-            dataIndex="puntos"
-            key="puntos"
-          />
+          title="Puntos Acomulados"
+          dataIndex="puntos_acumulados_unidad"
+          key="puntos_acumulados_unidad"
+        />
+        :''}
 
+        {typeOrder === 'Puntos'?
+        <Column
+          title="Puntos Coste"
+          dataIndex="puntos_coste_unidad"
+          key="puntos_coste_unidad"
+        />
+        :''}
+         
+          
         </Table>
         </TableContainer>
       </InfoContainer>

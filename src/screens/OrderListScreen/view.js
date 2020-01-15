@@ -1,4 +1,4 @@
-import React, { useEffect, Component } from 'react';
+import React, {Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Descriptions, Icon, Button } from 'antd';
 import * as moment from 'moment';
@@ -17,17 +17,15 @@ import {
   TableContainer,
 } from './styled';
 import Utils from '../../lib/utils';
-import { pedidos } from '../../constants';
-import { cliente } from '../../constants';
 import ModalDetailOrder from '../../components/ModalDetailOrder';
 import { } from './styled'
 import InfoCardEntity from '../../components/InfoCardEntity/view';
 import InfoCardClient from '../../components/InfoCardClient/view';
 import InfoCardOrder from '../../components/InfoCardOrder/view';
-
+import {modifyOrderDate, filterOrderType} from './utils';
 const dateFormat = 'YYYY/MM/DD';
 const { Column, ColumnGroup } = Table;
-let productArray = [];
+
 class OrderListScreen extends React.Component {
 
   state = {
@@ -41,23 +39,6 @@ class OrderListScreen extends React.Component {
     searchByOrderDate: [],
     visible: false,
   }
-  columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ]
 
   componentDidMount() {
 
@@ -85,33 +66,12 @@ class OrderListScreen extends React.Component {
   };
 
 
-  modifyOrderDate = (order) => {
-    const newOderList = [];
-
-    let orderFilterd = {}
-    order.map(ord => {
-      let date = ord.fecha_alta
-
-      orderFilterd = {
-        ...ord,
-        fecha_alta: Utils.renderDate(date)
-      };
-
-
-      return newOderList.push(orderFilterd);
-    })
-
-    return newOderList;
-
-  }
-
-
-
   searchedValue = (key, value) => {
 
     this.setState({ [key]: value })
   }
-  searchedValueDate = (date, dateString) => {
+
+  searchedValueDate = (dateString) => {
     if (dateString[0] && dateString[1]) {
 
       this.setState({
@@ -147,7 +107,10 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByEntity, searchByType } = this.state;
     const { orders, order, fetchOrderById, entity, client } = this.props;
 
+    if (order) {
+      console.log(filterOrderType(order.tipo, order.lineas))
 
+    }
     return (
       <Maincontainer>
         <div className="table-indas">
@@ -188,7 +151,7 @@ class OrderListScreen extends React.Component {
 
           </InputsContainer>
           <TableContainer>
-            <Table dataSource={this.modifyOrderDate(orders)} className="table" pagination={false} scroll={{ x: true }}>
+            <Table dataSource={modifyOrderDate(orders)} className="table" pagination={false} scroll={{ x: true }}>
 
               <Column
                 title="nº pedido"
@@ -225,8 +188,8 @@ class OrderListScreen extends React.Component {
 
               <Column
                 title="Estado"
-                dataIndex="estado"
-                key="estado" />
+                dataIndex="nombre_estado"
+                key="nombre_estado" />
 
               <Column
                 title="Ver detalle"
@@ -255,7 +218,7 @@ class OrderListScreen extends React.Component {
                     dateClient={Utils.renderDate(client.fecha_alta)}
                     stateClient={client.estado}
                   /> : ''}
-                  
+
                 {entity ?
                   <InfoCardEntity
                     codEntity={entity.codentidad_cbim}
@@ -267,16 +230,16 @@ class OrderListScreen extends React.Component {
                     cityEntity={entity.plobacion}
                     provinceEntity={entity.province}
                   /> : ''}
-                
+
                 {order ?
                   <InfoCardOrder
-                    numOrder={order.idpedido}
+                    numOrder={order.codpedido_origen}
                     dateOrder={Utils.renderDate(order.fecha_alta)}
                     stateOrder={order.estado}
                     dateModOrder={order.fecha_modif === null ? '' : Utils.renderDate(order.fecha_modif)}
                     typeOrder={order.tipo}
                     codDiscountOrder={order.codcupon}
-                    detailOrder={order.lineas}
+                    detailOrder={filterOrderType(order.tipo, order.lineas)}
                   /> : ''}
 
 

@@ -9,10 +9,6 @@ import {
   InfoContainer,
   MainContainerModal
 } from './styles';
-import { DatePickerFromTo } from '../../screens/OrderListScreen/styled';
-
-
-
 
 const InfoCardEntity = ({ 
   codEntity,
