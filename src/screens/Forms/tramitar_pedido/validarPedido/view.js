@@ -75,7 +75,10 @@ const ValidarPedido = ({getTaskVariables,
 						</Col>
 					</Row>
 					<Row>
-						<EditableTable columns={tableCols(values.tipo)} dataSource={values.items}
+						<EditableTable dataSource={values.items}
+							getColumns = { () => {
+								return tableCols(values.tipo);
+							}}
 							handleSave = { (row) => {
 								const newData = values.items;
 								const index = newData.findIndex(item => row.codindas === item.codindas);

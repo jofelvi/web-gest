@@ -18,7 +18,7 @@
  *
  **/
 import { selectTaskVariable, transformData } from '../../lib';
-import { formData, formDataItem, tableCols } from './data';
+import { formData, formDataItem } from './data';
 
 export const obtenerValoresIniciales = function(taskVariables) {
 	console.log("obtenerValoresIniciales.taskVariables", taskVariables);

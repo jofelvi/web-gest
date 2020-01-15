@@ -45,11 +45,12 @@ export const tableCols = (tipo) => {
 	cols.push({ title: "Producto", dataIndex: "nombre", key: "nombre", 
 							render: (text) => { return !text || text == ''? 'N.D.': text; }, ellipsis: true, });
 	cols.push({ title: "Unidades", dataIndex: "cantidad", key: "cantidad", align: "center", editable: true, });
-	if(esPedido)
-		cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", align: "center", 
-							  render: (text) => {return !text || text == ''? '': text + ' %'; }, editable: true, });
+	cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", align: "center", 
+							render: (text) => { return  esPedido? !text || text == ''? '': text + '%': 'N/A'; }, 
+							editable: esPedido? true: false, });
 	cols.push({ title: esPedido? "Puntos acumulados": "Puntos coste", 
-							dataIndex: "puntos", key: "puntos", align: "center", editable: true, });
-	console.log("tableCols.return: ", cols);
+							dataIndex: "puntos", key: "puntos", align: "center", 
+							render: (text,row) => { return row.cantidad * row.puntos; }, 
+		          editable: true, });
 	return cols;
 }
