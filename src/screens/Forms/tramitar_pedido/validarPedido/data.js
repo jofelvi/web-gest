@@ -56,6 +56,6 @@ export const tableCols = (tipo) => {
 	cols.push({ title: esPedido? "Puntos acumulados": "Puntos coste", 
 							dataIndex: "puntos", key: "puntos", align: "center", 
 							render: (text,row) => { return row.cantidad * row.puntos; }, 
-		          editable: true, });
+		          editable: false, });
 	return cols;
 }
