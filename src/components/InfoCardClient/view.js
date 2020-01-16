@@ -21,9 +21,8 @@ const InfoCardClient = ({
   dateClient,
   stateClient,
 
-  }) => {
+  }) => (
 
-return(
   <div>
     <InfoContainer>
     <Descriptions title="Datos Cliente" layout="horizontal">
@@ -35,9 +34,8 @@ return(
   </Descriptions>
     </InfoContainer>
     </div>
-)
 
-} 
+)
   
      
           

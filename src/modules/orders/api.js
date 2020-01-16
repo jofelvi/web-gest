@@ -67,4 +67,3 @@ export const fetchEntityById = (idEntity) => get(`/ntr/entidad/${idEntity}`);
 
 export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);
 
-export const fetchProductById = (idProduct) => get(`/ntr/producto/${idProduct}`);

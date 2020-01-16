@@ -5,31 +5,25 @@ import 'antd/dist/antd.css';
 import {InfoContainer} from './styles'
 import { Modal, Button } from 'antd';
 
-class ModalDetailOrder extends React.Component {
- 
-
-  
-
-
-  render() {
-    return (
+const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content }) =>
+  (
       <div>
         <Modal
           title="Detalles"
-          visible={this.props.visibility}
+          visible={visibility}
           destroyOnClose={true}
-          onOk={this.props.ok}
-          onCancel={this.props.cancel}
-          footer={this.props.customFooter}
+          onOk={ok}
+          onCancel={cancel}
+          footer={customFooter}
           width= {900}
           bodyStyle = {{height: '600px'}} 
-        >{this.props.content}
+        >{content}
          
         </Modal>
       </div>
-    );
-  }
-}
+    )
+  
+
 ModalDetailOrder.propTypes = {
  
 };

@@ -21,4 +21,8 @@ export const MainContainerModal = styled.div`
  flex-direction: column;
 `;
 
+export const TableContainer = styled.div`
+ margin-top: 20px;
+`;
+
 

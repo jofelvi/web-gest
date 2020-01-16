@@ -46,20 +46,7 @@ function* fetchOrderById({ payload }) {
     const response = yield call(api.fetchOrderById, payload.id);
     const responseEntity = yield call(api.fetchEntityById, response.data.codentidad_cbim);
     const responseClient = yield call(api.fetchClientById, responseEntity.data.idcliente);
-    const dataCodIndas = yield response.data.lineas.map(line => { return line.codindas });
-
-    let productArray = [];
     
-    for (let i = 0; i < dataCodIndas.length; i++) {
-      let cod = dataCodIndas[i]
-      const responseProductArray = yield call(api.fetchProductById, cod);
-      yield productArray.push(responseProductArray.data);
-
-    }
-
-    yield productArray;
-
-    yield put(fetchProductByIdSuccess({ product: productArray }))
     yield put(fetchClientByIdSuccess({ client: responseClient.data }));
     yield put(fetchOrderByIdSuccess({ order: response.data }));
     yield put(fetchEntityByIdSuccess({ entity: responseEntity.data }));
