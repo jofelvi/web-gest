@@ -8,7 +8,6 @@ class EditableTable extends React.Component {
 		if(!this.props.handleSave || typeof this.props.handleSave !== 'function') {
 			throw "EditableTable: la propiedada 'handleSave' debe definirse";
 		}
-		console.log("EditableTable: ", this.columns);
 		this.handleSave = this.handleSave.bind(this);
 		this.getColumns = this.getColumns.bind(this);
 		this.state = {

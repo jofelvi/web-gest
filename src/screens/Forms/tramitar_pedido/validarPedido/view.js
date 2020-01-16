@@ -69,7 +69,11 @@ const ValidarPedido = ({getTaskVariables,
 								</Col>
 								</Tooltip>
 								<Col span={4}>{fechaView(values.fecha_alta)}</Col>
-								<Col span={12}>{values.codentidad_cbim} - {values.ind_esfarmacia? 'Farmacia': 'Sociedad'} - {values.nomentidad_cbim}</Col>
+								<Col span={12}>
+									{values.codentidad_cbim} - 
+									{values.ind_esfarmacia? 'Farmacia': 'Sociedad'} - 
+									{values.nomentidad_cbim}
+								</Col>
 								<Col span={4}>{values.nombre_estado}</Col>
 							</Row>
 						</Col>
@@ -141,8 +145,7 @@ const ValidarPedido = ({getTaskVariables,
 										iniValues.aceptado = false;
 										iniValues.actualizado = false;
 										const variables = establecerValoresEnvio(iniValues);
-										console.log("Rechazar variables: ", variables);
-										//completeTask({ variables, history, taskId, procId });
+										completeTask({ variables, history, taskId, procId });
 									 }}>
 								Rechazar
 							</Button>
@@ -152,8 +155,7 @@ const ValidarPedido = ({getTaskVariables,
 										values.aceptado = true;
 										values.actualizado = esModificado(values, taskVariables);
 										const variables = establecerValoresEnvio(values);
-										console.log("Validar variables: ", variables);
-										//completeTask({ variables, history, taskId, procId });
+										completeTask({ variables, history, taskId, procId });
 									 }}>
 								Validar
 							</Button>

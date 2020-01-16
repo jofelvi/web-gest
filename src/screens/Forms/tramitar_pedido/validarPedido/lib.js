@@ -21,7 +21,6 @@ import { selectTaskVariable, transformData } from '../../lib';
 import { formData, formDataItem } from './data';
 
 export const obtenerValoresIniciales = function(taskVariables) {
-	console.log("obtenerValoresIniciales.taskVariables", taskVariables);
 	let initValue = formData.reduce(function(result, item, i) {
 		result[item.name] = taskVariables && selectTaskVariable(taskVariables, item.name)
 				? selectTaskVariable(taskVariables, item.name).value : '';
