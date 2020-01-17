@@ -191,6 +191,7 @@ const ViewCommercialDeals = ({
     token
 }) =>{
     const [loading, setLoading] = useState(true);
+    
     const renderTable= (items, loading)=>{
         return (
             <div className="table-indas">
@@ -203,6 +204,7 @@ const ViewCommercialDeals = ({
                     setCurrentCommercialDeal({fechafin:new Date(),fechainicio:new Date(), estado:'Borrador'});
                 }} hidden={loading}>Nuevo</Button>
             </ButtonGroup>
+            
                     <Table 
                         className="commercial-deals-table" 
                         dataSource={items} 
