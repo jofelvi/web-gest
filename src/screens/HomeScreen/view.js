@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { Card } from 'antd';
+
 
 import { Empty } from 'antd';
+import {ChartContainer, StaticticsContainer} from './styled'
+import LineChart from '../../components/LineChart/view.js';
+import DonutChart from '../../components/DonutChart/view.js';
 
 import utils from '../../lib/utils';
 
@@ -31,8 +36,13 @@ const HomeScreen = ({
   if (process && taskName) {
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
-
-  return <Empty />;
+  return <StaticticsContainer>
+    <ChartContainer><LineChart/></ChartContainer>
+    <ChartContainer><DonutChart/></ChartContainer>
+    <ChartContainer><DonutChart/></ChartContainer>
+    </StaticticsContainer> 
+  
+  // return <PieChart />;
 };
 
 HomeScreen.propTypes = {

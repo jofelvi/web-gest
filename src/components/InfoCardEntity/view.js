@@ -7,7 +7,7 @@ import { Descriptions } from 'antd';
 
 import {
   InfoContainer,
-  MainContainerModal
+
 } from './styles';
 
 const InfoCardEntity = ({ 

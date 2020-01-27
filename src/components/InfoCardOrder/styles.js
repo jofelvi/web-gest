@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { Avatar, Col, Button } from "antd";
 
 export const InfoContainer = styled.div`
   max-height: 90%;

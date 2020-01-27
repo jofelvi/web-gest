@@ -1,6 +1,6 @@
-import React, {Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Descriptions, Icon, Button } from 'antd';
+import { Table, Icon, Button } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../constants';
 import './styles.css'
@@ -12,7 +12,6 @@ import {
   PaginationButton,
   ButtonsContainer,
   SerachOrdersButton,
-  InfoContainer,
   MainContainerModal,
   TableContainer,
 } from './styled';
@@ -24,7 +23,7 @@ import InfoCardClient from '../../components/InfoCardClient/view';
 import InfoCardOrder from '../../components/InfoCardOrder/view';
 import {modifyOrderDate, filterOrderType} from './utils';
 const dateFormat = 'YYYY/MM/DD';
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 class OrderListScreen extends React.Component {
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { Avatar, Col, Button, Input, DatePicker } from "antd";
+import { Button, Input, DatePicker } from "antd";
 const { RangePicker} = DatePicker;
 export const Maincontainer = styled.div`
   width: 100%;

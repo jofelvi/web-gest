@@ -1,9 +1,7 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import {InfoContainer} from './styles'
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content }) =>
   (
