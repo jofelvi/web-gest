@@ -10,28 +10,20 @@ import{
   View, 
   Guide, 
   Shape } from "bizcharts";
-
+import {ChartLineContainer} from './styles'
+const totalN = 'totalNumero';
+const totalPVM = 'totalPVM';
+const m = 'month'
 class LineChart extends React.Component {
   render() {
-const data = [
-  {"month": 'en', "total": 7 },
-  {"month": 'feb', "total": 6.9 },
-  {"month": 'mar', "total": 9.5 },
-  {"month": 'abr', "total": 14.5 },
-  {"month": 'may', "total": 18.2 },
-  {"month": 'jun', "total": 21.5 },
-  {"month": 'jul', "total": 25.2 },
-  {"month": 'agt', "total": 26.5 },
-  {"month": 'set' , "total": 23.3 },
-  {"month": 'oct', "total": 18.3 },
-  {"month": 'nov', "total": 13.9 },
-  {"month": 'dic', "total": 13.9 }
 
-];
 return(
-    <Chart height={290} width= {450} data={data} forceFit >
+  
+    <ChartLineContainer height={370} width= {580} data={this.props.dataLine} forceFit={false} >
+      {console.log("DAta line",this.props.dataLine)}
     <Axis name="month" />
-    <Axis name="total" />
+    <Axis name="totalPVM" />
+    <Axis name="totalNumero"/>
     <Tooltip 
       containerTpl='<div class="g2-tooltip"><p class="g2-tooltip-title"></p><table class="g2-tooltip-list"></table></div>'
       itemTpl='<tr class="g2-tooltip-list-item"><td style="color:{color}">{name}</td><td>{value}</td></tr>'
@@ -49,8 +41,9 @@ return(
       margin: '10px'
     }}
       />
-    <Geom type='line' position='month*total' />
-  </Chart>
+    <Geom type='line' position={m+'*'+totalN}/>
+  </ChartLineContainer>
+  
   )
   }
 }

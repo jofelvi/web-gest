@@ -11,27 +11,29 @@ import{
   Guide, 
   Shape,
    } from "bizcharts";
-  import DataSet from '@antv/data-set';
-import {ChartDonut} from './styles'
+ 
+import {ChartDonut, ContainerDownData, ContainerLeftData, ContainerRightData, ContainerUpData, TextBadge, DataNumber} from './styles';
+import {Icon} from 'antd';
+import DataDisplay from '../../components/DataDisplay/view.js';
 
   class DonutChart extends React.Component {
     render() {
-        const {labeldonuts} = this.props;
-        const { DataView } = DataSet;
+        
+        
         //const buffer = new ArrayBuffer(16);
         const { Html } = Guide;
-        const data = [
-        { periodo: '< 6 meses', porcentaje: 40 },
-        { periodo: '6-12 meses', porcentaje: 21 },
-        { periodo: '> 12 meses', porcentaje: 39 }
-        ];
-        const dv = new DataView();
-        dv.source(data).transform({
-        type: 'percent',
-        field: 'porcentaje',
-        dimension: 'periodo',
-        as: 'percent'
-        });
+        // const data = [
+        // { periodo: '< 6 meses', porcentaje: 40 },
+        // { periodo: '6-12 meses', porcentaje: 21 },
+        // { periodo: '> 12 meses', porcentaje: 39 }
+        // ];
+        // const dv = new DataView();
+        // dv.source(data).transform({
+        // type: 'percent',
+        // field: 'porcentaje',
+        // dimension: 'periodo',
+        // as: 'percent'
+        // });
         const cols = {
         percent: {
           formatter: val => {
@@ -41,25 +43,29 @@ import {ChartDonut} from './styles'
         }
         }   
         return(
-      
-        <ChartDonut data={dv} scale={cols} padding={[ 80, 80, 100, 100 ]} forceFit={true}>
+          <div>
+       
+        <ChartDonut width={250} height={250} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
+          {console.log("Data from chart", this.props.dataClient)}
           {window.innerWidth < 1500? 
-          <div><Coord type={'theta'} radius={0.35} innerRadius={1.7} />
+          <div><Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
-          <Legend position='right' offsetY={-window.innerHeight / 2 + 300} offsetX={-60} textStyle={{fontSize: 12}} /></div>: <div> <Coord type={'theta'} radius={0.50} innerRadius={1.7} />
+          {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 380} offsetX={-20} textStyle={{fontSize: 12}} /> */}
+          </div>: <div> <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
-          <Legend position='right' offsetY={-window.innerHeight / 2 + 340} offsetX={0} textStyle={{fontSize: 12}} /></div>}
+          {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 450} offsetX={-20} textStyle={{fontSize: 12}} /> */}
+          </div>}
           <Tooltip 
             showTitle={false} 
             itemTpl='<li><span style="background-color:{color};font-size:{"2.5em"} class="g2-tooltip-marker"></span>{name}: {value}</li>'
             />
           <Guide >
-            <Html position ={[ '50%', '50%' ]} html= '<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;"><br><span style="color:#8C8C8C;font-size:1.5em">Activos</span></div>' alignX='middle' alignY='middle'/>
+            <Html position ={this.props.pos} html={this.props.textHtml} alignY={this.props.alignYpos}/>
           </Guide>
           <Geom
             type="intervalStack"
             position="percent"
-            color={['periodo', ['#17A589', '#2471A3' , '#F1C40F']]}
+            color={this.props.colorSection}
             //tooltip={['item*percent',(item, percent) => {
               //percent = percent * 100 + '%';
              // return {
@@ -69,9 +75,11 @@ import {ChartDonut} from './styles'
            // }]}
             //style={{lineWidth: 1,stroke: '#fff'}}
             >
-          
+          {console.log("COLOR section", this.props.colorSection)}
           </Geom>
         </ChartDonut>
+        
+        </div>
         )
     }}
     DonutChart.propTypes = {

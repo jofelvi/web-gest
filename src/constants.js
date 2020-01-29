@@ -232,3 +232,85 @@ export const productos = [
        
       
 ]
+
+export const dataaa = [
+
+    { per: 'tarea1' },
+   
+  ];
+  
+  
+  // export const dataLineChart = [
+
+  //   { month: 'en', totalNumero: 7 , "totalPVM": 50},
+  //   { month: 'feb', totalNumero: 6.9, "totalPVM": 50 },
+  //   { month: 'mar', totalNumero: 9.5, "totalPVM": 30 },
+  //   { month: 'abr', totalNumero: 14.5, "totalPVM": 40 },
+  //   { month: 'may', totalNumero: 18.2, "totalPVM": 50 },
+  //   { month: 'jun', totalNumero: 21.5, "totalPVM": 10 },
+  //   { month: 'jul', totalNumero: 25.2, "totalPVM": 60 },
+  //   { month: 'agt', totalNumero: 26.5, "totalPVM": 20 },
+  //   { month: 'set', totalNumero: 23.3, "totalPVM": 70 },
+  //   { month: 'oct', totalNumero: 18.3, "totalPVM": 80 },
+  //   { month: 'nov', totalNumero: 13.9, "totalPVM": 90 },
+  //   { month: 'dic', totalNumero: 13.9, "totalPVM": 100 }
+  
+  // ];
+export const dataLineChart = [
+
+    { month: 'en', totalNumero: 7 },
+    { month: 'feb', totalNumero: 6.9 },
+    { month: 'mar', totalNumero: 9.5 },
+    { month: 'abr', totalNumero: 14.5 },
+    { month: 'may', totalNumero: 18.2 },
+    { month: 'jun', totalNumero: 21.5 },
+    { month: 'jul', totalNumero: 25.2 },
+    { month: 'agt', totalNumero: 26.5 },
+    { month: 'set', totalNumero: 23.3 },
+    { month: 'oct', totalNumero: 18.3 },
+    { month: 'nov', totalNumero: 13.9  },
+    { month: 'dic', totalNumero: 13.9 }
+  
+  ];
+
+  export const dataActive = [
+
+    { periodo: '< 6 meses', porcentaje: 25 },
+    { periodo: '6-12 meses', porcentaje: 25 },
+    { periodo: '> 12 meses', porcentaje: 50 }
+
+  ];
+
+  export const dataInactive = [
+
+    { periodo: '< 6 meses', porcentaje: 40 },
+    { periodo: '6-12 meses', porcentaje: 21 },
+    { periodo: '> 12 meses', porcentaje: 39 },
+
+
+  ];
+  export const dataSubfamilias = [
+
+    { subfamilia: 'A', porcentaje: 7 },
+    { subfamilia: 'B', porcentaje: 5 },
+    { subfamilia: 'C', porcentaje: 6 },
+    { subfamilia: 'D', porcentaje: 4 },
+    { subfamilia: 'E', porcentaje: 3 },
+    { subfamilia: 'F', porcentaje: 2 },
+    { subfamilia: 'G', porcentaje: 4 },
+    { subfamilia: 'H', porcentaje: 7 },
+    { subfamilia: 'I', porcentaje: 8 },
+    { subfamilia: 'J', porcentaje: 9 },
+    { subfamilia: 'K', porcentaje: 5 },
+    { subfamilia: 'L', porcentaje: 3 }
+
+  ];
+
+  export const dataClientsActivity = [
+
+    { activos: 23456, inactivos: 56789},
+    
+
+  ];
+
+ 
