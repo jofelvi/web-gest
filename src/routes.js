@@ -17,9 +17,7 @@ import TaskFormScreen from './screens/TaskFormScreen';
 import CommercialDealsScreen from './screens/CommercialDealsScreen';
 import ClientsIndasScreen from './screens/ClientsScreen';
 
-import ValidarRegistroSinCBIM from './screens/Forms/register/validarRegistroSinCBIM'
-import ValidarRegistro from './screens/Forms/register/validarRegistro'
-
+import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
 
 const { capitalizeWord } = utils;
@@ -77,9 +75,8 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <Route path='/process/signup' exact component={SignupScreen} />
       <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen}/> 
       <PrivateRoute path="/clients/tr" exact component={ClientsIndasScreen}/> 
-      <PrivateRoute path="/pruebaform" exact component={ValidarRegistroSinCBIM}/>
-      <PrivateRoute path="/pruebaform2" exact component={ValidarRegistro}/>
-      <PrivateRoute path="/pruebaform3" exact component={ValidarPedido}/>
+      <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
+      <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
     </Switch>
   );
 };

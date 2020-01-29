@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Formik, ErrorMessage } from 'formik';
-import { Form, Input, Row, Col, Button, Radio } from 'antd';
+import { Formik } from 'formik';
+import { Form, Input, Row, Col, Button, Radio, Select } from 'antd';
 import { transformData } from '../../lib';
 import { formData } from './data';
-import { obtenerValoresIniciales, obtenerValidacionSchema } from '../comunes';
+import { obtenerValoresIniciales } from '../comunes';
+import './style-rv.css';
 
-const ValidarRegistroSinCBIM = ({
+const { Options }  = Select;
+
+const ValidarRegistro = ({
   getTaskVariables,
   taskVariables,
   completeTask,
@@ -32,70 +35,16 @@ const ValidarRegistroSinCBIM = ({
 		>
 			{({ values, errors }) => (
 				<Form colon={false} className="form-indas">
-					<Row 
-						type="flex" 
-						justify="left" 
-						align="middle" 
-						gutter={16}>
-						<Col
-							xs={{span:24}} 
-							lg={{span:10}}
-							xxl={{span:8}}>
-							<h2 className="form-indas-main-title">Validar Alta de Cliente</h2>
-						</Col>
-						<Col
-							xs={{span:24}}  
-							lg={{span:14}}
-							xxl={{span:16}}>
-							<Row gutter={16}>
-								<Col xs={{span:24}}
-									 md={{span:9}}>
-									<Form.Item name="codcli_cbim" label="Código Cliente"
-										required={true} whitespace={true}>
-										<Input/>
-										<ErrorMessage component="div" name="codcli_cbim"/>
-									</Form.Item>
-								</Col>
-								<Col xs={{span:24}}
-									 md={{span:9}}>
-									<Form.Item name="codentidad_cbim" label="Código Entidad"
-										required={true} whitespace={true}>
-										<Input/>
-										<ErrorMessage component="div" name="codentidad_cbim"/>
-									</Form.Item>
-								</Col>
-								<Col xs={{span:24}}
-									 md={{span:6}}>
-									<Form.Item className="form-indas-search-btn-container">
-										<Button 
-											className="form-indas-btn-search"
-											icon="search" 
-											onClick={() => {
-												console.log("buscar");
-											}}>
-											Buscar</Button>
-									</Form.Item>
-								</Col>
-							</Row>
-						</Col>
+					<h2 className="form-indas-main-title">Validar Alta de Cliente</h2>
+					<Row type="flex" justify="left" align="top">
 					</Row>
-					<Row 
-						type="flex" 
-						justify="left" 
-						align="top" 
-						gutter={8, 8}
-						className="form-indas-body-container"
-						>
-						<Row
-							type="flex"
-							style={{width:"100%"}}
-							gutter={16}
-						>
-							<Col md={{span:12}}
-								 xs={{span:24}}>
+					<Row type="flex" justify="left" align="top" gutter={8, 8} className="form-indas-body-container" >
+						<Row type="flex" style={{width:"100%"}} gutter={16} >
+							<Col md={{span:12}} xs={{span:24}}>
 								<h3 className="form-indas-main-sub-title">Formulario en transferindas</h3>
 								<section className="form-indas-section">
 									<h4 className="form-indas-main-title-section">Datos de Cliente</h4>
+									<Row><div className="col-space"></div></Row>
 									<Row>
 										<Form.Item name="cliente_nombre" label="Nombre">
 											<Input value={values.cliente_nombre} disabled="true"/>
@@ -129,6 +78,7 @@ const ValidarRegistroSinCBIM = ({
 								</section>
 								<section className="form-indas-section">
 									<h4 className="form-indas-main-title-section">Entidad Principal</h4>
+									<Row><div className="col-space"></div></Row>
 									<Row>
 										<Form.Item name="nomentidad_cbim" label="Razón Social">
 										<Input value={values.nomentidad_cbim} disabled="true"/>
@@ -179,11 +129,15 @@ const ValidarRegistroSinCBIM = ({
 									</Row>
 								</section>
 							</Col>
-							<Col md={{span:12}}
-								 xs={{span:24}}>
+							<Col md={{span:12}} xs={{span:24}}>
 								<h3 className="form-indas-main-sub-title">Formulario en CBIM</h3>
 								<section className="form-indas-section">
 									<h4 className="form-indas-main-title-section">Datos de Cliente</h4>
+									<Row>
+										<Form.Item name="codcli_cbim" label="Código CIBM">
+											<Input value={values.codcli_cbim} disabled="true"/>
+										</Form.Item>
+									</Row>
 									<Row>
 										<Form.Item name="cliente_nombre" label="Nombre">
 											<Input value={values.cliente_nombre} disabled="true"/>
@@ -217,6 +171,11 @@ const ValidarRegistroSinCBIM = ({
 								</section>
 								<section className="form-indas-section">
 									<h4 className="form-indas-main-title-section">Entidad Principal</h4>
+									<Row>
+										<Form.Item name="codentidad_cbim" label="Cśdigo Entidad">
+											<Input value={values.cdoentidad_cbim} disabled="true"/>
+										</Form.Item>
+									</Row>
 									<Row>
 										<Form.Item name="nomentidad_cbim" label="Razón Social">
 											<Input value={values.nomentidad_cbim} disabled="true"/>
@@ -272,15 +231,30 @@ const ValidarRegistroSinCBIM = ({
 					<Row type="flex" justify="left" align="top" gutter={16}>
 						<Col>
 							<Button type="primary" onClick={() => {
-								console.log("Cancelar");
+								getTaskVariables({ history });
+								if(history) history.goBack();
 							}}>
 							Cancelar</Button>
 						</Col>
 						<Col>
 							<Button type="primary" onClick={() => {
-									console.log("Acpetar")
+									values.aceptado = true;
+									const variables = transformData(values, formData);
+									console.log("validarRegistro.aceptar.values:", values);
+									console.log("validarRegistro.aceptar.variables:", variables);
+									//completeTask({ variables, history, taskId, procId });
 							}}>
 							Aceptar</Button>
+						</Col>
+						<Col>
+							<Button type="primary" onClick={() => {
+									values.aceptado = false;
+									const variables = transformData(values, formData);
+									console.log("validarRegistro.rechazar.values:", values);
+									console.log("validarRegistro.rechazar.variables:", variables);
+									//completeTask({ variables, history, taskId, procId });
+							}}>
+							Rechazar</Button>
 						</Col>
 					</Row>
 				</Form>
@@ -289,8 +263,8 @@ const ValidarRegistroSinCBIM = ({
   );
 };
 
-ValidarRegistroSinCBIM.propTypes = {
+ValidarRegistro.propTypes = {
   completeTask: PropTypes.func.isRequired,
 };
 
-export default withRouter(ValidarRegistroSinCBIM);
+export default withRouter(ValidarRegistro);

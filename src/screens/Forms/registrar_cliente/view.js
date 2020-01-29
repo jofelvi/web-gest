@@ -1,3 +1,5 @@
+// registrar_cliente
+
 import React, { useEffect } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,7 +10,7 @@ import Start from '../components/Start';
 const View = ({ startProcess, history, processStep, taskId, taskName }) => {
   useEffect(() => {
     if (processStep === '') {
-      startProcess({ key: 'register', history });
+      startProcess({ key: 'registrar_cliente', history });
     }
   }, []);
 
