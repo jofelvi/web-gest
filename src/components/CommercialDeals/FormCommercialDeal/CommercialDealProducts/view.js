@@ -285,6 +285,7 @@ const CommercialDealProducts = ({
         updateProductsFilter(false);
     },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter]);
     return (
+       
         <div>
             <Table 
                 className="commercial-deals-products"
