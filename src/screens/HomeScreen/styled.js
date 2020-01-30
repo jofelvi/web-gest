@@ -5,7 +5,7 @@ import { Button } from "antd";
 const ButtonGroup = Button.Group;
 
 export const ChartContainerLine = styled.div`
-  width: 60%;
+  width: 50%;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@ export const StaticticsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  padding: 20px 0px 20px 30px;
+  padding: 20px 20px 20px 20px;
   margin-right: 30px;
 
 `;
@@ -111,12 +111,23 @@ margin-right: 0px;
 
 
 export const DataDisplayContainer = styled.div`
+width: 20%;
 display: flex;
+flex-direction: column;
 justify-content: center;
 align-items: center;
-margin-right: 0px;
-       
+margin-right: 0px;       
 `;
+
+export const DataContainer = styled.div`
+width: fit-content;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+margin-right: 0px;       
+`;
+
 
 
 export const Title = styled.div`
@@ -126,7 +137,7 @@ margin-bottom: 40px;
 
 export const SubTitle = styled.div`
 font-size: 1.2em;
-margin: 0px 10px 10px 30px;
+margin: 0px 10px 10px 15px;
 `;
 
 
@@ -137,7 +148,7 @@ export const ChartContainerLineDonut = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 export const ChartsDataPeriodContainer = styled.div`
   min-width: 60%;

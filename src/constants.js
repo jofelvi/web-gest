@@ -313,4 +313,13 @@ export const dataLineChart = [
 
   ];
 
+  export const dataEntities = [
+    {
+      nuevosRegistros: 3456,
+      clientesActivos: 8909,
+      bajas: 90
+    
+    }
+  ]
+
  

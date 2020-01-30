@@ -20,7 +20,8 @@ import {
   ContainerUpData,
   ContainerDownData,
   ClientsChartContainer,
-  DataDisplayContainer
+  DataDisplayContainer,
+  DataContainer
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
 import DonutChart from '../../components/DonutChart/view.js';
@@ -47,18 +48,18 @@ const sectionColor = new Map()
     .set('< 6 meses', ['#17A589' ])
     .set('6-12 meses', ['#2471A3'])
     .set('> 12 meses', ['#F1C40F'])
-    .set('A', ['#17A589' ])
-    .set('B', ['#EE8434'])
-    .set('C', ['#80B192'])
-    .set('D', ['#4B4E6D' ])
-    .set('E', ['#EF798A'])
-    .set('F', ['#A1E887'])
-    .set('G', ['#493548' ])
-    .set('H', ['#AE8799'])
-    .set('I', ['#364949'])
-    .set('J', ['#7899D3' ])
-    .set('K', ['#E7EFC5'])
-    .set('L', ['#A0583B']);
+    .set('A', ['#bbdefb' ])
+    .set('B', ['#64b5f6'])
+    .set('C', ['#2196f3'])
+    .set('D', ['#0277bd' ])
+    .set('E', ['#00acc1'])
+    .set('F', ['#4dd0e1'])
+    .set('G', ['#9fefed'])
+    .set('H', ['#004d40'])
+    .set('I', ['#7cb342'])
+    .set('J', ['#dce775' ])
+    .set('K', ['#afb42b'])
+    .set('L', ['#827717']);
 const tranformDataForDonutClient = (datos) => {
   
   const dv = new DataView();
@@ -123,7 +124,12 @@ const HomeScreen = ({
             <LineChart dataLine={dataLineChart} />
           </ChartContainerLine>
           <DataDisplayContainer>
-
+          <SubTitle>Entidades</SubTitle>
+          <DataContainer>
+          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Nuevos Registros'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Clientes Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          </DataContainer>
           </DataDisplayContainer>
           <ChartContainer>
             <DonutChart
@@ -133,7 +139,7 @@ const HomeScreen = ({
               alignYpos={'middle'}
               colorSection = {['subfamilia',(subfamilia)=>{ return colorControl(subfamilia)} ]} />
           </ChartContainer>
-          <ChartContainer></ChartContainer>
+         
         </ChartContainerLineDonut>
       </ChartsDataPeriodContainer>
       <ClientsChartTitleContainer>
@@ -141,8 +147,8 @@ const HomeScreen = ({
         <ClientsChartContainer>
         <ChartContainer>
           <ContainerUpData>
-            <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F' }} ></DataDisplay>
-            <DataDisplay numberElement={dataActive[1].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589' }} ></DataDisplay>
+            <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={dataActive[1].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589', padding: '0px 10px 0px 0px' }} ></DataDisplay>
           </ContainerUpData>
           <DonutChart
             dataClient={tranformDataForDonutClient(dataActive)}
@@ -152,13 +158,13 @@ const HomeScreen = ({
             colorSection = {['periodo', (periodo)=>{return colorControl(periodo)}]} />
              
             <ContainerDownData>
-        <DataDisplay numberElement= {dataActive[2].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1'}} ></DataDisplay>
+        <DataDisplay numberElement= {dataActive[2].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1', padding: '0px 10px 0px 0px'}} ></DataDisplay>
             </ContainerDownData>
         </ChartContainer>
         <ChartContainer>
         <ContainerUpData>
-            <DataDisplay numberElement={dataInactive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F' }} ></DataDisplay>
-            <DataDisplay numberElement={dataInactive[0].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589' }} ></DataDisplay>
+            <DataDisplay numberElement={dataInactive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={dataInactive[0].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589', padding: '0px 10px 0px 0px' }} ></DataDisplay>
           </ContainerUpData>
           <DonutChart
             dataClient={tranformDataForDonutClient(dataInactive)}
@@ -169,7 +175,7 @@ const HomeScreen = ({
 
             
             <ContainerDownData>
-        <DataDisplay numberElement= {dataInactive[1].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1'}} ></DataDisplay>
+        <DataDisplay numberElement= {dataInactive[1].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1', padding: '0px 10px 0px 0px'}} ></DataDisplay>
             </ContainerDownData>
         </ChartContainer>
         </ClientsChartContainer>

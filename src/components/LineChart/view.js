@@ -20,7 +20,6 @@ class LineChart extends React.Component {
 return(
   
     <ChartLineContainer height={370} width= {580} data={this.props.dataLine} forceFit={false} >
-      {console.log("DAta line",this.props.dataLine)}
     <Axis name="month" />
     <Axis name="totalPVM" />
     <Axis name="totalNumero"/>
