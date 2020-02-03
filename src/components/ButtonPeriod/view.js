@@ -5,14 +5,14 @@ import { Button } from "antd";
 
 
 
-  const ButtonPeriod = () => {
+  const ButtonPeriod = ({ onClickYear, onClickMonth, onClickDay, onClickHour }) => {
        
         return(
           <ButtonPeriodContainer>
-          <Button >Año</Button>
-          <Button >Mes</Button>
-          <Button >Día</Button>
-          <Button >Hora</Button>
+          <Button onClick = {onClickYear}>Año</Button>
+          <Button onClick = {onClickMonth} >Mes</Button>
+          <Button onClick = {onClickDay} >Día</Button>
+          <Button onClick = {onClickHour}>Hora</Button>
         </ButtonPeriodContainer>
         
         )

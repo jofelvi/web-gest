@@ -5,7 +5,7 @@ import { Icon } from "antd";
 
 
 
-  const DataDisplay = ({numberElement, textElement, iconType, styleColor}) => { 
+  const DataDisplayPie = ({numberElement, textElement, iconType, styleColor}) => { 
         
           
         return(
@@ -16,7 +16,7 @@ import { Icon } from "antd";
         
         )
     }
-    DataDisplay.propTypes = {
+    DataDisplayPie.propTypes = {
  
     };
-    export default DataDisplay;
+    export default DataDisplayPie;

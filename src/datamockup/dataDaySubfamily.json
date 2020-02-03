@@ -1,0 +1,17 @@
+{ "data": {
+    "data": [
+        { "subfamilia": "A", "porcentaje": 7 },
+    { "subfamilia": "B", "porcentaje": 5 },
+    { "subfamilia": "C", "porcentaje": 6 },
+    { "subfamilia": "D", "porcentaje": 4 },
+    { "subfamilia": "E", "porcentaje": 3 },
+    { "subfamilia": "F", "porcentaje": 2 },
+    { "subfamilia": "G", "porcentaje": 4 },
+    { "subfamilia": "H", "porcentaje": 7 },
+    { "subfamilia": "I", "porcentaje": 8 },
+    { "subfamilia": "J", "porcentaje": 9 },
+    { "subfamilia": "K", "porcentaje": 5 },
+    { "subfamilia": "L", "porcentaje": 3 }
+    ]
+}
+}

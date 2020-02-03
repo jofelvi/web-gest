@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline } from 'antd';
+import { Button, Timeline, Badge } from 'antd';
 import {
   ChartContainer,
   StaticticsContainer,
@@ -21,28 +21,32 @@ import {
   ContainerDownData,
   ClientsChartContainer,
   DataDisplayContainer,
-  DataContainer
+  DataContainer,
+  DataDisplayContainerElements,
+  PieChartContainer,
+  ChartContainerPie,
+  PieDatsDisplayContainer
+ 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
 import DonutChart from '../../components/DonutChart/view.js';
+import PieChart from '../../components/PieChart/view.js';
 import ButtonTasks from '../../components/ButtonTasks/view.js';
 import ButtonPeriod from '../../components/ButtonPeriod/view.js';
 import DataDisplay from '../../components/DataDisplay/view.js';
+import DataDisplayPie from '../../components/DataDisplayPie/view.js';
+
+import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
 
 import DataSet from '@antv/data-set';
 import utils from '../../lib/utils';
-import { dataInactive, dataActive, dataaa, dataLineChart, dataClientsActivity, dataSubfamilias } from '../../constants';
-const activos = 123.455;
-const inactivos = 345.908;
+
 const { DataView } = DataSet;
 const label1 = '<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:1.2em">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:1.2em">';
 const label3 = '</span></div>';
-const menosDeSeisMeses = " - 6 meses";
-const masDeDoceMeses = " + 12 meses";
-const deSeisAdoceMeses = " 6-12 meses";
-const colorArray = [,  , , , '#', '#', '#','#', '#', '#', '#', '#'];
+
 
 const sectionColor = new Map()
     .set('< 6 meses', ['#17A589' ])
@@ -60,10 +64,40 @@ const sectionColor = new Map()
     .set('J', ['#dce775' ])
     .set('K', ['#afb42b'])
     .set('L', ['#827717']);
+  
+    
+    const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour)=>{
+      console.log("DATA MOnth", dataMonth)
+
+      let dataCantidad;
+          if(stateYear === true){
+            //console.log("DATA YEAR", dataYear)
+            return dataCantidad = dataYear;
+            
+          }
+          if(stateMonth === true){
+            //console.log("DATA MONTH", dataMonth)
+            return dataCantidad = dataMonth 
+            
+          }
+          if(stateDay === true){
+            console.log("DATA DAY", dataDay)
+            return dataCantidad = dataDay
+            
+          }
+          if(stateHour === true){
+            //console.log("DATA HOUR", dataHour)
+            return dataCantidad = dataHour
+            
+          }
+        
+          return dataCantidad 
+        }
+
 const tranformDataForDonutClient = (datos) => {
   
   const dv = new DataView();
-  console.log(dv)
+
   return dv.source(datos).transform({
     type: 'percent',
     field: 'porcentaje',
@@ -73,7 +107,7 @@ const tranformDataForDonutClient = (datos) => {
 }
 const tranformDataForDonut = (datos) => {
   const dv = new DataView();
-  console.log(dv)
+ 
   return dv.source(datos).transform({
     type: 'percent',
     field: 'porcentaje',
@@ -96,14 +130,45 @@ const HomeScreen = ({
   taskId,
   completed,
   history,
+  yearList,
+  monthList,
+  dayList,
+  hourList,
+  fetchSalesByYear,
+  fetchSalesByMonth,
+  fetchSalesByDay,
+  fetchSalesByHour,
+  entitiesList,
+  subfamiliesList,
+  clientsData,
+  fetchClientsData,
+  clientsDataActivity,
+  clientsDataSales,
+  fetchPendingTasks,
+  pendingTasks
 }) => {
+
   useEffect(() => {
+    fetchClientsData();
+    fetchPendingTasks();
     if (utils.getTaskId() || taskId) {
+      fetchClientsData();
       const id = utils.getTaskId();
       fetchTaskForm({ taskId: id || taskId, history });
     }
-  }, [taskId, fetchTaskForm]);
+    
+  }, [fetchClientsData, fetchPendingTasks, taskId, fetchTaskForm]);
 
+  if (pendingTasks){
+    console.log( "PENDING TASK",pendingTasks)
+  }
+  const [numeroPedidos, setNumeroPedidos ] = useState(false);
+  const [numeroPVM, setNumeroPVM ] = useState(false);
+  const [timeYear, setTimeYear ] = useState(false);
+  const [timeMonth, setTimeMonth ] = useState(false);
+  const [timeDay, setTimeDay ] = useState(false);
+  const [timeHour, setTimeHour ] = useState(false);
+  
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
 
   if (id && procId && !completed) {
@@ -118,66 +183,126 @@ const HomeScreen = ({
       <Title>Estadísticas</Title>
       <ChartsDataPeriodContainer>
         <SubTitle>Periodo</SubTitle>
-        <ButtonPeriod> </ButtonPeriod>
+        <ButtonPeriod 
+        onClickDay = { ()=>{
+          fetchPendingTasks();
+          fetchSalesByDay();
+          setTimeDay(true);
+          setTimeYear(false);
+          setTimeMonth(false);
+          setTimeHour(false);
+        }}      
+
+        onClickHour ={ ()=>{
+          fetchSalesByHour();
+          setTimeHour(true);
+          setTimeYear(false);
+          setTimeMonth(false);
+          setTimeDay(false);
+          
+        }}
+        onClickMonth ={ ()=>{
+          fetchSalesByMonth();
+          setTimeMonth(true);
+          setTimeYear(false);
+          setTimeDay(false);
+          setTimeHour(false);
+        }}
+        
+        onClickYear = { ()=>{
+              fetchSalesByYear();
+              setTimeYear(true);
+              setTimeMonth(false);
+              setTimeDay(false);
+              setTimeHour(false);
+            }}> </ButtonPeriod>
         <ChartContainerLineDonut>
           <ChartContainerLine>
-            <LineChart dataLine={dataLineChart} />
+
+            <ButtonQuantity onClickNumeroPedido ={ ()=>{
+              setNumeroPedidos(true)
+              setNumeroPVM(false)
+            }} onClickPVM = { ()=>{
+              setNumeroPVM(true)
+              setNumeroPedidos(false)
+            }}></ButtonQuantity>
+             <SubTitle>Ventas</SubTitle>
+            <LineChart dataLine={sortingDataToShowChartLine( timeYear, timeMonth, timeDay, timeHour, yearList,
+    monthList, dayList, hourList)} numeroPedidosType = { numeroPedidos } PVMtype = {numeroPVM}/>
           </ChartContainerLine>
+          
           <DataDisplayContainer>
           <SubTitle>Entidades</SubTitle>
           <DataContainer>
-          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Nuevos Registros'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Clientes Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-          <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            {entitiesList? entitiesList.map( ent =>{
+           
+           return(
+           <DataDisplayContainerElements>
+          <DataDisplay numberElement={ent.nuevosRegistros} textElement= {' Nuevos Registros'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          <DataDisplay numberElement={ent.clientesActivos} textElement= {' Clientes Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          <DataDisplay numberElement={ent.bajas} textElement= {' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+          </DataDisplayContainerElements>
+          )}): ''}
           </DataContainer>
           </DataDisplayContainer>
-          <ChartContainer>
-            <DonutChart
-              dataClient={tranformDataForDonut(dataSubfamilias)}
+          <ChartContainerPie>
+          <SubTitle>Ventas por Subfamilias</SubTitle>
+          <PieChartContainer>
+          
+            <PieChart
+              dataClient={subfamiliesList? tranformDataForDonut(subfamiliesList): ''}
               pos={['50%', '50%']}
               textHtml={ label1 +'Ventas Subfamilias'+ label2+ label3 }
               alignYpos={'middle'}
               colorSection = {['subfamilia',(subfamilia)=>{ return colorControl(subfamilia)} ]} />
-          </ChartContainer>
+              <PieDatsDisplayContainer>
+          <DataDisplayPie numberElement={'23'  + ' %'} textElement= {'subfamilia 1'} iconType="pie-chart" styleColor={{ color: '#ADF1F0', padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+          <DataDisplayPie numberElement={'34' + ' %'} textElement= {'subfamilia 2'} iconType="pie-chart" styleColor={{ color: '#26B8CA', padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+          </PieDatsDisplayContainer>
+          </PieChartContainer>
+          
+          </ChartContainerPie>
          
         </ChartContainerLineDonut>
       </ChartsDataPeriodContainer>
       <ClientsChartTitleContainer>
         <SubTitle>Actividad de Clientes</SubTitle>
         <ClientsChartContainer>
+        {clientsDataActivity?
         <ChartContainer>
           <ContainerUpData>
-            <DataDisplay numberElement={dataActive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-            <DataDisplay numberElement={dataActive[1].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={clientsDataActivity[0].porcentaje  + ' %'} textElement= {clientsDataActivity[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[0].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={clientsDataActivity[1].porcentaje  + ' %'} textElement= {clientsDataActivity[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[1].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
           </ContainerUpData>
           <DonutChart
-            dataClient={tranformDataForDonutClient(dataActive)}
+            dataClient={clientsDataActivity? tranformDataForDonutClient(clientsDataActivity): ''}
             pos={['50%', '50%']}
-            textHtml={label1 +'Activos'+ label2+ dataClientsActivity[0].activos + label3}
+            textHtml={label1 +'Activos'+ label2+ clientsData[0].activos + label3}
             alignYpos={'middle'}
             colorSection = {['periodo', (periodo)=>{return colorControl(periodo)}]} />
              
             <ContainerDownData>
-        <DataDisplay numberElement= {dataActive[2].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1', padding: '0px 10px 0px 0px'}} ></DataDisplay>
+        <DataDisplay numberElement= {clientsDataActivity[2].porcentaje  + ' %'} textElement= {clientsDataActivity[2].periodo} iconType= "pie-chart" styleColor = {{color:colorControl(clientsDataActivity[2].periodo), padding: '0px 10px 0px 0px'}} ></DataDisplay>
             </ContainerDownData>
-        </ChartContainer>
+        </ChartContainer>: ''}
+       { clientsDataSales?
         <ChartContainer>
         <ContainerUpData>
-            <DataDisplay numberElement={dataInactive[2].porcentaje} textElement= {masDeDoceMeses} iconType="pie-chart" styleColor={{ color: '#F1C40F', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-            <DataDisplay numberElement={dataInactive[0].porcentaje} textElement= {menosDeSeisMeses} iconType="pie-chart" styleColor={{ color: '#17A589', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={clientsDataSales[0].porcentaje  + ' %'} textElement= {clientsDataSales[0].periodo} iconType="pie-chart" styleColor={{ color:colorControl(clientsDataSales[0].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+            <DataDisplay numberElement={clientsDataSales[1].porcentaje  + ' %'} textElement= {clientsDataSales[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[1].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
           </ContainerUpData>
           <DonutChart
-            dataClient={tranformDataForDonutClient(dataInactive)}
+            dataClient={clientsDataSales? tranformDataForDonutClient(clientsDataSales): ''}
             pos={['50%', '50%']}
-            textHtml={label1 +'Inactivos'+ label2+ dataClientsActivity[0].activos + label3}
+            textHtml={label1 +'Inactivos'+ label2+ clientsData[0].inactivos + label3}
             alignYpos={'middle'}
             colorSection = {['periodo',  (periodo)=>{return colorControl(periodo)}]} />
 
             
             <ContainerDownData>
-        <DataDisplay numberElement= {dataInactive[1].porcentaje} textElement= {deSeisAdoceMeses} iconType= "pie-chart" styleColor = {{color: '#4586B1', padding: '0px 10px 0px 0px'}} ></DataDisplay>
+        <DataDisplay numberElement= {clientsDataSales[2].porcentaje  + ' %'} textElement= {clientsDataSales[2].periodo} iconType= "pie-chart" styleColor = {{color: colorControl(clientsDataSales[2].periodo), padding: '0px 10px 0px 0px'}} ></DataDisplay>
             </ContainerDownData>
-        </ChartContainer>
+        </ChartContainer>: ''}
         </ClientsChartContainer>
       </ClientsChartTitleContainer>
     </StaticticsContainer>
@@ -185,26 +310,33 @@ const HomeScreen = ({
       <Title>Tareas Pendientes</Title>
       <ContentContainerTask>
         <ContainerTask>
+          {pendingTasks?
           <Timeline>
-            {dataaa.map(da =>
-              <Timeline.Item>{da.per}</Timeline.Item>
+            {pendingTasks.map(task =>
+              <Timeline.Item>{task.per}</Timeline.Item>
             )}
-          </Timeline>
+          </Timeline>: ''}
           {/* el boton de actualizar tendría que hacer un fetch de las tareas*/}
-          <Button type="primary" style={{ marginTop: 16 }} >
+          <Button type="primary" onClick= {fetchPendingTasks} style={{ marginTop: 16 }} >
             Actualizar Tareas
         </Button>
         </ContainerTask>
         <ButtonTaskContainer>
+       
           <ButtonTasks
+            counter={2}
             iconType={'user-add'}
             buttonText={'Registro de clientes'}
           ></ButtonTasks>
+          
+           
           <ButtonTasks
+            counter={2}
             iconType={'shopping-cart'}
             buttonText={'Pedidos con incidencias'}>
           </ButtonTasks>
           <ButtonTasks
+            counter={2}
             iconType={'user-delete'}
             buttonText={'Baja de clientes'}></ButtonTasks>
         </ButtonTaskContainer>

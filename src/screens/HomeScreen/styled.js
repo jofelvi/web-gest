@@ -12,6 +12,15 @@ export const ChartContainerLine = styled.div`
   justify-content: center;
   padding: 0px 20px 0px 20px;
 `;
+export const ChartContainerPie = styled.div`
+  width: 30%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const ChartContainer = styled.div`
   width: 30%;
   height: fit-content;
@@ -19,7 +28,6 @@ export const ChartContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-
 export const ClientsChartTitleContainer = styled.div`
   width: 100%;
   height: fit-content;
@@ -30,12 +38,41 @@ export const ClientsChartTitleContainer = styled.div`
 `;
 
 export const ClientsChartContainer = styled.div`
-  width: 100%;
+  width: 80%;
   height: fit-content;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+`;
+
+export const DataDisplayContainerElements = styled.div`
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+  padding: 50px 0px;
+`;
+export const PieChartContainer = styled.div`
+  width: 90%;
+  height: 320px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30px;
+ 
+`;
+export const PieDatsDisplayContainer = styled.div`
+  width: 100%;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
 `;
 
 export const StaticticsContainer = styled.div`
@@ -44,7 +81,7 @@ export const StaticticsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  padding: 20px 20px 20px 20px;
+  padding: 15px 15px 15px 15px;
   margin-right: 30px;
 
 `;
@@ -113,6 +150,7 @@ margin-right: 0px;
 export const DataDisplayContainer = styled.div`
 width: 20%;
 display: flex;
+height: 400px;
 flex-direction: column;
 justify-content: center;
 align-items: center;
@@ -122,6 +160,7 @@ margin-right: 0px;
 export const DataContainer = styled.div`
 width: fit-content;
 display: flex;
+height: 80%;
 flex-direction: column;
 justify-content: center;
 align-items: flex-start;
@@ -132,18 +171,18 @@ margin-right: 0px;
 
 export const Title = styled.div`
 font-size: 2em;
-margin-bottom: 40px;
+margin-bottom: 5px;
 `;
 
 export const SubTitle = styled.div`
 font-size: 1.2em;
-margin: 0px 10px 10px 15px;
+margin: 0px 0px 5px 0px;
 `;
 
 
 export const ChartContainerLineDonut = styled.div`
-  min-width: 100%;
-  padding:20px 20px 20px 20px;
+  min-width: 90%;
+  padding:20px 20px 0px 20px;
   background-color: white;
   display: flex;
   flex-direction: row;

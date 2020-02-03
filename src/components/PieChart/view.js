@@ -16,7 +16,7 @@ import {ChartDonut, ContainerDownData, ContainerLeftData, ContainerRightData, Co
 import {Icon} from 'antd';
 import DataDisplay from '../../components/DataDisplay/view.js';
 
-  class DonutChart extends React.Component {
+  class PieChart extends React.Component {
     render() {
         
         
@@ -45,13 +45,13 @@ import DataDisplay from '../../components/DataDisplay/view.js';
         return(
           <div>
        
-        <ChartDonut width={190} height={190} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
+        <ChartDonut width={220} height={220} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
           
           {window.innerWidth < 1500? 
-          <div><Coord type={'theta'} radius={0.55} innerRadius={1.7} />
+          <div><Coord type={'theta'} radius={0.55}  />
           <Axis name="percent" />
           {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 380} offsetX={-20} textStyle={{fontSize: 12}} /> */}
-          </div>: <div> <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
+          </div>: <div> <Coord type={'theta'} radius={0.9}  />
           <Axis name="percent" />
           {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 450} offsetX={-20} textStyle={{fontSize: 12}} /> */}
           </div>}
@@ -60,7 +60,7 @@ import DataDisplay from '../../components/DataDisplay/view.js';
             itemTpl='<li><span style="background-color:{color};font-size:{"2.5em"} class="g2-tooltip-marker"></span>{name}: {value}</li>'
             />
           <Guide >
-            <Html position ={this.props.pos} html={this.props.textHtml} alignY={this.props.alignYpos}/>
+            {/* <Html position ={this.props.pos} html={this.props.textHtml} alignY={this.props.alignYpos}/> */}
           </Guide>
           <Geom
             type="intervalStack"
@@ -82,7 +82,7 @@ import DataDisplay from '../../components/DataDisplay/view.js';
         </div>
         )
     }}
-    DonutChart.propTypes = {
+    PieChart.propTypes = {
  
     };
-    export default DonutChart;
+    export default PieChart;
