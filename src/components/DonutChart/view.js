@@ -1,39 +1,21 @@
 import React from "react";
-import{
-  Chart, 
+import{ 
   Geom, 
   Axis, 
   Tooltip, 
-  Coord, 
-  Label, 
-  Legend, 
-  View, 
+  Coord,  
   Guide, 
-  Shape,
+  
    } from "bizcharts";
  
-import {ChartDonut, ContainerDownData, ContainerLeftData, ContainerRightData, ContainerUpData, TextBadge, DataNumber} from './styles';
-import {Icon} from 'antd';
-import DataDisplay from '../../components/DataDisplay/view.js';
+import { ChartDonut } from './styles';
+
 
   class DonutChart extends React.Component {
     render() {
         
-        
-        //const buffer = new ArrayBuffer(16);
         const { Html } = Guide;
-        // const data = [
-        // { periodo: '< 6 meses', porcentaje: 40 },
-        // { periodo: '6-12 meses', porcentaje: 21 },
-        // { periodo: '> 12 meses', porcentaje: 39 }
-        // ];
-        // const dv = new DataView();
-        // dv.source(data).transform({
-        // type: 'percent',
-        // field: 'porcentaje',
-        // dimension: 'periodo',
-        // as: 'percent'
-        // });
+       
         const cols = {
         percent: {
           formatter: val => {
@@ -50,10 +32,8 @@ import DataDisplay from '../../components/DataDisplay/view.js';
           {window.innerWidth < 1500? 
           <div><Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
-          {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 380} offsetX={-20} textStyle={{fontSize: 12}} /> */}
           </div>: <div> <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
-          {/* <Legend position='right' offsetY={-window.innerHeight / 2 + 450} offsetX={-20} textStyle={{fontSize: 12}} /> */}
           </div>}
           <Tooltip 
             showTitle={false} 
@@ -66,14 +46,6 @@ import DataDisplay from '../../components/DataDisplay/view.js';
             type="intervalStack"
             position="percent"
             color={this.props.colorSection}
-            //tooltip={['item*percent',(item, percent) => {
-              //percent = percent * 100 + '%';
-             // return {
-               // name: item,
-               // value: percent
-             // };
-           // }]}
-            //style={{lineWidth: 1,stroke: '#fff'}}
             >
         
           </Geom>

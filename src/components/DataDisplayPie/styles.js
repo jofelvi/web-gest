@@ -13,7 +13,7 @@ padding: 0px 20px 10px 10px;
 `;
 
 export const TextBadge = styled.span`
-font-size: 1em;
+font-size: 0.8em;
 white-space: nowrap;
 color: #B4B0B0;
 display: flex;
@@ -21,7 +21,7 @@ align-items: center;
 
 `;
 export const DataNumber = styled.span`
-font-size: 1.2em;
+font-size: 0.8em;
 color: #4E4E4E;
 font-weight: 700;
 padding: 0px 0px 0px 20px;
