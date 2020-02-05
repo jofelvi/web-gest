@@ -20,13 +20,16 @@ const ValidarRegistro = ({
 		params: { taskId, procId },
 	},
 	task,
+	token,
+	loadClientesCbim,
+	clientesCbim,
 }) => {
 	useEffect(() => {
 		getTaskVariables({ history, taskId })
 		if (!task) {
 			fetchTask(taskId)
 		}
-	}, [])
+	}, [token, task])
 	const [nombreComo, setNombreComo] = useState('')
 	const [loadingSearch, setLoadingSearch] = useState(false)
 	const [lstClientesCbim, setLstClientesCbim] = useState([])
@@ -38,7 +41,7 @@ const ValidarRegistro = ({
 			{({ values, errors }) => (
 				<Form colon={false} className="form-indas">
 					<h2 className="form-indas-main-title">Validar Alta de Cliente</h2>
-					<Row type="flex" justify="left" align="top">
+					<Row type="flex" align="top">
 						<Col span={24}>
 							<h3 className="form-indas-main-sub-title">
 								Buscador en entidad en CBIM
@@ -144,7 +147,7 @@ const ValidarRegistro = ({
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="entidad_tipo" label="Tipo de entidad">
+										<Form.Item name="ind_esfarmacia" label="Tipo de entidad">
 											<Radio.Group value={values.entidad_tipo}>
 												<Radio value="FARMACIA" disabled="true">
 													Farmacia
@@ -167,7 +170,7 @@ const ValidarRegistro = ({
 										<Form.Item
 											name="entidad_email"
 											label="Correo electrónico">
-											<Input value={values.entidad_email} disabled="true" />
+											<Input value={values.cliente_email} disabled="true" />
 										</Form.Item>
 									</Row>
 									<Row>
@@ -267,16 +270,17 @@ const ValidarRegistro = ({
 									</Row>
 									<Row>
 										<Form.Item name="entidad_nif" label="NIF">
-											<Input value={values.entidad_nif} disabled="true" />
+											<Input value={values.entidad_nif} disabled={true} />
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="entidad_tipo" label="Tipo de entidad">
-											<Radio.Group value={values.entidad_tipo}>
-												<Radio value="FARMACIA" disabled="true">
+										<div>{values.ind_esfarmacia}</div>
+										<Form.Item name="ind_esfarmacia" label="Tipo de entidad">
+											<Radio.Group value={values.ind_esfarmacia}>
+												<Radio value={true} disabled={true}>
 													Farmacia
 												</Radio>
-												<Radio value="SOCIEDAD" disabled="true">
+												<Radio value={false} disabled={true}>
 													Sociedad
 												</Radio>
 											</Radio.Group>

@@ -57,6 +57,10 @@ import {
   watchloadWholesalersIndas
 } from './clients-indas/sagas';
 
+import {
+	watchloadClientesCbim,		
+} from './clientes-cbim/sagas';
+
 export default function* rootSaga() {
   yield all([
     watchFetchUsers(),
@@ -93,6 +97,6 @@ export default function* rootSaga() {
     watchfetchOrders(),
     watchsearchOrder(),
     watchfetchOrdersById(),
-    
+		watchloadClientesCbim(),    
   ]);
 }

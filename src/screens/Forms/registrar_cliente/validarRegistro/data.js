@@ -60,9 +60,9 @@ export const formData = [
 	},
 	{ name: 'entidad_nif', type: 'String', validation: undefined },
 	{
-		name: 'entidad_tipo',
-		type: 'String',
-		validation: Yup.string().required(),
+		name: 'ind_esfarmacia',
+		type: 'Boolean',
+		validation: Yup.bool().required(),
 	},
 	{
 		name: 'entidad_telefono',
@@ -77,7 +77,6 @@ export const formData = [
 		validation: Yup.string().required(),
 	},
 	{ name: 'provincia', type: 'String', validation: Yup.string().required() },
-	{ name: 'entidad_email', type: 'String', validation: undefined },
 	{ name: 'coddelegado', type: 'Integer', validation: undefined },
 	{ name: 'nombre_delegado', type: 'String', validation: undefined },
 	{ name: 'aceptado', type: 'Boolean', validation: undefined },

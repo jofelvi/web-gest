@@ -8,7 +8,7 @@ const defaultState = {
 
 export default handleActions(
 	{
-		[loadClientsIndasSuccess]: (state, { payload }) => ({
+		[loadClientesCbimSuccess]: (state, { payload }) => ({
 			...state,
 			clientesCbim: payload.list,
 		}),

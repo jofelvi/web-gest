@@ -17,21 +17,26 @@
  *
  **/
 
-import { selectTaskVariable } from '../../lib';
+import { selectTaskVariable } from '../../lib'
 
 export const obtenerValoresIniciales = function(taskVariables, formData) {
 	let initValue = formData.reduce(function(result, item, i) {
-		result[item.name] = taskVariables && selectTaskVariable(taskVariables, item.name)
-				? selectTaskVariable(taskVariables, item.name).value : '';
-		return result;
-	}, {});
-	return initValue;	
-};
+		result[item.name] =
+			taskVariables && selectTaskVariable(taskVariables, item.name)
+				? selectTaskVariable(taskVariables, item.name).value
+				: ''
+		return result
+	}, {})
+	return initValue
+}
 export const obtenerValidacionSchema = function(formData) {
-	let validaciones = formData.filter(function(item){ return item.validation }).reduce(
-		function(result, item, i) {
-			result[item.name] = item.validation;
-			return result;
-		}, {});
-	return validaciones;	
-};
+	let validaciones = formData
+		.filter(function(item) {
+			return item.validation
+		})
+		.reduce(function(result, item, i) {
+			result[item.name] = item.validation
+			return result
+		}, {})
+	return validaciones
+}

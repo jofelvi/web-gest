@@ -8,6 +8,7 @@ import forms from './forms/reducers';
 import commercialDeals from './commercialDeals/reducers';
 import menu from './menu/reducers'
 import clientsIndas from './clients-indas/reducers';
+import clientesCbim from './clientes-cbim/reducers';
 
 export default combineReducers({
   auth,
