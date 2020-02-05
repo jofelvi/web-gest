@@ -12,7 +12,7 @@ padding: ${marginDataDisplay};
 `;
 
 export const TextBadge = styled.span`
-font-size: ${textBadgeSize}1.1em;
+font-size: ${textBadgeSize};
 white-space: nowrap;
 color: ${textBadgeColor};
 display: flex;
@@ -20,7 +20,7 @@ align-items: center;
 
 `;
 export const DataNumber = styled.span`
-font-size:  ${dataNumberSize}1.2em;
+font-size:  ${dataNumberSize};
 color: ${dataNumberColor}; 
 font-weight: ${dataNumberBold};
 padding: ${dataNumberPadding};
