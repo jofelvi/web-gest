@@ -1,17 +1,17 @@
 { "data": {
     "data": [
-        { "subfamilia": "A", "porcentaje": 7 },
-    { "subfamilia": "B", "porcentaje": 7 },
-    { "subfamilia": "C", "porcentaje": 10 },
-    { "subfamilia": "D", "porcentaje": 9 },
-    { "subfamilia": "E", "porcentaje": 6 },
-    { "subfamilia": "F", "porcentaje": 9},
-    { "subfamilia": "G", "porcentaje": 12 },
-    { "subfamilia": "H", "porcentaje": 7 },
-    { "subfamilia": "I", "porcentaje": 8 },
-    { "subfamilia": "J", "porcentaje": 9 },
-    { "subfamilia": "K", "porcentaje": 5 },
-    { "subfamilia": "L", "porcentaje": 3 }
+        { "subfamilia": "A", "porcentajeNumero": 3 ,  "porcentajePVM": 3 ,"totalNumero": 7 , "totalPVM": 10},
+    { "subfamilia": "B", "porcentajeNumero": 3 , "porcentajePVM": 3 , "totalNumero": 7 , "totalPVM": 101},
+    { "subfamilia": "C", "porcentajeNumero": 2, "porcentajePVM": 3,"totalNumero": 37 , "totalPVM": 102 },
+    { "subfamilia": "D", "porcentajeNumero": 7, "porcentajePVM": 10, "totalNumero": 17 , "totalPVM": 103 },
+    { "subfamilia": "E", "porcentajeNumero": 3, "porcentajePVM": 3, "totalNumero": 47 , "totalPVM": 104},
+    { "subfamilia": "F", "porcentajeNumero": 7, "porcentajePVM": 3, "totalNumero": 67 , "totalPVM": 105 },
+    { "subfamilia": "G", "porcentajeNumero": 12, "porcentajePVM": 10, "totalNumero": 87 , "totalPVM": 106 },
+    { "subfamilia": "H", "porcentajeNumero": 9, "porcentajePVM": 7, "totalNumero": 97 , "totalPVM": 107 },
+    { "subfamilia": "I", "porcentajeNumero": 5, "porcentajePVM": 5, "totalNumero": 27 , "totalPVM": 108 },
+    { "subfamilia": "J", "porcentajeNumero": 2,  "porcentajePVM": 11, "totalNumero": 74 , "totalPVM": 109 },
+    { "subfamilia": "K", "porcentajeNumero": 2, "porcentajePVM": 3, "totalNumero": 75 , "totalPVM": 110 },
+    { "subfamilia": "L", "porcentajeNumero": 3, "porcentajePVM": 3,"totalNumero": 77 , "totalPVM": 111 }
     ]
 }
 }

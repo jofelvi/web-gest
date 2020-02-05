@@ -2,43 +2,63 @@ import DataSet from '@antv/data-set';
 
 const { DataView } = DataSet;
 
+const subfamiliaA ='#bbdefb';
+const subfamiliaB ='#64b5f6';
+const subfamiliaC ='#2196f3';
+const subfamiliaD ='#0277bd';
+const subfamiliaE ='#00acc1';
+const subfamiliaF ='#4dd0e1';
+const subfamiliaG ='#9fefed';
+const subfamiliaH ='#004d40';
+const subfamiliaI ='#7cb342';
+const subfamiliaJ ='#dce775';
+const subfamiliaK ='#afb42b';
+const subfamiliaL ='#827717';
+const menosDeSeisMeses ='#17A589';
+const entreSeisYDoceMeses ='#2471A3';
+const masDeDoceMeses ='#F1C40F';
+
+
 const sectionColor = new Map()
-    .set('< 6 meses', ['#17A589' ])
-    .set('6-12 meses', ['#2471A3'])
-    .set('> 12 meses', ['#F1C40F'])
-    .set('A', ['#bbdefb' ])
-    .set('B', ['#64b5f6'])
-    .set('C', ['#2196f3'])
-    .set('D', ['#0277bd' ])
-    .set('E', ['#00acc1'])
-    .set('F', ['#4dd0e1'])
-    .set('G', ['#9fefed'])
-    .set('H', ['#004d40'])
-    .set('I', ['#7cb342'])
-    .set('J', ['#dce775' ])
-    .set('K', ['#afb42b'])
-    .set('L', ['#827717']);
+  .set('< 6 meses', [menosDeSeisMeses])
+  .set('6-12 meses', [entreSeisYDoceMeses])
+  .set('> 12 meses', [masDeDoceMeses])
+  .set('A', [subfamiliaA])
+  .set('B', [subfamiliaB])
+  .set('C', [subfamiliaC])
+  .set('D', [subfamiliaD])
+  .set('E', [subfamiliaE])
+  .set('F', [subfamiliaF])
+  .set('G', [subfamiliaG])
+  .set('H', [subfamiliaH])
+  .set('I', [subfamiliaI])
+  .set('J', [subfamiliaJ])
+  .set('K', [subfamiliaK])
+  .set('L', [subfamiliaL]);
+
+  export const colorControl = (colors) => {
+    return sectionColor.get(colors) || [];
+  }
   
-    
-    export const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour)=>{
-      let dataCantidad;
-          if(stateYear === true){
-            return dataCantidad = dataYear;   
-          };
-          if(stateMonth === true){
-            return dataCantidad = dataMonth   
-          };
-          if(stateDay === true){
-            return dataCantidad = dataDay 
-          };
-          if(stateHour === true){
-            return dataCantidad = dataHour 
-          };
-          return dataCantidad; 
-        }
+export const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour) => {
+  let dataCantidad;
+  if (stateYear === true) {
+    return dataCantidad = dataYear;
+  };
+  if (stateMonth === true) {
+    return dataCantidad = dataMonth
+  };
+  if (stateDay === true) {
+    return dataCantidad = dataDay
+  };
+  if (stateHour === true) {
+    return dataCantidad = dataHour
+  };
+  return dataCantidad;
+}
 
 export const tranformDataForDonutClient = (datos) => {
-  
+
   const dv = new DataView();
 
   return dv.source(datos).transform({
@@ -48,19 +68,39 @@ export const tranformDataForDonutClient = (datos) => {
     as: 'percent'
   });
 }
-export const tranformDataForDonut = (datos) => {
+const typeOfUnits = (statePVM, stateNumero) => {
+  let numero = 'porcentajePVM';
+  if (statePVM) {
+    return numero = 'porcentajePVM';
+  }
+  if (stateNumero) {
+    return numero = 'porcentajeNumero';
+  }
+  return numero
+}
+
+export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
   const dv = new DataView();
- 
+  let numero = typeOfUnits(statePVM, stateNumero)
+
   return dv.source(datos).transform({
     type: 'percent',
-    field: 'porcentaje',
+    field: numero,
     dimension: 'subfamilia',
     as: 'percent'
   });
 }
 
-export const colorControl = (colors) =>{
-  
-  return sectionColor.get(colors) || [];
-    
+
+
+
+export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
+  let arrayFinal;
+  if (statePVM) {
+    return arrayFinal = numberArray.sort((a, b) => (a.totalPVM < b.totalPVM) ? 1 : -1)
+  }
+  if (stateNumeroPedidos) {
+    return arrayFinal = numberArray.sort((a, b) => (a.totalNumero < b.totalNumero) ? 1 : -1)
+  }
+  return arrayFinal;
 }

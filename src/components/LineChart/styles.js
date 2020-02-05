@@ -6,7 +6,7 @@ export const ChartLineContainer = styled(Chart)`
 display: flex;
 justify-content: center;
 align-items: center;
- margin-right: 0px;
+
   
 `;
 

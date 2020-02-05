@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline, Badge } from 'antd';
+import { Button, Timeline } from 'antd';
 import {
   ChartContainer,
   StaticticsContainer,
@@ -25,7 +25,11 @@ import {
   DataDisplayContainerElements,
   PieChartContainer,
   ChartContainerPie,
-  PieDatsDisplayContainer
+  PieDatsDisplayContainer,
+  EntitiesChartPieContainer,
+  SubTitleVentas,
+  ButtonsPeriodQuantityContainer,
+  ContainerButtonsTitle
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -40,13 +44,12 @@ import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
 
 import utils from '../../lib/utils';
-import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl } from './utils'
+import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
 
 
 const label1 = '<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:1.2em">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:1.2em">';
 const label3 = '</span></div>';
-
 
 
 
@@ -79,13 +82,17 @@ const HomeScreen = ({
   useEffect(() => {
     fetchClientsData();
     fetchPendingTasks();
+    fetchSalesByYear();
+    fetchSalesByMonth();
+    fetchSalesByHour();
+    fetchSalesByDay();
     if (utils.getTaskId() || taskId) {
       fetchClientsData();
       const id = utils.getTaskId();
       fetchTaskForm({ taskId: id || taskId, history });
     }
 
-  }, [fetchClientsData, fetchPendingTasks, taskId, fetchTaskForm]);
+  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
   const [numeroPedidos, setNumeroPedidos] = useState(false);
   const [numeroPVM, setNumeroPVM] = useState(false);
@@ -93,6 +100,8 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
+
+  let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
 
@@ -107,43 +116,45 @@ const HomeScreen = ({
     <StaticticsContainer>
       <Title>Estadísticas</Title>
       <ChartsDataPeriodContainer>
-        <SubTitle>Periodo</SubTitle>
-        <ButtonPeriod
-          onClickDay={() => {
-            fetchPendingTasks();
-            fetchSalesByDay();
-            setTimeDay(true);
-            setTimeYear(false);
-            setTimeMonth(false);
-            setTimeHour(false);
-          }}
+        <ButtonsPeriodQuantityContainer>
+          <ContainerButtonsTitle>
+            <SubTitle>Periodo</SubTitle>
+            <ButtonPeriod
+              onClickDay={() => {
+                fetchPendingTasks();
+                fetchSalesByDay();
+                setTimeDay(true);
+                setTimeYear(false);
+                setTimeMonth(false);
+                setTimeHour(false);
+              }}
 
-          onClickHour={() => {
-            fetchSalesByHour();
-            setTimeHour(true);
-            setTimeYear(false);
-            setTimeMonth(false);
-            setTimeDay(false);
+              onClickHour={() => {
+                fetchSalesByHour();
+                setTimeHour(true);
+                setTimeYear(false);
+                setTimeMonth(false);
+                setTimeDay(false);
 
-          }}
-          onClickMonth={() => {
-            fetchSalesByMonth();
-            setTimeMonth(true);
-            setTimeYear(false);
-            setTimeDay(false);
-            setTimeHour(false);
-          }}
+              }}
+              onClickMonth={() => {
+                fetchSalesByMonth();
+                setTimeMonth(true);
+                setTimeYear(false);
+                setTimeDay(false);
+                setTimeHour(false);
+              }}
 
-          onClickYear={() => {
-            fetchSalesByYear();
-            setTimeYear(true);
-            setTimeMonth(false);
-            setTimeDay(false);
-            setTimeHour(false);
-          }}> </ButtonPeriod>
-        <ChartContainerLineDonut>
-          <ChartContainerLine>
-
+              onClickYear={() => {
+                fetchSalesByYear();
+                setTimeYear(true);
+                setTimeMonth(false);
+                setTimeDay(false);
+                setTimeHour(false);
+              }}> </ButtonPeriod>
+          </ContainerButtonsTitle>
+          <ContainerButtonsTitle>
+            <SubTitle>Unidades</SubTitle>
             <ButtonQuantity onClickNumeroPedido={() => {
               setNumeroPedidos(true)
               setNumeroPVM(false)
@@ -151,50 +162,62 @@ const HomeScreen = ({
               setNumeroPVM(true)
               setNumeroPedidos(false)
             }}></ButtonQuantity>
-            <SubTitle>Ventas</SubTitle>
+          </ContainerButtonsTitle>
+        </ButtonsPeriodQuantityContainer>
+        <ChartContainerLineDonut>
+          <ChartContainerLine>
+            <SubTitleVentas>Ventas</SubTitleVentas>
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthList, dayList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
           </ChartContainerLine>
-
-          <DataDisplayContainer>
-            <SubTitle>Entidades</SubTitle>
-            <DataContainer>
-              {entitiesList ? entitiesList.map(ent => {
-
-                return (
-                  <DataDisplayContainerElements>
-                    <DataDisplay numberElement={ent.nuevosRegistros} textElement={' Nuevos Registros'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                    <DataDisplay numberElement={ent.clientesActivos} textElement={' Clientes Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                    <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                  </DataDisplayContainerElements>
-                )
-              }) : ''}
-            </DataContainer>
-          </DataDisplayContainer>
-          <ChartContainerPie>
-            <SubTitle>Ventas por Subfamilias</SubTitle>
-            <PieChartContainer>
-
-              <PieChart
-                dataClient={subfamiliesList ? tranformDataForDonut(subfamiliesList) : ''}
-                pos={['50%', '50%']}
-                textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
-                alignYpos={'middle'}
-                colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]} />
-              <PieDatsDisplayContainer>
-                {subfamiliesList ? subfamiliesList.map(subfamily => {
-                  if (subfamily.porcentaje >= 6) {
-                    return (
-                      <DataDisplayPie numberElement={subfamily.porcentaje + ' %'} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
-                    )
-                  }
+          <EntitiesChartPieContainer>
+            <DataDisplayContainer>
+              <SubTitle>Clientes transferindas</SubTitle>
+              <DataContainer>
+                {entitiesList ? entitiesList.map(ent => {
+                  return (
+                    <DataDisplayContainerElements>
+                      <DataDisplay numberElement={ent.nuevosRegistros} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                      <DataDisplay numberElement={ent.clientesActivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                      <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                    </DataDisplayContainerElements>
+                  )
                 }) : ''}
+              </DataContainer>
+            </DataDisplayContainer>
 
-              </PieDatsDisplayContainer>
-            </PieChartContainer>
+            <ChartContainerPie>
+              <SubTitle>Ventas por Subfamilias</SubTitle>
+              <PieChartContainer>
 
-          </ChartContainerPie>
+                <PieChart
+                  dataClient={subfamilyDataSortedByBiggestNumber ? tranformDataForDonut(subfamilyDataSortedByBiggestNumber.slice(0, 5), numeroPVM, numeroPedidos) : ''}
+                  pos={['50%', '50%']}
+                  textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
+                  alignYpos={'middle'}
+                  colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
+                  numeroPedidosType={numeroPedidos}
+                  PVMtype={numeroPVM}
+                />
+                <PieDatsDisplayContainer>
+                  {subfamilyDataSortedByBiggestNumber ? subfamilyDataSortedByBiggestNumber.slice(0, 5).map(subfamily => {
+                    if (numeroPedidos) {
+                      return (
+                        <DataDisplayPie numberElement={subfamily.totalNumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                      )
+                    }
+                    if (numeroPVM) {
+                      return (
+                        <DataDisplayPie numberElement={subfamily.totalPVM} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                      )
+                    }
+                  }) : ''}
 
+                </PieDatsDisplayContainer>
+              </PieChartContainer>
+
+            </ChartContainerPie>
+          </EntitiesChartPieContainer>
         </ChartContainerLineDonut>
       </ChartsDataPeriodContainer>
       <ClientsChartTitleContainer>

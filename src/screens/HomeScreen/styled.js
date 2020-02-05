@@ -13,12 +13,16 @@ export const ChartContainerLine = styled.div`
   padding: 0px 20px 0px 20px;
 `;
 export const ChartContainerPie = styled.div`
-  width: 30%;
-  height: fit-content;
+  width: 60%;
+  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-left: 1px solid grey;
+border-radius: 2px;  
+margin-right: 20px  
+
 `;
 
 export const ChartContainer = styled.div`
@@ -53,21 +57,21 @@ export const DataDisplayContainerElements = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: start;
-  padding: 50px 0px;
+  padding: 10px 0px;
 `;
 export const PieChartContainer = styled.div`
-  width: 90%;
-  height: 320px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding-left: 30px;
+  padding-left: 50px;
  
 `;
 export const PieDatsDisplayContainer = styled.div`
   width: 100%;
-  height: 320px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,26 +152,36 @@ margin-right: 0px;
 
 
 export const DataDisplayContainer = styled.div`
-width: 20%;
+width: 40%;
 display: flex;
-height: 400px;
+height: 350px;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+padding-left: 15px;
+border-left: 1px solid grey;
+border-radius: 2px;      
+`;
+
+export const DataContainer = styled.div`
+width: 100%;
+display: flex;
+height: 80%;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 margin-right: 0px;       
 `;
 
-export const DataContainer = styled.div`
-width: fit-content;
-display: flex;
-height: 80%;
-flex-direction: column;
-justify-content: center;
-align-items: flex-start;
-margin-right: 0px;       
+export const ButtonsPeriodQuantityContainer = styled.div`
+display: flex; 
+flex-direciton: row;
 `;
-
-
+export const ContainerButtonsTitle = styled.div`
+display: flex; 
+flex-direction: column;
+align-items: center;
+`;
 
 export const Title = styled.div`
 font-size: 2em;
@@ -178,11 +192,24 @@ export const SubTitle = styled.div`
 font-size: 1.2em;
 margin: 0px 0px 5px 0px;
 `;
-
+export const SubTitleVentas = styled.div`
+font-size: 1.2em;
+margin: 0px 0px 10px 70px;
+width: 20%;
+`;
 
 export const ChartContainerLineDonut = styled.div`
-  min-width: 90%;
+  min-width: 98%;
   padding:20px 20px 0px 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+export const EntitiesChartPieContainer = styled.div`
+ min-height: 100%;
+ width: 50%;
   background-color: white;
   display: flex;
   flex-direction: row;
@@ -191,7 +218,7 @@ export const ChartContainerLineDonut = styled.div`
 `;
 export const ChartsDataPeriodContainer = styled.div`
   min-width: 60%;
-  padding:0px 0px 0px 20px;
+  padding:0px 0px 40px 20px;
   background-color: white;
   display: flex;
   flex-direction: column;

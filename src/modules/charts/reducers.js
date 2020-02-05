@@ -64,27 +64,6 @@ export default handleActions(
       pendingTasks: payload.task
     }),
     
-
-    // [fetchOrderByIdSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   byId: payload.order
-    // }),
-    
-    // [fetchEntityByIdSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   byCodEntity: payload.entity
-    // }),
-
-    // [fetchClientByIdSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   byIdClient: payload.client
-    // }),
-
-    // [fetchProductByIdSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   byIdProduct: payload.product
-    // })
-    
   },
   defaultState
 );

@@ -28,13 +28,8 @@ import { ChartDonut } from './styles';
           <div>
        
         <ChartDonut width={190} height={190} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
-          
-          {window.innerWidth < 1500? 
-          <div><Coord type={'theta'} radius={0.55} innerRadius={1.7} />
+          <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
-          </div>: <div> <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
-          <Axis name="percent" />
-          </div>}
           <Tooltip 
             showTitle={false} 
             itemTpl='<li><span style="background-color:{color};font-size:{"2.5em"} class="g2-tooltip-marker"></span>{name}: {value}</li>'

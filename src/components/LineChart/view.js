@@ -1,53 +1,13 @@
 import React from "react";
 import{
-  Chart, 
   Geom, 
   Axis, 
   Tooltip, 
    } from "bizcharts";
 
 import {ChartLineContainer} from './styles'
+import {sortingQuantity, sortingTime} from './utils'
 
-
-const sortingQuantity = (statePVM, statePedidosNumero)=>{
-let dataCantidad;
-    if(statePVM === false &&  statePedidosNumero === true){
-     
-      return dataCantidad = 'totalNumero';    
-    }
-    if(statePVM === true &&  statePedidosNumero === false){
-     
-      return dataCantidad = 'totalPVM';     
-    }
-    return dataCantidad 
-  }
-
-const sortingTime = (data)=>{
-if (data){
-  let dataTiempo = '';
-  data.map(dat =>{
-    
-    if(dat.month){ 
-      dataTiempo = 'month';
-      return dataTiempo;  
-    }
-   
-    if(dat.year){
-    return dataTiempo = 'year';  
-    }
-    
-    if(dat.day){
-      return dataTiempo = 'day';  
-    }
-    
-    if(dat.hour){
-      return dataTiempo = 'hour';  
-    }
-    
-  })
-   return dataTiempo 
-  }
-}
 
 class LineChart extends React.Component {
   render() {
@@ -55,7 +15,7 @@ class LineChart extends React.Component {
     
 return(
   
-    <ChartLineContainer height={370} width= {580} data={this.props.dataLine} forceFit={false}  numeroPedidosEstado= {this.props.numeroPedidosType} PVMestado = {this.props.PVMtype}>
+    <ChartLineContainer height={300} width= {490} data={this.props.dataLine} padding={[ 50, 30, 50, 30 ]} forceFit={false}  numeroPedidosEstado= {this.props.numeroPedidosType} PVMestado = {this.props.PVMtype}>
     <Axis name="month" />
     <Axis name="PVM" />
     <Axis name="Nº pedidos"/>

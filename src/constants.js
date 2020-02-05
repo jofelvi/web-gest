@@ -240,22 +240,6 @@ export const dataaa = [
   ];
   
   
-  // export const dataLineChart = [
-
-  //   { month: 'en', totalNumero: 7 , "totalPVM": 50},
-  //   { month: 'feb', totalNumero: 6.9, "totalPVM": 50 },
-  //   { month: 'mar', totalNumero: 9.5, "totalPVM": 30 },
-  //   { month: 'abr', totalNumero: 14.5, "totalPVM": 40 },
-  //   { month: 'may', totalNumero: 18.2, "totalPVM": 50 },
-  //   { month: 'jun', totalNumero: 21.5, "totalPVM": 10 },
-  //   { month: 'jul', totalNumero: 25.2, "totalPVM": 60 },
-  //   { month: 'agt', totalNumero: 26.5, "totalPVM": 20 },
-  //   { month: 'set', totalNumero: 23.3, "totalPVM": 70 },
-  //   { month: 'oct', totalNumero: 18.3, "totalPVM": 80 },
-  //   { month: 'nov', totalNumero: 13.9, "totalPVM": 90 },
-  //   { month: 'dic', totalNumero: 13.9, "totalPVM": 100 }
-  
-  // ];
 export const dataLineChartYear = [
 
     { year: '2015', totalNumero: 7 , totalPVM: 50},
