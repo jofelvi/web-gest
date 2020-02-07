@@ -18,5 +18,6 @@ export default combineReducers({
   commercialDeals,
   menu,
   clientsIndas,
-  orders
+  orders,
+	clientesCbim,
 });

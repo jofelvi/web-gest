@@ -1,8 +1,9 @@
 import { handleActions } from 'redux-actions'
 import { loadClientesCbimSuccess, loadClientesCbimFailed } from './actions'
+import { listaClientesCbim } from './clientescbim'
 
 const defaultState = {
-	clientesCbim: [],
+	list: listaClientesCbim,
 	error: undefined,
 }
 

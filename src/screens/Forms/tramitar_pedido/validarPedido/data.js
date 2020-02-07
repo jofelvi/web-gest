@@ -1,5 +1,3 @@
-import * as Yup from 'yup';
-
 // Datos esperados del proceso
 export const formData = [
 	{name:"codcli_cbim",         type:"Integer", validation:undefined, defaultValue: ''},
@@ -47,14 +45,14 @@ export const tableCols = (tipo) => {
 	cols.push({ title: "Cód INDAS", dataIndex: "codindas", key: "codindas", 
 		          align: "center", width: 102});
 	cols.push({ title: "Producto", dataIndex: "nombre", key: "nombre", 
-							render: (text) => { return !text || text == ''? 'N.D.': text; }, 
+							render: (text) => { return !text || text === ''? 'N.D.': text; }, 
 		          ellipsis: true, width: 230});
 	cols.push({ title: "Unidades", dataIndex: "cantidad", key: "cantidad", 
 		          align: "center", editable: true, width: 100});
 	cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", 
 						  align: "center", 
 							render: (text) => { 
-								return  esPedido? !text || text == ''? '': text + '%': 'N/A'; }, 
+								return  esPedido? !text || text === ''? '': text + '%': 'N/A'; }, 
 							editable: esPedido? true: false, width: 100});
 	if(esPedido) {
 		cols.push({ title: "Puntos acumulados", 

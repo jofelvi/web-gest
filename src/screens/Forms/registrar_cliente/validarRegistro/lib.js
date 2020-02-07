@@ -18,8 +18,23 @@
  **/
 
 import { selectTaskVariable } from '../../lib'
+import { formData, processData } from './data'
 
-export const obtenerValoresIniciales = function(taskVariables, formData) {
+export const obtenerValoresIniciales = function(taskVariables) {
+	let values = obtenerValoresProceso(taskVariables, processData)
+	if (values) {
+		// Establecer el valor de tipo a partir de ind_esfarmacia
+		values.tipo = values.ind_esfarmacia ? 'FARMACIA' : 'SOCIEDAD'
+	}
+	formData.taskData = values
+	formData.nombreComo = ''
+	formData.loadingSearch = false
+	formData.lstClientesCbim = []
+	formData.clienteCbim = {}
+	return formData
+}
+
+const obtenerValoresProceso = function(taskVariables, formData) {
 	let initValue = formData.reduce(function(result, item, i) {
 		result[item.name] =
 			taskVariables && selectTaskVariable(taskVariables, item.name)
@@ -29,6 +44,14 @@ export const obtenerValoresIniciales = function(taskVariables, formData) {
 	}, {})
 	return initValue
 }
+
+export const getOptionValue = element => {
+	return (
+		`${element.tipo} ${element.nomentidad_cbim} ${element.direccion} ` +
+		`${element.poblacion} ${element.provincia} ${element.codigo_postal}`
+	)
+}
+
 export const obtenerValidacionSchema = function(formData) {
 	let validaciones = formData
 		.filter(function(item) {

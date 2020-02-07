@@ -13,7 +13,7 @@ export default connect(
 		taskVariables: state.forms.taskVariables,
 		task: state.tasks.task,
 		token: state.auth.token,
-		clientesCbim: state.clientesCbim
+		clientesCbim: state.clientesCbim,
 	}),
 	{ getTaskVariables, completeTask, fetchTask, loadClientesCbim  },
 )(View)

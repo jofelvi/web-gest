@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
 import { Form, Input, Row, Col, Button, Radio, Select, Icon } from 'antd'
 import { transformData } from '../../lib'
-import { formData } from './data'
-import { obtenerValoresIniciales } from '../comunes'
+import { obtenerValoresIniciales, getOptionValue } from './lib'
+import { processData } from './data'
 import './style-rv.css'
 
 const { Option } = Select
@@ -30,39 +30,47 @@ const ValidarRegistro = ({
 			fetchTask(taskId)
 		}
 	}, [token, task])
-	const [nombreComo, setNombreComo] = useState('')
-	const [loadingSearch, setLoadingSearch] = useState(false)
-	const [lstClientesCbim, setLstClientesCbim] = useState([])
 
 	return (
 		<Formik
-			initialValues={obtenerValoresIniciales(taskVariables, formData)}
+			initialValues={obtenerValoresIniciales(taskVariables)}
 			enableReinitialize>
-			{({ values, errors }) => (
+			{({ values, errors, handleChange, setFieldValue }) => (
 				<Form colon={false} className="form-indas">
 					<h2 className="form-indas-main-title">Validar Alta de Cliente</h2>
 					<Row type="flex" align="top">
 						<Col span={24}>
 							<h3 className="form-indas-main-sub-title">
-								Buscador en entidad en CBIM
+								Buscador de entidad en CBIM
 							</h3>
-							<Select
-								showSearch
-								showArrow={true}
-								placeholder="Introduzca la cadena a buscar"
-								suffixIcon={<Icon type="search" />}
-								loading={loadingSearch}
-								value={nombreComo}
-								onSearch={value => {
-									console.log('Buscando clientes: ', value)
-								}}
-								onChange={value => {
-									setNombreComo(value)
-								}}>
-								{lstClientesCbim.map((c, i) => (
-									<Option key={i}>c.w_busqueda}</Option>
-								))}
-							</Select>
+							<Form.Item name="buscador">
+								<Select
+									showSearch
+									showArrow={true}
+									placeholder="Introduzca la cadena a buscar"
+									suffixIcon={<Icon type="search" />}
+									loading={values.loadingSearch}
+									onChange={v => {
+										setFieldValue('buscador', v)
+									}}
+									onSearch={value => {
+										if (!value || value === '') {
+											values.lstClientesCbim = []
+											values.clienteCbim = {}
+											return
+										}
+										// Llamar al servicio
+									}}
+									onSelect={key => {
+										const cc = clientesCbim.list[key]
+										if(cc)
+											values.clienteCbim = {...values.taskData, ...cc}
+									}}>
+									{clientesCbim.list.map((c, i) => {
+										return <Option key={i}>{getOptionValue(c)}</Option>
+									})}
+								</Select>
+							</Form.Item>
 						</Col>
 					</Row>
 					<Row
@@ -84,47 +92,56 @@ const ValidarRegistro = ({
 										<div className="col-space"></div>
 									</Row>
 									<Row>
-										<Form.Item name="cliente_nombre" label="Nombre">
-											<Input value={values.cliente_nombre} disabled="true" />
+										<Form.Item name="cliente_nombre_trn" label="Nombre">
+											<Input
+												value={values.taskData.cliente_nombre}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item
-											name="cliente_apellido1"
+											name="cliente_apellido1_trn"
 											label="Primer apellido">
 											<Input
-												value={values.cliente_apellido1}
-												disabled="true"
+												value={values.taskData.cliente_apellido1}
+												disabled={true}
 											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item
-											name="cliente_apellido2"
+											name="cliente_apellido2_trn"
 											label="Segundo apellido">
 											<Input
-												value={values.cliente_apellido2}
-												disabled="true"
+												value={values.taskData.cliente_apellido2}
+												disabled={true}
 											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="cliente_nif" label="NIF">
-											<Input value={values.cliente_nif} disabled="true" />
+										<Form.Item name="cliente_nif_trn" label="NIF">
+											<Input
+												value={values.taskData.cliente_nif}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item
-											name="cliente_email"
+											name="cliente_email_trn"
 											label="Correo electrónico">
-											<Input value={values.cliente_email} disabled="true" />
+											<Input
+												value={values.taskData.cliente_email}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="cliente_telefono" label="Teléfono">
+										<Form.Item name="cliente_telefono_trn" label="Teléfono">
 											<Input
-												value={values.cliente_telefono}
-												disabled="true"
+												value={values.taskData.cliente_telefono}
+												disabled={true}
 											/>
 										</Form.Item>
 									</Row>
@@ -137,32 +154,40 @@ const ValidarRegistro = ({
 										<div className="col-space"></div>
 									</Row>
 									<Row>
-										<Form.Item name="nomentidad_cbim" label="Razón Social">
-											<Input value={values.nomentidad_cbim} disabled="true" />
+										<Form.Item
+											name="nomentidad_cbim_trn"
+											label="Razón Social">
+											<Input
+												value={values.taskData.nomentidad_cbim}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="entidad_nif" label="NIF">
-											<Input value={values.entidad_nif} disabled="true" />
+										<Form.Item name="entidad_nif_trn" label="NIF">
+											<Input
+												value={values.taskData.entidad_nif}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="ind_esfarmacia" label="Tipo de entidad">
-											<Radio.Group value={values.entidad_tipo}>
-												<Radio value="FARMACIA" disabled="true">
+										<Form.Item name="tipo_trn" label="Tipo de entidad">
+											<Radio.Group value={values.taskData.tipo}>
+												<Radio value="FARMACIA" disabled={true}>
 													Farmacia
 												</Radio>
-												<Radio value="SOCIEDAD" disabled="true">
+												<Radio value="SOCIEDAD" disabled={true}>
 													Sociedad
 												</Radio>
 											</Radio.Group>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="entidad_telefono" label="Teléfono">
+										<Form.Item name="entidad_telefono_trn" label="Teléfono">
 											<Input
-												value={values.entidad_telefono}
-												disabled="true"
+												value={values.taskData.entidad_telefono}
+												disabled={true}
 											/>
 										</Form.Item>
 									</Row>
@@ -170,27 +195,42 @@ const ValidarRegistro = ({
 										<Form.Item
 											name="entidad_email"
 											label="Correo electrónico">
-											<Input value={values.cliente_email} disabled="true" />
+											<Input
+												value={values.taskData.cliente_email}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="direccion" label="Direccion">
-											<Input value={values.direccion} disabled="true" />
+										<Form.Item name="direccion_trn" label="Direccion">
+											<Input
+												value={values.taskData.direccion}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="codigo_postal" label="Código Postal">
-											<Input value={values.codigo_postal} disabled="true" />
+										<Form.Item name="codigo_postal_trn" label="Código Postal">
+											<Input
+												value={values.taskData.codigo_postal}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="poblacion" label="Ciudad">
-											<Input value={values.poblacion} disabled="true" />
+										<Form.Item name="poblacion_trn" label="Ciudad">
+											<Input
+												value={values.taskData.poblacion}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item name="provincia" label="Provincia">
-											<Input value={values.provincia} disabled="true" />
+										<Form.Item name="provincia_trn" label="Provincia">
+											<Input
+												value={values.taskData.provincia}
+												disabled={true}
+											/>
 										</Form.Item>
 									</Row>
 								</section>
@@ -204,13 +244,21 @@ const ValidarRegistro = ({
 										Datos de Cliente
 									</h4>
 									<Row>
-										<Form.Item name="codcli_cbim" label="Código CIBM">
-											<Input value={values.codcli_cbim} disabled="true" />
+										<Form.Item name="codcli_cbim" label="Código CBIM">
+											<Input
+												value={values.clienteCbim.codcli_cbim}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="cliente_nombre" label="Nombre">
-											<Input value={values.cliente_nombre} disabled="true" />
+											<Input
+												value={values.clienteCbim.cliente_nombre}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
@@ -218,8 +266,9 @@ const ValidarRegistro = ({
 											name="cliente_apellido1"
 											label="Primer apellido">
 											<Input
-												value={values.cliente_apellido1}
-												disabled="true"
+												value={values.clienteCbim.cliente_apellido1}
+												disabled={true}
+												onChange={v => handleChange(v)}
 											/>
 										</Form.Item>
 									</Row>
@@ -228,28 +277,38 @@ const ValidarRegistro = ({
 											name="cliente_apellido2"
 											label="Segundo apellido">
 											<Input
-												value={values.cliente_apellido2}
-												disabled="true"
+												value={values.clienteCbim.cliente_apellido2}
+												disabled={true}
+												onChange={v => handleChange(v)}
 											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="cliente_nif" label="NIF">
-											<Input value={values.cliente_nif} disabled="true" />
+											<Input
+												value={values.clienteCbim.cliente_nif}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item
 											name="cliente_email"
 											label="Correo electrónico">
-											<Input value={values.cliente_email} disabled="true" />
+											<Input
+												value={values.clienteCbim.cliente_email}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="cliente_telefono" label="Teléfono">
 											<Input
-												value={values.cliente_telefono}
-												disabled="true"
+												value={values.clienteCbim.cliente_telefono}
+												disabled={true}
+												onChange={v => handleChange(v)}
 											/>
 										</Form.Item>
 									</Row>
@@ -260,27 +319,38 @@ const ValidarRegistro = ({
 									</h4>
 									<Row>
 										<Form.Item name="codentidad_cbim" label="Cśdigo Entidad">
-											<Input value={values.cdoentidad_cbim} disabled="true" />
+											<Input
+												value={values.clienteCbim.codentidad_cbim}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="nomentidad_cbim" label="Razón Social">
-											<Input value={values.nomentidad_cbim} disabled="true" />
+											<Input
+												value={values.clienteCbim.nomentidad_cbim}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="entidad_nif" label="NIF">
-											<Input value={values.entidad_nif} disabled={true} />
+											<Input
+												value={values.clienteCbim.entidad_nif}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
-										<div>{values.ind_esfarmacia}</div>
-										<Form.Item name="ind_esfarmacia" label="Tipo de entidad">
-											<Radio.Group value={values.ind_esfarmacia}>
-												<Radio value={true} disabled={true}>
+										<Form.Item name="tipo_cbim" label="Tipo de entidad">
+											<Radio.Group value={values.clienteCbim.tipo}>
+												<Radio value="FARMACIA" disabled={true}>
 													Farmacia
 												</Radio>
-												<Radio value={false} disabled={true}>
+												<Radio value="SOCIEDAD" disabled={true}>
 													Sociedad
 												</Radio>
 											</Radio.Group>
@@ -289,8 +359,9 @@ const ValidarRegistro = ({
 									<Row>
 										<Form.Item name="entidad_telefono" label="Teléfono">
 											<Input
-												value={values.entidad_telefono}
-												disabled="true"
+												value={values.clienteCbim.entidad_telefono}
+												disabled={true}
+												onChange={v => handleChange(v)}
 											/>
 										</Form.Item>
 									</Row>
@@ -298,27 +369,47 @@ const ValidarRegistro = ({
 										<Form.Item
 											name="entidad_email"
 											label="Correo electrónico">
-											<Input value={values.entidad_email} disabled="true" />
+											<Input
+												value={values.clienteCbim.entidad_email}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="direccion" label="Direccion">
-											<Input value={values.direccion} disabled="true" />
+											<Input
+												value={values.clienteCbim.direccion}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="codigo_postal" label="Código Postal">
-											<Input value={values.codigo_postal} disabled="true" />
+											<Input
+												value={values.clienteCbim.codigo_postal}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="poblacion" label="Ciudad">
-											<Input value={values.poblacion} disabled="true" />
+											<Input
+												value={values.clienteCbim.poblacion}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 									<Row>
 										<Form.Item name="provincia" label="Provincia">
-											<Input value={values.provincia} disabled="true" />
+											<Input
+												value={values.clienteCbim.provincia}
+												disabled={true}
+												onChange={v => handleChange(v)}
+											/>
 										</Form.Item>
 									</Row>
 								</section>
@@ -339,10 +430,23 @@ const ValidarRegistro = ({
 						<Col>
 							<Button
 								type="primary"
+								disabled={
+									!values.clienteCbim ||
+									Object.entries(values.clienteCbim).length === 0
+								}
 								onClick={() => {
-									values.aceptado = true
-									const variables = transformData(values, formData)
-									console.log('validarRegistro.aceptar.values:', values)
+									if (
+										!values.clienteCbim ||
+										Object.entries(values.clienteCbim).length === 0
+									) {
+										alert(
+											'No puede aceptar el registro. Debe primero busrcar y seleccionar los datos asociados en CBIM',
+										)
+										return
+									}
+									values.clienteCbim.aceptado = true
+									const merge = { ...values.taskData, ...values.clienteCbim }
+									const variables = transformData(merge, processData)
 									console.log('validarRegistro.aceptar.variables:', variables)
 									//completeTask({ variables, history, taskId, procId });
 								}}>
@@ -353,9 +457,9 @@ const ValidarRegistro = ({
 							<Button
 								type="primary"
 								onClick={() => {
-									values.aceptado = false
-									const variables = transformData(values, formData)
-									console.log('validarRegistro.rechazar.values:', values)
+									values.taskData.aceptado = false
+									const merge = { ...values.taskData, ...values.clienteCbim }
+									const variables = transformData(merge, processData)
 									console.log(
 										'validarRegistro.rechazar.variables:',
 										variables,
