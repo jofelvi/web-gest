@@ -3,12 +3,20 @@ import { LOAD_CLIENTES_CBIM } from './actionTypes'
 import { loadClientesCbimSuccess, loadClientesCbimFailed } from './actions.js'
 import * as api from './api'
 
-function* loadClientesCbim(queryParams) {
+function* loadClientesCbim(args) {
 	try {
-		const response = yield call(api.getClienteCBIM(queryParams))
-		yield put(loadClientesCbimSuccess({ list: response.data }))
+		const query = args.payload
+		const response =
+			!query || query.length === 0
+				? null
+				: yield call(api.getClienteCBIM, args.payload)
+		yield put(
+			loadClientesCbimSuccess({
+				list: response && response.data ? response.data : [],
+			}),
+		)
 	} catch (e) {
-		console.log('clientes-cbim.loadClientesCbim.error: ', e)
+		console.error('clientes-cbim.loadClientesCbim: ', e)
 		yield put(loadClientesCbimFailed({ error: e }))
 	}
 }

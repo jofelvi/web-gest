@@ -46,6 +46,7 @@ const obtenerValoresProceso = function(taskVariables, formData) {
 }
 
 export const getOptionValue = element => {
+	if(!element || Object.entries(element).length === 0 ) return null;
 	return (
 		`${element.tipo} ${element.nomentidad_cbim} ${element.direccion} ` +
 		`${element.poblacion} ${element.provincia} ${element.codigo_postal}`

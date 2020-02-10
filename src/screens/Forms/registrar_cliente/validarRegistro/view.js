@@ -1,8 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
-import { Form, Input, Row, Col, Button, Radio, Select, Icon } from 'antd'
+import {
+	Form,
+	Input,
+	Row,
+	Col,
+	Button,
+	Radio,
+	Select,
+	Icon,
+	Spin,
+} from 'antd'
 import { transformData } from '../../lib'
 import { obtenerValoresIniciales, getOptionValue } from './lib'
 import { processData } from './data'
@@ -49,22 +59,27 @@ const ValidarRegistro = ({
 									showArrow={true}
 									placeholder="Introduzca la cadena a buscar"
 									suffixIcon={<Icon type="search" />}
-									loading={values.loadingSearch}
-									onChange={v => {
-										setFieldValue('buscador', v)
-									}}
+									notFoundContent={
+										values.loadingSearch ? <Spin size="small" /> : null
+									}
+									filterOption={false}
+									onChange={v => setFieldValue(v, 'buscador')}
 									onSearch={value => {
-										if (!value || value === '') {
-											values.lstClientesCbim = []
-											values.clienteCbim = {}
-											return
-										}
-										// Llamar al servicio
+										values.clienteCbim = {}
+										values.loadingSearch = true
+										clearTimeout(values.debounce)
+										values.debounce = setTimeout(() => {
+											values.loadingSearch = false
+											loadClientesCbim(value)
+										}, 600)
 									}}
 									onSelect={key => {
 										const cc = clientesCbim.list[key]
-										if(cc)
-											values.clienteCbim = {...values.taskData, ...cc}
+										if (cc) {
+											values.clienteCbim = { ...values.taskData, ...cc }
+											values.clienteCbim.cliente_email =
+												values.clienteCbim.entidad_email
+										}
 									}}>
 									{clientesCbim.list.map((c, i) => {
 										return <Option key={i}>{getOptionValue(c)}</Option>
@@ -432,7 +447,8 @@ const ValidarRegistro = ({
 								type="primary"
 								disabled={
 									!values.clienteCbim ||
-									Object.entries(values.clienteCbim).length === 0
+									Object.entries(values.clienteCbim).length === 0 ||
+									!values.clienteCbim.entidad_email
 								}
 								onClick={() => {
 									if (
@@ -477,7 +493,9 @@ const ValidarRegistro = ({
 }
 
 ValidarRegistro.propTypes = {
+	loadClientesCbim: PropTypes.func.isRequired,
 	completeTask: PropTypes.func.isRequired,
+	token: PropTypes.string,
 }
 
 export default withRouter(ValidarRegistro)

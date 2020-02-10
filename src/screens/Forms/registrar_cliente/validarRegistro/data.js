@@ -26,6 +26,7 @@ export const processData = [
 	{ name: 'entidad_nif', type: 'String', validation: undefined },
 	{ name: 'ind_esfarmacia', type: 'Boolean', validation: undefined, },
 	{ name: 'entidad_telefono', type: 'String', validation: undefined, },
+	{ name: 'entidad_email', type: 'String', validation: undefined, },
 	{ name: 'direccion', type: 'String', validation: undefined },
 	{ name: 'poblacion', type: 'String', validation: undefined },
 	{ name: 'codigo_postal', type: 'String', validation: undefined, },
