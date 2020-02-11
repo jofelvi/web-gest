@@ -552,7 +552,7 @@ const ValidarRegistro = ({
 										<span className="margin-10">
 											{!values.clienteCbim ||
 											Object.entries(values.clienteCbim).length === 0
-												? 'Debe realizar la busqueda de la entidad en CBIM'
+												? "Para 'Aceptar' debe realizar la busqueda de la entidad en CBIM"
 												: "No se puede 'Aceptar' el registro debido a que faltan datos."}
 										</span>
 									</div>
