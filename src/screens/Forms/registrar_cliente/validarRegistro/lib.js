@@ -16,7 +16,6 @@
  *	];
  *
  **/
-
 import { selectTaskVariable } from '../../lib'
 import { formData, processData } from './data'
 
@@ -33,7 +32,6 @@ export const obtenerValoresIniciales = function(taskVariables) {
 	formData.clienteCbim = {}
 	return formData
 }
-
 const obtenerValoresProceso = function(taskVariables, formData) {
 	let initValue = formData.reduce(function(result, item, i) {
 		result[item.name] =
@@ -44,15 +42,13 @@ const obtenerValoresProceso = function(taskVariables, formData) {
 	}, {})
 	return initValue
 }
-
 export const getOptionValue = element => {
-	if(!element || Object.entries(element).length === 0 ) return null;
+	if (!element || Object.entries(element).length === 0) return null
 	return (
 		`${element.tipo} ${element.nomentidad_cbim} ${element.direccion} ` +
 		`${element.poblacion} ${element.provincia} ${element.codigo_postal}`
 	)
 }
-
 export const obtenerValidacionSchema = function(formData) {
 	let validaciones = formData
 		.filter(function(item) {
@@ -63,4 +59,20 @@ export const obtenerValidacionSchema = function(formData) {
 			return result
 		}, {})
 	return validaciones
+}
+export const isNotValidData = clienteCbim => {
+	if (!clienteCbim || Object.entries(clienteCbim).length === 0) return false
+	if (!clienteCbim.codcli_cbim) return false
+	if (!clienteCbim.cliente_nombre) return false
+	if (!clienteCbim.cliente_apellido1) return false
+	if (!clienteCbim.cliente_nif) return false
+	if (!clienteCbim.cliente_email) return false
+	if (!clienteCbim.cliente_telefono) return false
+	if (!clienteCbim.codentidad_cbim) return false
+	if (!clienteCbim.nomentidad_cbim) return false
+	if (!clienteCbim.direccion) return false
+	if (!clienteCbim.codigo_postal) return false
+	if (!clienteCbim.poblacion) return false
+	if (!clienteCbim.provincia) return false
+	return true
 }
