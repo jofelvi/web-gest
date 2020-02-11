@@ -1,5 +1,3 @@
-import * as Yup from 'yup';
-
 // Datos esperados del proceso
 export const formData = [
 	{name:"codcli_cbim",         type:"Integer", validation:undefined, defaultValue: ''},
@@ -8,8 +6,8 @@ export const formData = [
 	{name:"drupal_uuid",         type:"String",  validation:undefined, defaultValue: ''},
 	{name:"codpedido_origen",    type:"String",  validation:undefined, defaultValue: ''},
 	{name:"origen",              type:"String",  validation:undefined, defaultValue: ''},
-	{name:"idPedido",            type:"Integer", validation:undefined, defaultValue: ''},
-	{name:"fecha_alta",          type:"Date",    validation:undefined, defaultValue: ''},
+	{name:"idpedido",            type:"Integer", validation:undefined, defaultValue: ''},
+	{name:"fecha_alta",          type:"String",  validation:undefined, defaultValue: ''},
 	{name:"codentidad_cbim",     type:"Integer", validation:undefined, defaultValue: ''},
 	{name:"nomentidad_cbim",     type:"String",  validation:undefined, defaultValue: ''},
 	{name:"ind_esfarmacia",      type:"Boolean", validation:undefined, defaultValue: false},
@@ -32,30 +30,38 @@ export const formDataItem = [
 	{name:"nombre",              type:"String",  validation:undefined, defaultValue: ''},
 	{name:"cantidad",            type:"Integer", validation:undefined, defaultValue: 0},
   {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
-	{name:"puntos",              type:"Integer", validation:undefined, defaultValue: 0},
-	{name:"codnacional",         type:"String",  validation:undefined, defaultValue: ''},
+	{name:"puntos_acumulados_unidad", type:"Integer", validation:undefined, defaultValue: 0},
+	{name:"puntos_acumulados_total",  type:"Integer", validation:undefined, defaultValue: 0},
+	{name:"puntos_coste_unidad",      type:"Integer", validation:undefined, defaultValue: 0},
+	{name:"puntos_coste_total",       type:"Integer", validation:undefined, defaultValue: 0},
+	{name:"codnacional",              type:"String",  validation:undefined, defaultValue: ''},
 ];
 // Definición de la tabla de pedidos
 export const tableCols = (tipo) => {
 	let cols = [];
 	const esPedido = typeof tipo === "string" && tipo.search(/pedidos/i) !== -1;
 	cols.push({ title: "Item", key: "index", align: "center", 
-			        render: (text, record, index) => index + 1, });
+			        render: (text, record, index) => index + 1, width: 65});
 	cols.push({ title: "Cód INDAS", dataIndex: "codindas", key: "codindas", 
-		          align: "center", });
+		          align: "center", width: 102});
 	cols.push({ title: "Producto", dataIndex: "nombre", key: "nombre", 
-							render: (text) => { return !text || text == ''? 'N.D.': text; }, 
-		          ellipsis: true, });
+							render: (text) => { return !text || text === ''? 'N.D.': text; }, 
+		          ellipsis: true, width: 230});
 	cols.push({ title: "Unidades", dataIndex: "cantidad", key: "cantidad", 
-		          align: "center", editable: true, });
+		          align: "center", editable: true, width: 100});
 	cols.push({ title: "Dto (%)", dataIndex: "descuento", key: "descuento", 
 						  align: "center", 
 							render: (text) => { 
-								return  esPedido? !text || text == ''? '': text + '%': 'N/A'; }, 
-							editable: esPedido? true: false, });
-	cols.push({ title: esPedido? "Puntos acumulados": "Puntos coste", 
-							dataIndex: "puntos", key: "puntos", align: "center", 
-							render: (text,row) => { return row.cantidad * row.puntos; }, 
-		          editable: false, });
+								return  esPedido? !text || text === ''? '': text + '%': 'N/A'; }, 
+							editable: esPedido? true: false, width: 100});
+	if(esPedido) {
+		cols.push({ title: "Puntos acumulados", 
+								dataIndex: "puntos_acumulados_total", key: "puntos_acumulados_total", 
+								align: "center", editable: false, width: 110});
+	} else {
+		cols.push({ title: "Puntos coste", 
+								dataIndex: "puntos_coste_total", key: "puntos_coste_total", align: "center", 
+								editable: false, width: 80});
+	}
 	return cols;
 }
