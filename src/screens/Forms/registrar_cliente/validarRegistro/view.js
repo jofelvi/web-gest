@@ -26,6 +26,11 @@ import './style-rv.css'
 
 const { Option } = Select
 
+const getValueRadio = ind_esFarmacia => {
+	if(typeof ind_esFarmacia !== 'boolean') return ind_esFarmacia
+	return ind_esFarmacia ? '1' : '0'
+}
+
 const ValidarRegistro = ({
 	getTaskVariables,
 	taskVariables,
@@ -217,11 +222,12 @@ const ValidarRegistro = ({
 											name="tipo_trn"
 											label="Tipo de entidad"
 											required={true}>
-											<Radio.Group value={values.taskData.tipo}>
-												<Radio value="FARMACIA" disabled={true}>
+											<Radio.Group
+												value={getValueRadio(values.taskData.ind_esfarmacia)}>
+												<Radio value="1" disabled={true}>
 													Farmacia
 												</Radio>
-												<Radio value="SOCIEDAD" disabled={true}>
+												<Radio value="0" disabled={true}>
 													Sociedad
 												</Radio>
 											</Radio.Group>
@@ -371,8 +377,8 @@ const ValidarRegistro = ({
 											label="Correo electrónico"
 											required={true}>
 											<Input
+												id="clienteCbim.cliente_email"
 												value={values.clienteCbim.cliente_email}
-												disabled={true}
 												onChange={v => handleChange(v)}
 											/>
 										</Form.Item>
@@ -432,11 +438,14 @@ const ValidarRegistro = ({
 											name="tipo_cbim"
 											label="Tipo de entidad"
 											required={true}>
-											<Radio.Group value={values.clienteCbim.tipo}>
-												<Radio value="FARMACIA" disabled={true}>
+											<Radio.Group
+												value={getValueRadio(
+													values.clienteCbim.ind_esfarmacia,
+												)}>
+												<Radio value="1" disabled={true}>
 													Farmacia
 												</Radio>
-												<Radio value="SOCIEDAD" disabled={true}>
+												<Radio value="0" disabled={true}>
 													Sociedad
 												</Radio>
 											</Radio.Group>
@@ -585,7 +594,7 @@ const ValidarRegistro = ({
 									values.clienteCbim.aceptado = true
 									const merge = { ...values.taskData, ...values.clienteCbim }
 									const variables = transformData(merge, processData)
-									completeTask({ variables, history, taskId, procId });
+									completeTask({ variables, history, taskId, procId })
 								}}>
 								Aceptar
 							</Button>
