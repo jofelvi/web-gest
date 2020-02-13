@@ -170,6 +170,13 @@ body{
     font-size: 0.7rem;
 }
 
-
 /*Inicio estilos de tablas*/
 /*Fin estilos de tablas*/
+
+/* Cambios en los estilos de ant para los objetos disables */
+.ant-input:disabled {
+	color: rgba(0, 0, 0, 0.85);
+}
+.ant-radio-disabled + span {
+	color: rgba(0, 0, 0, 0.85);
+}
