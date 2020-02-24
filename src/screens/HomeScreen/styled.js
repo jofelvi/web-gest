@@ -81,6 +81,7 @@ export const PieDatsDisplayContainer = styled.div`
 
 export const StaticticsContainer = styled.div`
   width: 98%;
+  height: 100%;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -116,7 +117,7 @@ export const ButtonTaskContainer = styled.div`
 export const TaskContainer = styled.div`
   width: 98%;
   height: 50%;
-  margin: 40px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -129,7 +130,9 @@ export const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
+  background-color: #FFFFFF;
+  padding: 15px 15px 15px 15px;
 
 `;
 

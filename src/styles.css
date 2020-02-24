@@ -9,10 +9,10 @@ body{
     height: 100%!important;
 }
 .principal-content{
-    margin-top:30px;
-    margin-left: 30px;
-    margin-right: 5px;
-    margin-bottom: 30px;
+    margin-top:15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
 /*Inicio estilos de controles de formulario*/
@@ -103,7 +103,7 @@ body{
 
 /*Fin estilos de controles de formulario*/
 .table-indas{
-    padding: 20px 40px 20px 40px;
+    padding: 20px 40px 20px 40px !important;
     margin-right: 20px;
     background-color: #FFF;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);

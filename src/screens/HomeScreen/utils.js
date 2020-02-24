@@ -82,13 +82,14 @@ const typeOfUnits = (statePVM, stateNumero) => {
 export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
   const dv = new DataView();
   let numero = typeOfUnits(statePVM, stateNumero)
-
+if(numero && datos){
   return dv.source(datos).transform({
     type: 'percent',
     field: numero,
     dimension: 'subfamilia',
     as: 'percent'
   });
+}
 }
 
 

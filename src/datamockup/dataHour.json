@@ -6,7 +6,7 @@
     { "hour": "03:00", "totalNumero": 14.5, "totalPVM": 40 },
     { "hour": "04:00", "totalNumero": 18.2, "totalPVM": 50 },
     { "hour": "05:00", "totalNumero": 21.5, "totalPVM": 60 },
-    { "hour": "06:00", "totalNumero": 25.2, "totalPVM": 50 },
+    { "hour": "06:00", "totalNumero": 25, "totalPVM": 50 },
     { "hour": "07:00", "totalNumero": 26.5, "totalPVM": 40 },
     { "hour": "08:00", "totalNumero": 23.3, "totalPVM": 30 },
     { "hour": "09:00", "totalNumero": 18.3, "totalPVM": 20 },

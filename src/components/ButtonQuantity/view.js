@@ -1,16 +1,16 @@
 import React from "react";
 
-import { ButtonPeriodContainer } from './styles';
+import { ButtonPeriodContainer, ButtonPVM, ButtonNumeroPedidos } from './styles';
 import { Button } from "antd";
 
 
 
-  const ButtonQuantity = ({ onClickPVM, onClickNumeroPedido }) => {
+  const ButtonQuantity = ({ onClickPVM, onClickNumeroPedido, clickNumeroPedidos, clickPVM }) => {
        
         return(
           <ButtonPeriodContainer>
-          <Button onClick = {onClickPVM}>PVM</Button>
-          <Button onClick = {onClickNumeroPedido} >Nº de Pedidos</Button>
+          <ButtonPVM  selectedPVM = {clickPVM} onClick = {onClickPVM}>PVM</ButtonPVM>
+          <ButtonNumeroPedidos selectedNumeroPedidos= {clickNumeroPedidos} onClick = {onClickNumeroPedido} >Nº de Pedidos</ButtonNumeroPedidos>
         </ButtonPeriodContainer>
         
         )

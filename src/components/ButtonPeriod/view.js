@@ -1,18 +1,13 @@
 import React from "react";
 
-import { ButtonPeriodContainer } from './styles';
-import { Button } from "antd";
+import { ButtonPeriodContainer, ButtonPerYear, ButtonPerMonth, ButtonPerDay, ButtonPerHour } from './styles';
 
-
-
-  const ButtonPeriod = ({ onClickYear, onClickMonth, onClickDay, onClickHour }) => {
-       
-        return(
+  const ButtonPeriod = ({ onClickYear, onClickMonth, onClickDay, onClickHour, clickYear, clickMonth, clickDay , clickHour}) => {        return(
           <ButtonPeriodContainer>
-          <Button onClick = {onClickYear}>Año</Button>
-          <Button onClick = {onClickMonth} >Mes</Button>
-          <Button onClick = {onClickDay} >Día</Button>
-          <Button onClick = {onClickHour}>Hora</Button>
+          <ButtonPerYear onClick = {onClickYear} selectedYear = {clickYear}>Año</ButtonPerYear>
+          <ButtonPerMonth onClick = {onClickMonth} selectedMonth = {clickMonth}>Mes</ButtonPerMonth>
+          <ButtonPerDay onClick = {onClickDay} selectedDay = {clickDay}>Día</ButtonPerDay>
+          <ButtonPerHour onClick = {onClickHour} selectedHour = {clickHour}>Hora</ButtonPerHour>
         </ButtonPeriodContainer>
         
         )

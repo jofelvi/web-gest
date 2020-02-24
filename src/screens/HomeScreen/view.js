@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline } from 'antd';
+import { Button, Timeline, Tabs } from 'antd';
+
+
 import {
   ChartContainer,
   StaticticsContainer,
@@ -46,13 +48,13 @@ import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 import utils from '../../lib/utils';
 import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
 
-
+const { TabPane } = Tabs;
 const label1 = '<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:1.2em">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:1.2em">';
 const label3 = '</span></div>';
-
-
-
+function callback(key) {
+  console.log(key);
+}
 const HomeScreen = ({
   fetchTaskForm,
   process,
@@ -86,6 +88,7 @@ const HomeScreen = ({
     fetchSalesByMonth();
     fetchSalesByHour();
     fetchSalesByDay();
+    
     if (utils.getTaskId() || taskId) {
       fetchClientsData();
       const id = utils.getTaskId();
@@ -113,6 +116,8 @@ const HomeScreen = ({
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
   return <ContentContainer>
+    <Tabs defaultActiveKey="1"  onChange={callback}>
+  <TabPane tab={"Estadísticas"} key={"1"}>
     <StaticticsContainer>
       <Title>Estadísticas</Title>
       <ChartsDataPeriodContainer>
@@ -120,6 +125,7 @@ const HomeScreen = ({
           <ContainerButtonsTitle>
             <SubTitle>Periodo</SubTitle>
             <ButtonPeriod
+              
               onClickDay={() => {
                 fetchPendingTasks();
                 fetchSalesByDay();
@@ -128,15 +134,17 @@ const HomeScreen = ({
                 setTimeMonth(false);
                 setTimeHour(false);
               }}
-
+              clickDay= {timeDay}
               onClickHour={() => {
                 fetchSalesByHour();
                 setTimeHour(true);
                 setTimeYear(false);
                 setTimeMonth(false);
                 setTimeDay(false);
+                
 
               }}
+              clickHour= {timeHour}
               onClickMonth={() => {
                 fetchSalesByMonth();
                 setTimeMonth(true);
@@ -144,18 +152,23 @@ const HomeScreen = ({
                 setTimeDay(false);
                 setTimeHour(false);
               }}
-
+              clickMonth = {timeMonth}
               onClickYear={() => {
                 fetchSalesByYear();
                 setTimeYear(true);
                 setTimeMonth(false);
                 setTimeDay(false);
                 setTimeHour(false);
-              }}> </ButtonPeriod>
+              }}
+              clickYear = {timeYear}
+              > </ButtonPeriod>
           </ContainerButtonsTitle>
           <ContainerButtonsTitle>
             <SubTitle>Unidades</SubTitle>
-            <ButtonQuantity onClickNumeroPedido={() => {
+            <ButtonQuantity 
+            clickNumeroPedidos = {numeroPedidos}
+            clickPVM = {numeroPVM}
+            onClickNumeroPedido={() => {
               setNumeroPedidos(true)
               setNumeroPVM(false)
             }} onClickPVM={() => {
@@ -261,6 +274,8 @@ const HomeScreen = ({
         </ClientsChartContainer>
       </ClientsChartTitleContainer>
     </StaticticsContainer>
+   </TabPane>
+   <TabPane tab={"Tareas Pendientes"} key={"2"}>
     <TaskContainer>
       <Title>Tareas Pendientes</Title>
       <ContentContainerTask>
@@ -294,7 +309,10 @@ const HomeScreen = ({
         </ButtonTaskContainer>
       </ContentContainerTask>
     </TaskContainer>
+    </TabPane>
+    </Tabs>
   </ContentContainer>
+
 
 };
 
