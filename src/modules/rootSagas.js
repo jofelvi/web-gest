@@ -37,19 +37,28 @@ import {
   watchloadBrands,
   watchloadSubBrands,
   watchloadDealTypes
-} from './commercialDeals/sagas'
+} from './commercialDeals/sagas';
 
 import{
   watchloadMenuItems,
   watchloadChildItems
-} from './menu/sagas'
+} from './menu/sagas';
 
 import{
   watchfetchOrders,
   watchsearchOrder,
   watchfetchOrdersById,
   
-} from './orders/sagas'
+} from './orders/sagas';
+import{
+  watchfetchSalesByYear,
+  watchfetchSalesByMonth,
+  watchfetchSalesByDay,
+  watchfetchSalesByHour,
+  watchfetchClientsData,
+  watchfetchPendingTasks
+} from './charts/sagas';
+
 
 import {
   watchloadClientsIndas,
@@ -97,6 +106,12 @@ export default function* rootSaga() {
     watchfetchOrders(),
     watchsearchOrder(),
     watchfetchOrdersById(),
+    watchfetchSalesByYear(),
+    watchfetchSalesByMonth(),
+    watchfetchSalesByDay(),
+    watchfetchSalesByHour(),
+    watchfetchClientsData(),
+    watchfetchPendingTasks(),
 		watchloadClientesCbim(),    
   ]);
 }
