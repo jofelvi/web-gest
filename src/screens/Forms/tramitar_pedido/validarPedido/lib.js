@@ -21,10 +21,11 @@ import { selectTaskVariable, transformData } from '../../lib';
 import { formData, formDataItem } from './data';
 
 export const obtenerValoresIniciales = function(taskVariables) {
+	console.log("tramitar_pedido.validarPedido.lib.obotenerValoresIniciales.taskVariables: ", taskVariables);
 	let initValue = formData.reduce(function(result, item, i) {
 		result[item.name] = taskVariables && selectTaskVariable(taskVariables, item.name)
 				? selectTaskVariable(taskVariables, item.name).value : '';
-		if(result[item.name] == '') {
+		if(result[item.name] === '') {
 			result[item.name] = item.defaultValue;
 		}
 		return result;
@@ -37,7 +38,7 @@ export const obtenerValoresIniciales = function(taskVariables) {
 				let name = "l" + i + "_" + item.name;
 				result[item.name] = taskVariables && selectTaskVariable(taskVariables, name)
 						? selectTaskVariable(taskVariables, name).value : '';
-				if(result[item.name] == '') {
+				if(result[item.name] === '') {
 					result[item.name] = item.defaultValue;
 				}
 				return result;
@@ -45,6 +46,7 @@ export const obtenerValoresIniciales = function(taskVariables) {
 			initValue.items.push(linea);
 		}
 	}
+	console.log("tramitar_pedido.validarPedido.lib.obotenerValoresIniciales.initValue: ", initValue);
 	// Añadimos una variable nueva la definición de las columnas de la tabla
 	return initValue;	
 };
@@ -61,7 +63,7 @@ export const fechaView = function (fecha) {
 	let d = undefined;
 	if(typeof fecha === 'string') {
 		d = new Date(fecha);
-	} else if(typeof fecha === 'Date') {
+	} else if(typeof fecha === 'object' && fecha instanceof Date) {
 		d = fecha;
 	} else {
 		return fecha;
@@ -93,8 +95,10 @@ export const  establecerValoresEnvio = (values) => {
 				transient: false,
 			};
 			variables.push(tv);
+			return variables;
 		});
 		i++;
+		return variables;
 	});
 	return variables;
 }
@@ -112,8 +116,11 @@ export const esModificado = (values, taskVariables) => {
 	// Comprobamos la líneas del pedido
 	const itemMod = values.items.find(item => {
 			const i = iniValues.items.find(item2 => item2.codindas === item.codindas);
-			if(i && (i.cantidad !== item.cantidad || i.puntos !== item.puntos || i.descuento !== item.descuento))
-					return item;
+			if(i && (i.cantidad !== item.cantidad || i.descuento !== item.descuento)) {
+				return item;
+			} else {
+				return undefined;
+			}
 	});
 	return itemMod? true: false;	
 }
