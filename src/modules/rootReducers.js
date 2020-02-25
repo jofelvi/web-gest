@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import auth from './auth/reducers';
 import users from './users/reducers';
 import orders from './orders/reducers';
+import charts from './charts/reducers';
 import tasks from './tasks/reducers';
 import forms from './forms/reducers';
 import commercialDeals from './commercialDeals/reducers';
@@ -19,5 +20,6 @@ export default combineReducers({
   menu,
   clientsIndas,
   orders,
+  charts,
 	clientesCbim,
 });

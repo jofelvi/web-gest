@@ -1,0 +1,9 @@
+{ "data": {
+    "data": [
+      
+    { "periodo": "< 6 meses", "porcentaje": 15 },
+    { "periodo": "6-12 meses", "porcentaje": 35 },
+    { "periodo": "> 12 meses", "porcentaje": 50 }
+    ]
+}
+}

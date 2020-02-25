@@ -8,14 +8,12 @@ import {
   fetchOrderByIdSuccess,
   fetchEntityByIdSuccess,
   fetchClientByIdSuccess,
-  fetchProductByIdSuccess
 } from './actions';
 
 import {
   FETCH_ORDERS,
   SEARCH_ORDER,
   FETCH_ORDER_BY_ID,
-  FETCH_ENTITY_BY_ID,
 } from './actionTypes';
 
 import * as api from './api';
