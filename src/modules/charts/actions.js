@@ -16,7 +16,8 @@ import {
   FETCH_CLIENTS_SALES_SUCCESS,
   FETCH_CLIENTS_ACTIVITY_SUCCESS,
   FETCH_PENDING_TASKS,
-  FETCH_PENDING_TASKS_SUCCESS
+  FETCH_PENDING_TASKS_SUCCESS,
+  FETCH_SALES_YEAR_DAYS_SUCCESS
 
 } from './actionTypes';
 
@@ -36,8 +37,8 @@ export const {
   fetchClientsSalesSuccess,
   fetchClientsActivitySuccess,
   fetchPendingTasks,
-  fetchPendingTasksSuccess
-  
+  fetchPendingTasksSuccess,
+  fetchSalesYearDaysSuccess
 } = createActions(
   FETCH_SALES_BY_YEAR,
   FETCH_SALES_BY_MONTH,
@@ -54,7 +55,6 @@ export const {
   FETCH_CLIENTS_SALES_SUCCESS,
   FETCH_CLIENTS_ACTIVITY_SUCCESS,
   FETCH_PENDING_TASKS,
-  FETCH_PENDING_TASKS_SUCCESS
-
-  
+  FETCH_PENDING_TASKS_SUCCESS,
+  FETCH_SALES_YEAR_DAYS_SUCCESS  
 );

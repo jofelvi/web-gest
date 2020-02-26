@@ -242,69 +242,69 @@ export const dataaa = [
   
 export const dataLineChartYear = [
 
-    { year: '2015', totalNumero: 7 , totalPVM: 50},
-    { year: '2016', totalNumero: 6.9, totalPVM: 20 },
-    { year: '2017', totalNumero: 9.5, totalPVM: 10 },
-    { year: '2018', totalNumero: 14.5, totalPVM: 60 },
-    { year: '2019', totalNumero: 18.2 , totalPVM: 70},
+    { year: '2015', totalnumero: 7 , totalpvm: 50},
+    { year: '2016', totalnumero: 6.9, totalpvm: 20 },
+    { year: '2017', totalnumero: 9.5, totalpvm: 10 },
+    { year: '2018', totalnumero: 14.5, totalpvm: 60 },
+    { year: '2019', totalnumero: 18.2 , totalpvm: 70},
 
   ];
   export const dataLineChartMonth = [
 
-    { month: 'en', totalNumero: 7 , totalPVM: 40},
-    { month: 'feb', totalNumero: 6.9 , totalPVM: 10},
-    { month: 'mar', totalNumero: 9.5 , totalPVM: 20},
-    { month: 'abr', totalNumero: 14.5, totalPVM: 30 },
-    { month: 'may', totalNumero: 18.2,  totalPVM: 40},
-    { month: 'jun', totalNumero: 21.5, totalPVM: 50 },
-    { month: 'jul', totalNumero: 25.2, totalPVM: 60 },
-    { month: 'agt', totalNumero: 26.5, totalPVM: 70 },
-    { month: 'set', totalNumero: 23.3, totalPVM: 80 },
-    { month: 'oct', totalNumero: 18.3, totalPVM: 90 },
-    { month: 'nov', totalNumero: 13.9 , totalPVM: 100 },
-    { month: 'dic', totalNumero: 13.9, totalPVM: 110 }
+    { month: 'en', totalnumero: 7 , totalpvm: 40},
+    { month: 'feb', totalnumero: 6.9 , totalpvm: 10},
+    { month: 'mar', totalnumero: 9.5 , totalpvm: 20},
+    { month: 'abr', totalnumero: 14.5, totalpvm: 30 },
+    { month: 'may', totalnumero: 18.2,  totalpvm: 40},
+    { month: 'jun', totalnumero: 21.5, totalpvm: 50 },
+    { month: 'jul', totalnumero: 25.2, totalpvm: 60 },
+    { month: 'agt', totalnumero: 26.5, totalpvm: 70 },
+    { month: 'set', totalnumero: 23.3, totalpvm: 80 },
+    { month: 'oct', totalnumero: 18.3, totalpvm: 90 },
+    { month: 'nov', totalnumero: 13.9 , totalpvm: 100 },
+    { month: 'dic', totalnumero: 13.9, totalpvm: 110 }
   
   ];
 
   export const dataLineChartDay = [
 
-    { day: '01-02-2020', totalNumero: 7, totalPVM: 10 },
-    { day: '02-02-2020', totalNumero: 6.9, totalPVM: 20 },
-    { day: '03-02-2020', totalNumero: 9.5, totalPVM: 30 },
-    { day: '04-02-2020', totalNumero: 14.5, totalPVM: 40 },
-    { day: '05-02-2020', totalNumero: 18.2, totalPVM: 40 },
-    { day: '06-02-2020', totalNumero: 21.5, totalPVM: 60 },
-    { day: '07-02-2020', totalNumero: 25.2, totalPVM: 70 },
+    { day: '01-02-2020', totalnumero: 7, totalpvm: 10 },
+    { day: '02-02-2020', totalnumero: 6.9, totalpvm: 20 },
+    { day: '03-02-2020', totalnumero: 9.5, totalpvm: 30 },
+    { day: '04-02-2020', totalnumero: 14.5, totalpvm: 40 },
+    { day: '05-02-2020', totalnumero: 18.2, totalpvm: 40 },
+    { day: '06-02-2020', totalnumero: 21.5, totalpvm: 60 },
+    { day: '07-02-2020', totalnumero: 25.2, totalpvm: 70 },
   
   
   ];
 
   export const dataLineChartHour = [
 
-    { hour: '00:00', totalNumero: 7 , totalPVM: 10},
-    { hour: '01:00', totalNumero: 6.9 , totalPVM: 20},
-    { hour: '02:00', totalNumero: 9.5, totalPVM: 30 },
-    { hour: '03:00', totalNumero: 14.5, totalPVM: 40 },
-    { hour: '04:00', totalNumero: 18.2, totalPVM: 50 },
-    { hour: '05:00', totalNumero: 21.5, totalPVM: 60 },
-    { hour: '06:00', totalNumero: 25.2, totalPVM: 50 },
-    { hour: '07:00', totalNumero: 26.5, totalPVM: 40 },
-    { hour: '08:00', totalNumero: 23.3, totalPVM: 30 },
-    { hour: '09:00', totalNumero: 18.3, totalPVM: 20 },
-    { hour: '10:00', totalNumero: 13.9, totalPVM: 10  },
-    { hour: '11:00', totalNumero: 13.9, totalPVM: 15 },
-    { hour: '12:00', totalNumero: 7 , totalPVM: 10},
-    { hour: '13:00', totalNumero: 6.9, totalPVM: 15 },
-    { hour: '14:00', totalNumero: 9.5 , totalPVM: 10},
-    { hour: '15:00', totalNumero: 14.5, totalPVM: 15 },
-    { hour: '16:00', totalNumero: 18.2, totalPVM: 10 },
-    { hour: '17:00', totalNumero: 21.5, totalPVM: 15 },
-    { hour: '18:00', totalNumero: 25.2, totalPVM: 10 },
-    { hour: '19:00', totalNumero: 26.5, totalPVM: 15 },
-    { hour: '20:00', totalNumero: 23.3, totalPVM: 10 },
-    { hour: '21:00', totalNumero: 18.3, totalPVM: 15 },
-    { hour: '22:00', totalNumero: 13.9, totalPVM: 10  },
-    { hour: '23:00', totalNumero: 13.9, totalPVM: 10 }
+    { hour: '00:00', totalnumero: 7 , totalpvm: 10},
+    { hour: '01:00', totalnumero: 6.9 , totalpvm: 20},
+    { hour: '02:00', totalnumero: 9.5, totalpvm: 30 },
+    { hour: '03:00', totalnumero: 14.5, totalpvm: 40 },
+    { hour: '04:00', totalnumero: 18.2, totalpvm: 50 },
+    { hour: '05:00', totalnumero: 21.5, totalpvm: 60 },
+    { hour: '06:00', totalnumero: 25.2, totalpvm: 50 },
+    { hour: '07:00', totalnumero: 26.5, totalpvm: 40 },
+    { hour: '08:00', totalnumero: 23.3, totalpvm: 30 },
+    { hour: '09:00', totalnumero: 18.3, totalpvm: 20 },
+    { hour: '10:00', totalnumero: 13.9, totalpvm: 10  },
+    { hour: '11:00', totalnumero: 13.9, totalpvm: 15 },
+    { hour: '12:00', totalnumero: 7 , totalpvm: 10},
+    { hour: '13:00', totalnumero: 6.9, totalpvm: 15 },
+    { hour: '14:00', totalnumero: 9.5 , totalpvm: 10},
+    { hour: '15:00', totalnumero: 14.5, totalpvm: 15 },
+    { hour: '16:00', totalnumero: 18.2, totalpvm: 10 },
+    { hour: '17:00', totalnumero: 21.5, totalpvm: 15 },
+    { hour: '18:00', totalnumero: 25.2, totalpvm: 10 },
+    { hour: '19:00', totalnumero: 26.5, totalpvm: 15 },
+    { hour: '20:00', totalnumero: 23.3, totalpvm: 10 },
+    { hour: '21:00', totalnumero: 18.3, totalpvm: 15 },
+    { hour: '22:00', totalnumero: 13.9, totalpvm: 10  },
+    { hour: '23:00', totalnumero: 13.9, totalpvm: 10 }
   
   ];
   

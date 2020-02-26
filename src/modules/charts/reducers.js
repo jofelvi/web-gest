@@ -10,8 +10,8 @@ import {
   fetchClientsDataSuccess,
   fetchClientsSalesSuccess,
   fetchClientsActivitySuccess,
-  fetchPendingTasksSuccess
-  
+  fetchPendingTasksSuccess,
+  fetchSalesYearDaysSuccess
 } from './actions';
 
 const defaultState = {
@@ -33,6 +33,10 @@ export default handleActions(
     [fetchSalesByDaySuccess]: (state, { payload }) => ({
       ...state,
       dayList: payload.day
+    }),
+    [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
+      ...state,
+      yearDaysList: payload.daysYear
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({

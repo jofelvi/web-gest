@@ -98,10 +98,10 @@ if(numero && datos){
 export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   let arrayFinal;
   if (statePVM) {
-    return arrayFinal = numberArray.sort((a, b) => (a.totalPVM < b.totalPVM) ? 1 : -1)
+    return arrayFinal = numberArray.sort((a, b) => (a.totalpvm < b.totalpvm) ? 1 : -1)
   }
   if (stateNumeroPedidos) {
-    return arrayFinal = numberArray.sort((a, b) => (a.totalNumero < b.totalNumero) ? 1 : -1)
+    return arrayFinal = numberArray.sort((a, b) => (a.totalnumero < b.totalnumero) ? 1 : -1)
   }
   return arrayFinal;
 }

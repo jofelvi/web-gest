@@ -66,6 +66,7 @@ const HomeScreen = ({
   yearList,
   monthList,
   dayList,
+  daysList,
   hourList,
   fetchSalesByYear,
   fetchSalesByMonth,
@@ -107,7 +108,7 @@ const HomeScreen = ({
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
-
+ 
   if (id && procId && !completed) {
     return <Redirect to={`/task/${taskId}/process/${procId}`} />;
   }
@@ -216,12 +217,12 @@ const HomeScreen = ({
                   {subfamilyDataSortedByBiggestNumber ? subfamilyDataSortedByBiggestNumber.slice(0, 5).map(subfamily => {
                     if (numeroPedidos) {
                       return (
-                        <DataDisplayPie numberElement={subfamily.totalNumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                        <DataDisplayPie numberElement={subfamily.totalnumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                       )
                     }
                     if (numeroPVM) {
                       return (
-                        <DataDisplayPie numberElement={subfamily.totalPVM} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                        <DataDisplayPie numberElement={subfamily.totalpvm} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                       )
                     }
                   }) : ''}

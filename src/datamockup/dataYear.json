@@ -2,27 +2,27 @@
     "data": [
         { 
         "year": "2015", 
-        "totalNumero": 7 ,
-        "totalPVM": 50
+        "totalnumero": 7 ,
+        "totalpvm": 50
         },
         { 
         "year": "2016", 
-        "totalNumero": 6.9, 
-        "totalPVM": 20 },
+        "totalnumero": 6.9, 
+        "totalpvm": 20 },
         { 
         "year": "2017", 
-        "totalNumero": 9.5, 
-        "totalPVM": 10 
+        "totalnumero": 9.5, 
+        "totalpvm": 10 
         },
         { 
         "year": "2018", 
-        "totalNumero": 14.5, 
-        "totalPVM": 60 
+        "totalnumero": 14.5, 
+        "totalpvm": 60 
         },
         { 
         "year": "2019", 
-        "totalNumero": 18.2 , 
-        "totalPVM": 70
+        "totalnumero": 18.2 , 
+        "totalpvm": 70
         } 
     ]
 }

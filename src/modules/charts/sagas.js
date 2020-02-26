@@ -13,8 +13,8 @@ import {
   fetchClientsDataSuccess,
   fetchClientsActivitySuccess,
   fetchClientsSalesSuccess,
-  fetchPendingTasksSuccess
-  
+  fetchPendingTasksSuccess,
+  fetchSalesYearDaysSuccess
 } from './actions';
 
 import {
@@ -31,14 +31,20 @@ import * as api from './api';
 
 
   function* fetchSalesByYear({ payload }) {
+    const date = {
+      dateFrom: '2015-02-25',
+      dateTo: '2020-02-25'
+    }
   try {
+    const responseRealData = yield call(api.getYearSales, date);
+    console.log("Real Data from Year", responseRealData.data);
     const response = require('../../datamockup/dataYear.json')
     const responseEntities = require('../../datamockup/dataYearEntities.json')
     const responseSubfamily = require('../../datamockup/dataYearSubfamily.json')
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     }
-    yield put(fetchSalesByYearSuccess({ year: response.data.data }));
+    yield put(fetchSalesByYearSuccess({ year: responseRealData.data }));
     yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
     yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
   } catch (e) {
@@ -76,6 +82,7 @@ yield takeLatest(FETCH_SALES_BY_MONTH, fetchSalesByMonth);
 function* fetchSalesByDay({ payload }) {
  
 try {
+  const responseFake = require('../../datamockup/dataYearDays.json')
   const response = require('../../datamockup/dataDay.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
@@ -83,6 +90,7 @@ try {
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
+  yield put(fetchSalesYearDaysSuccess({ daysYear: responseFake.data.data }));
   yield put(fetchSalesByDaySuccess({ day: response.data.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
