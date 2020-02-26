@@ -3,7 +3,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Descriptions } from 'antd';
+import {Descriptions}   from 'antd';
 
 import {
   InfoContainer,
