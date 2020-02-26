@@ -36,15 +36,14 @@ import * as api from './api';
       dateTo: '2020-02-25'
     }
   try {
-    const responseRealData = yield call(api.getYearSales, date);
-    console.log("Real Data from Year", responseRealData.data);
-    const response = require('../../datamockup/dataYear.json')
+    const response = yield call(api.getYearSales, date);
+    
     const responseEntities = require('../../datamockup/dataYearEntities.json')
     const responseSubfamily = require('../../datamockup/dataYearSubfamily.json')
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     }
-    yield put(fetchSalesByYearSuccess({ year: responseRealData.data }));
+    yield put(fetchSalesByYearSuccess({ year: response.data }));
     yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
     yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
   } catch (e) {
