@@ -106,10 +106,7 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByEntity, searchByType } = this.state;
     const { orders, order, fetchOrderById, entity, client } = this.props;
 
-    if (order) {
-      console.log(filterOrderType(order.tipo, order.lineas))
 
-    }
     return (
       <Maincontainer>
         <div className="table-indas">
