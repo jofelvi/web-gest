@@ -13,8 +13,7 @@ export const sortingQuantity = (statePVM, statePedidosNumero)=>{
       }
 
 export const sortingTime = (data)=>{
-  console.log("data in function", data)
-
+  
   let dataTiempo = '';
     if (data){ 
       data.map(dat =>{
