@@ -50,8 +50,8 @@ import utils from '../../lib/utils';
 import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
 
 const { TabPane } = Tabs;
-const label1 = '<div style="color:#8c8c8c;font-size:14px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:14px">';
-const label2 = '</span><br><span style="color:#4E4E4E;font-size:14px">';
+const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
+const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
 const label3 = '</span></div>';
 function callback(key) {
   console.log(key);

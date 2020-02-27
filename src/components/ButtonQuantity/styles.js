@@ -14,8 +14,8 @@ font-size: 10px !important;
 ${props => props.selectedNumeroPedidos ?
   `
  color : #40a9ff !important;
- border: 3px solid #40a9ff !important;
- border-radius: 3px
+ border: 1px solid #40a9ff !important;
+ border-radius: 1px;
   `
  : 'border : 1px solid #D9D9D9;'};
 `;
@@ -25,8 +25,8 @@ font-size: 10px !important;
 ${props => props.selectedPVM ?
   `
  color : #40a9ff !important;
- border: 3px solid #40a9ff !important;
- border-radius: 3px
+ border: 1px solid #40a9ff !important;
+ border-radius: 1px;
   `
  : 'border : 1px solid #D9D9D9;'};
 `;

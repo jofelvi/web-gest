@@ -40,7 +40,7 @@ export const ClientsChartTitleContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 30px;
 `;
 
 export const ClientsChartContainer = styled.div`

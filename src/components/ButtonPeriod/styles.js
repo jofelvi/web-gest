@@ -14,8 +14,8 @@ font-size: 10px !important;
 ${props => props.selectedMonth ?
     `
    color : #40a9ff !important;
-   border: 3px solid #40a9ff !important;
-   border-radius: 3px
+   border: 1px solid #40a9ff !important;
+   border-radius: 1px
     `
    : 'border : 1px solid #D9D9D9;'};
 
@@ -27,8 +27,8 @@ font-size: 10px !important;
 ${props => props.selectedYear ?
     `
    color : #40a9ff !important;
-   border: 3px solid #40a9ff !important;
-   border-radius: 3px
+   border: 1px solid #40a9ff !important;
+   border-radius: 1px
     `
    : 'border : 1px solid #D9D9D9;'};
 `;
@@ -39,8 +39,8 @@ font-size: 10px !important;
 ${props => props.selectedDay ?
     `
    color : #40a9ff !important;
-   border: 3px solid #40a9ff !important;
-   border-radius: 3px
+   border: 1px solid #40a9ff !important;
+   border-radius: 1px
     `
    : 'border : 1px solid #D9D9D9;'};
 `;
@@ -50,8 +50,8 @@ font-size: 10px !important;
 ${props => props.selectedHour ?
     `
    color : #40a9ff !important;
-   border: 3px solid #40a9ff !important;
-   border-radius: 3px
+   border: 1px solid #40a9ff !important;
+   border-radius: 1px
     `
    : 'border : 1px solid #D9D9D9;'};
 
