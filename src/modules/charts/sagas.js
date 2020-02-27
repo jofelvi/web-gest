@@ -1,6 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
 import * as HttpStatus from 'http-status-codes'
+import * as moment from 'moment';
 
 import {
  
@@ -37,7 +38,6 @@ import * as api from './api';
     }
   try {
     const response = yield call(api.getYearSales, date);
-    
     const responseEntities = require('../../datamockup/dataYearEntities.json')
     const responseSubfamily = require('../../datamockup/dataYearSubfamily.json')
     if (response.status === HttpStatus.UNAUTHORIZED) {
@@ -81,15 +81,29 @@ yield takeLatest(FETCH_SALES_BY_MONTH, fetchSalesByMonth);
 function* fetchSalesByDay({ payload }) {
  
 try {
+  let listDay= [];
+  let objectDay = {}
   const responseFake = require('../../datamockup/dataYearDays.json')
   const response = require('../../datamockup/dataDay.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
 
+    responseFake.data.data.forEach( res => {
+  objectDay = {
+    ...res,
+    day: res.day.split('-')[0]+"-"+res.day.split('-')[1]+"-"+res.day.split('-')[2].split('T')[0],
+    
+  }
+  listDay.push(objectDay)
+ 
+  return listDay
+    })
+    //console.log(listDay)
+  
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
-  yield put(fetchSalesYearDaysSuccess({ daysYear: responseFake.data.data }));
+  yield put(fetchSalesYearDaysSuccess({ daysYear: listDay }));
   yield put(fetchSalesByDaySuccess({ day: response.data.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));

@@ -7,26 +7,46 @@ import { fetchTaskForm } from '../../modules/tasks/actions';
 import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks } from '../../modules/charts/actions';
 
 import View from './view';
+
+const startDate = moment();
+const listOfDates = [startDate.format().split("T")[0]];
+const startDateMonthYear = startDate.subtract(1, 'years').format("YYYY-MM")
+//console.log("list day", list.day.startsWith(startDate.format("YYYY-MM")) )
 const getMonthList = (yearDaysList) => {
   // procesamos yearList para que coja los 30 dias del mes desde hoy
+}
+
+const creatingDaysList = (accumulator, currentValue) => {
+  accumulator.forEach(acc => {
+    if (accumulator.length < 6) {
+      return accumulator.push(currentValue.subtract(1, 'days').format().split("T")[0])
+    }
+  })
+  return accumulator
+};
+
+const getLast7DaysList = (yearDaysList) => {
+  if(listOfDates){
+    creatingDaysList(listOfDates, startDate);
+
   }
   
-  const getLast7DaysList = (yearDaysList) => {
-    const startDate = moment();
-   const endDate = startDate.add(6, 'days');
-   const range = endDate.diff(startDate, 'days');
-   return yearDaysList;
-   // const range = moment().range(startDate, endDate);
-    //console.log("Start date", startDate);
-    //console.log("End date", endDate);
-    //console.log("Range", range);
-    //console.log("RANGE", range);
-    //return yearDaysList;
-    //procesamos yearList para que coja los 7 dias desde hoy
+  if(yearDaysList){
+ const filteredByMonth =  yearDaysList.filter(list =>list.day.startsWith('2019-11'))
+const tempArray =  listOfDates.filter( filterDay =>{
+ //console.log(filterDay)
+   return !filteredByMonth.includes(filterDay);
+})
+//console.log("Temp array", tempArray);
+}
+  
+   
+
   }
-  //ASI PASA EN EL STATE
-  // monthList: getMonthList(state.charts.yearDaysList),
-  //     dayList: getLast7DaysList(state.charts.yearDaysList),
+  //procesamos yearList para que coja los 7 dias desde hoy
+//ASI PASA EN EL STATE
+// monthList: getMonthList(state.charts.yearDaysList),
+//     dayList: getLast7DaysList(state.charts.yearDaysList),
 
 export default connect(
   state => ({
@@ -47,5 +67,5 @@ export default connect(
     clientsDataSales: state.charts.clientsDataSales,
     pendingTasks: state.charts.pendingTasks,
   }),
-  { fetchTaskForm , fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks }
+  { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks }
 )(View);
