@@ -5,11 +5,11 @@ import { Icon } from "antd";
 
 
 
-  const DataDisplay = ({numberElement, textElement, iconType, styleColor}) => { 
+  const DataDisplay = ({numberElement, textElement, iconType, styleColor, dataDisplayClients}) => { 
         
           
         return(
-          <ContainerData>
+          <ContainerData clientsData = {dataDisplayClients}>
   <TextBadge><Icon type={iconType} theme="filled" style={styleColor}/>{textElement}</TextBadge>
           <DataNumber>{numberElement}</DataNumber>
         </ContainerData>

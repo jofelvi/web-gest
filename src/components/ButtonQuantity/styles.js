@@ -5,10 +5,12 @@ import { Button } from "antd";
 const ButtonGroup = Button.Group;
 
 export const ButtonPeriodContainer = styled(ButtonGroup)`
-  margin: 0px 10px 25px 10px;
+  margin: 0px 10px 0px 10px;
+  
 `;
 
 export const ButtonNumeroPedidos = styled(Button)`
+font-size: 10px !important; 
 ${props => props.selectedNumeroPedidos ?
   `
  color : #40a9ff !important;
@@ -18,6 +20,8 @@ ${props => props.selectedNumeroPedidos ?
  : 'border : 1px solid #D9D9D9;'};
 `;
 export const ButtonPVM = styled(Button)`
+font-size: 10px !important; 
+
 ${props => props.selectedPVM ?
   `
  color : #40a9ff !important;

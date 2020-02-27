@@ -1,39 +1,45 @@
 export const sortingQuantity = (statePVM, statePedidosNumero)=>{
     let dataCantidad = 'totalPVM';
+
         if(!statePVM &&  statePedidosNumero ){
          
           return dataCantidad = 'totalNumero';    
         }
-        if(statePVM  &&  !statePedidosNumero){
+        else if(statePVM  &&  !statePedidosNumero){
          
           return dataCantidad = 'totalPVM';     
         }
-        return dataCantidad 
+       
       }
 
 export const sortingTime = (data)=>{
-    if (data){
-      let dataTiempo = '';
+  console.log("data in function", data)
+
+  let dataTiempo = '';
+    if (data){ 
       data.map(dat =>{
         
-        if(dat.month){ 
+       if(dat.month){ 
           dataTiempo = 'month';
           return dataTiempo;  
         }
        
-        if(dat.year){
+        else if(dat.year){
         return dataTiempo = 'year';  
         }
         
-        if(dat.day){
+        else if(dat.day){
           return dataTiempo = 'day';  
         }
         
-        if(dat.hour){
+        else if(dat.hour){
           return dataTiempo = 'hour';  
         }
-        
+       
       })
+     
        return dataTiempo 
+      }else{
+        return dataTiempo = 'year'; 
       }
     }

@@ -15,14 +15,11 @@ class PieChart extends React.Component {
     return (
       <div>
 
-        <ChartDonut numeroPedidos ={this.props.numeroPedidosType} numeroPVM ={this.props.PVMtype} width={220} height={220} data={this.props.dataClient}  padding={[5, 10, 5, 10]} forceFit={true}>
+        <ChartDonut numeroPedidos ={this.props.numeroPedidosType} numeroPVM ={this.props.PVMtype} width={(window.innerWidth/5)-90} height={window.innerHeight/5} data={this.props.dataClient}  padding={[0, 0, 0, 0]} forceFit={true}>
           
-          {window.innerWidth < 1500 ?
-            <div><Coord type={'theta'} radius={0.55} />
+        <Coord type={'theta'} radius={0.9} />
               <Axis name="subfamilia" />
-            </div> : <div> <Coord type={'theta'} radius={0.9} />
-              <Axis name="subfamilia" />
-            </div>}
+           
           
           <Tooltip
             showTitle={false}
