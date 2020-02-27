@@ -45,9 +45,6 @@ class LineChart extends React.Component {
     };
 
 
-    console.log("DATA", sortingTime(this.props.dataLine))
-    console.log("state", sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType))
-
     return (
 
       <ChartLineContainer height={(window.innerHeight / 3.5) + 35} width={(window.innerWidth / 3)} data={this.props.dataLine} padding={[50, 50, 50, 30]} forceFit={true} scale={scale} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
