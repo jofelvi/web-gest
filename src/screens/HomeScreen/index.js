@@ -9,44 +9,80 @@ import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour,
 import View from './view';
 
 const startDate = moment();
-const listOfDates = [startDate.format().split("T")[0]];
-const startDateMonthYear = startDate.subtract(1, 'years').format("YYYY-MM")
+const startDateMonthYear = startDate.format("YYYY-MM-DD") //this will only format data to "YYYY-MM" to filter by month but now we have no enough data on real time so in order to test it we need data from past time.
+const listOfDates = [startDateMonthYear];
+const listOfMonths = [startDateMonthYear];
+const monthNames = ["En", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Agt", "Set", "Oct", "Nov", "Dic"
+]
+//const startDateMonthYear = startDate.subtract(1, 'years').format("YYYY-MM")
+
 //console.log("list day", list.day.startsWith(startDate.format("YYYY-MM")) )
-const getMonthList = (yearDaysList) => {
-  // procesamos yearList para que coja los 30 dias del mes desde hoy
-}
+
 
 const creatingDaysList = (accumulator, currentValue) => {
   accumulator.forEach(acc => {
-    if (accumulator.length < 6) {
+    if (accumulator.length < 7) {
       return accumulator.push(currentValue.subtract(1, 'days').format().split("T")[0])
     }
   })
   return accumulator
 };
 
-const getLast7DaysList = (yearDaysList) => {
-  if(listOfDates){
-    creatingDaysList(listOfDates, startDate);
-
-  }
-  
-  if(yearDaysList){
- const filteredByMonth =  yearDaysList.filter(list =>list.day.startsWith('2019-11'))
-const tempArray =  listOfDates.filter( filterDay =>{
- //console.log(filterDay)
-   return !filteredByMonth.includes(filterDay);
-})
-//console.log("Temp array", tempArray);
+const filterByMonth = (yearDaysListToFilter) => {
+  return yearDaysListToFilter.filter(list => list.day.startsWith('2020-02'))
 }
-  
-   
 
+const getMonths = (dayList) => {
+  if (!dayList || !dayList.length) {
+    return [];
   }
-  //procesamos yearList para que coja los 7 dias desde hoy
-//ASI PASA EN EL STATE
-// monthList: getMonthList(state.charts.yearDaysList),
-//     dayList: getLast7DaysList(state.charts.yearDaysList),
+  const monthsList = dayList.reduce((acc, value) => {
+
+    const month = new Date(value.day).getMonth();
+    if (!acc[month]) {
+      return { ...acc, [month]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
+    }
+    return { ...acc, [month]: { totalnumero: value.totalnumero + acc[month].totalnumero, totalpvm: value.totalpvm + acc[month].totalpvm } }
+  }, {});
+  return Object.keys(monthsList).map(month => ({ month: monthNames[month], ...monthsList[month] }));
+}
+
+const getHours = (hourList) => {
+  if (!hourList || !hourList.length) {
+    return [];
+  }
+  const hourAddedList = hourList.reduce((acc, value) => {
+
+    if (!acc[value.hour]) {
+      return { ...acc, [value.hour]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
+    }
+
+    return { ...acc, [value.hour]: { totalnumero: value.totalnumero + acc[value.hour].totalnumero, totalpvm: value.totalpvm + acc[value.hour].totalpvm } }
+  }, {})
+  return Object.keys(hourAddedList).map(hour => ({ hour: hour, ...hourAddedList[hour] }));
+
+}
+
+const getLast7DaysList = (yearDaysList) => {
+  const listOfSevenDays = []
+  if (listOfDates) {
+    creatingDaysList(listOfDates, startDate);
+  }
+  if (yearDaysList && listOfDates) {
+    const filteredByMonth = filterByMonth(yearDaysList)
+    listOfDates.forEach(objDay => {
+      filteredByMonth.filter(m => {
+        if (m.day === objDay) {
+          return listOfSevenDays.push(m);
+        }
+      })
+    })
+
+    return listOfSevenDays
+  }
+}
+
 
 export default connect(
   state => ({
@@ -59,7 +95,8 @@ export default connect(
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
     daysList: getLast7DaysList(state.charts.yearDaysList),
-    hourList: state.charts.hourList,
+    monthsList: getMonths(state.charts.yearDaysList),
+    hourList: getHours(state.charts.hourList),
     entitiesList: state.charts.entitiesList,
     subfamiliesList: state.charts.subfamiliesList,
     clientsData: state.charts.clientsData,

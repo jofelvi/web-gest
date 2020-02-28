@@ -65,6 +65,7 @@ const HomeScreen = ({
   history,
   yearList,
   monthList,
+  monthsList,
   dayList,
   daysList,
   hourList,
@@ -182,7 +183,7 @@ const HomeScreen = ({
           <ChartContainerLine>
             <SubTitleVentas>Ventas</SubTitleVentas>
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
-              monthList, dayList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
+              monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
           </ChartContainerLine>
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
