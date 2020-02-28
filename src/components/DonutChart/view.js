@@ -27,7 +27,7 @@ import { ChartDonut } from './styles';
         return(
           <div>
        
-        <ChartDonut width={190} height={190} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
+        <ChartDonut width={190} height={window.innerHeight / 6} data={this.props.dataClient} scale={cols} padding={[ 5, 10, 5, 10 ]} forceFit={true}>
           <Coord type={'theta'} radius={0.55} innerRadius={1.7} />
           <Axis name="percent" />
           <Tooltip 

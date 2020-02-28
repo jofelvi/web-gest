@@ -31,7 +31,8 @@ import {
   EntitiesChartPieContainer,
   SubTitleVentas,
   ButtonsPeriodQuantityContainer,
-  ContainerButtonsTitle
+  ContainerButtonsTitle,
+  ContainerClientsActivityAndStatistics
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -49,8 +50,8 @@ import utils from '../../lib/utils';
 import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
 
 const { TabPane } = Tabs;
-const label1 = '<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:1.2em">';
-const label2 = '</span><br><span style="color:#4E4E4E;font-size:1.2em">';
+const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
+const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
 const label3 = '</span></div>';
 function callback(key) {
   console.log(key);
@@ -82,7 +83,12 @@ const HomeScreen = ({
   fetchPendingTasks,
   pendingTasks
 }) => {
-
+  const [numeroPedidos, setNumeroPedidos] = useState(false);
+  const [numeroPVM, setNumeroPVM] = useState(false);
+  const [timeYear, setTimeYear] = useState(false);
+  const [timeMonth, setTimeMonth] = useState(false);
+  const [timeDay, setTimeDay] = useState(false);
+  const [timeHour, setTimeHour] = useState(false);
   useEffect(() => {
     fetchClientsData();
     fetchPendingTasks();
@@ -90,7 +96,8 @@ const HomeScreen = ({
     fetchSalesByMonth();
     fetchSalesByHour();
     fetchSalesByDay();
-    
+    setTimeYear(true);
+    setNumeroPVM(true);
     if (utils.getTaskId() || taskId) {
       fetchClientsData();
       const id = utils.getTaskId();
@@ -99,12 +106,7 @@ const HomeScreen = ({
 
   }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
-  const [numeroPedidos, setNumeroPedidos] = useState(false);
-  const [numeroPVM, setNumeroPVM] = useState(false);
-  const [timeYear, setTimeYear] = useState(false);
-  const [timeMonth, setTimeMonth] = useState(false);
-  const [timeDay, setTimeDay] = useState(false);
-  const [timeHour, setTimeHour] = useState(false);
+  
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
@@ -118,11 +120,10 @@ const HomeScreen = ({
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
   return <ContentContainer>
-    <Tabs defaultActiveKey="1"  onChange={callback}>
-  <TabPane tab={"Estadísticas"} key={"1"}>
+    <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
+  <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
     <StaticticsContainer>
       <Title>Estadísticas</Title>
-      <ChartsDataPeriodContainer>
         <ButtonsPeriodQuantityContainer>
           <ContainerButtonsTitle>
             <SubTitle>Periodo</SubTitle>
@@ -179,9 +180,10 @@ const HomeScreen = ({
             }}></ButtonQuantity>
           </ContainerButtonsTitle>
         </ButtonsPeriodQuantityContainer>
+        <ContainerClientsActivityAndStatistics>
+      
         <ChartContainerLineDonut>
-          <ChartContainerLine>
-            <SubTitleVentas>Ventas</SubTitleVentas>
+          <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
           </ChartContainerLine>
@@ -234,15 +236,15 @@ const HomeScreen = ({
             </ChartContainerPie>
           </EntitiesChartPieContainer>
         </ChartContainerLineDonut>
-      </ChartsDataPeriodContainer>
+     
       <ClientsChartTitleContainer>
         <SubTitle>Actividad de Clientes</SubTitle>
         <ClientsChartContainer>
           {clientsDataActivity ?
             <ChartContainer>
               <ContainerUpData>
-                <DataDisplay numberElement={clientsDataActivity[0].porcentaje + ' %'} textElement={clientsDataActivity[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[0].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                <DataDisplay numberElement={clientsDataActivity[1].porcentaje + ' %'} textElement={clientsDataActivity[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[1].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                <DataDisplay numberElement={clientsDataActivity[0].porcentaje + ' %'} textElement={clientsDataActivity[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={clientsDataActivity[1].porcentaje + ' %'} textElement={clientsDataActivity[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerUpData>
               <DonutChart
                 dataClient={clientsDataActivity ? tranformDataForDonutClient(clientsDataActivity) : ''}
@@ -252,14 +254,14 @@ const HomeScreen = ({
                 colorSection={['periodo', (periodo) => { return colorControl(periodo) }]} />
 
               <ContainerDownData>
-                <DataDisplay numberElement={clientsDataActivity[2].porcentaje + ' %'} textElement={clientsDataActivity[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[2].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                <DataDisplay numberElement={clientsDataActivity[2].porcentaje + ' %'} textElement={clientsDataActivity[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerDownData>
             </ChartContainer> : ''}
           {clientsDataSales ?
             <ChartContainer>
               <ContainerUpData>
-                <DataDisplay numberElement={clientsDataSales[0].porcentaje + ' %'} textElement={clientsDataSales[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[0].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                <DataDisplay numberElement={clientsDataSales[1].porcentaje + ' %'} textElement={clientsDataSales[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[1].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                <DataDisplay numberElement={clientsDataSales[0].porcentaje + ' %'} textElement={clientsDataSales[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={clientsDataSales[1].porcentaje + ' %'} textElement={clientsDataSales[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerUpData>
               <DonutChart
                 dataClient={clientsDataSales ? tranformDataForDonutClient(clientsDataSales) : ''}
@@ -270,11 +272,12 @@ const HomeScreen = ({
 
 
               <ContainerDownData>
-                <DataDisplay numberElement={clientsDataSales[2].porcentaje + ' %'} textElement={clientsDataSales[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[2].periodo), padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                <DataDisplay numberElement={clientsDataSales[2].porcentaje + ' %'} textElement={clientsDataSales[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients ></DataDisplay>
               </ContainerDownData>
             </ChartContainer> : ''}
         </ClientsChartContainer>
       </ClientsChartTitleContainer>
+      </ContainerClientsActivityAndStatistics>
     </StaticticsContainer>
    </TabPane>
    <TabPane tab={"Tareas Pendientes"} key={"2"}>

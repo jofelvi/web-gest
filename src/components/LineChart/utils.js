@@ -4,36 +4,40 @@ export const sortingQuantity = (statePVM, statePedidosNumero)=>{
          
           return dataCantidad = 'totalnumero';    
         }
-        if(statePVM  &&  !statePedidosNumero){
+        else if(statePVM  &&  !statePedidosNumero){
          
           return dataCantidad = 'totalpvm';     
         }
-        return dataCantidad 
+       
       }
 
 export const sortingTime = (data)=>{
-    if (data){
-      let dataTiempo = '';
+  
+  let dataTiempo = '';
+    if (data){ 
       data.map(dat =>{
         
-        if(dat.month){ 
+       if(dat.month){ 
           dataTiempo = 'month';
           return dataTiempo;  
         }
        
-        if(dat.year){
+        else if(dat.year){
         return dataTiempo = 'year';  
         }
         
-        if(dat.day){
+        else if(dat.day){
           return dataTiempo = 'day';  
         }
         
-        if(dat.hour){
+        else if(dat.hour){
           return dataTiempo = 'hour';  
         }
-        
+       
       })
+     
        return dataTiempo 
+      }else{
+        return dataTiempo = 'year'; 
       }
     }
