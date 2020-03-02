@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline, Tabs } from 'antd';
+import { Button, Timeline, Tabs, Spin } from 'antd';
 
 
 import {
@@ -32,7 +32,8 @@ import {
   SubTitleVentas,
   ButtonsPeriodQuantityContainer,
   ContainerButtonsTitle,
-  ContainerClientsActivityAndStatistics
+  ContainerClientsActivityAndStatistics,
+  ContainerSpin
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -89,20 +90,28 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
-  useEffect(() => {
-    fetchClientsData();
-    fetchPendingTasks();
-    fetchSalesByYear();
-    fetchSalesByMonth();
-    fetchSalesByHour();
-    fetchSalesByDay();
-    setTimeYear(true);
-    setNumeroPVM(true);
+ useEffect(async () => {
+   try{
+    await fetchSalesByYear();
+    await fetchSalesByMonth();
+    await fetchSalesByHour();
+    // setInterval(async()=>{
+    //   await fetchSalesByHour();
+    // }, 3000);
+    await fetchSalesByHour();
+    await fetchSalesByDay();
+    await fetchClientsData();
+    await fetchPendingTasks();
+    await setTimeYear(true);
+    await setNumeroPVM(true);
     if (utils.getTaskId() || taskId) {
       fetchClientsData();
       const id = utils.getTaskId();
       fetchTaskForm({ taskId: id || taskId, history });
     }
+  } catch(e) {
+    console.log(e);
+  }
 
   }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
@@ -183,10 +192,12 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
+        
+        {yearList ?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>

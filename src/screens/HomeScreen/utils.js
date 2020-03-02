@@ -105,3 +105,4 @@ export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   }
   return arrayFinal;
 }
+

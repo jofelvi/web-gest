@@ -6,24 +6,9 @@
     { "hour": "03:00", "totalnumero": 14.5, "totalpvm": 40 },
     { "hour": "04:00", "totalnumero": 18.2, "totalpvm": 50 },
     { "hour": "05:00", "totalnumero": 21.5, "totalpvm": 60 },
-    { "hour": "06:00", "totalnumero": 25, "totalpvm": 50 },
-    { "hour": "07:00", "totalnumero": 26.5, "totalpvm": 40 },
-    { "hour": "08:00", "totalnumero": 23.3, "totalpvm": 30 },
-    { "hour": "09:00", "totalnumero": 18.3, "totalpvm": 20 },
-    { "hour": "10:00", "totalnumero": 13.9, "totalpvm": 10  },
-    { "hour": "11:00", "totalnumero": 13.9, "totalpvm": 15 },
-    { "hour": "12:00", "totalnumero": 7 , "totalpvm": 10},
-    { "hour": "13:00", "totalnumero": 6.9, "totalpvm": 15 },
-    { "hour": "14:00", "totalnumero": 9.5 , "totalpvm": 10},
-    { "hour": "15:00", "totalnumero": 14.5, "totalpvm": 15 },
-    { "hour": "16:00", "totalnumero": 18.2, "totalpvm": 10 },
-    { "hour": "17:00", "totalnumero": 21.5, "totalpvm": 15 },
-    { "hour": "18:00", "totalnumero": 25.2, "totalpvm": 10 },
-    { "hour": "19:00", "totalnumero": 26.5, "totalpvm": 15 },
-    { "hour": "20:00", "totalnumero": 23.3, "totalpvm": 10 },
-    { "hour": "21:00", "totalnumero": 18.3, "totalpvm": 15 },
-    { "hour": "22:00", "totalnumero": 13.9, "totalpvm": 10  },
-    { "hour": "23:00", "totalnumero": 13.9, "totalpvm": 10 }
+    { "hour": "05:00", "totalnumero": 71.5, "totalpvm": 60 },
+    { "hour": "04:00", "totalnumero": 28.5, "totalpvm": 60 }
+    
     ]
 }
 }

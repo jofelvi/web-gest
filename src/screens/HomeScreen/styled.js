@@ -25,6 +25,14 @@ margin-right: 20px;
 padding-left: 20px;
 
 `;
+export const ContainerSpin = styled.div`
+width: 100%;
+text-align: center;
+border-radius: 4px;
+margin-bottom: 20px;
+padding: 30px 50px;
+margin: 20px 0;
+`;
 
 export const ChartContainer = styled.div`
   width: 30%;

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { startDate, startDateMonthYear, listOfDates, monthNames } from './constants'
 
 import * as moment from 'moment';
 
@@ -8,16 +9,6 @@ import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour,
 
 import View from './view';
 
-const startDate = moment();
-const startDateMonthYear = startDate.format("YYYY-MM-DD") //this will only format data to "YYYY-MM" to filter by month but now we have no enough data on real time so in order to test it we need data from past time.
-const listOfDates = [startDateMonthYear];
-const listOfMonths = [startDateMonthYear];
-const monthNames = ["En", "Feb", "Mar", "Abr", "May", "Jun",
-  "Jul", "Agt", "Set", "Oct", "Nov", "Dic"
-]
-//const startDateMonthYear = startDate.subtract(1, 'years').format("YYYY-MM")
-
-//console.log("list day", list.day.startsWith(startDate.format("YYYY-MM")) )
 
 
 const creatingDaysList = (accumulator, currentValue) => {
@@ -29,9 +20,10 @@ const creatingDaysList = (accumulator, currentValue) => {
   return accumulator
 };
 
+
 const filterByMonth = (yearDaysListToFilter) => {
-  return yearDaysListToFilter.filter(list => list.day.startsWith('2020-02'))
-}
+  return yearDaysListToFilter.filter(list => list.day.startsWith('2020-03')) // ho hay datos en 2020 uy hay datos a partir de 2019-03
+};
 
 const getMonths = (dayList) => {
   if (!dayList || !dayList.length) {
@@ -46,23 +38,28 @@ const getMonths = (dayList) => {
     return { ...acc, [month]: { totalnumero: value.totalnumero + acc[month].totalnumero, totalpvm: value.totalpvm + acc[month].totalpvm } }
   }, {});
   return Object.keys(monthsList).map(month => ({ month: monthNames[month], ...monthsList[month] }));
-}
+};
 
 const getHours = (hourList) => {
+  
   if (!hourList || !hourList.length) {
     return [];
   }
   const hourAddedList = hourList.reduce((acc, value) => {
-
     if (!acc[value.hour]) {
+  
       return { ...acc, [value.hour]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
+        
     }
-
-    return { ...acc, [value.hour]: { totalnumero: value.totalnumero + acc[value.hour].totalnumero, totalpvm: value.totalpvm + acc[value.hour].totalpvm } }
+    const objetoHoras = { ...acc, [value.hour]: { totalnumero: value.totalnumero + acc[value.hour].totalnumero, totalpvm: value.totalpvm + acc[value.hour].totalpvm } }
+    return objetoHoras;
+    ;
+    //console.log("sumando", { ...acc, [value.hour]: { totalnumero: value.totalnumero + acc[value.hour].totalnumero, totalpvm: value.totalpvm + acc[value.hour].totalpvm } } )
   }, {})
+  
   return Object.keys(hourAddedList).map(hour => ({ hour: hour, ...hourAddedList[hour] }));
 
-}
+};
 
 const getLast7DaysList = (yearDaysList) => {
   const listOfSevenDays = []
@@ -70,18 +67,33 @@ const getLast7DaysList = (yearDaysList) => {
     creatingDaysList(listOfDates, startDate);
   }
   if (yearDaysList && listOfDates) {
-    const filteredByMonth = filterByMonth(yearDaysList)
+    const filteredByMonth = filterByMonth(yearDaysList);
     listOfDates.forEach(objDay => {
+      console.log(filteredByMonth.length)
+    if(filteredByMonth.length != 0){
+      
+      console.log("filtered month", filteredByMonth)
       filteredByMonth.filter(m => {
         if (m.day === objDay) {
           return listOfSevenDays.push(m);
         }
       })
+    }else{
+      console.log("no dias de la lista", listOfDates )
+      listOfDates.reduce((acc, value)=>{
+        console.log("Value", value);
+        console.log("Acc", acc);
+        //console.log("no dias de la lista", { ...acc, [value]: { totalnumero: 0, totalpvm: 0 } })
+     return { ...acc, [value]: { totalnumero: 0, totalpvm: 0 } }
+    }) 
+   }
     })
+console.log("listOfSevenDays", listOfSevenDays)
 
     return listOfSevenDays
+ 
   }
-}
+};
 
 
 export default connect(
