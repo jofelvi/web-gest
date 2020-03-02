@@ -1,0 +1,21 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: "production"
+phases:
+  install:
+    commands:
+      - printenv
+      - node --version
+      - npm --version
+      - npm install      
+  pre_build:
+    commands:
+      - aws s3 rm s3://ntrweb/ --recursive
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - aws s3 cp build s3://ntrweb/ --recursive
