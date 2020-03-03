@@ -193,7 +193,7 @@ const HomeScreen = ({
       
         <ChartContainerLineDonut>
         
-        {yearList ?
+        {yearList.length > 0 ?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />

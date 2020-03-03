@@ -1,19 +1,11 @@
 { "data": {
     "data": [
-        { 
-        "year": "2015", 
-        "totalnumero": 7 ,
-        "totalpvm": 50
-        },
-        { 
-        "year": "2016", 
-        "totalnumero": 6.9, 
-        "totalpvm": 20 },
-        { 
-        "year": "2017", 
-        "totalnumero": 9.5, 
-        "totalpvm": 10 
-        },
+        {
+            "year": "2016", 
+            "totalnumero": 9.5, 
+            "totalpvm": 100 
+            },
+      
         { 
         "year": "2018", 
         "totalnumero": 14.5, 
@@ -23,7 +15,12 @@
         "year": "2019", 
         "totalnumero": 18.2 , 
         "totalpvm": 70
-        } 
+        },
+        { 
+            "year": "2020", 
+            "totalnumero": 18.2 , 
+            "totalpvm": 50
+        }  
     ]
 }
 }

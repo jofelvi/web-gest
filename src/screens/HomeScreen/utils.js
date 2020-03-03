@@ -1,4 +1,5 @@
 import DataSet from '@antv/data-set';
+import * as moment from 'moment';
 
 const { DataView } = DataSet;
 
@@ -58,7 +59,6 @@ export const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stat
 }
 
 export const tranformDataForDonutClient = (datos) => {
-
   const dv = new DataView();
 
   return dv.source(datos).transform({
@@ -82,18 +82,15 @@ const typeOfUnits = (statePVM, stateNumero) => {
 export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
   const dv = new DataView();
   let numero = typeOfUnits(statePVM, stateNumero)
-if(numero && datos){
-  return dv.source(datos).transform({
-    type: 'percent',
-    field: numero,
-    dimension: 'subfamilia',
-    as: 'percent'
-  });
+  if(numero && datos){
+    return dv.source(datos).transform({
+      type: 'percent',
+      field: numero,
+      dimension: 'subfamilia',
+      as: 'percent'
+    });
+  }
 }
-}
-
-
-
 
 export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   let arrayFinal;
@@ -105,4 +102,26 @@ export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   }
   return arrayFinal;
 }
+export const sortingYears = (numberArray) => numberArray.sort((a, b) => (a.year > b.year) ? 1 : -1);
 
+export const sortingDays = (numberArray) =>  numberArray.sort((a, b) => (a.day > b.day) ? 1 : -1);
+export const sortingHours = (numberArray) =>  numberArray.sort((a, b) => (a.hour > b.hour) ? 1 : -1);
+
+
+export const generateDays = (num = 12, key = 'months') => {
+  let days = [];
+
+  [...Array(num).keys()].map(value => {
+    days = [...days, { totalnumero: 0, totalpvm: 0, day: moment().subtract(value, key).format('YYYY-MM-DD') }];
+  });
+  return days;
+};
+
+export const generateHours = (num = 24) => {
+  let hours = [];
+
+  [...Array(num).keys()].map(value => {
+    hours = [...hours, { totalnumero: 0, totalpvm: 0, hour: moment({ minute: 0, hour: value}).format('HH:mm') }];
+  });
+  return hours;
+};

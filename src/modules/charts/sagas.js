@@ -88,9 +88,6 @@ try {
     dateTo:  moment().format('YYYY-MM-DD')
   }
   const response = yield call(api.getYearDaysSales, date);
-  console.log("respuesta dias del año", response.data);
-  //const responseFake = require('../../datamockup/dataYearDays.json')
-  //const response = require('../../datamockup/dataDay.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
 
@@ -104,13 +101,11 @@ try {
  
   return listDay
     })
-    //console.log(listDay)
   
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
   yield put(fetchSalesYearDaysSuccess({ daysYear: listDay }));
-  //yield put(fetchSalesByDaySuccess({ day: response.data.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
@@ -122,8 +117,7 @@ export function* watchfetchSalesByDay() {
 yield takeLatest(FETCH_SALES_BY_DAY, fetchSalesByDay);
 }
 
-//dateFrom: moment().substract(1, 'years').subtract(1, 'days').format('YYYY-MM-DD'),
-//dateTo:  moment().subtract(1, 'year').format('YYYY-MM-DD')
+
 
 
 function* fetchSalesByHour({ payload }) {
@@ -131,10 +125,8 @@ function* fetchSalesByHour({ payload }) {
     dateFrom: moment().subtract(1,'days').format('YYYY-MM-DD'),
     dateTo: moment().format('YYYY-MM-DD')
   }
-  console.log("date from hour", date)
 try {
   const response = yield call(api.getHourSales, date);
-  console.log("respuesta horas", response)
   const responseFake = require('../../datamockup/dataHour.json')
   const responseEntities = require('../../datamockup/dataHourEntities.json')
   const responseSubfamily = require('../../datamockup/dataHourSubfamily.json')

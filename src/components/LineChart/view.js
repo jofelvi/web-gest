@@ -47,12 +47,12 @@ class LineChart extends React.Component {
 
     return (
 
-      <ChartLineContainer height={(window.innerHeight / 3.5) + 35} width={(window.innerWidth / 3)} data={this.props.dataLine} padding={[50, 50, 50, 30]} forceFit={true} scale={scale} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
+      <ChartLineContainer height={(window.innerHeight / 3.5) + 35} width={(window.innerWidth / 3)} data={this.props.dataLine} padding={[50, 70, 50, 50]} forceFit={true} scale={scale} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
         <SubTitleVentas>Ventas</SubTitleVentas>
         <Axis name={'year'} label={{
           textStyle: {
             textAlign: 'center',
-            fontSize: '11',
+            fontSize: '10',
 
           }
 
@@ -60,7 +60,7 @@ class LineChart extends React.Component {
         <Axis name={'month'} label={{
           textStyle: {
             textAlign: 'center',
-            fontSize: '11',
+            fontSize: '10',
 
           }
 
@@ -68,7 +68,7 @@ class LineChart extends React.Component {
          <Axis name={'day'} label={{
           textStyle: {
             textAlign: 'center',
-            fontSize: '11',
+            fontSize: '10',
 
           }
 
@@ -76,7 +76,7 @@ class LineChart extends React.Component {
          <Axis name={'hour'} label={{
           textStyle: {
             textAlign: 'center',
-            fontSize: '11',
+            fontSize: '10',
 
           }
 
