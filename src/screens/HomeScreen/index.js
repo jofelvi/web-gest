@@ -54,15 +54,12 @@ const getHours = (hourList) => {
   }
 
   const hourAddedList = sortingHours([...hourList, ...generateHours(new Date().getHours() + 1)]).reduce((acc, value) => {
-    if (!acc[value.hour]) {
+    
+    if (value.hour) {
       return { ...acc, [value.hour]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
         
     }
-    const objetoHoras = { ...acc, [value.hour]: { totalnumero: value.totalnumero + acc[value.hour].totalnumero, totalpvm: value.totalpvm + acc[value.hour].totalpvm } }
-    return objetoHoras;
-    ;
   }, {})
-  
   return Object.keys(hourAddedList).map(hour => ({ hour: hour, ...hourAddedList[hour] }));
 
 };

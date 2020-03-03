@@ -81,8 +81,7 @@ yield takeLatest(FETCH_SALES_BY_MONTH, fetchSalesByMonth);
 function* fetchSalesByDay({ payload }) {
  
 try {
-  let listDay= [];
-  let objectDay = {}
+ 
   const date = {
     dateFrom: moment().subtract(1, 'years').format('YYYY-MM-DD'),
     dateTo:  moment().format('YYYY-MM-DD')
@@ -90,22 +89,11 @@ try {
   const response = yield call(api.getYearDaysSales, date);
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
-
-  response.data.forEach( res => {
-  objectDay = {
-    ...res,
-    day: res.day.split('-')[0]+"-"+res.day.split('-')[1]+"-"+res.day.split('-')[2].split('T')[0],
-    
-  }
-  listDay.push(objectDay)
- 
-  return listDay
-    })
   
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
-  yield put(fetchSalesYearDaysSuccess({ daysYear: listDay }));
+  yield put(fetchSalesYearDaysSuccess({ daysYear: response.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
@@ -125,16 +113,33 @@ function* fetchSalesByHour({ payload }) {
     dateFrom: moment().subtract(1,'days').format('YYYY-MM-DD'),
     dateTo: moment().format('YYYY-MM-DD')
   }
+  
 try {
+  let objectHour = {};
+  const listHour = [];
   const response = yield call(api.getHourSales, date);
   const responseFake = require('../../datamockup/dataHour.json')
   const responseEntities = require('../../datamockup/dataHourEntities.json')
   const responseSubfamily = require('../../datamockup/dataHourSubfamily.json')
 
+  response.data.forEach( res => {
+    if(res.hour.length<5){
+      objectHour = {
+        ...res,
+        hour: "0"+res.hour  
+      }
+      listHour.push(objectHour)
+    
+      return listHour;
+    }
+    listHour.push(res);
+    return listHour
+  })
+   
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
-  yield put(fetchSalesByHourSuccess({ hour: responseFake.data.data }));
+  yield put(fetchSalesByHourSuccess({ hour: listHour }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {

@@ -110,7 +110,7 @@ const HomeScreen = ({
       fetchTaskForm({ taskId: id || taskId, history });
     }
   } catch(e) {
-    console.log(e);
+    console.error(e);
   }
 
   }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
@@ -193,7 +193,7 @@ const HomeScreen = ({
       
         <ChartContainerLineDonut>
         
-        {yearList.length > 0 ?
+        {yearList.length > 0 && daysList.length > 0 && hourList.length > 0 && monthsList.length > 0 ?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
