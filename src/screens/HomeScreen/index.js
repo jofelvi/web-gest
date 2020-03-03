@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { startDate, listOfDates, monthNames, startDateDay, listOfYears } from './constants'
-import { sortingYears, sortingDays, generateDays, generateHours, sortingHours }from './utils'
+import { sortingYears, sortingDays, generateDays, generateHours, sortingHours }from './utils_date'
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
 
