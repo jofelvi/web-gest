@@ -1,17 +1,17 @@
 { "data": {
     "data": [
-        { "month": "en", "totalNumero": 7 , "totalPVM": 40},
-    { "month": "feb", "totalNumero": 6.9 , "totalPVM": 10},
-    { "month": "mar", "totalNumero": 9.5 , "totalPVM": 20},
-    { "month": "abr", "totalNumero": 14.5, "totalPVM": 30 },
-    { "month": "may", "totalNumero": 18.2,  "totalPVM": 40},
-    { "month": "jun", "totalNumero": 21.5, "totalPVM": 50 },
-    { "month": "jul", "totalNumero": 25.2, "totalPVM": 60 },
-    { "month": "agt", "totalNumero": 26.5, "totalPVM": 70 },
-    { "month": "set", "totalNumero": 23.3, "totalPVM": 80 },
-    { "month": "oct", "totalNumero": 18.3, "totalPVM": 90 },
-    { "month": "nov", "totalNumero": 13.9 , "totalPVM": 100 },
-    { "month": "dic", "totalNumero": 13.9, "totalPVM": 110 }
+        { "month": "en", "totalnumero": 7 , "totalpvm": 40},
+    { "month": "feb", "totalnumero": 6.9 , "totalpvm": 10},
+    { "month": "mar", "totalnumero": 9.5 , "totalpvm": 20},
+    { "month": "abr", "totalnumero": 14.5, "totalpvm": 30 },
+    { "month": "may", "totalnumero": 18.2,  "totalpvm": 40},
+    { "month": "jun", "totalnumero": 21.5, "totalpvm": 50 },
+    { "month": "jul", "totalnumero": 25.2, "totalpvm": 60 },
+    { "month": "agt", "totalnumero": 26.5, "totalpvm": 70 },
+    { "month": "set", "totalnumero": 23.3, "totalpvm": 80 },
+    { "month": "oct", "totalnumero": 18.3, "totalpvm": 90 },
+    { "month": "nov", "totalnumero": 13.9 , "totalpvm": 100 },
+    { "month": "dic", "totalnumero": 13.9, "totalpvm": 110 }
     ]
 }
 }

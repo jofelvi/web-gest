@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline, Tabs } from 'antd';
+import { Button, Timeline, Tabs, Spin } from 'antd';
 
 
 import {
@@ -32,7 +32,8 @@ import {
   SubTitleVentas,
   ButtonsPeriodQuantityContainer,
   ContainerButtonsTitle,
-  ContainerClientsActivityAndStatistics
+  ContainerClientsActivityAndStatistics,
+  ContainerSpin
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -66,7 +67,9 @@ const HomeScreen = ({
   history,
   yearList,
   monthList,
+  monthsList,
   dayList,
+  daysList,
   hourList,
   fetchSalesByYear,
   fetchSalesByMonth,
@@ -87,20 +90,28 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
-  useEffect(() => {
-    fetchClientsData();
-    fetchPendingTasks();
-    fetchSalesByYear();
-    fetchSalesByMonth();
-    fetchSalesByHour();
-    fetchSalesByDay();
-    setTimeYear(true);
-    setNumeroPVM(true);
+ useEffect(async () => {
+   try{
+    await fetchSalesByYear();
+    await fetchSalesByMonth();
+    await fetchSalesByHour();
+    // setInterval(async()=>{
+    //   await fetchSalesByHour();
+    // }, 3000);
+    await fetchSalesByHour();
+    await fetchSalesByDay();
+    await fetchClientsData();
+    await fetchPendingTasks();
+    await setTimeYear(true);
+    await setNumeroPVM(true);
     if (utils.getTaskId() || taskId) {
       fetchClientsData();
       const id = utils.getTaskId();
       fetchTaskForm({ taskId: id || taskId, history });
     }
+  } catch(e) {
+    console.error(e);
+  }
 
   }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
@@ -109,7 +120,7 @@ const HomeScreen = ({
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
-
+ 
   if (id && procId && !completed) {
     return <Redirect to={`/task/${taskId}/process/${procId}`} />;
   }
@@ -181,10 +192,12 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
+        
+        {yearList.length > 0 && daysList.length > 0 && hourList.length > 0 && monthsList.length > 0 ?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
-              monthList, dayList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>
+              monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
@@ -218,12 +231,12 @@ const HomeScreen = ({
                   {subfamilyDataSortedByBiggestNumber ? subfamilyDataSortedByBiggestNumber.slice(0, 5).map(subfamily => {
                     if (numeroPedidos) {
                       return (
-                        <DataDisplayPie numberElement={subfamily.totalNumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                        <DataDisplayPie numberElement={subfamily.totalnumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                       )
                     }
                     if (numeroPVM) {
                       return (
-                        <DataDisplayPie numberElement={subfamily.totalPVM} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                        <DataDisplayPie numberElement={subfamily.totalpvm} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                       )
                     }
                   }) : ''}

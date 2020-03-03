@@ -58,7 +58,6 @@ export const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stat
 }
 
 export const tranformDataForDonutClient = (datos) => {
-
   const dv = new DataView();
 
   return dv.source(datos).transform({
@@ -82,26 +81,23 @@ const typeOfUnits = (statePVM, stateNumero) => {
 export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
   const dv = new DataView();
   let numero = typeOfUnits(statePVM, stateNumero)
-if(numero && datos){
-  return dv.source(datos).transform({
-    type: 'percent',
-    field: numero,
-    dimension: 'subfamilia',
-    as: 'percent'
-  });
+  if(numero && datos){
+    return dv.source(datos).transform({
+      type: 'percent',
+      field: numero,
+      dimension: 'subfamilia',
+      as: 'percent'
+    });
+  }
 }
-}
-
-
-
 
 export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   let arrayFinal;
   if (statePVM) {
-    return arrayFinal = numberArray.sort((a, b) => (a.totalPVM < b.totalPVM) ? 1 : -1)
+    return arrayFinal = numberArray.sort((a, b) => (a.totalpvm < b.totalpvm) ? 1 : -1)
   }
   if (stateNumeroPedidos) {
-    return arrayFinal = numberArray.sort((a, b) => (a.totalNumero < b.totalNumero) ? 1 : -1)
+    return arrayFinal = numberArray.sort((a, b) => (a.totalnumero < b.totalnumero) ? 1 : -1)
   }
   return arrayFinal;
 }

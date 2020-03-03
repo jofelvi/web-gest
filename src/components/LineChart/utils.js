@@ -1,13 +1,12 @@
 export const sortingQuantity = (statePVM, statePedidosNumero)=>{
-    let dataCantidad = 'totalPVM';
-
+    let dataCantidad = 'totalpvm';
         if(!statePVM &&  statePedidosNumero ){
          
-          return dataCantidad = 'totalNumero';    
+          return dataCantidad = 'totalnumero';    
         }
         else if(statePVM  &&  !statePedidosNumero){
          
-          return dataCantidad = 'totalPVM';     
+          return dataCantidad = 'totalpvm';     
         }
        
       }

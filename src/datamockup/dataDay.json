@@ -1,12 +1,12 @@
 { "data": {
     "data": [
-        { "day": "01-02-2020", "totalNumero": 7, "totalPVM": 10 },
-    { "day": "02-02-2020", "totalNumero": 6.9, "totalPVM": 20 },
-    { "day": "03-02-2020", "totalNumero": 9.5, "totalPVM": 30 },
-    { "day": "04-02-2020", "totalNumero": 14.5, "totalPVM": 40 },
-    { "day": "05-02-2020", "totalNumero": 18.2, "totalPVM": 40 },
-    { "day": "06-02-2020", "totalNumero": 21.5, "totalPVM": 60 },
-    { "day": "07-02-2020", "totalNumero": 25.2, "totalPVM": 70 }
+        { "day": "01-02-2020", "totalnumero": 7, "totalpvm": 10 },
+    { "day": "02-02-2020", "totalnumero": 6.9, "totalpvm": 20 },
+    { "day": "03-02-2020", "totalnumero": 9.5, "totalpvm": 30 },
+    { "day": "04-02-2020", "totalnumero": 14.5, "totalpvm": 40 },
+    { "day": "05-02-2020", "totalnumero": 18.2, "totalpvm": 40 },
+    { "day": "06-02-2020", "totalnumero": 21.5, "totalpvm": 60 },
+    { "day": "07-02-2020", "totalnumero": 25.2, "totalpvm": 70 }
     ]
 }
 }
