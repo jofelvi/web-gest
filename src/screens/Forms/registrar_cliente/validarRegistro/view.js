@@ -328,48 +328,16 @@ const ValidarRegistro = ({
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item
-											name="cliente_nombre"
-											label="Nombre"
-											required={true}>
-											<Input
-												value={values.clienteCbim.cliente_nombre}
-												disabled={true}
-												onChange={v => handleChange(v)}
-											/>
-										</Form.Item>
+										<div className="col-space"></div>
 									</Row>
 									<Row>
-										<Form.Item
-											name="cliente_apellido1"
-											label="Primer apellido"
-											required={true}>
-											<Input
-												value={values.clienteCbim.cliente_apellido1}
-												disabled={true}
-												onChange={v => handleChange(v)}
-											/>
-										</Form.Item>
+										<div className="col-space"></div>
 									</Row>
 									<Row>
-										<Form.Item
-											name="cliente_apellido2"
-											label="Segundo apellido">
-											<Input
-												value={values.clienteCbim.cliente_apellido2}
-												disabled={true}
-												onChange={v => handleChange(v)}
-											/>
-										</Form.Item>
+										<div className="col-space"></div>
 									</Row>
 									<Row>
-										<Form.Item name="cliente_nif" label="NIF" required={true}>
-											<Input
-												value={values.clienteCbim.cliente_nif}
-												disabled={true}
-												onChange={v => handleChange(v)}
-											/>
-										</Form.Item>
+										<div className="col-space"></div>
 									</Row>
 									<Row>
 										<Form.Item
@@ -384,16 +352,7 @@ const ValidarRegistro = ({
 										</Form.Item>
 									</Row>
 									<Row>
-										<Form.Item
-											name="cliente_telefono"
-											label="Teléfono"
-											required={true}>
-											<Input
-												value={values.clienteCbim.cliente_telefono}
-												disabled={true}
-												onChange={v => handleChange(v)}
-											/>
-										</Form.Item>
+										<div className="col-space"></div>
 									</Row>
 								</section>
 								<section className="form-indas-section">

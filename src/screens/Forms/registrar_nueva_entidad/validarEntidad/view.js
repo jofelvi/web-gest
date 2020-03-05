@@ -340,8 +340,8 @@ const ValidarEntidad = ({
 					<Row
 						type="flex"
 						justify="left"
-						align="top"
-						className={isNotValidData(values.clienteCbim) ? 'hide' : ''}>
+						align="top" 
+						className={isNotValidData(values.entidadCbim) ? 'hide' : ''}>
 						<Col>
 							<div class="ant-message-notice">
 								<div class="ant-message-notice-content">
