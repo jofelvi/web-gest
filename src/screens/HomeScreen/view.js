@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline, Tabs, Spin } from 'antd';
+import { Button, Timeline, Tabs, Spin, Empty } from 'antd';
 
 
 import {
@@ -82,7 +82,8 @@ const HomeScreen = ({
   clientsDataActivity,
   clientsDataSales,
   fetchPendingTasks,
-  pendingTasks
+  pendingTasks,
+  fetchState
 }) => {
   const [numeroPedidos, setNumeroPedidos] = useState(false);
   const [numeroPVM, setNumeroPVM] = useState(false);
@@ -192,11 +193,14 @@ const HomeScreen = ({
       
         <ChartContainerLineDonut>
         
-        {yearList.length > 0 && daysList.length > 0 && hourList.length > 0 && monthsList.length > 0 ?
+        {console.log(fetchState)}
+        {fetchState === 'fetched-fail'? <Empty/> :
+     <div>
+        {fetchState === 'fetched' && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</div>}
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>

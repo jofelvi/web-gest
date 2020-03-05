@@ -145,6 +145,7 @@ const getYears = (yearList)=>{
 
 export default connect(
   state => ({
+    fetchState: state.charts.status,
     process: state.forms.process,
     procId: state.forms.procId,
     taskName: state.forms.taskName,
