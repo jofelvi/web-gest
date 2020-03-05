@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { startDate, listOfDates, monthNames, startDateDay, listOfYears } from './constants'
-import { sortingYears, sortingDays, generateDays, generateHours, sortingHours }from './utils_date'
+import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generate7Days }from './utils_date'
+import * as moment from 'moment';
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
 
@@ -32,7 +33,26 @@ const creatingYearList = (accumulator, currentValue) => {
    
   return accumulator
 };
-
+const getDSeven = (dayList) => {
+  if (!dayList || !dayList.length) {
+    return [];
+  }
+ console.log("lista de dias", dayList )
+  const daysList = sortingDays([...dayList, ...generate7Days()]).reduce((acc, value) => {
+    const day = moment(value.day).day()//new Date(value.day).getDay();
+    console.log("A", value.day)
+    if (!acc[day]) {
+      console.log("B", value.day)
+      //if(value.day.startsWith(moment().format('yyyy'))){
+      return { ...acc, [day]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm , dia:value.day} }
+    //}
+    }
+    return { ...acc, [day]: { totalnumero: Math.round(value.totalnumero + acc[day].totalnumero),totalpvm: Math.round(value.totalpvm + acc[day].totalpvm),dia: value.day } }
+  }, {});
+  //console.log("daysList", Object.keys(daysList).map(day => (console.log({ day}))))
+  console.log(Object.keys(daysList).map(day => ({day, ...daysList[day]})))
+  return Object.keys(daysList).map(day => ({day, ...daysList[day]}));
+};
 const getMonths = (dayList) => {
   if (!dayList || !dayList.length) {
     return [];
@@ -145,6 +165,7 @@ const getYears = (yearList)=>{
 
 export default connect(
   state => ({
+    fetchState: state.charts.status,
     process: state.forms.process,
     procId: state.forms.procId,
     taskName: state.forms.taskName,

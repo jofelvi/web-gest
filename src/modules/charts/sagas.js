@@ -15,7 +15,8 @@ import {
   fetchClientsActivitySuccess,
   fetchClientsSalesSuccess,
   fetchPendingTasksSuccess,
-  fetchSalesYearDaysSuccess
+  fetchSalesYearDaysSuccess,
+  fetchSalesByHourFail
 } from './actions';
 
 import {
@@ -83,20 +84,22 @@ function* fetchSalesByDay({ payload }) {
 try {
  
   const date = {
-    dateFrom: moment().subtract(1, 'years').format('YYYY-MM-DD'),
+    dateFrom: moment().subtract(1, 'year').format('YYYY-MM-DD'),
     dateTo:  moment().format('YYYY-MM-DD')
   }
   const response = yield call(api.getYearDaysSales, date);
+  const responsefake = require('../../datamockup/dataYear.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
   
-  if (response.status === HttpStatus.UNAUTHORIZED) {
-    payload.history.push('/login');
-  }
+  // if (response.status === HttpStatus.UNAUTHORIZED) {
+  //   payload.history.push('/login');
+  // }
   yield put(fetchSalesYearDaysSuccess({ daysYear: response.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
+  yield put(fetchSalesByHourFail());
   console.error(e);
  
 }
@@ -110,7 +113,7 @@ yield takeLatest(FETCH_SALES_BY_DAY, fetchSalesByDay);
 
 function* fetchSalesByHour({ payload }) {
   const date = {
-    dateFrom: moment().subtract(1,'days').format('YYYY-MM-DD'),
+    dateFrom: moment().subtract(2,'days').format('YYYY-MM-DD'),
     dateTo: moment().format('YYYY-MM-DD')
   }
   
@@ -143,6 +146,7 @@ try {
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
+  
   console.error(e);
 }
 }

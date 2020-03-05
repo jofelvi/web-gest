@@ -23,3 +23,13 @@ export const generateHours = (num = 24) => {
   });
   return hours;
 };
+
+export const generate7Days = (num = 7, key = 'days') => {
+  let days = [];
+
+  [...Array(num).keys()].map(value => {
+    days = [...days, { totalnumero: 0, totalpvm: 0, day: moment().subtract(value, key).format('YYYY-MM-DD') }];
+  });
+  console.log({days})
+  return days;
+};

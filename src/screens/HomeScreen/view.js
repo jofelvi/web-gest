@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 
-import { Button, Timeline, Tabs, Spin } from 'antd';
+import { Button, Timeline, Tabs, Spin, Empty } from 'antd';
 
 
 import {
@@ -82,7 +82,8 @@ const HomeScreen = ({
   clientsDataActivity,
   clientsDataSales,
   fetchPendingTasks,
-  pendingTasks
+  pendingTasks,
+  fetchState
 }) => {
   const [numeroPedidos, setNumeroPedidos] = useState(false);
   const [numeroPVM, setNumeroPVM] = useState(false);
@@ -90,32 +91,31 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
- useEffect(async () => {
-   try{
-    await fetchSalesByYear();
-    await fetchSalesByMonth();
-    await fetchSalesByHour();
-    // setInterval(async()=>{
-    //   await fetchSalesByHour();
-    // }, 3000);
-    await fetchSalesByHour();
-    await fetchSalesByDay();
-    await fetchClientsData();
-    await fetchPendingTasks();
-    await setTimeYear(true);
-    await setNumeroPVM(true);
-    if (utils.getTaskId() || taskId) {
-      fetchClientsData();
-      const id = utils.getTaskId();
-      fetchTaskForm({ taskId: id || taskId, history });
-    }
-  } catch(e) {
-    console.error(e);
-  }
-
-  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
-
+  useEffect(()=>{
   
+    fetchSalesByYear();
+    fetchSalesByMonth();
+    fetchSalesByHour();
+   // setInterval(async()=>{
+   //   await fetchSalesByHour();
+   // }, 3000);
+    fetchSalesByHour();
+    fetchSalesByDay();
+    fetchClientsData();
+    fetchPendingTasks();
+    setTimeYear(true);
+    setNumeroPVM(true);
+   if (utils.getTaskId() || taskId) {
+     fetchClientsData();
+     const id = utils.getTaskId();
+     fetchTaskForm({ taskId: id || taskId, history });
+   }
+ 
+
+ }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
+
+
+  console.log("fetchState", fetchState);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
@@ -192,12 +192,14 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
-        
-        {yearList.length > 0 && daysList.length > 0 && hourList.length > 0 && monthsList.length > 0 ?
+          {console.log(fetchState)}
+        {fetchState === 'fetched-fail'? <Empty/> :
+     <div>
+        {fetchState === 'fetched'?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</div>}
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>

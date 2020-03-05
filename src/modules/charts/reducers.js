@@ -11,18 +11,24 @@ import {
   fetchClientsSalesSuccess,
   fetchClientsActivitySuccess,
   fetchPendingTasksSuccess,
-  fetchSalesYearDaysSuccess
+  fetchSalesYearDaysSuccess,
+  fetchSalesByHourFail
 } from './actions';
+import { STATUS } from './constants';
 
 const defaultState = {
-  list: []
+  list: [],
+  status: STATUS.NOT_FETCHED
+  
 };
 
 export default handleActions(
   {
+   
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
-      yearList: payload.year
+      yearList: payload.year,
+      status: STATUS.FETCHED
     }),
 
     [fetchSalesByMonthSuccess]: (state, { payload }) => ({
@@ -36,12 +42,18 @@ export default handleActions(
     }),
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
-      yearDaysList: payload.daysYear
+      yearDaysList: payload.daysYear,
+      status: STATUS.FETCHED
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({
       ...state,
-      hourList: payload.hour
+      hourList: payload.hour,
+      status: STATUS.FETCHED
+    }),
+    [fetchSalesByHourFail]: (state, { payload }) => ({
+      ...state,
+      status: STATUS.FETCHED_FAIL
     }),
     [fetchEntitiesSuccess]: (state, { payload }) => ({
       ...state,

@@ -47,7 +47,7 @@ class LineChart extends React.Component {
 
     return (
 
-      <ChartLineContainer height={(window.innerHeight / 3.5) + 35} width={(window.innerWidth / 3)} data={this.props.dataLine} padding={[50, 70, 50, 50]} forceFit={true} scale={scale} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
+      <ChartLineContainer height={(window.innerHeight / 3.5) + 35} width={(window.innerWidth / 3)} data={this.props.dataLine} scale= {scale} padding={[50, 70, 50, 50]} forceFit={true}  numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
         <SubTitleVentas>Ventas</SubTitleVentas>
         <Axis name={'year'} label={{
           textStyle: {
