@@ -90,30 +90,29 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
- useEffect(async () => {
-   try{
-    await fetchSalesByYear();
-    await fetchSalesByMonth();
-    await fetchSalesByHour();
-    // setInterval(async()=>{
-    //   await fetchSalesByHour();
-    // }, 3000);
-    await fetchSalesByHour();
-    await fetchSalesByDay();
-    await fetchClientsData();
-    await fetchPendingTasks();
-    await setTimeYear(true);
-    await setNumeroPVM(true);
-    if (utils.getTaskId() || taskId) {
-      fetchClientsData();
-      const id = utils.getTaskId();
-      fetchTaskForm({ taskId: id || taskId, history });
-    }
-  } catch(e) {
-    console.error(e);
-  }
+  useEffect(()=>{
+  
+    fetchSalesByYear();
+    fetchSalesByMonth();
+    fetchSalesByHour();
+   // setInterval(async()=>{
+   //   await fetchSalesByHour();
+   // }, 3000);
+    fetchSalesByHour();
+    fetchSalesByDay();
+    fetchClientsData();
+    fetchPendingTasks();
+    setTimeYear(true);
+    setNumeroPVM(true);
+   if (utils.getTaskId() || taskId) {
+     fetchClientsData();
+     const id = utils.getTaskId();
+     fetchTaskForm({ taskId: id || taskId, history });
+   }
+ 
 
-  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
+ }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
+
 
   
 
