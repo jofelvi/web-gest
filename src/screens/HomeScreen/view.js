@@ -33,7 +33,8 @@ import {
   ButtonsPeriodQuantityContainer,
   ContainerButtonsTitle,
   ContainerClientsActivityAndStatistics,
-  ContainerSpin
+  ContainerSpin,
+  ContainerChartSpinner
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -115,6 +116,7 @@ const HomeScreen = ({
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
 
+
   console.log("fetchState", fetchState);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
@@ -192,14 +194,15 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
-          {console.log(fetchState)}
+        
+        {console.log(fetchState)}
         {fetchState === 'fetched-fail'? <Empty/> :
-     <div>
-        {fetchState === 'fetched'?
+     <ContainerChartSpinner>
+        {fetchState === 'fetched' && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</div>}
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</ContainerChartSpinner>}
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>

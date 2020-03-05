@@ -146,7 +146,7 @@ try {
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
-  
+  //yield put(fetchSalesByHourFail());
   console.error(e);
 }
 }

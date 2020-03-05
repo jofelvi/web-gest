@@ -5,7 +5,7 @@ import { Button } from "antd";
 const ButtonGroup = Button.Group;
 
 export const ChartContainerLine = styled.div`
-  width: 50%;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -25,6 +25,7 @@ margin-right: 20px;
 padding-left: 20px;
 
 `;
+
 export const ContainerSpin = styled.div`
 width: 100%;
 text-align: center;
@@ -33,6 +34,16 @@ margin-bottom: 20px;
 padding: 30px 50px;
 margin: 20px 0;
 `;
+
+export const ContainerChartSpinner = styled.div`
+width: 70%;
+height: fit-content;
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin-left: 20px;
+`;
+
 
 export const ChartContainer = styled.div`
   width: 30%;
