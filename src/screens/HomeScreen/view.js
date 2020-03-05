@@ -117,7 +117,6 @@ const HomeScreen = ({
 
 
 
-  console.log("fetchState", fetchState);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
 
@@ -195,7 +194,7 @@ const HomeScreen = ({
       
         <ChartContainerLineDonut>
         
-        {console.log(fetchState)}
+        
         {fetchState === 'fetched-fail'? <Empty/> :
      <ContainerChartSpinner>
         {fetchState === 'fetched' && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?

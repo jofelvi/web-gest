@@ -91,7 +91,7 @@ try {
   const responsefake = require('../../datamockup/dataYear.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
-  
+  console.log("days",response.data)
   // if (response.status === HttpStatus.UNAUTHORIZED) {
   //   payload.history.push('/login');
   // }
@@ -142,7 +142,7 @@ try {
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
-  yield put(fetchSalesByHourSuccess({ hour: listHour }));
+  yield put(fetchSalesByHourSuccess({ hour: responseFake.data.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
   yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
 } catch (e) {
