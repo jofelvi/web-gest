@@ -45,8 +45,7 @@ const ValidarEntidad = ({
 		if (taskVariables) {
 			const idCliente = selectTaskVariable(taskVariables, 'idcliente')
 			if (idCliente) {
-				//loadClienteCbimEntidades(idCliente.value)
-				loadClienteCbimEntidades(181303)
+				loadClienteCbimEntidades(idCliente.value)
 			}
 		}
 	}, [token, taskVariables])
