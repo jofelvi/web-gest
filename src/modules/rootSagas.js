@@ -59,6 +59,7 @@ import {
 
 import {
 	watchloadClientesCbim,		
+	watchloadClienteCbimEntidades,		
 } from './clientes-cbim/sagas';
 
 export default function* rootSaga() {
@@ -98,5 +99,6 @@ export default function* rootSaga() {
     watchsearchOrder(),
     watchfetchOrdersById(),
 		watchloadClientesCbim(),    
+		watchloadClienteCbimEntidades(),    
   ]);
 }

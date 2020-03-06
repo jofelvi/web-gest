@@ -4,7 +4,7 @@ import {
 	completeTask,
 } from '../../../../modules/forms/actions'
 import { fetchTask } from '../../../../modules/tasks/actions'
-import { loadEntitiesIndas } from '../../../../modules/clients-indas/actions';
+import { loadClienteCbimEntidades } from '../../../../modules/clientes-cbim/actions';
 import View from './view'
 
 export default connect(
@@ -12,8 +12,8 @@ export default connect(
 		completed: state.forms.completed,
 		taskVariables: state.forms.taskVariables,
 		task: state.tasks.task,
+    entidadesCbim: state.clientesCbim,
 		token: state.auth.token,
-    entitiesIndas: state.clientsIndas.entitiesIndas,
 	}),
-	{ getTaskVariables, completeTask, fetchTask, loadEntitiesIndas },
+	{ getTaskVariables, completeTask, fetchTask, loadClienteCbimEntidades },
 )(View)
