@@ -78,6 +78,10 @@ export default handleActions(
       status: STATUS.FETCHED_FAIL
     }),
     
+    // [fetchSalesByDay]: (state, { payload }) => ({
+    //   ...state,
+    //   status: STATUS.FETCHING
+    // }),
   },
   defaultState
 );

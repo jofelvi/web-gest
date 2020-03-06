@@ -40,13 +40,15 @@ import * as api from './api';
   try {
     const response = yield call(api.getYearSales, date);
     const responseEntities = require('../../datamockup/dataYearEntities.json')
-    const responseSubfamily = require('../../datamockup/dataYearSubfamily.json')
+    const responseSubfamilyFake = require('../../datamockup/dataYearSubfamily.json')
+    //const responseSubfamily = yield call(api.getSubfamiliesByYear, date);
+    //console.log("responseSubfamily", responseSubfamily )
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     }
     yield put(fetchSalesByYearSuccess({ year: response.data }));
     yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
-    yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
+    yield put(fetchSubfamilySuccess({ subfamily: responseSubfamilyFake.data.data }));
   } catch (e) {
     console.error(e);
   }
@@ -58,17 +60,22 @@ export function* watchfetchSalesByYear() {
 
 
 function* fetchSalesByMonth({ payload }) {
+  const date = {
+    dateFrom: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+    dateTo: moment().format('YYYY-MM-DD')
+  }
 try {
   const response = require('../../datamockup/dataMonth.json')
   const responseEntities = require('../../datamockup/dataMonthEntities.json')
-  const responseSubfamily = require('../../datamockup/dataMonthSubfamily.json')
-
+  const responseSubfamilyFake = require('../../datamockup/dataMonthSubfamily.json')
+  //const responseSubfamily = yield call(api.getSubfamiliesByYear, date);
+  //console.log("responseSubfamily MONth",responseSubfamily);
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }
   yield put(fetchSalesByMonthSuccess({ month: response.data.data }));
   yield put(fetchEntitiesSuccess({ entity: responseEntities.data.data }));
-  yield put(fetchSubfamilySuccess({ subfamily: responseSubfamily.data.data }));
+  yield put(fetchSubfamilySuccess({ subfamily: responseSubfamilyFake.data.data }));
 } catch (e) {
   console.error(e);
 }
@@ -88,10 +95,11 @@ try {
     dateTo:  moment().format('YYYY-MM-DD')
   }
   const response = yield call(api.getYearDaysSales, date);
+  //STATUS.FETCHING
   const responsefake = require('../../datamockup/dataYear.json')
   const responseEntities = require('../../datamockup/dataDayEntities.json')
   const responseSubfamily = require('../../datamockup/dataDaySubfamily.json')
-  console.log("days",response.data)
+
   // if (response.status === HttpStatus.UNAUTHORIZED) {
   //   payload.history.push('/login');
   // }

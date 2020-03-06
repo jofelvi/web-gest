@@ -68,12 +68,12 @@ export const tranformDataForDonutClient = (datos) => {
   });
 }
 const typeOfUnits = (statePVM, stateNumero) => {
-  let numero = 'porcentajePVM';
+  let numero = 'totalpvm';
   if (statePVM) {
-    return numero = 'porcentajePVM';
+    return numero = 'totalpvm';
   }
   if (stateNumero) {
-    return numero = 'porcentajeNumero';
+    return numero = 'totalnumero';
   }
   return numero
 }
@@ -84,8 +84,8 @@ export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
   if(numero && datos){
     return dv.source(datos).transform({
       type: 'percent',
-      field: numero,
-      dimension: 'subfamilia',
+      field: numero ,
+      dimension:'subfamilia' ,
       as: 'percent'
     });
   }

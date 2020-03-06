@@ -37,11 +37,11 @@ const getSevenDays = (dayList, hourList) => {
   })
 };
 
-const getMonths = (dayList, hourList) => {
+const getMonths = (dayList) => {
   if (!dayList || !dayList.length) {
     return [];
   }
-  const monthsList = sortingDays([...dayList, groupHoursByDay(hourList), ...generateDays()]).reduce((acc, value) => {
+  const monthsList = sortingDays([...dayList, ...generateDays()]).reduce((acc, value) => {
     const month = new Date(value.day).getMonth();
     if (!acc[monthNames[month]]) {
       return { ...acc, [monthNames[month]]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
@@ -76,7 +76,7 @@ export default connect(
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
     daysList: getSevenDays(state.charts.yearDaysList, state.charts.hourList),
-    monthsList: getMonths(state.charts.yearDaysList, state.charts.hourList),
+    monthsList: getMonths(state.charts.yearDaysList),
     hourList: getHours(state.charts.hourList),
     entitiesList: state.charts.entitiesList,
     subfamiliesList: state.charts.subfamiliesList,

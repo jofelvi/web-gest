@@ -47,7 +47,7 @@ import DataDisplayPie from '../../components/DataDisplayPie/view.js';
 
 import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
-
+import { STATUS } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
 import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
 
@@ -92,6 +92,7 @@ const HomeScreen = ({
   const [timeMonth, setTimeMonth] = useState(false);
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
+
   useEffect(()=>{
   
     fetchSalesByYear();
@@ -195,9 +196,9 @@ const HomeScreen = ({
         <ChartContainerLineDonut>
         
         
-        {fetchState === 'fetched-fail'? <Empty/> :
+        {fetchState === STATUS.FETCHED_FAIL? <Empty/> :
      <ContainerChartSpinner>
-        {fetchState === 'fetched' && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
+        {fetchState === STATUS.FETCHED && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
           <ChartContainerLine>  
             <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
@@ -227,7 +228,7 @@ const HomeScreen = ({
                   pos={['50%', '50%']}
                   textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
                   alignYpos={'middle'}
-                  colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
+                  colorSection={'subfamilia'}
                   numeroPedidosType={numeroPedidos}
                   PVMtype={numeroPVM}
                 />
