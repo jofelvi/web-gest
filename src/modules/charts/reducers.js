@@ -12,12 +12,21 @@ import {
   fetchClientsActivitySuccess,
   fetchPendingTasksSuccess,
   fetchSalesYearDaysSuccess,
-  fetchSalesByHourFail
+  fetchSalesByHourFail,
+  fetchSubfamilyMonthSuccess,
+  fetchSubfamilyYearSuccess,
+  fetchSubfamilyDaySuccess,
+  fetchSubfamilyHourSuccess
 } from './actions';
 import {STATUS} from './constants'
 const defaultState = {
   list: [],
-  status: STATUS.NOT_FETCHED
+  status: STATUS.NOT_FETCHED,
+  subfamiliesList: [],
+  subfamilyYear: [],
+  subfamilyMonth: [],
+  subfamilyDay: [],
+  subfamilyHour: []
 };
 
 export default handleActions(
@@ -53,9 +62,25 @@ export default handleActions(
       ...state,
       entitiesList: payload.entity
     }),
-    [fetchSubfamilySuccess]: (state, { payload }) => ({
+    [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
       ...state,
-      subfamiliesList: payload.subfamily
+      subfamiliesListYear: payload.subfamilyYear,
+      status: STATUS.FETCHED
+    }),
+    [fetchSubfamilyMonthSuccess]: (state, { payload }) => ({
+      ...state,
+      subfamiliesListMonth: payload.subfamilyMonth,
+      // status: STATUS.FETCHED_PIE
+    }),
+    [fetchSubfamilyDaySuccess]: (state, { payload }) => ({
+      ...state,
+      subfamiliesListDay: payload.subfamilyDay,
+      // status: STATUS.FETCHED_PIE,
+    }),
+    [fetchSubfamilyHourSuccess]: (state, { payload }) => ({
+      ...state,
+      subfamiliesListHour: payload.subfamilyHour,
+      // status: STATUS.FETCHED_PIE
     }),
     [fetchClientsDataSuccess]: (state, { payload }) => ({
       ...state,

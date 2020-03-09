@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { startDate, listOfDates, monthNames, startDateDay, listOfYears } from './constants'
-import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generateSevenDays, groupHoursByDay, generateYears }from './utils_date'
+import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generateSevenDays, groupHoursByDay, generateYears, groupHoursByYear }from './utils_date'
 import * as moment from 'moment';
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
@@ -11,20 +11,20 @@ import View from './view';
 
 
 
-const getYears = (yearList) => {
+const getYears = (yearList, hourList) => {
   if (!yearList || !yearList.length) {
     return [];
   }
-  return sortingYears(generateYears().map(value => {
+  return sortingYears([groupHoursByYear(hourList),...generateYears()].map(value => {
     const yearFromList = yearList.find(valueDay => valueDay.year === value.year)
     if (!yearFromList) {
       return value;
     }
-    return yearFromList;
+    return yearFromList ;
   })) 
 };
 
-const getSevenDays = (dayList, hourList) => {
+const getSevenDays = (dayList = [], hourList) => {
   if (!dayList || !dayList.length) {
     return [];
   }
@@ -37,11 +37,12 @@ const getSevenDays = (dayList, hourList) => {
   })
 };
 
-const getMonths = (dayList) => {
-  if (!dayList || !dayList.length) {
+const getMonths = (dayList = [], hourList ) => {
+  if (!dayList) {
     return [];
   }
-  const monthsList = sortingDays([...dayList, ...generateDays()]).reduce((acc, value) => {
+  
+  const monthsList = sortingDays([...dayList,groupHoursByDay(hourList), ...generateDays()]).reduce((acc, value) => {
     const month = new Date(value.day).getMonth();
     if (!acc[monthNames[month]]) {
       return { ...acc, [monthNames[month]]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
@@ -51,8 +52,8 @@ const getMonths = (dayList) => {
   return Object.keys(monthsList).map(month => ({ month, ...monthsList[month] }));
 };
 
-const getHours = (hourList) => {
-  if (!hourList || !hourList.length) {
+const getHours = (hourList = []) => {
+  if (!hourList) {
     return [];
   }
   const hourAddedList = sortingHours([...hourList, ...generateHours(new Date().getHours() + 1)]).reduce((acc, value) => {
@@ -76,10 +77,14 @@ export default connect(
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
     daysList: getSevenDays(state.charts.yearDaysList, state.charts.hourList),
-    monthsList: getMonths(state.charts.yearDaysList),
+    monthsList: getMonths(state.charts.yearDaysList, state.charts.hourList),
     hourList: getHours(state.charts.hourList),
     entitiesList: state.charts.entitiesList,
     subfamiliesList: state.charts.subfamiliesList,
+    subfamiliesListYear: state.charts.subfamiliesListYear,
+    subfamiliesListMonth: state.charts.subfamiliesListMonth,
+    subfamiliesListDay: state.charts.subfamiliesListDay,
+    subfamiliesListHour: state.charts.subfamiliesListHour,
     clientsData: state.charts.clientsData,
     clientsDataActivity: state.charts.clientsDataActivity,
     clientsDataSales: state.charts.clientsDataSales,

@@ -17,42 +17,52 @@ const subfamiliaL ='#827717';
 const menosDeSeisMeses ='#17A589';
 const entreSeisYDoceMeses ='#2471A3';
 const masDeDoceMeses ='#F1C40F';
-
-
+const codeColors1 = '';
+const codeColors2 = '';
+const codeColors3 = '';
+const codeColors4 = '';
+const codeColors5 = '';
+const codeColors6 = '';
+const codeColors7 = '';
+const codeColors8 = '';
+const codeColors9 = '';
 const sectionColor = new Map()
   .set('< 6 meses', [menosDeSeisMeses])
   .set('6-12 meses', [entreSeisYDoceMeses])
   .set('> 12 meses', [masDeDoceMeses])
-  .set('A', [subfamiliaA])
-  .set('B', [subfamiliaB])
-  .set('C', [subfamiliaC])
-  .set('D', [subfamiliaD])
-  .set('E', [subfamiliaE])
-  .set('F', [subfamiliaF])
-  .set('G', [subfamiliaG])
-  .set('H', [subfamiliaH])
-  .set('I', [subfamiliaI])
-  .set('J', [subfamiliaJ])
-  .set('K', [subfamiliaK])
-  .set('L', [subfamiliaL]);
+  .set("ABSORBENTES PARA INCONTINENCIA DE ADULTOS", [subfamiliaA])
+  .set("APÓSITOS DE GASA ESTERILIZADOS", [subfamiliaB])
+  .set("PAÑALES INFANTILES", [subfamiliaC])
+  .set("PROTECTORES ABSORBENTES", [subfamiliaD])
+  .set("COMPRESAS TOCOLÓGICAS", [subfamiliaE])
+  .set("TOALLITAS HÚMEDAS", [subfamiliaF])
+  .set("HIGIENE CORPORAL ADULTOS", [subfamiliaG])
+  .set("ALGODÓN HIDRÓFILO SANITARIO", [subfamiliaH])
+  .set("PROTEGESLIP POSPARTO", [subfamiliaI]);
+  // .set(codeColors, [subfamiliaJ])
+  // .set(codeColors, [subfamiliaK])
+  // .set(codeColors, [subfamiliaL]);
 
   export const colorControl = (colors) => {
+   
     return sectionColor.get(colors) || [];
   }
   
-export const sortingDataToShowChartLine = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour) => {
+
+
+export const sortingDataByTime = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour) => {
   let dataCantidad;
-  if (stateYear === true) {
+  if (stateYear) {
     return dataCantidad = dataYear;
   };
-  if (stateMonth === true) {
-    return dataCantidad = dataMonth
+  if (stateMonth) {
+    return dataCantidad = dataMonth;
   };
-  if (stateDay === true) {
-    return dataCantidad = dataDay
+  if (stateDay) {
+    return dataCantidad = dataDay;
   };
-  if (stateHour === true) {
-    return dataCantidad = dataHour
+  if (stateHour) {
+    return dataCantidad = dataHour;
   };
   return dataCantidad;
 }
@@ -93,11 +103,17 @@ export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
 
 export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
   let arrayFinal;
+  if(numberArray){
   if (statePVM) {
     return arrayFinal = numberArray.sort((a, b) => (a.totalpvm < b.totalpvm) ? 1 : -1)
   }
   if (stateNumeroPedidos) {
     return arrayFinal = numberArray.sort((a, b) => (a.totalnumero < b.totalnumero) ? 1 : -1)
   }
+}
   return arrayFinal;
 }
+
+
+ 
+  

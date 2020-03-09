@@ -34,7 +34,8 @@ import {
   ContainerButtonsTitle,
   ContainerClientsActivityAndStatistics,
   ContainerSpin,
-  ContainerChartSpinner
+  ContainerChartSpinner,
+  PieContainerSpin
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -49,8 +50,8 @@ import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
 import { STATUS } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
-import { sortingDataToShowChartLine, tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers } from './utils'
-
+import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime } from './utils'
+import {calculatePercentage} from "./utils_date"
 const { TabPane } = Tabs;
 const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
@@ -78,6 +79,10 @@ const HomeScreen = ({
   fetchSalesByHour,
   entitiesList,
   subfamiliesList,
+  subfamiliesListYear,
+  subfamiliesListMonth,
+  subfamiliesListDay,
+  subfamiliesListHour,
   clientsData,
   fetchClientsData,
   clientsDataActivity,
@@ -119,7 +124,8 @@ const HomeScreen = ({
 
 
 
-  let subfamilyDataSortedByBiggestNumber = sortingNumbers(subfamiliesList, numeroPVM, numeroPedidos)
+  let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay), numeroPVM, numeroPedidos)
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
  
@@ -130,11 +136,18 @@ const HomeScreen = ({
   if (process && taskName) {
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
+
+  const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos).slice(0, 5) : []
+
+  const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData, numeroPedidos , numeroPVM) : [];
+
+  const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, numeroPVM, numeroPedidos): [];
+
   return <ContentContainer>
     <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
   <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
     <StaticticsContainer>
-      <Title>Estadísticas</Title>
         <ButtonsPeriodQuantityContainer>
           <ContainerButtonsTitle>
             <SubTitle>Periodo</SubTitle>
@@ -200,7 +213,7 @@ const HomeScreen = ({
      <ContainerChartSpinner>
         {fetchState === STATUS.FETCHED && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
           <ChartContainerLine>  
-            <LineChart dataLine={sortingDataToShowChartLine(timeYear, timeMonth, timeDay, timeHour, yearList,
+            <LineChart dataLine={sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
               monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
           </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</ContainerChartSpinner>}
           <EntitiesChartPieContainer>
@@ -218,36 +231,59 @@ const HomeScreen = ({
                 }) : ''}
               </DataContainer>
             </DataDisplayContainer>
-
+           
             <ChartContainerPie>
               <SubTitle>Ventas por Subfamilias</SubTitle>
-              <PieChartContainer>
-
-                <PieChart
-                  dataClient={subfamilyDataSortedByBiggestNumber ? tranformDataForDonut(subfamilyDataSortedByBiggestNumber.slice(0, 5), numeroPVM, numeroPedidos) : ''}
-                  pos={['50%', '50%']}
-                  textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
-                  alignYpos={'middle'}
-                  colorSection={'subfamilia'}
-                  numeroPedidosType={numeroPedidos}
-                  PVMtype={numeroPVM}
-                />
-                <PieDatsDisplayContainer>
-                  {subfamilyDataSortedByBiggestNumber ? subfamilyDataSortedByBiggestNumber.slice(0, 5).map(subfamily => {
-                    if (numeroPedidos) {
-                      return (
-                        <DataDisplayPie numberElement={subfamily.totalnumero} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+              {
+                fetchState === STATUS.FETCHED_FAIL ? <Empty/> : (
+                <PieChartContainer>
+                {
+                  fetchState === STATUS.FETCHED && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 ) ?
+                  <PieChartContainer>
+                    {
+                      !!subFamiliaData.length && (
+                        <PieChart
+                          dataClient={subFamiliaChartData}
+                          pos={['50%', '50%']}
+                          textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
+                          alignYpos={'middle'}
+                          colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
+                          numeroPedidosType={numeroPedidos}
+                          PVMtype={numeroPVM}
+                        />
                       )
                     }
-                    if (numeroPVM) {
-                      return (
-                        <DataDisplayPie numberElement={subfamily.totalpvm} textElement={subfamily.subfamilia} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                    {
+                      !subFamiliaData.length && (
+                        <Empty/>
                       )
                     }
-                  }) : ''}
 
-                </PieDatsDisplayContainer>
-              </PieChartContainer>
+                    
+                    <PieDatsDisplayContainer>
+                      {subfamilyDataSortedByBiggestNumber && subFamiliaDataLegend.length ? [...subFamiliaDataLegend].map(subfamily => {
+                        
+                        if (numeroPedidos && subfamily.totalnumero) {
+                          return (
+                            
+                            <DataDisplayPie numberElement={subfamily.totalnumero} textElement={subfamily.subfamilia.toLowerCase()} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                          )
+                        }
+                        if (numeroPVM && subfamily.totalpvm) {
+                          return (
+                            <DataDisplayPie numberElement={subfamily.totalpvm} textElement={subfamily.subfamilia.toLowerCase()} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
+                          )
+                        }
+                      }): '' }
+
+                    </PieDatsDisplayContainer>
+                  </PieChartContainer> : (
+                  <PieContainerSpin>
+                    <Spin/>
+                  </PieContainerSpin>
+                )}
+                </PieChartContainer>
+              )}
 
             </ChartContainerPie>
           </EntitiesChartPieContainer>
@@ -298,7 +334,6 @@ const HomeScreen = ({
    </TabPane>
    <TabPane tab={"Tareas Pendientes"} key={"2"}>
     <TaskContainer>
-      <Title>Tareas Pendientes</Title>
       <ContentContainerTask>
         <ContainerTask>
           {pendingTasks ?
