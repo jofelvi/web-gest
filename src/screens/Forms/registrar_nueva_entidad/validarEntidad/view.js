@@ -2,7 +2,17 @@ import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Formik } from 'formik'
-import { Form, Input, Row, Col, Button, Radio, Select, message } from 'antd'
+import {
+	Form,
+	Input,
+	Row,
+	Col,
+	Button,
+	Radio,
+	Select,
+	message,
+	Icon,
+} from 'antd'
 import { transformData, selectTaskVariable } from '../../lib'
 import {
 	obtenerValoresIniciales,
@@ -76,15 +86,16 @@ const ValidarEntidad = ({
 											values.entidadCbim = {}
 										}
 									}}>
-									{entidadesCbim.list
-										.filter(e => !e.ind_registrado)
-										.map(c => {
-											return (
-												<Option key={c.codentidad_cbim}>
-													{getOptionValue(c)}
-												</Option>
-											)
-										})}
+									{entidadesCbim.list.map(c => {
+										return (
+											<Option
+												key={c.codentidad_cbim}
+												disabled={c.ind_registrado}>
+												{c.ind_registrado ? <Icon type="check" /> : ''}{' '}
+												{getOptionValue(c)}
+											</Option>
+										)
+									})}
 								</Select>
 							</Form.Item>
 						</Col>
