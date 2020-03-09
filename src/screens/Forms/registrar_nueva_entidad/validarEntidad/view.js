@@ -11,6 +11,7 @@ import {
 	Radio,
 	Select,
 	message,
+	Icon,
 } from 'antd'
 import { transformData, selectTaskVariable } from '../../lib'
 import {
@@ -40,8 +41,8 @@ const ValidarEntidad = ({
 	},
 	task,
 	token,
-	loadEntitiesIndas,
-	entitiesIndas,
+	loadClienteCbimEntidades,
+	entidadesCbim,
 }) => {
 	useEffect(() => {
 		getTaskVariables({ history, taskId })
@@ -52,10 +53,9 @@ const ValidarEntidad = ({
 
 	useEffect(() => {
 		if (taskVariables) {
-			let idCliente = selectTaskVariable(taskVariables, 'idcliente')
+			const idCliente = selectTaskVariable(taskVariables, 'idcliente')
 			if (idCliente) {
-				const queryParams = `idcliente=${idCliente.value}`
-				loadEntitiesIndas(queryParams)
+				loadClienteCbimEntidades(idCliente.value)
 			}
 		}
 	}, [token, taskVariables])
@@ -76,14 +76,25 @@ const ValidarEntidad = ({
 								<Select
 									onChange={v => setFieldValue(v, 'entidad')}
 									onSelect={key => {
-										const cc = entitiesIndas[key]
+										const cc = entidadesCbim.list.find(
+											e => e.codentidad_cbim === parseInt(key, 10),
+										)
 										if (cc) {
 											const entidad = setEntidadCbim(cc)
 											values.entidadCbim = { ...values.taskData, ...entidad }
+										} else {
+											values.entidadCbim = {}
 										}
 									}}>
-									{entitiesIndas.map((c, i) => {
-										return <Option key={i}>{getOptionValue(c)}</Option>
+									{entidadesCbim.list.map(c => {
+										return (
+											<Option
+												key={c.codentidad_cbim}
+												disabled={c.ind_registrado}>
+												{c.ind_registrado ? <Icon type="check" /> : ''}{' '}
+												{getOptionValue(c)}
+											</Option>
+										)
 									})}
 								</Select>
 							</Form.Item>
@@ -327,7 +338,7 @@ const ValidarEntidad = ({
 											name="entidad_email"
 											label="Correo electrónico">
 											<Input
-												value={values.entidadCbim.cliente_email}
+												value={values.entidadCbim.entidad_email}
 												disabled={true}
 												onChange={v => handleChange(v)}
 											/>
@@ -340,7 +351,7 @@ const ValidarEntidad = ({
 					<Row
 						type="flex"
 						justify="left"
-						align="top" 
+						align="top"
 						className={isNotValidData(values.entidadCbim) ? 'hide' : ''}>
 						<Col>
 							<div class="ant-message-notice">
@@ -408,7 +419,10 @@ const ValidarEntidad = ({
 								type="primary"
 								onClick={() => {
 									values.taskData.aceptado = false
-									const variables = transformData(values.taskData, processData)
+									const variables = transformData(
+										values.taskData,
+										processData,
+									)
 									completeTask({ variables, history, taskId, procId })
 								}}>
 								Rechazar
@@ -422,6 +436,7 @@ const ValidarEntidad = ({
 }
 
 ValidarEntidad.propTypes = {
+	loadClienteCbimEntidades: PropTypes.func.isRequired,
 	completeTask: PropTypes.func.isRequired,
 	token: PropTypes.string,
 }

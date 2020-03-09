@@ -68,16 +68,17 @@ export const isNotValidData = entidadCbim => {
 }
 export const setEntidadCbim = element => {
 	if (!element) return {}
-	let result = {
+	let result = { 
 		codentidad_cbim: element.codentidad_cbim,
 		nomentidad_cbim: element.nomentidad_cbim,
-		entidad_nif: element.nif,
+		entidad_nif: element.entidad_nif,
 		direccion: element.direccion,
 		codigo_postal: element.codigo_postal,
 		poblacion: element.poblacion,
 		provincia: element.provincia,
-		entidad_telefono: element.telefono,
+		entidad_telefono: element.entidad_telefono,
 		ind_esfarmacia: element.ind_esfarmacia,
+		entidad_email: element.entidad_email,
 	}
 	return result
 }
