@@ -16,7 +16,16 @@ import {
   fetchSubfamilyMonthSuccess,
   fetchSubfamilyYearSuccess,
   fetchSubfamilyDaySuccess,
-  fetchSubfamilyHourSuccess
+  fetchSubfamilyHourSuccess,
+  fetchEntitiesYearSuccess,
+  fetchEntitiesYearActivesSuccess,
+  fetchEntitiesMonthSuccess,
+  fetchEntitiesMonthActivesSuccess,
+  fetchEntitiesDaySuccess,
+  fetchEntitiesDayActivesSuccess,
+  fetchEntitiesHourSuccess,
+  fetchEntitiesHourActivesSuccess
+
 } from './actions';
 import {STATUS} from './constants'
 const defaultState = {
@@ -35,7 +44,6 @@ export default handleActions(
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
       yearList: payload.year,
-      status: STATUS.FETCHED
     }),
 
     [fetchSalesByMonthSuccess]: (state, { payload }) => ({
@@ -50,18 +58,51 @@ export default handleActions(
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
       yearDaysList: payload.daysYear,
-      status: STATUS.FETCHED
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({
       ...state,
       hourList: payload.hour,
-      status: STATUS.FETCHED
     }),
     [fetchEntitiesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesList: payload.entity
     }),
+    [fetchEntitiesYearSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesYearList: payload.entityYear,
+      status: STATUS.FETCHED
+  
+    }),
+    [fetchEntitiesYearActivesSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesYearActivesList: payload.entityActivesYear
+    }),
+    [fetchEntitiesMonthSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesMonthList: payload.entityMonth
+    }),
+    [fetchEntitiesMonthActivesSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesMonthActivesList: payload.entityActivesMonth
+    }),
+    [fetchEntitiesDaySuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesDayList: payload.entityDay
+    }),
+    [fetchEntitiesDayActivesSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesDayActivesList: payload.entityActivesDay
+    }),
+    [fetchEntitiesHourSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesHourList: payload.entityHour
+    }),
+    [fetchEntitiesHourActivesSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesHourActivesList: payload.entityActivesHour
+    }),
+    
     [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListYear: payload.subfamilyYear,
@@ -70,17 +111,17 @@ export default handleActions(
     [fetchSubfamilyMonthSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListMonth: payload.subfamilyMonth,
-      // status: STATUS.FETCHED_PIE
+     
     }),
     [fetchSubfamilyDaySuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListDay: payload.subfamilyDay,
-      // status: STATUS.FETCHED_PIE,
+   
     }),
     [fetchSubfamilyHourSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListHour: payload.subfamilyHour,
-      // status: STATUS.FETCHED_PIE
+   
     }),
     [fetchClientsDataSuccess]: (state, { payload }) => ({
       ...state,
