@@ -122,21 +122,6 @@ const HomeScreen = ({
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
 
-if(monthsList){
-  console.log("monthsList", monthsList )
-}
-if(daysList){
-  console.log("daysList", daysList )
-
-}
-if(hourList){
-  console.log("hourList", hourList )
-
-}
-if(yearList){
-  console.log("yearList", yearList )
-
-}
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay), numeroPVM, numeroPedidos)
