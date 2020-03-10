@@ -122,7 +122,21 @@ const HomeScreen = ({
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
 
+if(monthsList){
+  console.log("monthsList", monthsList )
+}
+if(daysList){
+  console.log("daysList", daysList )
 
+}
+if(hourList){
+  console.log("hourList", hourList )
+
+}
+if(yearList){
+  console.log("yearList", yearList )
+
+}
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay), numeroPVM, numeroPedidos)
@@ -137,6 +151,8 @@ const HomeScreen = ({
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
 
+  const salesLineChartData = sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
+    monthsList, daysList, hourList) 
   const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos).slice(0, 5) : []
 
@@ -209,13 +225,23 @@ const HomeScreen = ({
         <ChartContainerLineDonut>
         
         
-        {fetchState === STATUS.FETCHED_FAIL? <Empty/> :
+        {
+        fetchState === STATUS.FETCHED_FAIL?<span>Error fetching data</span> :
      <ContainerChartSpinner>
-        {fetchState === STATUS.FETCHED && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 )?
+        {fetchState === STATUS.FETCHED ?
+        
           <ChartContainerLine>  
-            <LineChart dataLine={sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
-              monthsList, daysList, hourList)} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
-          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</ContainerChartSpinner>}
+            {
+            !!salesLineChartData.length && (
+            <LineChart dataLine={salesLineChartData} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
+            )}
+            {!
+            salesLineChartData.length &&(
+            <Empty/>
+            )}
+          </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</ContainerChartSpinner>
+          
+          }
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
@@ -238,7 +264,7 @@ const HomeScreen = ({
                 fetchState === STATUS.FETCHED_FAIL ? <Empty/> : (
                 <PieChartContainer>
                 {
-                  fetchState === STATUS.FETCHED && (yearList.length > 0 || monthsList > 0 || daysList > 0 || hourList > 0 ) ?
+                  fetchState === STATUS.FETCHED ?
                   <PieChartContainer>
                     {
                       !!subFamiliaData.length && (
