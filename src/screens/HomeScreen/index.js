@@ -11,8 +11,8 @@ import View from './view';
 
 
 
-const getYears = (yearList, hourList) => {
-  if (!yearList || !yearList.length) {
+const getYears = (yearList = [], hourList) => {
+  if (!yearList ) {
     return [];
   }
   return sortingYears([groupHoursByYear(hourList),...generateYears()].map(value => {
@@ -25,7 +25,7 @@ const getYears = (yearList, hourList) => {
 };
 
 const getSevenDays = (dayList = [], hourList) => {
-  if (!dayList || !dayList.length) {
+  if (!dayList) {
     return [];
   }
   return [groupHoursByDay(hourList), ...generateSevenDays()].map(value => {
