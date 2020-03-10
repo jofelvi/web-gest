@@ -11,7 +11,7 @@ import { Icon } from "antd";
         return(
           <ContainerData>
   <TextBadge><Icon type={iconType} theme="filled" style={styleColor}/>{textElement}</TextBadge>
-          <DataNumber>{numberElement}</DataNumber>
+          <DataNumber>{numberElement + '%'}</DataNumber>
         </ContainerData>
         
         )

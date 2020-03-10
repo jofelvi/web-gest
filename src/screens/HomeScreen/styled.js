@@ -5,7 +5,7 @@ import { Button } from "antd";
 const ButtonGroup = Button.Group;
 
 export const ChartContainerLine = styled.div`
-  width: 50%;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@ export const ChartContainerLine = styled.div`
   margin-left: 20px;
 `;
 export const ChartContainerPie = styled.div`
-  width: 50%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -25,14 +25,35 @@ margin-right: 20px;
 padding-left: 20px;
 
 `;
+
 export const ContainerSpin = styled.div`
 width: 100%;
 text-align: center;
-border-radius: 4px;
-margin-bottom: 20px;
-padding: 30px 50px;
-margin: 20px 0;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
 `;
+
+export const PieContainerSpin = styled.div`
+min-width: 100%;
+min-height: 200px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+`;
+
+export const ContainerChartSpinner = styled.div`
+width:50%;
+height: fit-content;
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin-left: 0px;
+align-items: center;
+`;
+
 
 export const ChartContainer = styled.div`
   width: 30%;
@@ -102,7 +123,7 @@ export const StaticticsContainer = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
-  padding: 0px 15px 5px 15px;
+  padding: 0px 0px 0px 0px;
   margin-right: 0px;
 
 `;
@@ -171,7 +192,7 @@ margin-right: 0px;
 
 
 export const DataDisplayContainer = styled.div`
-width: 40%;
+width: 30%;
 display: flex;
 height: 100%;
 flex-direction: column;
@@ -218,7 +239,7 @@ margin: 0px 0px 0px 0px;
 
 export const ChartContainerLineDonut = styled.div`
   max-width: 100%;
-  padding:0px 20px 0px 20px;
+  padding:0px 10px 0px 10px;
   background-color: white;
   display: flex;
   flex-direction: row;

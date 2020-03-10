@@ -12,10 +12,19 @@ class PieChart extends React.Component {
   render() {
     const { Html } = Guide;
    
+   const cols = {
+     percent: {
+      formatter: val => {
+        val = Math.round(((val * 100)* 100)/100) + '%';
+        return val;
+      }
+    }
+  }
+       
     return (
       <div>
 
-        <ChartDonut numeroPedidos ={this.props.numeroPedidosType} numeroPVM ={this.props.PVMtype} width={(window.innerWidth/5)-90} height={window.innerHeight/5} data={this.props.dataClient}  padding={[0, 0, 0, 0]} forceFit={true}>
+        <ChartDonut numeroPedidos ={this.props.numeroPedidosType} numeroPVM ={this.props.PVMtype} width={(window.innerWidth/5)-90} height={window.innerHeight/5} data={this.props.dataClient} scale = {cols} padding={[0, 0, 0, 0]} forceFit={true}>
           
         <Coord type={'theta'} radius={0.9} />
               <Axis name="subfamilia" />

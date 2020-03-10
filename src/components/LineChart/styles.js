@@ -14,7 +14,7 @@ font-size: 12px;
     margin: 0px 0px 0px 10px;
     width: 20%;
     position: absolute;
-    bottom: 78%;
+    bottom: 80%;
 `;
 
 
