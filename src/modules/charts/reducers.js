@@ -16,7 +16,10 @@ import {
   fetchSubfamilyMonthSuccess,
   fetchSubfamilyYearSuccess,
   fetchSubfamilyDaySuccess,
-  fetchSubfamilyHourSuccess
+  fetchSubfamilyHourSuccess,
+  fetchEntitiesYearSuccess,
+  fetchEntitiesYearActivesSuccess
+
 } from './actions';
 import {STATUS} from './constants'
 const defaultState = {
@@ -62,6 +65,15 @@ export default handleActions(
       ...state,
       entitiesList: payload.entity
     }),
+    [fetchEntitiesYearSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesYearList: payload.entityYear
+    }),
+    [fetchEntitiesYearActivesSuccess]: (state, { payload }) => ({
+      ...state,
+      entitiesYearActivesList: payload.entityActivesYear
+    }),
+    
     [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListYear: payload.subfamilyYear,

@@ -22,7 +22,9 @@ import {
   FETCH_SUBFAMILY_YEAR_SUCCESS,
   FETCH_SUBFAMILY_MONTH_SUCCESS,
   FETCH_SUBFAMILY_DAY_SUCCESS,
-  FETCH_SUBFAMILY_HOUR_SUCCESS
+  FETCH_SUBFAMILY_HOUR_SUCCESS,
+  FETCH_ENTITIES_YEAR_SUCCESS,
+  FETCH_ENTITIES_YEAR_ACTIVES_SUCCESS,
 
 
 } from './actionTypes';
@@ -49,7 +51,9 @@ export const {
   fetchSubfamilyYearSuccess,
   fetchSubfamilyMonthSuccess,
   fetchSubfamilyDaySuccess,
-  fetchSubfamilyHourSuccess
+  fetchSubfamilyHourSuccess,
+  fetchEntitiesYearSuccess,
+  fetchEntitiesYearActivesSuccess
 } = createActions(
   FETCH_SALES_BY_YEAR,
   FETCH_SALES_BY_MONTH,
@@ -61,6 +65,8 @@ export const {
   FETCH_SALES_BY_HOUR_SUCCESS,
   FETCH_SALES_BY_HOUR_FAIL,
   FETCH_ENTITIES_SUCCESS,
+  FETCH_ENTITIES_YEAR_SUCCESS,
+  FETCH_ENTITIES_YEAR_ACTIVES_SUCCESS,
   FETCH_SUBFAMILY_SUCCESS,
   FETCH_CLIENTS_DATA,
   FETCH_CLIENTS_DATA_SUCCESS,

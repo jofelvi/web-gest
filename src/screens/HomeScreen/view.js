@@ -78,6 +78,8 @@ const HomeScreen = ({
   fetchSalesByDay,
   fetchSalesByHour,
   entitiesList,
+  entitiesYearList,
+  entitiesYearActivesList,
   subfamiliesList,
   subfamiliesListYear,
   subfamiliesListMonth,
@@ -89,7 +91,8 @@ const HomeScreen = ({
   clientsDataSales,
   fetchPendingTasks,
   pendingTasks,
-  fetchState
+  fetchState,
+  activesEntitiesList
 }) => {
   const [numeroPedidos, setNumeroPedidos] = useState(false);
   const [numeroPVM, setNumeroPVM] = useState(false);
@@ -122,7 +125,11 @@ const HomeScreen = ({
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
 
+if(entitiesYearList && entitiesYearActivesList){
+  console.log("suscribe unsuscribed entities", entitiesYearList)
+  console.log("Actives entities", entitiesYearActivesList)
 
+}
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay), numeroPVM, numeroPedidos)
@@ -220,15 +227,24 @@ const HomeScreen = ({
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
               <DataContainer>
-                {entitiesList ? entitiesList.map(ent => {
-                  return (
+                
+                 
                     <DataDisplayContainerElements>
-                      <DataDisplay numberElement={ent.nuevosRegistros} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                      <DataDisplay numberElement={ent.clientesActivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                      <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                    {entitiesYearList ? entitiesYearList.map(ent => {
+                       return ( 
+                         <div>
+                        <DataDisplay numberElement={ent.nuevosRegistros} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                        <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                        </div>
+                       )
+                    }) : ''}
+                    {entitiesYearActivesList ? entitiesYearActivesList.map(ent => {
+                       return ( 
+                        <DataDisplay numberElement={ent.clientesActivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                       )}): ''}
                     </DataDisplayContainerElements>
-                  )
-                }) : ''}
+                 
+                
               </DataContainer>
             </DataDisplayContainer>
            
