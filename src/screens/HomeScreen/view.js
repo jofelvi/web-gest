@@ -252,7 +252,7 @@ const HomeScreen = ({
                         </div>
                        )
                     }) : ''}
-                    {entitiesYearActivesList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+                    {entitiesYearList && entitiesYearActivesList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
   entitiesYearActivesList, entitiesMonthActivesList, entitiesDayActivesList, entitiesHourActivesList).map(ent => {
                        return ( 
                         <DataDisplay numberElement={ent.clientesactivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
