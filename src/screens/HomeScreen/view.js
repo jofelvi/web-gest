@@ -143,8 +143,9 @@ const HomeScreen = ({
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
 
-  const salesLineChartData = sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
-    monthsList, daysList, hourList) 
+  const salesLineChartData = yearList || monthsList || daysList || hourList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
+    monthsList, daysList, hourList) : [];
+    
   const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos).slice(0, 5) : []
 

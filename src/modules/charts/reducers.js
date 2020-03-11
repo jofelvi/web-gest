@@ -35,7 +35,10 @@ const defaultState = {
   subfamilyYear: [],
   subfamilyMonth: [],
   subfamilyDay: [],
-  subfamilyHour: []
+  subfamilyHour: [],
+  year: [],
+  daysYear: [],
+  hour: []
 };
 
 export default handleActions(
