@@ -51,7 +51,7 @@ const sectionColor = new Map()
 
 
 export const sortingDataByTime = (stateYear, stateMonth, stateDay, stateHour, dataYear, dataMonth, dataDay, dataHour) => {
-  let dataCantidad;
+  let dataCantidad = [];
   if (stateYear) {
     return dataCantidad = dataYear;
   };
@@ -63,7 +63,8 @@ export const sortingDataByTime = (stateYear, stateMonth, stateDay, stateHour, da
   };
   if (stateHour) {
     return dataCantidad = dataHour;
-  };
+  }
+  
   return dataCantidad;
 }
 
