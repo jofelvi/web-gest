@@ -66,7 +66,6 @@ const getHours = (hourList = []) => {
 };
 
 const getObjectForDonutChartActive = (clientsActives = []) =>{
-  console.log("clientsActives", clientsActives)
   if (!clientsActives) {
     return [];
   }else{
@@ -88,13 +87,11 @@ const getObjectForDonutChartActive = (clientsActives = []) =>{
      return {...objectPercentage, totalActive: totalActives}
    })
 }, {})
-console.log("list active", listActive)
 return listActive;
 }
 }
 
 const getObjectForDonutChartInActive = (clientsInactives = []) => {
-  console.log("clientsInactives", clientsInactives)
 
   if (!clientsInactives) {
     return [];
