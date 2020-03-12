@@ -7,4 +7,6 @@ export const getHourSales = (date) => get(`ntr/pedido/stats/hour?fecha_desde=${d
 export const getSubfamiliesByYear = (date) => get(`ntr/pedido/stats/subfamilia?fecha_desde=${date.dateFrom}&fecha_hasta=${date.dateTo}`);
 export const getClientsSubcriptions = (date) => get(`ntr/cliente/stats/subcripciones?fecha_desde=${date.dateFrom}&fecha_hasta=${date.dateTo}`)
 export const getClientsActives = (date) => get(`ntr/cliente/stats/activos?fecha_desde=${date.dateFrom}&fecha_hasta=${date.dateTo}`)
+export const getClientsActivesByIntervals = () => get('ntr/cliente/stats/intervalos/activos');
+export const getClientsInactivesByIntervals = () => get('ntr/cliente/stats/intervalos/inactivos');
 

@@ -8,89 +8,42 @@ import {
 
 import { ChartLineContainer, SubTitleVentas } from './styles'
 import { sortingQuantity, sortingTime } from './utils'
+const styleLabels = {
+  textStyle: {
+  textAlign: 'center',
+  fontSize: '10',
 
+}
+
+}
 
 class LineChart extends React.Component {
 
   render() {
-    const scale = {
-      year: {
-        textStyle: {
-          textAlign: 'center',
-          fontSize: '10',
-
-        }
-      },
-      month: {
-        textStyle: {
-          textAlign: 'center',
-          fontSize: '10',
-
-        }
-      },
-      day: {
-        textStyle: {
-          textAlign: 'center',
-          fontSize: '10',
-
-        }
-      },
-      hour: {
-        textStyle: {
-          textAlign: 'center',
-          fontSize: '10',
-
-        }
-      }
-    };
-
-
+ 
     return (
 
-      <ChartLineContainer height={(window.innerHeight / 3.5)} width={(window.innerWidth/3.3)} data={this.props.dataLine} scale= {scale} padding={[50, 50, 50, 40]} forceFit={true}  numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
+      <ChartLineContainer height={(window.innerHeight / 3.5)} width={(window.innerWidth/3.3)} data={this.props.dataLine} padding={[50, 50, 50, 40]} forceFit={true} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
         <SubTitleVentas>Ventas</SubTitleVentas>
-        <Axis name={'year'} label={{
-          textStyle: {
-            textAlign: 'center',
-            fontSize: '10',
-
-          }
-
-        }} />
-        <Axis name={'month'} label={{
-          textStyle: {
-            textAlign: 'center',
-            fontSize: '10',
-
-          }
-
-        }} />
-         <Axis name={'day'} label={{
-          textStyle: {
-            textAlign: 'center',
-            fontSize: '10',
-
-          }
-
-        }} />
-         <Axis name={'hour'} label={{
-          textStyle: {
-            textAlign: 'center',
-            fontSize: '10',
-
-          }
-
-        }} />
-        <Axis name={this.props.PVMtype || this.props.numeroPedidosType ? sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) : 'totalPVM'}
-          label={{
-            textStyle: {
-              textAlign: 'center',
-              fontSize: '10',
-
-            }
-
-          }}
+        <Axis name={'year'} 
+        label={styleLabels} 
         />
+        <Axis name={'month'} 
+        label={styleLabels} 
+        />
+         <Axis name={'day'} 
+         label={styleLabels} 
+        />
+         <Axis name={'hour'} 
+         label={styleLabels} 
+        />
+        <Axis name={'totalnumero'}
+          label={styleLabels}
+        />
+        <Axis name={'totalpvm'}
+          label={styleLabels}
+        />
+        
 
 
 

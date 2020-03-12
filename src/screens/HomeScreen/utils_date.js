@@ -103,3 +103,26 @@ export const calculatePercentage = (numbers, numeroPedidos, numeroPVM) => {
     }    
     return listOfPercentages;
   };
+
+  export const calculatePercentageCLients = (activityData = []) => {
+    const listOfPercentages = []
+    if (!activityData) {
+      return [];
+    }
+    let totalNum = additionOfData(activityData)
+        activityData.map(num => {
+        let objectPercentage = {...num, porcentaje: Math.round((num.porcentaje*100)/totalNum)};
+          return listOfPercentages.push(objectPercentage);
+        })   
+       
+      return listOfPercentages;
+    };
+export const additionOfData = (activityData = []) =>{
+  if (!activityData) {
+    return [];
+  }
+      let totalNum = activityData.reduce((prev, cur)=> {
+          return prev + cur.porcentaje;
+        }, 0);
+      return totalNum;
+}

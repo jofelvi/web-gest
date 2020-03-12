@@ -35,7 +35,8 @@ import {
   ContainerClientsActivityAndStatistics,
   ContainerSpin,
   ContainerChartSpinner,
-  PieContainerSpin
+  PieContainerSpin,
+  ChartLegendContainer
 
 } from './styled';
 import LineChart from '../../components/LineChart/view.js';
@@ -51,7 +52,7 @@ import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 import { STATUS } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
 import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime } from './utils'
-import {calculatePercentage} from "./utils_date"
+import {calculatePercentage, calculatePercentageCLients} from "./utils_date"
 const { TabPane } = Tabs;
 const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
@@ -93,11 +94,16 @@ const HomeScreen = ({
   subfamiliesListHour,
   clientsData,
   fetchClientsData,
-  clientsDataActivity,
-  clientsDataSales,
+  clientsDataActives,
+  clientsDataInactives,
   fetchPendingTasks,
   pendingTasks,
-  fetchState,
+  fetchStateCli,
+  fetchStateLineChart,
+  fetchStateClients,
+  fetchstStateSubfamily,
+  fetchStateClientsActive,
+  fetchStateClientsInactive,
   activesEntitiesList
 }) => {
   const [numeroPedidos, setNumeroPedidos] = useState(false);
@@ -216,12 +222,11 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
-        
-        
+
         {
-        fetchState === STATUS.FETCHED_FAIL?<span>Error fetching data</span> :
+        fetchStateLineChart === STATUS.FETCHED_FAIL_LINE_CHART?<span>Error fetching data</span> :
      <ContainerChartSpinner>
-        {fetchState === STATUS.FETCHED ?
+        {fetchStateLineChart === STATUS.FETCHED_LINE_CHART ?
         
           <ChartContainerLine>  
             {
@@ -238,10 +243,10 @@ const HomeScreen = ({
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
-              {fetchState === STATUS.FETCHED ? ( 
+              {fetchStateClients === STATUS.FETCHED_CLIENTS ? ( 
               <DataContainer>
                 
-                    {entitiesYearList && entitiesYearActivesList && (
+                    {entitiesYearList.length && entitiesYearActivesList.length && (
                     <DataDisplayContainerElements>
                     {entitiesYearList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
   entitiesYearList, entitiesMonthList, entitiesDayList, entitiesHourList).map(ent => {
@@ -258,21 +263,21 @@ const HomeScreen = ({
                         <DataDisplay numberElement={ent.clientesactivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
                        )}): ''}
                     </DataDisplayContainerElements> )}
-                    {!entitiesYearList && !entitiesYearActivesList &&(
+                    {!entitiesYearList.length && !entitiesYearActivesList.length &&(
                       <Empty/>
                     )}
                  
                 
-              </DataContainer>):<Spin/>}
+              </DataContainer>): <PieContainerSpin><Spin/> </PieContainerSpin>}
             </DataDisplayContainer>
            
             <ChartContainerPie>
               <SubTitle>Ventas por Subfamilias</SubTitle>
               {
-                fetchState === STATUS.FETCHED_FAIL ? <Empty/> : (
+                fetchstStateSubfamily === STATUS.FETCHED_FAIL_SUBFAMILIES_CHART ? <Empty/> : (
                 <PieChartContainer>
                 {
-                  fetchState === STATUS.FETCHED ?
+                  fetchstStateSubfamily === STATUS.FETCHED_SUBFAMILIES_CHART ?
                   <PieChartContainer>
                     {
                       !!subFamiliaData.length && (
@@ -324,43 +329,47 @@ const HomeScreen = ({
         </ChartContainerLineDonut>
      
       <ClientsChartTitleContainer>
-        <SubTitle>Actividad de Clientes</SubTitle>
+        <SubTitle>Actividad de Clientes</SubTitle>        
         <ClientsChartContainer>
-          {clientsDataActivity ?
+        { fetchStateClientsActive === STATUS.FETCHED_CLIENTS_ACTIVES_CHART ?
+        <ChartLegendContainer>
+          {clientsDataActives.length?
             <ChartContainer>
               <ContainerUpData>
-                <DataDisplay numberElement={clientsDataActivity[0].porcentaje + ' %'} textElement={clientsDataActivity[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
-                <DataDisplay numberElement={clientsDataActivity[1].porcentaje + ' %'} textElement={clientsDataActivity[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataActives)[0].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataActives)[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActives[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataActives)[1].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataActives)[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActives[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerUpData>
               <DonutChart
-                dataClient={clientsDataActivity ? tranformDataForDonutClient(clientsDataActivity) : ''}
+                dataClient={clientsDataActives ? tranformDataForDonutClient(clientsDataActives) : ''}
                 pos={['50%', '50%']}
-                textHtml={label1 + 'Activos' + label2 + clientsData[0].activos + label3}
+                textHtml={label1 + 'Activos' + label2 + clientsDataActives[0].totalActive + label3}
                 alignYpos={'middle'}
                 colorSection={['periodo', (periodo) => { return colorControl(periodo) }]} />
-
               <ContainerDownData>
-                <DataDisplay numberElement={clientsDataActivity[2].porcentaje + ' %'} textElement={clientsDataActivity[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActivity[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataActives)[2].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataActives)[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActives[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerDownData>
-            </ChartContainer> : ''}
-          {clientsDataSales ?
+            </ChartContainer> 
+           : <Empty/>}</ChartLegendContainer>: <PieContainerSpin><Spin/></PieContainerSpin>}
+        { fetchStateClientsInactive === STATUS.FETCHED_CLIENTS_INACTIVES_CHART ?
+           <ChartContainer>
+          {clientsDataInactives.length?
             <ChartContainer>
+             
               <ContainerUpData>
-                <DataDisplay numberElement={clientsDataSales[0].porcentaje + ' %'} textElement={clientsDataSales[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
-                <DataDisplay numberElement={clientsDataSales[1].porcentaje + ' %'} textElement={clientsDataSales[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
-              </ContainerUpData>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataInactives)[0].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataInactives)[0].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataInactives[0].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataInactives)[1].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataInactives)[1].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataInactives[1].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
+              </ContainerUpData> 
               <DonutChart
-                dataClient={clientsDataSales ? tranformDataForDonutClient(clientsDataSales) : ''}
+                dataClient={clientsDataInactives ? tranformDataForDonutClient(clientsDataInactives) : ''}
                 pos={['50%', '50%']}
-                textHtml={label1 + 'Inactivos' + label2 + clientsData[0].inactivos + label3}
+                textHtml={label1 + 'Inactivos' + label2 +clientsDataInactives[0].totalInactive+ label3}
                 alignYpos={'middle'}
                 colorSection={['periodo', (periodo) => { return colorControl(periodo) }]} />
-
-
               <ContainerDownData>
-                <DataDisplay numberElement={clientsDataSales[2].porcentaje + ' %'} textElement={clientsDataSales[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataSales[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients ></DataDisplay>
+                <DataDisplay numberElement={calculatePercentageCLients(clientsDataInactives)[2].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataInactives)[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataInactives[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients ></DataDisplay>
               </ContainerDownData>
-            </ChartContainer> : ''}
+            </ChartContainer> : <Empty/>} </ChartContainer> :  <PieContainerSpin><Spin/></PieContainerSpin>}
+           
         </ClientsChartContainer>
       </ClientsChartTitleContainer>
       </ContainerClientsActivityAndStatistics>
