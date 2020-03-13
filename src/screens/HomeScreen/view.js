@@ -224,9 +224,9 @@ const HomeScreen = ({
         <ChartContainerLineDonut>
 
         {
-        fetchStateLineChart === STATUS.FETCHED_FAIL_LINE_CHART?<span>Error fetching data</span> :
+        fetchStateLineChart === STATUS.FETCHED_FAIL?<span>Error fetching data</span> :
      <ContainerChartSpinner>
-        {fetchStateLineChart === STATUS.FETCHED_LINE_CHART ?
+        {fetchStateLineChart === STATUS.FETCHED ?
         
           <ChartContainerLine>  
             {
@@ -243,7 +243,7 @@ const HomeScreen = ({
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
-              {fetchStateClients === STATUS.FETCHED_CLIENTS ? ( 
+              {fetchStateClients === STATUS.FETCHED ? ( 
               <DataContainer>
                 
                     {entitiesYearList.length && entitiesYearActivesList.length && (
@@ -274,10 +274,10 @@ const HomeScreen = ({
             <ChartContainerPie>
               <SubTitle>Ventas por Subfamilias</SubTitle>
               {
-                fetchstStateSubfamily === STATUS.FETCHED_FAIL_SUBFAMILIES_CHART ? <Empty/> : (
+                fetchstStateSubfamily === STATUS.FETCHED? <Empty/> : (
                 <PieChartContainer>
                 {
-                  fetchstStateSubfamily === STATUS.FETCHED_SUBFAMILIES_CHART ?
+                  fetchstStateSubfamily === STATUS.FETCHED ?
                   <PieChartContainer>
                     {
                       !!subFamiliaData.length && (
@@ -331,7 +331,7 @@ const HomeScreen = ({
       <ClientsChartTitleContainer>
         <SubTitle>Actividad de Clientes</SubTitle>        
         <ClientsChartContainer>
-        { fetchStateClientsActive === STATUS.FETCHED_CLIENTS_ACTIVES_CHART ?
+        { fetchStateClientsActive === STATUS.FETCHED ?
         <ChartLegendContainer>
           {clientsDataActives.length?
             <ChartContainer>
@@ -350,7 +350,7 @@ const HomeScreen = ({
               </ContainerDownData>
             </ChartContainer> 
            : <Empty/>}</ChartLegendContainer>: <PieContainerSpin><Spin/></PieContainerSpin>}
-        { fetchStateClientsInactive === STATUS.FETCHED_CLIENTS_INACTIVES_CHART ?
+        { fetchStateClientsInactive === STATUS.FETCHED ?
            <ChartContainer>
           {clientsDataInactives.length?
             <ChartContainer>

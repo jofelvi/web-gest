@@ -60,7 +60,7 @@ export default handleActions(
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
       yearList: payload.year,
-      statusLineChart: STATUS.FETCHED_LINE_CHART
+      statusLineChart: STATUS.FETCHED
     }),
 
     // [fetchSalesByMonthSuccess]: (state, { payload }) => ({
@@ -77,13 +77,13 @@ export default handleActions(
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
       yearDaysList: payload.daysYear,
-      statusLineChart: STATUS.FETCHED_LINE_CHART
+      statusLineChart: STATUS.FETCHED
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({
       ...state,
       hourList: payload.hour,
-      statusLineChart: STATUS.FETCHED_LINE_CHART
+      statusLineChart: STATUS.FETCHED
     }),
     // [fetchEntitiesSuccess]: (state, { payload }) => ({
     //   ...state,
@@ -93,72 +93,72 @@ export default handleActions(
     [fetchEntitiesYearSuccess]: (state, { payload }) => ({
       ...state,
       entitiesYearList: payload.entityYear,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
   
     }),
     [fetchEntitiesYearActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesYearActivesList: payload.entityActivesYear,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesMonthSuccess]: (state, { payload }) => ({
       ...state,
       entitiesMonthList: payload.entityMonth,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesMonthActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesMonthActivesList: payload.entityActivesMonth,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesDaySuccess]: (state, { payload }) => ({
       ...state,
       entitiesDayList: payload.entityDay,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesDayActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesDayActivesList: payload.entityActivesDay,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesHourSuccess]: (state, { payload }) => ({
       ...state,
       entitiesHourList: payload.entityHour,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     [fetchEntitiesHourActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesHourActivesList: payload.entityActivesHour,
-      statusClients: STATUS.FETCHED_CLIENTS
+      statusClients: STATUS.FETCHED
 
     }),
     
     [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListYear: payload.subfamilyYear,
-      statusSubfamily: STATUS.FETCHED_SUBFAMILIES_CHART
+      statusSubfamily: STATUS.FETCHED
     }),
     [fetchSubfamilyMonthSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListMonth: payload.subfamilyMonth,
-      statusSubfamily: STATUS.FETCHED_SUBFAMILIES_CHART
+      statusSubfamily: STATUS.FETCHED
     }),
     [fetchSubfamilyDaySuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListDay: payload.subfamilyDay,
-      statusSubfamily: STATUS.FETCHED_SUBFAMILIES_CHART
+      statusSubfamily: STATUS.FETCHED
    
     }),
     [fetchSubfamilyHourSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListHour: payload.subfamilyHour,
-      statusSubfamily: STATUS.FETCHED_SUBFAMILIES_CHART
+      statusSubfamily: STATUS.FETCHED
    
     }),
     // [fetchClientsDataSuccess]: (state, { payload }) => ({
@@ -169,12 +169,12 @@ export default handleActions(
     [fetchClientsActivitySuccess]: (state, { payload }) => ({
       ...state,
       clientsDataActivity: payload.clientsActivity,
-      statusClientsActive: STATUS.FETCHED_CLIENTS_ACTIVES_CHART
+      statusClientsActive: STATUS.FETCHED
     }),
     [fetchClientsSalesSuccess]: (state, { payload }) => ({
       ...state,
       clientsDataSales: payload.clientsSales,
-      statusClientsInactive: STATUS.FETCHED_CLIENTS_INACTIVES_CHART
+      statusClientsInactive: STATUS.FETCHED
     }),
     [fetchPendingTasksSuccess]: (state, { payload }) => ({
       ...state,
