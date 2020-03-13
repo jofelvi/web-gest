@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { startDate, listOfDates, monthNames, startDateDay, listOfYears } from './constants'
-import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generateSevenDays, groupHoursByDay, generateYears, groupHoursByYear }from './utils_date'
+import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generateSevenDays, groupHoursByDay, generateYears, groupHoursByYear, additionOfData }from './utils_date'
 import * as moment from 'moment';
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
@@ -65,9 +65,66 @@ const getHours = (hourList = []) => {
   return Object.keys(hourAddedList).map(hour => ({ hour: hour, ...hourAddedList[hour] }));
 };
 
+const getObjectForDonutChartActive = (clientsActives = []) =>{
+  if (!clientsActives) {
+    return [];
+  }else{
+    let listActive = clientsActives.reduce((prev, curr) => {
+    const keyOfObj = Object.keys(curr);
+    const listObject = keyOfObj.map(key => {
+      if(key === 'mas12meses'){
+        return { periodo: "> 12 meses", porcentaje: curr[key] };
+      }
+      if(key === 'menos12meses'){
+        return { periodo: "6-12 meses", porcentaje: curr[key] };
+      }
+      if(key === 'menos6meses'){
+        return { periodo: "< 6 meses", porcentaje: curr[key] };
+      }
+    })
+  let totalActives= additionOfData(listObject);
+  return listObject.map( objectPercentage =>{
+     return {...objectPercentage, totalActive: totalActives}
+   })
+}, {})
+return listActive;
+}
+}
+
+const getObjectForDonutChartInActive = (clientsInactives = []) => {
+
+  if (!clientsInactives) {
+    return [];
+  }else{
+    let listInactive = clientsInactives.reduce((prev, curr) => {
+    const keyOfObj = Object.keys(curr);
+    const listObject = keyOfObj.map(key => {
+      if(key === 'mas12meses'){
+        return {periodo: "> 12 meses", porcentaje: curr[key]};
+      }
+      if(key === 'menor12meses'){
+        return {periodo: "6-12 meses", porcentaje: curr[key]};
+      }
+      if(key === 'menor6meses'){
+        return {periodo: "< 6 meses", porcentaje: curr[key]};
+      }
+    })
+    let totalInactives= additionOfData(listObject);
+    return listObject.map( objectPercentage =>{
+      return {...objectPercentage, totalInactive: totalInactives}
+    })
+}, {})
+return listInactive;
+}
+}
+
 export default connect(
   state => ({
-    fetchState: state.charts.status,
+    fetchStateLineChart: state.charts.statusLineChart,
+    fetchStateClients: state.charts.statusClients,
+    fetchstStateSubfamily: state.charts.statusSubfamily,
+    fetchStateClientsActive: state.charts.statusClientsActive,
+    fetchStateClientsInactive: state.charts.statusClientsInactive,
     process: state.forms.process,
     procId: state.forms.procId,
     taskName: state.forms.taskName,
@@ -93,8 +150,8 @@ export default connect(
     subfamiliesListDay: state.charts.subfamiliesListDay,
     subfamiliesListHour: state.charts.subfamiliesListHour,
     clientsData: state.charts.clientsData,
-    clientsDataActivity: state.charts.clientsDataActivity,
-    clientsDataSales: state.charts.clientsDataSales,
+    clientsDataActives: getObjectForDonutChartActive(state.charts.clientsDataActivity)  || [],
+    clientsDataInactives: getObjectForDonutChartInActive(state.charts.clientsDataSales) || [],
     pendingTasks: state.charts.pendingTasks,
   }),
   { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks }

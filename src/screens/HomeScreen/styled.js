@@ -55,8 +55,15 @@ align-items: center;
 `;
 
 
+export const ChartLegendContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 export const ChartContainer = styled.div`
-  width: 30%;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -195,6 +202,7 @@ export const DataDisplayContainer = styled.div`
 width: 30%;
 display: flex;
 height: 100%;
+min-height: 200px;
 flex-direction: column;
 justify-content: space-between;
 align-items: center;

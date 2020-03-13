@@ -1,9 +1,7 @@
 { "data": {
     "data": [
-         
-    { "periodo": "< 6 meses", "porcentaje": 30 },
-    { "periodo": "6-12 meses", "porcentaje": 45 },
-    { "periodo": "> 12 meses", "porcentaje": 25 }
+            
+        {"mas12meses": 2270, "menor12meses": 21, "menor6meses": 97}
     ]
 }
 }

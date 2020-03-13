@@ -2,12 +2,7 @@ import { handleActions } from 'redux-actions';
 
 import { 
   fetchSalesByYearSuccess, 
-  fetchSalesByMonthSuccess,
-  fetchSalesByDaySuccess,
   fetchSalesByHourSuccess,
-  fetchEntitiesSuccess,
-  fetchSubfamilySuccess,
-  fetchClientsDataSuccess,
   fetchClientsSalesSuccess,
   fetchClientsActivitySuccess,
   fetchPendingTasksSuccess,
@@ -30,7 +25,11 @@ import {
 import {STATUS} from './constants'
 const defaultState = {
   list: [],
-  status: STATUS.NOT_FETCHED,
+  statusLineChart: STATUS.NOT_FETCHED,
+  statusClients: STATUS.NOT_FETCHED,
+  statusSubfamily:  STATUS.NOT_FETCHED,
+  statusClientsActive: STATUS.NOT_FETCHED,
+  statusClientsInactive: STATUS.NOT_FETCHED,
   subfamiliesList: [],
   subfamilyYear: [],
   subfamilyMonth: [],
@@ -38,7 +37,16 @@ const defaultState = {
   subfamilyHour: [],
   year: [],
   daysYear: [],
-  hour: []
+  hour: [],
+  clientsActivity: [],
+  clientsSales: [],
+  entityYear: [],
+  entityActivesYear: [],
+  entityMonth: [],
+  entityDay: [],
+  entityActivesDay: [],
+  entityHour: []
+
 };
 
 export default handleActions(
@@ -47,110 +55,113 @@ export default handleActions(
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
       yearList: payload.year,
+      statusLineChart: STATUS.FETCHED
     }),
 
-    [fetchSalesByMonthSuccess]: (state, { payload }) => ({
-      ...state,
-      monthList: payload.month
-    }),
-
-    [fetchSalesByDaySuccess]: (state, { payload }) => ({
-      ...state,
-      dayList: payload.day
-    }),
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
       yearDaysList: payload.daysYear,
+      statusLineChart: STATUS.FETCHED
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({
       ...state,
       hourList: payload.hour,
+      statusLineChart: STATUS.FETCHED
     }),
-    [fetchEntitiesSuccess]: (state, { payload }) => ({
-      ...state,
-      entitiesList: payload.entity
-    }),
+    
     [fetchEntitiesYearSuccess]: (state, { payload }) => ({
       ...state,
       entitiesYearList: payload.entityYear,
-      status: STATUS.FETCHED
+      statusClients: STATUS.FETCHED
   
     }),
     [fetchEntitiesYearActivesSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesYearActivesList: payload.entityActivesYear
+      entitiesYearActivesList: payload.entityActivesYear,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesMonthSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesMonthList: payload.entityMonth
+      entitiesMonthList: payload.entityMonth,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesMonthActivesSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesMonthActivesList: payload.entityActivesMonth
+      entitiesMonthActivesList: payload.entityActivesMonth,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesDaySuccess]: (state, { payload }) => ({
       ...state,
-      entitiesDayList: payload.entityDay
+      entitiesDayList: payload.entityDay,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesDayActivesSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesDayActivesList: payload.entityActivesDay
+      entitiesDayActivesList: payload.entityActivesDay,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesHourSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesHourList: payload.entityHour
+      entitiesHourList: payload.entityHour,
+      statusClients: STATUS.FETCHED
+
     }),
     [fetchEntitiesHourActivesSuccess]: (state, { payload }) => ({
       ...state,
-      entitiesHourActivesList: payload.entityActivesHour
+      entitiesHourActivesList: payload.entityActivesHour,
+      statusClients: STATUS.FETCHED
+
     }),
     
     [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListYear: payload.subfamilyYear,
-      status: STATUS.FETCHED
+      statusSubfamily: STATUS.FETCHED
     }),
     [fetchSubfamilyMonthSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListMonth: payload.subfamilyMonth,
-     
+      statusSubfamily: STATUS.FETCHED
     }),
     [fetchSubfamilyDaySuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListDay: payload.subfamilyDay,
+      statusSubfamily: STATUS.FETCHED
    
     }),
     [fetchSubfamilyHourSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListHour: payload.subfamilyHour,
+      statusSubfamily: STATUS.FETCHED
    
     }),
-    [fetchClientsDataSuccess]: (state, { payload }) => ({
-      ...state,
-      clientsData: payload.clients
-    }),
+   
     [fetchClientsActivitySuccess]: (state, { payload }) => ({
       ...state,
-      clientsDataActivity: payload.clientsActivity
+      clientsDataActivity: payload.clientsActivity,
+      statusClientsActive: STATUS.FETCHED
     }),
     [fetchClientsSalesSuccess]: (state, { payload }) => ({
       ...state,
-      clientsDataSales: payload.clientsSales
+      clientsDataSales: payload.clientsSales,
+      statusClientsInactive: STATUS.FETCHED
     }),
     [fetchPendingTasksSuccess]: (state, { payload }) => ({
       ...state,
-      pendingTasks: payload.task
+      pendingTasks: payload.task,
+      //status: STATUS.FETCHED
     }),
     [fetchSalesByHourFail]: (state, { payload }) => ({
       ...state,
       status: STATUS.FETCHED_FAIL
     }),
     
-    // [fetchSalesByDay]: (state, { payload }) => ({
-    //   ...state,
-    //   status: STATUS.FETCHING
-    // }),
   },
   defaultState
 );

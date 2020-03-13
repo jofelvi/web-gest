@@ -19,7 +19,7 @@ import { ChartDonut } from './styles';
         const cols = {
         percent: {
           formatter: val => {
-            val = (val * 100) + '%';
+            val = Math.round(((val * 100)* 100)/100) + '%';
             return val;
           }
         }

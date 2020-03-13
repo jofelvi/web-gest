@@ -90,6 +90,7 @@ const typeOfUnits = (statePVM, stateNumero) => {
 }
 
 export const tranformDataForDonut = (datos, statePVM, stateNumero) => {
+ 
   const dv = new DataView();
   let numero = typeOfUnits(statePVM, stateNumero)
   if(numero && datos){
