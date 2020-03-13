@@ -2,12 +2,7 @@ import { handleActions } from 'redux-actions';
 
 import { 
   fetchSalesByYearSuccess, 
-  //fetchSalesByMonthSuccess,
-  //fetchSalesByDaySuccess,
   fetchSalesByHourSuccess,
-  //fetchEntitiesSuccess,
-  //fetchSubfamilySuccess,
-  //fetchClientsDataSuccess,
   fetchClientsSalesSuccess,
   fetchClientsActivitySuccess,
   fetchPendingTasksSuccess,
@@ -30,11 +25,11 @@ import {
 import {STATUS} from './constants'
 const defaultState = {
   list: [],
-  statusLineChart: STATUS.NOT_FETCHED_LINE_CHART,
-  statusClients: STATUS.NOT_FETCHED_CLIENTS,
-  statusSubfamily:  STATUS.NOT_FETCHED_SUBFAMILIES_CHART,
-  statusClientsActive: STATUS.NOT_FETCHED_CLIENTS_ACTIVES_CHART,
-  statusClientsInactive: STATUS.NOT_FETCHED_CLIENTS_INACTIVES_CHART,
+  statusLineChart: STATUS.NOT_FETCHED,
+  statusClients: STATUS.NOT_FETCHED,
+  statusSubfamily:  STATUS.NOT_FETCHED,
+  statusClientsActive: STATUS.NOT_FETCHED,
+  statusClientsInactive: STATUS.NOT_FETCHED,
   subfamiliesList: [],
   subfamilyYear: [],
   subfamilyMonth: [],
@@ -63,17 +58,6 @@ export default handleActions(
       statusLineChart: STATUS.FETCHED
     }),
 
-    // [fetchSalesByMonthSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   monthList: payload.month,
-    //   status: STATUS.FETCHED
-    // }),
-
-    // [fetchSalesByDaySuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   dayList: payload.day,
-    //   status: STATUS.FETCHED
-    // }),
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
       yearDaysList: payload.daysYear,
@@ -85,11 +69,7 @@ export default handleActions(
       hourList: payload.hour,
       statusLineChart: STATUS.FETCHED
     }),
-    // [fetchEntitiesSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   entitiesList: payload.entity,
-    //   status: STATUS.FETCHED
-    // }),
+    
     [fetchEntitiesYearSuccess]: (state, { payload }) => ({
       ...state,
       entitiesYearList: payload.entityYear,
@@ -161,11 +141,7 @@ export default handleActions(
       statusSubfamily: STATUS.FETCHED
    
     }),
-    // [fetchClientsDataSuccess]: (state, { payload }) => ({
-    //   ...state,
-    //   clientsData: payload.clients,
-    //   status: STATUS.FETCHED
-    // }),
+   
     [fetchClientsActivitySuccess]: (state, { payload }) => ({
       ...state,
       clientsDataActivity: payload.clientsActivity,
@@ -186,10 +162,6 @@ export default handleActions(
       status: STATUS.FETCHED_FAIL
     }),
     
-    // [fetchSalesByDay]: (state, { payload }) => ({
-    //   ...state,
-    //   status: STATUS.FETCHING
-    // }),
   },
   defaultState
 );

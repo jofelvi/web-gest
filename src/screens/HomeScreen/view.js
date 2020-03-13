@@ -243,38 +243,44 @@ const HomeScreen = ({
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
-              {fetchStateClients === STATUS.FETCHED ? ( 
-              <DataContainer>
-                
-                    {entitiesYearList.length && entitiesYearActivesList.length && (
+              
+              {fetchStateClients === STATUS.FETCHED ? (   
+               
+              <DataContainer>   
+                 
                     <DataDisplayContainerElements>
-                    {entitiesYearList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
-  entitiesYearList, entitiesMonthList, entitiesDayList, entitiesHourList).map(ent => {
+                    {entitiesYearList  && (
+                      <div>
+                    {sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+                      entitiesYearList, entitiesMonthList, entitiesDayList, entitiesHourList).map(ent => {
                        return ( 
                          <div>
                         <DataDisplay numberElement={ent.nuevosregistros} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
                         <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
                         </div>
                        )
-                    }) : ''}
-                    {entitiesYearList && entitiesYearActivesList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
-  entitiesYearActivesList, entitiesMonthActivesList, entitiesDayActivesList, entitiesHourActivesList).map(ent => {
+                    })}</div>)}
+                    {entitiesYearActivesList && (
+                    <div>
+                    { sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+                      entitiesYearActivesList, entitiesMonthActivesList, entitiesDayActivesList, entitiesHourActivesList).map(ent => {
                        return ( 
                         <DataDisplay numberElement={ent.clientesactivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                       )}): ''}
-                    </DataDisplayContainerElements> )}
-                    {!entitiesYearList.length && !entitiesYearActivesList.length &&(
+                       )})}</div>)}
+                    </DataDisplayContainerElements> 
+                    {entitiesYearList && !entitiesYearList.length &&(
                       <Empty/>
                     )}
-                 
-                
+                    {entitiesYearActivesList && !entitiesYearActivesList.length &&(
+                      <Empty/>
+                    )} 
               </DataContainer>): <PieContainerSpin><Spin/> </PieContainerSpin>}
             </DataDisplayContainer>
            
             <ChartContainerPie>
               <SubTitle>Ventas por Subfamilias</SubTitle>
               {
-                fetchstStateSubfamily === STATUS.FETCHED? <Empty/> : (
+                fetchstStateSubfamily === STATUS.FETCHED_FAIL? <Empty/> : (
                 <PieChartContainer>
                 {
                   fetchstStateSubfamily === STATUS.FETCHED ?
