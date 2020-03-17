@@ -1,6 +1,4 @@
 export const formData = {
-	// Variable para almacenar el valor de la combo de buscar
-	buscador: null,
 	// Variable con los datos del proceso
 	taskData: {},
 	// Variable para controlar la carga de la combo de busqueda
