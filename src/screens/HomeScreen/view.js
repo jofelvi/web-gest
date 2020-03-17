@@ -284,7 +284,7 @@ console.log("subfamilia", subFamiliaChartData)
                   fetchstStateSubfamily === STATUS.FETCHED ?
                   <PieChartContainer>
                     {
-                      !!subFamiliaData.length && subFamiliaDataLegend.length &&(
+                      !!subFamiliaData.length &&(
                         <PieChart
                           dataClient={subFamiliaChartData}
                           pos={['50%', '50%']}
@@ -303,7 +303,6 @@ console.log("subfamilia", subFamiliaChartData)
                       )
                     }
 
-                    {console.log("subfamilia data legend", subFamiliaDataLegend[0].totalnumero)}
                     <PieDatsDisplayContainer>
                       {subfamilyDataSortedByBiggestNumber && subFamiliaDataLegend.length ? [...subFamiliaDataLegend].map(subfamily => {
                         
