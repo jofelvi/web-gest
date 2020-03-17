@@ -57,6 +57,8 @@ const { TabPane } = Tabs;
 const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
 const label3 = '</span></div>';
+const toolTipPieSubfamilias1 = '<li data-index={index} style="font-size: 10px; min-width: 100px"><span style="background-color:{color};font-size: 0px;" class="g2-tooltip-marker"></span> '
+const toolTipPieSubfamilias2 = '</li>';
 function callback(key) {
   console.log(key);
 }
@@ -113,27 +115,29 @@ const HomeScreen = ({
   const [timeDay, setTimeDay] = useState(false);
   const [timeHour, setTimeHour] = useState(false);
 
+  const testIfThereIsTask = (idTask, util, history)=>{
+    if (util.getTaskId() || idTask) {
+      const id = utils.getTaskId();
+      return fetchTaskForm({ idTask: id || idTask, history });
+    }
+  }
+
   useEffect(()=>{
-  
-    fetchSalesByYear();
-    fetchSalesByMonth();
-    fetchSalesByHour();
-   // setInterval(async()=>{
-   //   await fetchSalesByHour();
-   // }, 3000);
-    fetchSalesByHour();
-    fetchSalesByDay();
-    fetchClientsData();
-    fetchPendingTasks();
+    async function fetchData() {
+      await testIfThereIsTask(taskId, utils, history);
+      await fetchSalesByYear();
+      await fetchSalesByDay();
+      await fetchSalesByMonth();
+      await fetchSalesByHour();
+      setInterval(async()=>{
+       await fetchSalesByHour();
+      }, 180000);
+      await fetchClientsData();
+      await fetchPendingTasks();
+    }
+    fetchData();  
     setTimeYear(true);
     setNumeroPVM(true);
-   if (utils.getTaskId() || taskId) {
-     fetchClientsData();
-     const id = utils.getTaskId();
-     fetchTaskForm({ taskId: id || taskId, history });
-   }
- 
-
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
@@ -153,12 +157,12 @@ const HomeScreen = ({
     monthsList, daysList, hourList) : [];
     
   const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
-    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos).slice(0, 5) : []
+    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos) : []
 
-  const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData, numeroPedidos , numeroPVM) : [];
+  const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData.slice(0, 5), numeroPedidos , numeroPVM) : [];
 
   const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, numeroPVM, numeroPedidos): [];
-
+console.log("subfamilia", subFamiliaChartData)
   return <ContentContainer>
     <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
   <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
@@ -170,7 +174,6 @@ const HomeScreen = ({
               
               onClickDay={() => {
                 fetchPendingTasks();
-                fetchSalesByDay();
                 setTimeDay(true);
                 setTimeYear(false);
                 setTimeMonth(false);
@@ -178,17 +181,13 @@ const HomeScreen = ({
               }}
               clickDay= {timeDay}
               onClickHour={() => {
-                fetchSalesByHour();
                 setTimeHour(true);
                 setTimeYear(false);
                 setTimeMonth(false);
                 setTimeDay(false);
-                
-
               }}
               clickHour= {timeHour}
               onClickMonth={() => {
-                fetchSalesByMonth();
                 setTimeMonth(true);
                 setTimeYear(false);
                 setTimeDay(false);
@@ -196,7 +195,6 @@ const HomeScreen = ({
               }}
               clickMonth = {timeMonth}
               onClickYear={() => {
-                fetchSalesByYear();
                 setTimeYear(true);
                 setTimeMonth(false);
                 setTimeDay(false);
@@ -286,11 +284,12 @@ const HomeScreen = ({
                   fetchstStateSubfamily === STATUS.FETCHED ?
                   <PieChartContainer>
                     {
-                      !!subFamiliaData.length && (
+                      !!subFamiliaData.length && subFamiliaDataLegend.length &&(
                         <PieChart
                           dataClient={subFamiliaChartData}
                           pos={['50%', '50%']}
                           textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
+                          toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}</span>` + toolTipPieSubfamilias2}
                           alignYpos={'middle'}
                           colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
                           numeroPedidosType={numeroPedidos}
@@ -304,7 +303,7 @@ const HomeScreen = ({
                       )
                     }
 
-                    
+                    {console.log("subfamilia data legend", subFamiliaDataLegend[0].totalnumero)}
                     <PieDatsDisplayContainer>
                       {subfamilyDataSortedByBiggestNumber && subFamiliaDataLegend.length ? [...subFamiliaDataLegend].map(subfamily => {
                         

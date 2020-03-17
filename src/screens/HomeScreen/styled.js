@@ -241,7 +241,8 @@ margin-bottom: 0px;
 
 export const SubTitle = styled.div`
 font-size: 12px;
-margin: 0px 0px 0px 0px;
+margin: 0px 0px 0px 10px;
+font-weight: 700;
 `;
 
 

@@ -14,6 +14,14 @@ const subfamiliaI ='#7cb342';
 const subfamiliaJ ='#dce775';
 const subfamiliaK ='#afb42b';
 const subfamiliaL ='#827717';
+const subfamiliaM ='#827717';
+const subfamiliaN ='#827717';
+const subfamiliaO ='#827717';
+const subfamiliaP ='#827717';
+const subfamiliaQ ='#827717';
+const subfamiliaR ='#827717';
+const subfamiliaS ='#827717';
+const subfamiliaT ='#827717'; 
 const menosDeSeisMeses ='#17A589';
 const entreSeisYDoceMeses ='#2471A3';
 const masDeDoceMeses ='#F1C40F';
@@ -38,10 +46,18 @@ const sectionColor = new Map()
   .set("TOALLITAS HÚMEDAS", [subfamiliaF])
   .set("HIGIENE CORPORAL ADULTOS", [subfamiliaG])
   .set("ALGODÓN HIDRÓFILO SANITARIO", [subfamiliaH])
-  .set("PROTEGESLIP POSPARTO", [subfamiliaI]);
-  // .set(codeColors, [subfamiliaJ])
-  // .set(codeColors, [subfamiliaK])
-  // .set(codeColors, [subfamiliaL]);
+  .set("PROTEGESLIP POSPARTO", [subfamiliaI])
+  .set("APÓSITOS DE TEJIDO SIN TEJER ALGODON ESTERILIZADOS", [subfamiliaJ])
+  .set("VENDAS ELÁSTICAS", [subfamiliaK])
+  .set("PREVENCIÓN DE ULCERACIONES", [subfamiliaL])
+  .set("DISCOS DESMAQUILLADORES", [subfamiliaM])
+  .set("OTROS PRODUCTOS INFANTILES", [subfamiliaN])
+  .set("GEL CICATRIZANTE", [subfamiliaO])
+  .set("BASTONCILLOS COSMÉTICOS", [subfamiliaP])
+  .set("APÓSITOS PARA TRAQUEOTOMIZADOS", [subfamiliaQ])
+  .set("DISCOS DE LACTANCIA ABSORBENTES", [subfamiliaR])
+  .set("COLECTORES", [subfamiliaS])
+  .set("PROTECTORES ANTIESCARAS", [subfamiliaT]);
 
   export const colorControl = (colors) => {
    
