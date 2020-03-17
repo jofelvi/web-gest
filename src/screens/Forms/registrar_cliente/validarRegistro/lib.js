@@ -76,3 +76,7 @@ export const isNotValidData = clienteCbim => {
 	if (!clienteCbim.provincia) return false
 	return true
 }
+
+export const objectEmpty = obj => {
+	return !obj || typeof obj !== 'object' || Object.entries(obj).length === 0
+}

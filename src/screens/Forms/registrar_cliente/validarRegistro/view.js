@@ -20,8 +20,9 @@ import {
 	obtenerValoresIniciales,
 	getOptionValue,
 	isNotValidData,
+	objectEmpty,
 } from './lib'
-import { processData } from './data'
+import { processData, formData } from './data'
 import './style-rv.css'
 
 const { Option } = Select
@@ -60,6 +61,13 @@ const ValidarRegistro = ({
 			)
 		}
 	}, [clientesCbim])
+
+	useEffect(() => {
+		if(objectEmpty(formData.clienteCbim)) {
+			// Reseteamos la búsqueda de clientes cuando entramos por primera vez
+			loadClientesCbim();
+		}
+	}, [formData])
 
 	return (
 		<Formik
@@ -563,8 +571,7 @@ const ValidarRegistro = ({
 								type="primary"
 								onClick={() => {
 									values.taskData.aceptado = false
-									const merge = { ...values.taskData, ...values.clienteCbim }
-									const variables = transformData(merge, processData)
+									const variables = transformData(values.taskData, processData)
 									completeTask({ variables, history, taskId, procId })
 								}}>
 								Rechazar
