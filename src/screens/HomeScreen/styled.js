@@ -243,7 +243,7 @@ export const SubTitle = styled.div`
 font-size: 15px;
 margin: 10px 0px 5px 0px;
 font-weight: 700;
-test-align: center;
+text-align: center;
 `;
 
 

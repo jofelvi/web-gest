@@ -140,7 +140,6 @@ try {
   let objectHour = {};
   const listHour = [];
   const response = yield call(api.getHourSales, date);
-  console.log("hours response", response)
   const responseEntitiesNewOld = yield call(api.getClientsSubcriptions, date);
   const responseEntitiesActives = yield call(api.getClientsActives, date);
   const responseSubfamily = yield call(api.getSubfamiliesByYear, date);

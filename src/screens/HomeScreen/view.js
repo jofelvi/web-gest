@@ -49,7 +49,7 @@ import DataDisplayPie from '../../components/DataDisplayPie/view.js';
 
 import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
-import { STATUS } from '../../modules/charts/constants'
+import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
 import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime } from './utils'
 import {calculatePercentage, calculatePercentageCLients} from "./utils_date"
@@ -106,14 +106,14 @@ const HomeScreen = ({
   fetchstStateSubfamily,
   fetchStateClientsActive,
   fetchStateClientsInactive,
-  activesEntitiesList
+  activesEntitiesList,
+  periodTimeSelected,
+  changeTimePeriod,
+  measuringUnitSelected,
+  changeMeasuringUnit
+
 }) => {
-  const [numeroPedidos, setNumeroPedidos] = useState(false);
-  const [numeroPVM, setNumeroPVM] = useState(false);
-  const [timeYear, setTimeYear] = useState(false);
-  const [timeMonth, setTimeMonth] = useState(false);
-  const [timeDay, setTimeDay] = useState(false);
-  const [timeHour, setTimeHour] = useState(false);
+ 
 
   const testIfThereIsTask = (idTask, util, history)=>{
     if (util.getTaskId() || idTask) {
@@ -121,27 +121,50 @@ const HomeScreen = ({
       return fetchTaskForm({ idTask: id || idTask, history });
     }
   }
+  const setMasuringUnitToPVM = measuringUnitSelected === MEASURING_UNIT_SELECTED.PVM;
+  const setMasuringUnitToPedidos = measuringUnitSelected === MEASURING_UNIT_SELECTED.PEDIDOS;
 
+  const setTimeToYear = periodTimeSelected === PERIOD_TIME_SELECTED.YEAR;
+  const setTimeToMonth = periodTimeSelected === PERIOD_TIME_SELECTED.MONTH;
+  const setTimeToDay = periodTimeSelected === PERIOD_TIME_SELECTED.DAY; 
+  const setTimeToHour = periodTimeSelected === PERIOD_TIME_SELECTED.HOUR; 
+
+  const thereIsNoDataByYear = !yearList  || !subfamiliesListYear  || !entitiesYearList || !entitiesYearActivesList;
+  const thereIsNoDataByDay = !daysList || !monthsList || !subfamiliesListDay || !entitiesDayList || !entitiesDayActivesList;
+  const thereIsNoDataByHour = !hourList || !subfamiliesListHour || !entitiesHourList || !entitiesHourActivesList;
+  const thereIsNoDataByMonth = !subfamiliesListMonth || !entitiesMonthList || !entitiesMonthActivesList;
+  
   useEffect(()=>{
     async function fetchData() {
       await testIfThereIsTask(taskId, utils, history);
-      await fetchSalesByYear();
+      if(thereIsNoDataByYear){
+        //setTimeYear(true);
+      
+        await fetchSalesByYear();
+      }
+      if(thereIsNoDataByDay){
       await fetchSalesByDay();
-      await fetchSalesByMonth();
-      await fetchSalesByHour();
+        }
+      if(thereIsNoDataByHour){
+        await fetchSalesByHour();
+      }
+      if(thereIsNoDataByMonth){
+        await fetchSalesByMonth();
+      }
+    
       setInterval(async()=>{
        await fetchSalesByHour();
       }, 180000);
+      //setNumeroPVM(true);
       await fetchClientsData();
       await fetchPendingTasks();
     }
     fetchData();  
-    setTimeYear(true);
-    setNumeroPVM(true);
+    
  }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
 
-  let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
-    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay,subfamiliesListHour), numeroPVM, numeroPedidos)
+  let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour,
+    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay,subfamiliesListHour), setMasuringUnitToPVM, setMasuringUnitToPedidos)
 
   const id = utils.getTaskId() ? utils.getTaskId() : taskId;
  
@@ -153,16 +176,15 @@ const HomeScreen = ({
     return <Redirect to={`/process/${process}/${taskName}`} />;
   }
 
-  const salesLineChartData = yearList || monthsList || daysList || hourList ? sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, yearList,
+  const salesLineChartData = yearList || monthsList || daysList || hourList ? sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour, yearList,
     monthsList, daysList, hourList) : [];
     
-  const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
-    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), numeroPVM, numeroPedidos) : []
+  const subFamiliaData = subfamilyDataSortedByBiggestNumber ? sortingNumbers(sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour, 
+    subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay, subfamiliesListHour), setMasuringUnitToPVM, setMasuringUnitToPedidos) : []
 
-  const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData.slice(0, 5), numeroPedidos , numeroPVM) : [];
+  const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData.slice(0, 5), setMasuringUnitToPedidos , setMasuringUnitToPVM) : [];
 
-  const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, numeroPVM, numeroPedidos): [];
-console.log("subfamilia", subFamiliaChartData)
+  const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, setMasuringUnitToPVM, setMasuringUnitToPedidos): [];
   return <ContentContainer>
     <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
   <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
@@ -173,47 +195,38 @@ console.log("subfamilia", subFamiliaChartData)
             <ButtonPeriod
               
               onClickDay={() => {
-                fetchPendingTasks();
-                setTimeDay(true);
-                setTimeYear(false);
-                setTimeMonth(false);
-                setTimeHour(false);
+                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.DAY})
+
               }}
-              clickDay= {timeDay}
+              clickDay= {setTimeToDay}
               onClickHour={() => {
-                setTimeHour(true);
-                setTimeYear(false);
-                setTimeMonth(false);
-                setTimeDay(false);
+                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.HOUR})
+
               }}
-              clickHour= {timeHour}
+              clickHour= {setTimeToHour}
               onClickMonth={() => {
-                setTimeMonth(true);
-                setTimeYear(false);
-                setTimeDay(false);
-                setTimeHour(false);
+                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.MONTH})
+              
               }}
-              clickMonth = {timeMonth}
+              clickMonth = {setTimeToMonth}
               onClickYear={() => {
-                setTimeYear(true);
-                setTimeMonth(false);
-                setTimeDay(false);
-                setTimeHour(false);
+                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.YEAR})
+                
               }}
-              clickYear = {timeYear}
+              clickYear = {setTimeToYear}
               > </ButtonPeriod>
           </ContainerButtonsTitle>
           <ContainerButtonsTitle>
             <SubTitle>Unidades</SubTitle>
             <ButtonQuantity 
-            clickNumeroPedidos = {numeroPedidos}
-            clickPVM = {numeroPVM}
+            clickNumeroPedidos = {setMasuringUnitToPedidos}
+            clickPVM = {setMasuringUnitToPVM}
             onClickNumeroPedido={() => {
-              setNumeroPedidos(true)
-              setNumeroPVM(false)
+              changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PEDIDOS})
+             
             }} onClickPVM={() => {
-              setNumeroPVM(true)
-              setNumeroPedidos(false)
+              changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PVM})
+              
             }}></ButtonQuantity>
           </ContainerButtonsTitle>
         </ButtonsPeriodQuantityContainer>
@@ -229,7 +242,7 @@ console.log("subfamilia", subFamiliaChartData)
           <ChartContainerLine>  
             {
             !!salesLineChartData.length && (
-            <LineChart dataLine={salesLineChartData} numeroPedidosType={numeroPedidos} PVMtype={numeroPVM} />
+            <LineChart dataLine={salesLineChartData} numeroPedidosType={setMasuringUnitToPedidos} PVMtype={setMasuringUnitToPVM} />
             )}
             {!
             salesLineChartData.length &&(
@@ -249,7 +262,7 @@ console.log("subfamilia", subFamiliaChartData)
                     <DataDisplayContainerElements>
                     {entitiesYearList  && (
                       <div>
-                    {sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+                    {sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour, 
                       entitiesYearList, entitiesMonthList, entitiesDayList, entitiesHourList).map(ent => {
                        return ( 
                          <div>
@@ -260,7 +273,7 @@ console.log("subfamilia", subFamiliaChartData)
                     })}</div>)}
                     {entitiesYearActivesList && (
                     <div>
-                    { sortingDataByTime(timeYear, timeMonth, timeDay, timeHour, 
+                    { sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour, 
                       entitiesYearActivesList, entitiesMonthActivesList, entitiesDayActivesList, entitiesHourActivesList).map(ent => {
                        return ( 
                         <DataDisplay numberElement={ent.clientesactivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
@@ -292,8 +305,8 @@ console.log("subfamilia", subFamiliaChartData)
                           toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}</span>` + toolTipPieSubfamilias2}
                           alignYpos={'middle'}
                           colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
-                          numeroPedidosType={numeroPedidos}
-                          PVMtype={numeroPVM}
+                          numeroPedidosType={setMasuringUnitToPedidos}
+                          PVMtype={setMasuringUnitToPVM}
                         />
                       )
                     }
@@ -306,13 +319,13 @@ console.log("subfamilia", subFamiliaChartData)
                     <PieDatsDisplayContainer>
                       {subfamilyDataSortedByBiggestNumber && subFamiliaDataLegend.length ? [...subFamiliaDataLegend].map(subfamily => {
                         
-                        if (numeroPedidos && subfamily.totalnumero) {
+                        if (setMasuringUnitToPedidos && subfamily.totalnumero) {
                           return (
                             
                             <DataDisplayPie numberElement={subfamily.totalnumero} textElement={subfamily.subfamilia.toLowerCase()} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                           )
                         }
-                        if (numeroPVM && subfamily.totalpvm) {
+                        if (setMasuringUnitToPVM && subfamily.totalpvm) {
                           return (
                             <DataDisplayPie numberElement={subfamily.totalpvm} textElement={subfamily.subfamilia.toLowerCase()} iconType="pie-chart" styleColor={{ color: colorControl(subfamily.subfamilia), padding: '0px 10px 0px 0px' }} ></DataDisplayPie>
                           )

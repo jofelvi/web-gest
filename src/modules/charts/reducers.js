@@ -19,10 +19,12 @@ import {
   fetchEntitiesDaySuccess,
   fetchEntitiesDayActivesSuccess,
   fetchEntitiesHourSuccess,
-  fetchEntitiesHourActivesSuccess
+  fetchEntitiesHourActivesSuccess,
+  changeTimePeriod,
+  changeMeasuringUnit
 
 } from './actions';
-import {STATUS} from './constants'
+import {STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED} from './constants'
 const defaultState = {
   list: [],
   statusLineChart: STATUS.NOT_FETCHED,
@@ -45,13 +47,24 @@ const defaultState = {
   entityMonth: [],
   entityDay: [],
   entityActivesDay: [],
-  entityHour: []
-
+  entityHour: [],
+  //yeardefalut pvm default,
+  periodTimeSelected: PERIOD_TIME_SELECTED.YEAR,
+  measuringUnitSelected: MEASURING_UNIT_SELECTED.PVM,
 };
 
 export default handleActions(
   {
    
+    [changeTimePeriod]: (state, { payload }) => ({
+      ...state,
+      periodTimeSelected: payload.periodSelected,
+    }),
+    [changeMeasuringUnit]: (state, { payload }) => ({
+      ...state,
+      measuringUnitSelected: payload.unitSelected,
+    }),
+
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
       yearList: payload.year,

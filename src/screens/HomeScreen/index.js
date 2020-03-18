@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
 
-import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks } from '../../modules/charts/actions';
+import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks, changeTimePeriod, changeMeasuringUnit } from '../../modules/charts/actions';
 
 import View from './view';
 
@@ -153,6 +153,8 @@ export default connect(
     clientsDataActives: getObjectForDonutChartActive(state.charts.clientsDataActivity)  || [],
     clientsDataInactives: getObjectForDonutChartInActive(state.charts.clientsDataSales) || [],
     pendingTasks: state.charts.pendingTasks,
+    periodTimeSelected: state.charts.periodTimeSelected,
+    measuringUnitSelected: state.charts.measuringUnitSelected,
   }),
-  { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks }
+  { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks, changeTimePeriod, changeMeasuringUnit }
 )(View);
