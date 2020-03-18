@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-import { Button } from "antd";
-
-const ButtonGroup = Button.Group;
-
 export const ChartContainerLine = styled.div`
   width: 100%;
   height: fit-content;
@@ -227,11 +223,6 @@ flex-direction: row;
 align-items: center;
 justify-content: center;
 height: 10%;
-`;
-export const ContainerButtonsTitle = styled.div`
-display: flex; 
-flex-direction: column;
-align-items: center;
 `;
 
 export const Title = styled.div`

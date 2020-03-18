@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
-import { startDate, listOfDates, monthNames, startDateDay, listOfYears } from './constants'
+import { monthNames } from './constants'
 import { sortingYears, sortingDays, generateDays, generateHours, sortingHours, generateSevenDays, groupHoursByDay, generateYears, groupHoursByYear, additionOfData }from './utils_date'
-import * as moment from 'moment';
 
 import { fetchTaskForm } from '../../modules/tasks/actions';
 
-import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks, changeTimePeriod, changeMeasuringUnit } from '../../modules/charts/actions';
+import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks } from '../../modules/charts/actions';
 
 import View from './view';
 
@@ -156,5 +155,5 @@ export default connect(
     periodTimeSelected: state.charts.periodTimeSelected,
     measuringUnitSelected: state.charts.measuringUnitSelected,
   }),
-  { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks, changeTimePeriod, changeMeasuringUnit }
+  { fetchTaskForm, fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour, fetchClientsData, fetchPendingTasks }
 )(View);

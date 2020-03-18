@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-
 import { Button, Timeline, Tabs, Spin, Empty } from 'antd';
-
 
 import {
   ChartContainer,
@@ -12,10 +10,9 @@ import {
   ChartContainerLine,
   ClientsChartTitleContainer,
   ChartContainerLineDonut,
-  Title, ContainerTask,
+  ContainerTask,
   ButtonTaskContainer,
   ContentContainerTask,
-  ChartsDataPeriodContainer,
   SubTitle,
   ContentContainer,
   TaskContainer,
@@ -29,25 +26,23 @@ import {
   ChartContainerPie,
   PieDatsDisplayContainer,
   EntitiesChartPieContainer,
-  SubTitleVentas,
   ButtonsPeriodQuantityContainer,
-  ContainerButtonsTitle,
   ContainerClientsActivityAndStatistics,
   ContainerSpin,
   ContainerChartSpinner,
   PieContainerSpin,
   ChartLegendContainer
-
 } from './styled';
 
 import LineChart from '../../components/LineChart';
 import DonutChart from '../../components/DonutChart';
 import PieChart from '../../components/PieChart';
 import ButtonTasks from '../../components/ButtonTasks';
-import ButtonPeriod from '../../components/ButtonPeriod';
 import DataDisplay from '../../components/DataDisplay';
 import DataDisplayPie from '../../components/DataDisplayPie';
-import GroupButtons from '../../components/GroupButtons';
+
+import PeriodButtons from './components/PeriodButtons';
+import QuantityButtons from './components/QuantityButtons';
 
 import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
@@ -101,13 +96,8 @@ const HomeScreen = ({
   fetchStateClientsActive,
   fetchStateClientsInactive,
   periodTimeSelected,
-  changeTimePeriod,
   measuringUnitSelected,
-  changeMeasuringUnit
-
 }) => {
- 
-
   const testIfThereIsTask = (idTask, util, history)=>{
     if (util.getTaskId() || idTask) {
       const id = utils.getTaskId();
@@ -131,13 +121,11 @@ const HomeScreen = ({
     async function fetchData() {
       await testIfThereIsTask(taskId, utils, history);
       if(thereIsNoDataByYear){
-        //setTimeYear(true);
-      
         await fetchSalesByYear();
       }
       if(thereIsNoDataByDay){
-      await fetchSalesByDay();
-        }
+        await fetchSalesByDay();
+      }
       if(thereIsNoDataByHour){
         await fetchSalesByHour();
       }
@@ -178,50 +166,14 @@ const HomeScreen = ({
   const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData.slice(0, 5), setMasuringUnitToPedidos , setMasuringUnitToPVM) : [];
 
   const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, setMasuringUnitToPVM, setMasuringUnitToPedidos): [];
-  
-  
-  const periodButtons = [{
-    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.YEAR }),
-    selected: setTimeToYear,
-    text: 'Últimos 5 Años',
-  }, {
-    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.MONTH }),
-    selected: setTimeToMonth,
-    text: 'Últimos 12 Meses',
-  }, {
-    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.DAY }),
-    selected: setTimeToDay,
-    text: 'Últimos 7 Días',
-  }, {
-    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.HOUR }),
-    selected: setTimeToHour,
-    text: 'Día Actual',
-  }]
-
-  const quantityButtons = [{
-    onClick: () => changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PVM}),
-    selected: setMasuringUnitToPVM,
-    text: 'PVM',
-  }, {
-    onClick: () => changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PEDIDOS}),
-    selected: setMasuringUnitToPedidos,
-    text: 'Nº de Pedidos',
-  }]
-  
-  
+    
   return <ContentContainer>
-    <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
+    <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: '88vh'}}>
   <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
     <StaticticsContainer>
         <ButtonsPeriodQuantityContainer>
-          <ContainerButtonsTitle>
-            <SubTitle>Periodo</SubTitle>
-            <GroupButtons buttons={periodButtons} />
-          </ContainerButtonsTitle>
-          <ContainerButtonsTitle>
-            <SubTitle>Unidades</SubTitle>
-            <GroupButtons buttons={quantityButtons} />
-          </ContainerButtonsTitle>
+          <PeriodButtons />
+          <QuantityButtons />
         </ButtonsPeriodQuantityContainer>
         <ContainerClientsActivityAndStatistics>
       
