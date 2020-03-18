@@ -43,11 +43,9 @@ import LineChart from '../../components/LineChart/view.js';
 import DonutChart from '../../components/DonutChart/view.js';
 import PieChart from '../../components/PieChart/view.js';
 import ButtonTasks from '../../components/ButtonTasks/view.js';
-import ButtonPeriod from '../../components/ButtonPeriod/view.js';
+import GroupButtons from '../../components/GroupButtons';
 import DataDisplay from '../../components/DataDisplay/view.js';
 import DataDisplayPie from '../../components/DataDisplayPie/view.js';
-
-import ButtonQuantity from '../../components/ButtonQuantity/view.js';
 
 import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
@@ -185,6 +183,37 @@ const HomeScreen = ({
   const subFamiliaDataLegend = subFamiliaData.length ? calculatePercentage(subFamiliaData.slice(0, 5), setMasuringUnitToPedidos , setMasuringUnitToPVM) : [];
 
   const subFamiliaChartData = subFamiliaData.length ? tranformDataForDonut(subFamiliaData, setMasuringUnitToPVM, setMasuringUnitToPedidos): [];
+  
+  
+  const periodButtons = [{
+    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.YEAR }),
+    selected: setTimeToYear,
+    text: 'Últimos 5 Años',
+  }, {
+    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.MONTH }),
+    selected: setTimeToMonth,
+    text: 'Últimos 12 Meses',
+  }, {
+    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.DAY }),
+    selected: setTimeToDay,
+    text: 'Últimos 7 Días',
+  }, {
+    onClick: () => changeTimePeriod({ periodSelected: PERIOD_TIME_SELECTED.HOUR }),
+    selected: setTimeToHour,
+    text: 'Día Actual',
+  }]
+
+  const quantityButtons = [{
+    onClick: () => changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PVM}),
+    selected: setMasuringUnitToPVM,
+    text: 'PVM',
+  }, {
+    onClick: () => changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PEDIDOS}),
+    selected: setMasuringUnitToPedidos,
+    text: 'Nº de Pedidos',
+  }]
+  
+  
   return <ContentContainer>
     <Tabs defaultActiveKey="1"  onChange={callback} style={{width: '100%', height: '88vh'}}>
   <TabPane tab={"Estadísticas"} key={"1"}  style={{width: '100%', height: '100%'}}>
@@ -192,42 +221,11 @@ const HomeScreen = ({
         <ButtonsPeriodQuantityContainer>
           <ContainerButtonsTitle>
             <SubTitle>Periodo</SubTitle>
-            <ButtonPeriod
-              
-              onClickDay={() => {
-                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.DAY})
-
-              }}
-              clickDay= {setTimeToDay}
-              onClickHour={() => {
-                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.HOUR})
-
-              }}
-              clickHour= {setTimeToHour}
-              onClickMonth={() => {
-                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.MONTH})
-              
-              }}
-              clickMonth = {setTimeToMonth}
-              onClickYear={() => {
-                changeTimePeriod({periodSelected: PERIOD_TIME_SELECTED.YEAR})
-                
-              }}
-              clickYear = {setTimeToYear}
-              > </ButtonPeriod>
+            <GroupButtons buttons={periodButtons} />
           </ContainerButtonsTitle>
           <ContainerButtonsTitle>
             <SubTitle>Unidades</SubTitle>
-            <ButtonQuantity 
-            clickNumeroPedidos = {setMasuringUnitToPedidos}
-            clickPVM = {setMasuringUnitToPVM}
-            onClickNumeroPedido={() => {
-              changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PEDIDOS})
-             
-            }} onClickPVM={() => {
-              changeMeasuringUnit({unitSelected: MEASURING_UNIT_SELECTED.PVM})
-              
-            }}></ButtonQuantity>
+            <GroupButtons buttons={quantityButtons} />
           </ContainerButtonsTitle>
         </ButtonsPeriodQuantityContainer>
         <ContainerClientsActivityAndStatistics>

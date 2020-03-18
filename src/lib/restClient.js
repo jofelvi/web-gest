@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { SET_TOKEN } from '../modules/auth/actionTypes';
-import { refreshToken, login } from '../modules/auth/api';
 
 import utils from './utils';
 let api = null;
