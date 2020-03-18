@@ -39,15 +39,15 @@ import {
   ChartLegendContainer
 
 } from './styled';
-import LineChart from '../../components/LineChart/view.js';
-import DonutChart from '../../components/DonutChart/view.js';
-import PieChart from '../../components/PieChart/view.js';
-import ButtonTasks from '../../components/ButtonTasks/view.js';
-import ButtonPeriod from '../../components/ButtonPeriod/view.js';
-import DataDisplay from '../../components/DataDisplay/view.js';
-import DataDisplayPie from '../../components/DataDisplayPie/view.js';
+import LineChart from '../../components/LineChart';
+import DonutChart from '../../components/DonutChart';
+import PieChart from '../../components/PieChart';
+import ButtonTasks from '../../components/ButtonTasks';
+import ButtonPeriod from '../../components/ButtonPeriod';
+import DataDisplay from '../../components/DataDisplay';
+import DataDisplayPie from '../../components/DataDisplayPie';
 
-import ButtonQuantity from '../../components/ButtonQuantity/view.js';
+import ButtonQuantity from '../../components/ButtonQuantity';
 
 import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
@@ -71,16 +71,13 @@ const HomeScreen = ({
   completed,
   history,
   yearList,
-  monthList,
   monthsList,
-  dayList,
   daysList,
   hourList,
   fetchSalesByYear,
   fetchSalesByMonth,
   fetchSalesByDay,
   fetchSalesByHour,
-  entitiesList,
   entitiesYearList,
   entitiesYearActivesList,
   entitiesMonthList,
@@ -89,24 +86,20 @@ const HomeScreen = ({
   entitiesDayActivesList,
   entitiesHourList,
   entitiesHourActivesList,
-  subfamiliesList,
   subfamiliesListYear,
   subfamiliesListMonth,
   subfamiliesListDay,
   subfamiliesListHour,
-  clientsData,
   fetchClientsData,
   clientsDataActives,
   clientsDataInactives,
   fetchPendingTasks,
   pendingTasks,
-  fetchStateCli,
   fetchStateLineChart,
   fetchStateClients,
   fetchstStateSubfamily,
   fetchStateClientsActive,
   fetchStateClientsInactive,
-  activesEntitiesList,
   periodTimeSelected,
   changeTimePeriod,
   measuringUnitSelected,
