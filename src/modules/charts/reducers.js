@@ -19,10 +19,12 @@ import {
   fetchEntitiesDaySuccess,
   fetchEntitiesDayActivesSuccess,
   fetchEntitiesHourSuccess,
-  fetchEntitiesHourActivesSuccess
+  fetchEntitiesHourActivesSuccess,
+  changeTimePeriod,
+  changeMeasuringUnit
 
 } from './actions';
-import {STATUS} from './constants'
+import {STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED} from './constants'
 const defaultState = {
   list: [],
   statusLineChart: STATUS.NOT_FETCHED,
@@ -45,13 +47,24 @@ const defaultState = {
   entityMonth: [],
   entityDay: [],
   entityActivesDay: [],
-  entityHour: []
-
+  entityHour: [],
+  //yeardefalut pvm default,
+  periodTimeSelected: PERIOD_TIME_SELECTED.YEAR,
+  measuringUnitSelected: MEASURING_UNIT_SELECTED.PVM,
 };
 
 export default handleActions(
   {
    
+    [changeTimePeriod]: (state, { payload }) => ({
+      ...state,
+      periodTimeSelected: payload.periodSelected,
+    }),
+    [changeMeasuringUnit]: (state, { payload }) => ({
+      ...state,
+      measuringUnitSelected: payload.unitSelected,
+    }),
+
     [fetchSalesByYearSuccess]: (state, { payload }) => ({
       ...state,
       yearList: payload.year,
@@ -61,13 +74,11 @@ export default handleActions(
     [fetchSalesYearDaysSuccess]: (state, { payload }) => ({
       ...state,
       yearDaysList: payload.daysYear,
-      statusLineChart: STATUS.FETCHED
     }),
 
     [fetchSalesByHourSuccess]: (state, { payload }) => ({
       ...state,
       hourList: payload.hour,
-      statusLineChart: STATUS.FETCHED
     }),
     
     [fetchEntitiesYearSuccess]: (state, { payload }) => ({
@@ -76,47 +87,41 @@ export default handleActions(
       statusClients: STATUS.FETCHED
   
     }),
+
     [fetchEntitiesYearActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesYearActivesList: payload.entityActivesYear,
       statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesMonthSuccess]: (state, { payload }) => ({
       ...state,
       entitiesMonthList: payload.entityMonth,
-      statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesMonthActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesMonthActivesList: payload.entityActivesMonth,
-      statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesDaySuccess]: (state, { payload }) => ({
       ...state,
       entitiesDayList: payload.entityDay,
-      statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesDayActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesDayActivesList: payload.entityActivesDay,
-      statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesHourSuccess]: (state, { payload }) => ({
       ...state,
       entitiesHourList: payload.entityHour,
-      statusClients: STATUS.FETCHED
-
     }),
+
     [fetchEntitiesHourActivesSuccess]: (state, { payload }) => ({
       ...state,
       entitiesHourActivesList: payload.entityActivesHour,
-      statusClients: STATUS.FETCHED
-
     }),
     
     [fetchSubfamilyYearSuccess]: (state, { payload }) => ({
@@ -124,22 +129,20 @@ export default handleActions(
       subfamiliesListYear: payload.subfamilyYear,
       statusSubfamily: STATUS.FETCHED
     }),
+
     [fetchSubfamilyMonthSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListMonth: payload.subfamilyMonth,
-      statusSubfamily: STATUS.FETCHED
     }),
+
     [fetchSubfamilyDaySuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListDay: payload.subfamilyDay,
-      statusSubfamily: STATUS.FETCHED
-   
     }),
+
     [fetchSubfamilyHourSuccess]: (state, { payload }) => ({
       ...state,
       subfamiliesListHour: payload.subfamilyHour,
-      statusSubfamily: STATUS.FETCHED
-   
     }),
    
     [fetchClientsActivitySuccess]: (state, { payload }) => ({
@@ -147,16 +150,18 @@ export default handleActions(
       clientsDataActivity: payload.clientsActivity,
       statusClientsActive: STATUS.FETCHED
     }),
+
     [fetchClientsSalesSuccess]: (state, { payload }) => ({
       ...state,
       clientsDataSales: payload.clientsSales,
       statusClientsInactive: STATUS.FETCHED
     }),
+
     [fetchPendingTasksSuccess]: (state, { payload }) => ({
       ...state,
       pendingTasks: payload.task,
-      //status: STATUS.FETCHED
     }),
+
     [fetchSalesByHourFail]: (state, { payload }) => ({
       ...state,
       status: STATUS.FETCHED_FAIL

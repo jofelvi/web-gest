@@ -30,7 +30,9 @@ import {
   FETCH_ENTITIES_DAY_ACTIVES_SUCCESS,
   FETCH_ENTITIES_DAY_SUCCESS,
   FETCH_ENTITIES_HOUR_ACTIVES_SUCCESS,
-  FETCH_ENTITIES_HOUR_SUCCESS
+  FETCH_ENTITIES_HOUR_SUCCESS,
+  CHANGE_TIME_PERIOD,
+  CHANGE_MEASURING_UNIT,
 
 } from './actionTypes';
 
@@ -64,7 +66,9 @@ export const {
   fetchEntitiesDaySuccess,
   fetchEntitiesDayActivesSuccess,
   fetchEntitiesHourSuccess,
-  fetchEntitiesHourActivesSuccess
+  fetchEntitiesHourActivesSuccess,
+  changeTimePeriod,
+  changeMeasuringUnit
 } = createActions(
   FETCH_SALES_BY_YEAR,
   FETCH_SALES_BY_MONTH,
@@ -98,4 +102,6 @@ export const {
   FETCH_ENTITIES_DAY_SUCCESS,
   FETCH_ENTITIES_HOUR_ACTIVES_SUCCESS,
   FETCH_ENTITIES_HOUR_SUCCESS,
+  CHANGE_TIME_PERIOD,
+  CHANGE_MEASURING_UNIT,
 );

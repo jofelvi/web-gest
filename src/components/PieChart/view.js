@@ -7,11 +7,11 @@ import {
   Guide,
 } from "bizcharts";
 import { ChartDonut } from './styles';
-
+import { getToolTipVariableForinfo } from '../utils_chart';
 class PieChart extends React.Component {
   render() {
     const { Html } = Guide;
-   
+
    const cols = {
      percent: {
       formatter: val => {
@@ -28,11 +28,12 @@ class PieChart extends React.Component {
           
         <Coord type={'theta'} radius={0.9} />
               <Axis name="subfamilia" />
-           
+              <Axis name="totalnumero" />
+              <Axis name="totalpvm" />
           
           <Tooltip
             showTitle={false}
-            itemTpl ={'<li data-index={index}><span style="background-color:{color};font-size:{"2.9em"} class="g2-tooltip-marker"></span> {name}: {value}</li>'}
+            itemTpl ={this.props.toolTipInfo}
           />
           <Guide >
           </Guide>
@@ -40,6 +41,21 @@ class PieChart extends React.Component {
             type="intervalStack"
             position="percent"
             color={this.props.colorSection}
+            tooltip={[getToolTipVariableForinfo(this.props.numeroPedidosType, this.props.PVMtype), (subfamilia, totalnumero, totalpvm) => {
+                if(totalnumero){
+                  return { 
+                    name: subfamilia.toLowerCase(),
+                    value: totalnumero
+                  };
+                }
+                if(totalpvm){
+                  return { 
+                    name: subfamilia.toLowerCase(),
+                    value: totalpvm
+                  };
+                }
+              }
+            ]}
           >
 
           </Geom>

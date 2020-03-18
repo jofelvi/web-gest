@@ -136,7 +136,6 @@ function* fetchSalesByHour({ payload }) {
     dateFrom: moment().subtract(2,'days').format('YYYY-MM-DD'),
     dateTo: moment().format('YYYY-MM-DD')
   }
-  
 try {
   let objectHour = {};
   const listHour = [];

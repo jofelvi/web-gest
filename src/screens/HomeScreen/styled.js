@@ -240,8 +240,10 @@ margin-bottom: 0px;
 `;
 
 export const SubTitle = styled.div`
-font-size: 12px;
-margin: 0px 0px 0px 0px;
+font-size: 15px;
+margin: 10px 0px 5px 0px;
+font-weight: 700;
+text-align: center;
 `;
 
 
@@ -261,7 +263,7 @@ export const EntitiesChartPieContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 `;
 export const ChartsDataPeriodContainer = styled.div`
   min-width: 60%;
