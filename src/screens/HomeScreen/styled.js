@@ -14,10 +14,11 @@ export const ChartContainerLine = styled.div`
 `;
 export const ChartContainerPie = styled.div`
   width: 60%;
-  height: 100%;
+  height: 25vh;
+  min-height: 25vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   border-left: 1px solid grey;
 border-radius: 2px;  
@@ -46,7 +47,7 @@ text-align: center;
 
 export const ContainerChartSpinner = styled.div`
 width:50%;
-height: fit-content;
+height: 35vh;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -93,7 +94,7 @@ export const DataDisplayContainerElements = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: start;
   padding: 10px 0px;
 `;
@@ -199,16 +200,32 @@ margin-right: 0px;
 
 
 export const DataDisplayContainer = styled.div`
-width: 30%;
+width: 35%;
 display: flex;
-height: 100%;
-min-height: 200px;
+height: 25vh;
+min-height: 25vh;
 flex-direction: column;
-justify-content: space-between;
+justify-content: space-around;
 align-items: center;
 padding: 0px 15px;
 border-left: 1px solid grey;
 border-radius: 2px;      
+`;
+
+export const ContainerLineChartAndTitle = styled.div`
+    width: 50%;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+   
+`;
+
+export const SubTitleVentas = styled.div`
+    font-size: 12px;
+    margin: 0px 0px 0px 0px;
+    width: 75%;
 `;
 
 export const DataContainer = styled.div`
@@ -216,7 +233,7 @@ width: 100%;
 display: flex;
 height: 80%;
 flex-direction: column;
-justify-content: center;
+justify-content: flex-start;
 align-items: center;
 margin-right: 0px;       
 `;
@@ -249,6 +266,7 @@ text-align: center;
 
 export const ChartContainerLineDonut = styled.div`
   max-width: 100%;
+  height: 32vh;
   padding:0px 10px 0px 10px;
   background-color: white;
   display: flex;
