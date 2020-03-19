@@ -8,6 +8,8 @@ import {
 } from "bizcharts";
 import { ChartDonut } from './styles';
 import { getToolTipVariableForinfo } from '../utils_chart';
+import { formatNumber } from '../../utils'
+
 class PieChart extends React.Component {
   render() {
     const { Html } = Guide;
@@ -45,13 +47,13 @@ class PieChart extends React.Component {
                 if(totalnumero){
                   return { 
                     name: subfamilia.toLowerCase(),
-                    value: totalnumero
+                    value: formatNumber(totalnumero)
                   };
                 }
                 if(totalpvm){
                   return { 
                     name: subfamilia.toLowerCase(),
-                    value: totalpvm
+                    value: formatNumber(totalpvm)
                   };
                 }
               }

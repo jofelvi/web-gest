@@ -3,11 +3,14 @@ import {
   Geom,
   Axis,
   Tooltip,
-  Label
+  Label,
+  Coord
 } from "bizcharts";
 
 import { ChartLineContainer, SubTitleVentas } from './styles'
 import { sortingQuantity, sortingTime } from './utils'
+import {  formatNumber } from '../../utils'
+
 const styleLabels = {
   textStyle: {
   textAlign: 'center',
@@ -20,11 +23,23 @@ const styleLabels = {
 class LineChart extends React.Component {
 
   render() {
- 
+    const cols = {
+      totalnumero: {
+        formatter: val => {
+          return formatNumber(val);
+        }
+      },
+      totalpvm: {
+        formatter: val => {
+          return formatNumber(val);
+        }
+      }
+      }   
     return (
 
-      <ChartLineContainer height={(window.innerHeight / 3.5)} width={(window.innerWidth/3.3)} data={this.props.dataLine} padding={[50, 50, 50, 40]} forceFit={true} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
-        <SubTitleVentas>Ventas</SubTitleVentas>
+      <ChartLineContainer height={(window.innerHeight / 3.5)} width={(window.innerWidth/3.3)} scale={cols} data={this.props.dataLine} padding={[50, 50, 50, 40]} forceFit={true} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
+       
+        <Coord type={'rect'} scale ={[1, 1]} />
         <Axis name={'year'} 
         label={styleLabels} 
         />

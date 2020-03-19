@@ -10,6 +10,8 @@ import{
  
 import { ChartDonut } from './styles';
 import { getToolTipVariableForInfoDonutChart } from '../utils_chart';
+import {formatNumber} from '../../utils'
+
 
   class DonutChart extends React.Component {
     render() {
@@ -47,7 +49,7 @@ import { getToolTipVariableForInfoDonutChart } from '../utils_chart';
              
                 return { 
                   name: periodo,
-                  value: porcentaje
+                  value: formatNumber(porcentaje)
                 };
              
             }

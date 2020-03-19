@@ -4,5 +4,5 @@ export const dataNumberColor= '#4E4E4E';
 export const dataNumberBold= '700';
 export const dataNumberPadding= '0px 0px 0px 20px';
 export const dataNumberSize= '9px';
-export const textBadgeSize= '10px';
+export const textBadgeSize= '8px';
 
