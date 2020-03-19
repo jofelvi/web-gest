@@ -59,7 +59,7 @@ export const isNotValidData = entidadCbim => {
 	if (!entidadCbim || Object.entries(entidadCbim).length === 0) return false
 	if (!entidadCbim.codentidad_cbim) return false
 	if (!entidadCbim.nomentidad_cbim) return false
-	if (!entidadCbim.entidad_telefono) return false
+	if (!entidadCbim.telefono) return false
 	if (!entidadCbim.direccion) return false
 	if (!entidadCbim.codigo_postal) return false
 	if (!entidadCbim.poblacion) return false
@@ -67,18 +67,20 @@ export const isNotValidData = entidadCbim => {
 	return true
 }
 export const setEntidadCbim = element => {
+	console.log("element:" , element);
 	if (!element) return {}
 	let result = { 
 		codentidad_cbim: element.codentidad_cbim,
 		nomentidad_cbim: element.nomentidad_cbim,
-		entidad_nif: element.entidad_nif,
+		nif: element.entidad_nif,
 		direccion: element.direccion,
 		codigo_postal: element.codigo_postal,
 		poblacion: element.poblacion,
 		provincia: element.provincia,
-		entidad_telefono: element.entidad_telefono,
+		telefono: element.entidad_telefono,
 		ind_esfarmacia: element.ind_esfarmacia,
 		entidad_email: element.entidad_email,
 	}
+	console.log("result:" , result);
 	return result
 }

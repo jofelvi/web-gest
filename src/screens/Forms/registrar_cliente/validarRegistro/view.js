@@ -109,8 +109,12 @@ const ValidarRegistro = ({
 												values.clienteCbim.entidad_email
 										}
 									}}>
-									{clientesCbim.list.map((c, i) => {
-										return <Option key={i}>{getOptionValue(c)}</Option>
+									{clientesCbim.list.map((c, i) => { 
+										return (
+											<Option key={i} disabled={c.ind_registrado}>
+												{c.ind_registrado ? <Icon type="check" /> : ''}{' '}
+												{getOptionValue(c)}
+											</Option>)
 									})}
 								</Select>
 							</Form.Item>
