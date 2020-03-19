@@ -10,6 +10,7 @@ import {
 import { ChartLineContainer, SubTitleVentas } from './styles'
 import { sortingQuantity, sortingTime } from './utils'
 import {  formatNumber } from '../../utils'
+import { euroSymbol } from '../../constants';
 
 const styleLabels = {
   textStyle: {
@@ -31,7 +32,7 @@ class LineChart extends React.Component {
       },
       totalpvm: {
         formatter: val => {
-          return formatNumber(val);
+          return formatNumber(val)+ euroSymbol;
         }
       }
       }   
