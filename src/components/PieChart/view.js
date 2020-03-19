@@ -8,9 +8,8 @@ import {
 } from "bizcharts";
 import { ChartDonut } from './styles';
 import { getToolTipVariableForinfo } from '../utils_chart';
-const formatNumber = (num)=> {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-}
+import { formatNumber } from '../../utils'
+
 class PieChart extends React.Component {
   render() {
     const { Html } = Guide;

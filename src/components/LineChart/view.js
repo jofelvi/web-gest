@@ -8,7 +8,9 @@ import {
 } from "bizcharts";
 
 import { ChartLineContainer, SubTitleVentas } from './styles'
-import { sortingQuantity, sortingTime, formatNumber } from './utils'
+import { sortingQuantity, sortingTime } from './utils'
+import {  formatNumber } from '../../utils'
+
 const styleLabels = {
   textStyle: {
   textAlign: 'center',

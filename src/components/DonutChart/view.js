@@ -10,10 +10,8 @@ import{
  
 import { ChartDonut } from './styles';
 import { getToolTipVariableForInfoDonutChart } from '../utils_chart';
+import {formatNumber} from '../../utils'
 
-const formatNumber = (num)=> {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-}
 
   class DonutChart extends React.Component {
     render() {

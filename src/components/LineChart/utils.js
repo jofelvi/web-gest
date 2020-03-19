@@ -41,6 +41,4 @@ export const sortingTime = (data)=>{
         return dataTiempo = 'year'; 
       }
     }
-  export const formatNumber = (num)=> {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    }
+ 
