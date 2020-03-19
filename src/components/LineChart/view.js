@@ -24,15 +24,11 @@ class LineChart extends React.Component {
     const cols = {
       totalnumero: {
         formatter: val => {
-          console.log("format", formatNumber(val))
-          console.log("totalnumero", val);
           return formatNumber(val);
         }
       },
       totalpvm: {
         formatter: val => {
-          console.log("format",formatNumber(val))
-         console.log("totalpvm", val);
           return formatNumber(val);
         }
       }
