@@ -67,7 +67,6 @@ export const isNotValidData = entidadCbim => {
 	return true
 }
 export const setEntidadCbim = element => {
-	console.log("element:" , element);
 	if (!element) return {}
 	let result = { 
 		codentidad_cbim: element.codentidad_cbim,
@@ -80,7 +79,8 @@ export const setEntidadCbim = element => {
 		telefono: element.entidad_telefono,
 		ind_esfarmacia: element.ind_esfarmacia,
 		entidad_email: element.entidad_email,
+		sanibrick: element.sanibrick,
+		coddelegado: element.coddelegado,
 	}
-	console.log("result:" , result);
 	return result
 }

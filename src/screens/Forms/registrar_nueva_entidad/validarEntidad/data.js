@@ -22,5 +22,7 @@ export const processData = [
 	{ name: 'provincia', type: 'String', validation: undefined },
 	{ name: 'telefono', type: 'String', validation: undefined },
 	{ name: 'ind_esfarmacia', type: 'Boolean', validation: undefined },
+	{ name: 'sanibrick', type: 'String', validation: undefined },
+	{ name: 'coddelegado', type: 'Integer', validation: undefined },
 	{ name: 'aceptado', type: 'Boolean', validation: undefined },
 ]
