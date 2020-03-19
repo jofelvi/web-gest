@@ -52,7 +52,7 @@ import GroupButtons from '../../components/GroupButtons';
 
 import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
-import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime } from './utils'
+import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime, putEuroSymbolToPvm } from './utils'
 import {calculatePercentage, calculatePercentageCLients} from "./utils_date"
 import { formatNumber } from '../../utils'
 
@@ -111,7 +111,6 @@ const HomeScreen = ({
 
 }) => {
  
-
   const testIfThereIsTask = (idTask, util, history)=>{
     if (util.getTaskId() || idTask) {
       const id = utils.getTaskId();
@@ -303,7 +302,7 @@ const HomeScreen = ({
                           dataClient={subFamiliaChartData}
                           pos={['50%', '50%']}
                           textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
-                          toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}</span>` + toolTipPieSubfamilias2}
+                          toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}${putEuroSymbolToPvm(setMasuringUnitToPVM)}</span>` + toolTipPieSubfamilias2}
                           alignYpos={'middle'}
                           colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
                           numeroPedidosType={setMasuringUnitToPedidos}

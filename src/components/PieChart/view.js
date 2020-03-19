@@ -8,7 +8,7 @@ import {
 } from "bizcharts";
 import { ChartDonut } from './styles';
 import { getToolTipVariableForinfo } from '../utils_chart';
-import { formatNumber } from '../../utils'
+import { formatNumber } from '../../utils';
 
 class PieChart extends React.Component {
   render() {
@@ -20,7 +20,8 @@ class PieChart extends React.Component {
         val = Math.round(((val * 100)* 100)/100) + '%';
         return val;
       }
-    }
+    },
+   
   }
        
     return (
@@ -29,9 +30,9 @@ class PieChart extends React.Component {
         <ChartDonut numeroPedidos ={this.props.numeroPedidosType} numeroPVM ={this.props.PVMtype} width={(window.innerWidth/5)-90} height={window.innerHeight/5} data={this.props.dataClient} scale = {cols} padding={[0, 0, 0, 0]} forceFit={true}>
           
         <Coord type={'theta'} radius={0.9} />
-              <Axis name="subfamilia" />
-              <Axis name="totalnumero" />
-              <Axis name="totalpvm" />
+              <Axis name={"subfamilia"} />
+              <Axis name={"totalnumero"} />
+              <Axis name={"totalpvm"} />
           
           <Tooltip
             showTitle={false}
@@ -51,9 +52,10 @@ class PieChart extends React.Component {
                   };
                 }
                 if(totalpvm){
+                
                   return { 
                     name: subfamilia.toLowerCase(),
-                    value: formatNumber(totalpvm)
+                    value: formatNumber(totalpvm) 
                   };
                 }
               }
