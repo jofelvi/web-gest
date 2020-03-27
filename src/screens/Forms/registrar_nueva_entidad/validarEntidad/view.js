@@ -53,9 +53,9 @@ const ValidarEntidad = ({
 
 	useEffect(() => {
 		if (taskVariables) {
-			const idCliente = selectTaskVariable(taskVariables, 'idcliente')
-			if (idCliente) {
-				loadClienteCbimEntidades(idCliente.value)
+			const codcli_cbim = selectTaskVariable(taskVariables, 'codcli_cbim')
+			if (codcli_cbim) {
+				loadClienteCbimEntidades(codcli_cbim.value)
 			}
 		}
 	}, [token, taskVariables])
@@ -70,7 +70,7 @@ const ValidarEntidad = ({
 					<Row type="flex" align="top">
 						<Col span={24}>
 							<h3 className="form-indas-main-sub-title">
-								Lista de entidades del cliente {values.taskData.idcliente}
+								Lista de entidades del cliente {values.taskData.codcli_cbim}
 							</h3>
 							<Form.Item name="entidades">
 								<Select
@@ -129,7 +129,7 @@ const ValidarEntidad = ({
 									<Row>
 										<Form.Item name="entidad_nif_trn" label="NIF">
 											<Input
-												value={values.taskData.entidad_nif}
+												value={values.taskData.nif}
 												disabled={true}
 											/>
 										</Form.Item>
@@ -200,7 +200,7 @@ const ValidarEntidad = ({
 											required={true}
 											label="Teléfono">
 											<Input
-												value={values.taskData.entidad_telefono}
+												value={values.taskData.telefono}
 												disabled={true}
 											/>
 										</Form.Item>
@@ -249,7 +249,7 @@ const ValidarEntidad = ({
 									<Row>
 										<Form.Item name="entidad_nif" label="NIF">
 											<Input
-												value={values.entidadCbim.entidad_nif}
+												value={values.entidadCbim.nif}
 												disabled={true}
 												onChange={v => handleChange(v)}
 											/>
@@ -327,7 +327,7 @@ const ValidarEntidad = ({
 											label="Teléfono"
 											required={true}>
 											<Input
-												value={values.entidadCbim.entidad_telefono}
+												value={values.entidadCbim.telefono}
 												disabled={true}
 												onChange={v => handleChange(v)}
 											/>

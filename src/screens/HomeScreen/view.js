@@ -31,7 +31,9 @@ import {
   ContainerSpin,
   ContainerChartSpinner,
   PieContainerSpin,
-  ChartLegendContainer
+  ChartLegendContainer,
+  ContainerLineChartAndTitle,
+  SubTitleVentas,
 } from './styled';
 
 import LineChart from '../../components/LineChart';
@@ -46,8 +48,10 @@ import QuantityButtons from './components/QuantityButtons';
 
 import { STATUS, PERIOD_TIME_SELECTED, MEASURING_UNIT_SELECTED } from '../../modules/charts/constants'
 import utils from '../../lib/utils';
-import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime } from './utils'
+import { tranformDataForDonutClient, tranformDataForDonut, colorControl, sortingNumbers, sortingDataByTime, putEuroSymbolToPvm } from './utils'
 import {calculatePercentage, calculatePercentageCLients} from "./utils_date"
+import { formatNumber } from '../../utils'
+
 const { TabPane } = Tabs;
 const label1 = '<div style="color:#8c8c8c;font-size:12px;text-align: center;width: 10em;"><br><span style="color:#B4B0B0;font-size:12px">';
 const label2 = '</span><br><span style="color:#4E4E4E;font-size:12px">';
@@ -178,13 +182,16 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
+        <ContainerLineChartAndTitle>
+        <SubTitleVentas>Ventas</SubTitleVentas> 
 
         {
         fetchStateLineChart === STATUS.FETCHED_FAIL?<span>Error fetching data</span> :
      <ContainerChartSpinner>
         {fetchStateLineChart === STATUS.FETCHED ?
         
-          <ChartContainerLine>  
+          <ChartContainerLine> 
+            
             {
             !!salesLineChartData.length && (
             <LineChart dataLine={salesLineChartData} numeroPedidosType={setMasuringUnitToPedidos} PVMtype={setMasuringUnitToPVM} />
@@ -196,6 +203,7 @@ const HomeScreen = ({
           </ChartContainerLine>: <ContainerSpin><Spin/></ContainerSpin>}</ContainerChartSpinner>
           
           }
+          </ContainerLineChartAndTitle>
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>
@@ -211,8 +219,8 @@ const HomeScreen = ({
                       entitiesYearList, entitiesMonthList, entitiesDayList, entitiesHourList).map(ent => {
                        return ( 
                          <div>
-                        <DataDisplay numberElement={ent.nuevosregistros} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
-                        <DataDisplay numberElement={ent.bajas} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                        <DataDisplay numberElement={formatNumber(ent.nuevosregistros)} textElement={' Nuevos'} iconType="right-circle" styleColor={{ color: '#4DCE5C', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                        <DataDisplay numberElement={formatNumber(ent.bajas)} textElement={' Bajas'} iconType="right-circle" styleColor={{ color: '#EF4D26', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
                         </div>
                        )
                     })}</div>)}
@@ -221,7 +229,7 @@ const HomeScreen = ({
                     { sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour, 
                       entitiesYearActivesList, entitiesMonthActivesList, entitiesDayActivesList, entitiesHourActivesList).map(ent => {
                        return ( 
-                        <DataDisplay numberElement={ent.clientesactivos} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
+                        <DataDisplay numberElement={formatNumber(ent.clientesactivos)} textElement={' Activos'} iconType="right-circle" styleColor={{ color: '#F8E60B', fontSize: '14px', padding: '0px 10px 0px 0px' }} ></DataDisplay>
                        )})}</div>)}
                     </DataDisplayContainerElements> 
                     {entitiesYearList && !entitiesYearList.length &&(
@@ -247,7 +255,7 @@ const HomeScreen = ({
                           dataClient={subFamiliaChartData}
                           pos={['50%', '50%']}
                           textHtml={label1 + 'Ventas Subfamilias' + label2 + label3}
-                          toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}</span>` + toolTipPieSubfamilias2}
+                          toolTipInfo = {toolTipPieSubfamilias1 + `{name}: <span style = "font-weight: 700; color: #595959">{value}${putEuroSymbolToPvm(setMasuringUnitToPVM)}</span>` + toolTipPieSubfamilias2}
                           alignYpos={'middle'}
                           colorSection={['subfamilia', (subfamilia) => { return colorControl(subfamilia) }]}
                           numeroPedidosType={setMasuringUnitToPedidos}
@@ -304,7 +312,7 @@ const HomeScreen = ({
               <DonutChart
                 dataClient={clientsDataActives ? tranformDataForDonutClient(clientsDataActives) : ''}
                 pos={['50%', '50%']}
-                textHtml={label1 + 'Activos' + label2 + clientsDataActives[0].totalActive + label3}
+                textHtml={label1 + 'Activos' + label2 + formatNumber(clientsDataActives[0].totalActive)+ label3}
                 alignYpos={'middle'}
                 colorSection={['periodo', (periodo) => { return colorControl(periodo) }]} />
               <ContainerDownData>
@@ -324,7 +332,7 @@ const HomeScreen = ({
               <DonutChart
                 dataClient={clientsDataInactives ? tranformDataForDonutClient(clientsDataInactives) : ''}
                 pos={['50%', '50%']}
-                textHtml={label1 + 'Inactivos' + label2 +clientsDataInactives[0].totalInactive+ label3}
+                textHtml={label1 + 'Inactivos' + label2 + formatNumber(clientsDataInactives[0].totalInactive) + label3}
                 alignYpos={'middle'}
                 colorSection={['periodo', (periodo) => { return colorControl(periodo) }]} />
               <ContainerDownData>

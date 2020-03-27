@@ -1,4 +1,5 @@
 import DataSet from '@antv/data-set';
+import {euroSymbol} from '../../constants'
 
 const { DataView } = DataSet;
 
@@ -133,5 +134,11 @@ export const sortingNumbers = (numberArray, statePVM, stateNumeroPedidos) => {
 }
 
 
- 
-  
+
+export const putEuroSymbolToPvm = (pvm ) =>{
+  if(pvm){
+    return euroSymbol;
+  }else{
+    return ''
+  }
+}
