@@ -151,7 +151,6 @@ const HomeScreen = ({
       setInterval(async()=>{
        await fetchSalesByHour();
       }, 180000);
-      //setNumeroPVM(true);
       await fetchClientsData();
       await fetchPendingTasks();
     }
