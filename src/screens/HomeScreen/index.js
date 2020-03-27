@@ -9,19 +9,25 @@ import { fetchSalesByYear, fetchSalesByMonth, fetchSalesByDay, fetchSalesByHour,
 
 import View from './view';
 
-
-
 const getYears = (yearList = [], hourList) => {
   if (!yearList ) {
     return [];
   }
-  return sortingYears([groupHoursByYear(hourList),...generateYears()].map(value => {
-    const yearFromList = yearList.find(valueDay => valueDay.year === value.year)
-    if (!yearFromList) {
-      return value;
+  const listYearData = [...yearList, groupHoursByYear(hourList)];
+
+  const yearListEmpty = generateYears().reduce((acc, value) => {
+    return {
+     ...acc,
+     [value.year]: {...value}
     }
-    return yearFromList ;
-  })) 
+  }, {})
+
+  const finalYearListLast24HoursAdded = listYearData.reduce((acc, value) => {
+    return {...acc, [value.year]: { totalnumero: value.totalnumero + acc[value.year].totalnumero, totalpvm: value.totalpvm + acc[value.year].totalpvm }}  
+  }, yearListEmpty )
+ 
+  return Object.keys(finalYearListLast24HoursAdded).map(year => ({ year, ...finalYearListLast24HoursAdded[year] }));
+
 };
 
 const getSevenDays = (dayList = [], hourList) => {
@@ -130,7 +136,7 @@ export default connect(
     taskName: state.forms.taskName,
     taskId: state.forms.taskId,
     completed: state.forms.completed,
-    yearList: getYears(state.charts.yearList),
+    yearList: getYears(state.charts.yearList, state.charts.hourList),
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
     daysList: getSevenDays(state.charts.yearDaysList, state.charts.hourList),
