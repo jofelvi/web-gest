@@ -1,63 +1,63 @@
 import styled from "styled-components";
 
 export const ChartContainerLine = styled.div`
-  width: 100%;
-  height: 25vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 20px;
+ width: 100%;
+ height: 25vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ margin-left: 20px;
 `;
 export const ChartContainerPie = styled.div`
-  width: 60%;
-  height: 25vh;
-  min-height: 25vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border-left: 1px solid grey;
-border-radius: 2px;  
-margin-right: 20px;
-padding-left: 20px;
+ width: 60%;
+ height: 25vh;
+ min-height: 25vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-around;
+ align-items: center;
+ border-left: 1px solid grey;
+ border-radius: 2px;  
+ margin-right: 20px;
+ padding-left: 20px;
 
 `;
 
 export const ContainerSpin = styled.div`
-min-width: 100%;
-text-align: center;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
+ min-width: 100%;
+ text-align: center;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
 `;
 
 export const PieContainerSpin = styled.div`
-min-width: 100%;
-min-height: 200px;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
+ min-width: 100%;
+ min-height: 200px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
 `;
 
 export const DonutContainerSpin = styled.div`
-min-width: 500px;
-min-height: 200px;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
+ min-width: 500px;
+ min-height: 200px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
 `;
 
 export const ContainerChartSpinner = styled.div`
-width:50%;
-height: 200px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-margin-left: 0px;
-align-items: center;
+ width:50%;
+ height: 200px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ margin-left: 0px;
+ align-items: center;
 `;
 
 
@@ -187,122 +187,122 @@ export const ContentContainer = styled.div`
 `;
 
 export const ContainerUpData = styled.div`
-width: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
-margin-right: 0px;
+ width: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-right: 0px;
        
 `;
 
 export const ContainerDownData = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-margin-right: 0px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-right: 0px;
        
 `;
 
 
 export const DataDisplayContainer = styled.div`
-width: 35%;
-display: flex;
-height: 25vh;
-min-height: 25vh;
-flex-direction: column;
-justify-content: space-around;
-align-items: center;
-padding: 0px 15px;
-border-left: 1px solid grey;
-border-radius: 2px;      
+ width: 35%;
+ display: flex;
+ height: 25vh;
+ min-height: 25vh;
+ flex-direction: column;
+ justify-content: space-around;
+ align-items: center;
+ padding: 0px 15px;
+ border-left: 1px solid grey;
+ border-radius: 2px;      
 `;
 
 export const ContainerLineChartAndTitle = styled.div`
-    width: 100%;
-    height: 25vh;
-    min-height: 30vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+ width: 100%;
+ height: 25vh;
+ min-height: 30vh;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: space-around;
    
 `;
 export const ContainerLineChart = styled.div`
-    width: 50%;
-    min-height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+ width: 50%;
+ min-height: 100%;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
    
 `;
 
 export const SubTitleVentas = styled.div`
-font-size: 15px;
-margin: 10px 0px 5px 0px;
-font-weight: 700;
-    width: 90%;
+ font-size: 15px;
+ margin: 10px 0px 5px 0px;
+ font-weight: 700;
+ width: 90%;
 `;
 
 export const DataContainer = styled.div`
-width: 100%;
-display: flex;
-height: 100%;
-flex-direction: column;
-justify-content: flex-start;
-align-items: center;
-margin-right: 0px;       
+ width: 100%;
+ display: flex;
+ height: 100%;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: center;
+ margin-right: 0px;       
 `;
 
 export const ButtonsPeriodQuantityContainer = styled.div`
-display: flex; 
-flex-direction: row;
-align-items: center;
-justify-content: center;
-height: 10%;
+ display: flex; 
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
+ height: 10%;
 `;
 
 export const Title = styled.div`
-font-size: 14px;
-margin-bottom: 0px;
+ font-size: 14px;
+ margin-bottom: 0px;
 `;
 
 export const SubTitle = styled.div`
-font-size: 15px;
-margin: 10px 0px 10px 0px;
-font-weight: 700;
-text-align: center;
+ font-size: 15px;
+ margin: 10px 0px 10px 0px;
+ font-weight: 700;
+ text-align: center;
 `;
 
 
 export const ChartContainerLineDonut = styled.div`
-  max-width: 100%;
-  height: 32vh;
-  padding:0px 10px 0px 10px;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between ;
+ max-width: 100%;
+ height: 32vh;
+ padding:0px 10px 0px 10px;
+ background-color: white;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: space-between ;
 `;
 export const EntitiesChartPieContainer = styled.div`
  min-height: 100%;
  width: 50%;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+ background-color: white;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
 `;
 export const ChartsDataPeriodContainer = styled.div`
-  min-width: 60%;
-  max-heigth: 55%;
-  padding:0px 0px 40px 20px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+ min-width: 60%;
+ max-heigth: 55%;
+ padding:0px 0px 40px 20px;
+ background-color: white;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: space-around;
 `;
 
 
