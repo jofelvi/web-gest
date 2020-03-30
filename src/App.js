@@ -41,7 +41,7 @@ const App = ({
     setPrevCompleted(true);
     history.push(`/process/${processKey}/thankyou`);
   }
-console.log("location",pathname)
+
   return (
     <Layout>
       <Header className='header'>
