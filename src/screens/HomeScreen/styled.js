@@ -41,6 +41,15 @@ justify-content: center;
 text-align: center;
 `;
 
+export const DonutContainerSpin = styled.div`
+min-width: 500px;
+min-height: 200px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+`;
+
 export const ContainerChartSpinner = styled.div`
 width:50%;
 height: 35vh;

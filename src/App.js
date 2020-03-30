@@ -15,7 +15,7 @@ import Sider from './components/Sider';*/
 import Routes from './routes';
 import TopBar from './components/Navigation/TopBar';
 import LeftMenu from './components/Navigation/LeftMenu';
-
+import {ContentContainer} from './styles';
 const { Content, Header, Sider } = Layout;
 
 const App = ({
@@ -41,7 +41,7 @@ const App = ({
     setPrevCompleted(true);
     history.push(`/process/${processKey}/thankyou`);
   }
-
+console.log("location",pathname)
   return (
     <Layout>
       <Header className='header'>
@@ -51,9 +51,9 @@ const App = ({
         <Sider breakpoint="lg" width="300" collapsible collapsed={collapsed} onCollapse={(collapsed) => setCollapsed(collapsed)}>
           <LeftMenu></LeftMenu>
         </Sider>
-        <Content className='principal-content'>
+        <ContentContainer className='principal-content'  pathnameTask = {pathname === '/tasks'}>
           <Routes />
-        </Content>
+        </ContentContainer>
       </Layout>
     </Layout>
   );

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Row, Col } from 'antd';
-
+import { TasksListRow } from './styles'
 import TasksList from '../../components/TasksList';
 import TaskFilter from '../../components/TaskFilter';
 import TaskDetail from '../../components/TaskDetail/view';
@@ -27,6 +27,7 @@ const TasksListScreen = ({
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, history);
   }, [pathname]);
+  console.log("tasks", tasks)
   return (
     <Row>
       <Row>
@@ -34,7 +35,7 @@ const TasksListScreen = ({
           <TaskFilter pathname={pathname} />
         </Col>
       </Row>
-      <Row>
+      <TasksListRow>
         <Col span={11}>
           <TasksList tasks={tasks} />
         </Col>
@@ -43,7 +44,7 @@ const TasksListScreen = ({
             <TaskDetail history={history} selectedTask={selectedTask} />
           </Col>
         ) : null}
-      </Row>
+      </TasksListRow>
     </Row>
   );
 };
