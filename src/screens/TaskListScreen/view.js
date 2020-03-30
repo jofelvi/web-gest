@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Row, Col } from 'antd';
-
 import TasksList from '../../components/TasksList';
 import TaskFilter from '../../components/TaskFilter';
 import TaskDetail from '../../components/TaskDetail/view';
@@ -27,6 +26,7 @@ const TasksListScreen = ({
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, history);
   }, [pathname]);
+
   return (
     <Row>
       <Row>

@@ -34,6 +34,7 @@ import {
   ChartLegendContainer,
   ContainerLineChartAndTitle,
   SubTitleVentas,
+  DonutContainerSpin,
   ContainerLineChart,
 } from './styled';
 
@@ -321,7 +322,7 @@ const HomeScreen = ({
                 <DataDisplay numberElement={calculatePercentageCLients(clientsDataActives)[2].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataActives)[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataActives[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients></DataDisplay>
               </ContainerDownData>
             </ChartContainer> 
-           : <Empty/>}</ChartLegendContainer>: <PieContainerSpin><Spin/></PieContainerSpin>}
+           : <Empty/>}</ChartLegendContainer>: <DonutContainerSpin><Spin/></DonutContainerSpin>}
         { fetchStateClientsInactive === STATUS.FETCHED ?
            <ChartContainer>
           {clientsDataInactives.length?
@@ -340,7 +341,7 @@ const HomeScreen = ({
               <ContainerDownData>
                 <DataDisplay numberElement={calculatePercentageCLients(clientsDataInactives)[2].porcentaje + ' %'} textElement={calculatePercentageCLients(clientsDataInactives)[2].periodo} iconType="pie-chart" styleColor={{ color: colorControl(clientsDataInactives[2].periodo), padding: '0px 10px 0px 0px' }} dataDisplayClients ></DataDisplay>
               </ContainerDownData>
-            </ChartContainer> : <Empty/>} </ChartContainer> :  <PieContainerSpin><Spin/></PieContainerSpin>}
+            </ChartContainer> : <Empty/>} </ChartContainer> :  <DonutContainerSpin><Spin/></DonutContainerSpin>}
            
         </ClientsChartContainer>
       </ClientsChartTitleContainer>
