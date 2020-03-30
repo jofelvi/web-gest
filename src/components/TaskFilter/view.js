@@ -6,19 +6,19 @@ import TaskFilterItem from './components/TaskFilterItem/view';
 const filters = [
   {
     name: 'name',
-    text: 'Task name',
+    text: 'Tarea',
   },
   {
     name: 'created',
-    text: 'Created',
+    text: 'Fecha alta',
   },
   {
     name: 'priority',
-    text: 'Priority',
+    text: 'Prioridad',
   },
   {
     name: 'assignee',
-    text: 'Assignee',
+    text: 'Asignado a',
   },
 ];
 

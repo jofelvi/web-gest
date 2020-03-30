@@ -55,7 +55,8 @@ const TaskCard = ({
     </Row>
     <Row type="flex">
       <Col span={10}>
-        {due ? `Pendiente ${calculateTimeDistance(due)}` : ''}
+        Vencimiento:
+        {due ? `Pendiente ${calculateTimeDistance(due)}` : ' no data'}
       </Col>
       <Col span={10}>
         {created ? `Creada ${calculateTimeDistance(created)}` : ''}

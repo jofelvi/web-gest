@@ -34,8 +34,8 @@ import {
   ChartLegendContainer,
   ContainerLineChartAndTitle,
   SubTitleVentas,
-  DonutContainerSpin
-
+  DonutContainerSpin,
+  ContainerLineChart,
 } from './styled';
 
 import LineChart from '../../components/LineChart';
@@ -183,6 +183,7 @@ const HomeScreen = ({
         <ContainerClientsActivityAndStatistics>
       
         <ChartContainerLineDonut>
+        <ContainerLineChart>
         <ContainerLineChartAndTitle>
         <SubTitleVentas>Ventas</SubTitleVentas> 
 
@@ -205,6 +206,7 @@ const HomeScreen = ({
           
           }
           </ContainerLineChartAndTitle>
+       </ContainerLineChart>
           <EntitiesChartPieContainer>
             <DataDisplayContainer>
               <SubTitle>Clientes transferindas</SubTitle>

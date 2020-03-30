@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Row, Col } from 'antd';
-
+import { TasksListRow, TaskListCol } from './styles'
 import TaskCard from '../TaskCard';
 
 const TasksList = ({ tasks }) => (
-  <Row>
+  <TasksListRow>
     {tasks.map(task => (
-      <Col span={24} key={task.id}>
+      <TaskListCol span={24} key={task.id}>
         <TaskCard task={task} />
-      </Col>
+      </TaskListCol>
     ))}
-  </Row>
+  </TasksListRow>
 );
 
 TasksList.propTypes = {

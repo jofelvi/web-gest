@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ChartContainerLine = styled.div`
   width: 100%;
-  height: fit-content;
+  height: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,7 +24,7 @@ padding-left: 20px;
 `;
 
 export const ContainerSpin = styled.div`
-width: 100%;
+min-width: 100%;
 text-align: center;
 display: flex;
 align-items: center;
@@ -52,7 +52,7 @@ text-align: center;
 
 export const ContainerChartSpinner = styled.div`
 width:50%;
-height: 35vh;
+height: 200px;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -218,25 +218,36 @@ border-radius: 2px;
 `;
 
 export const ContainerLineChartAndTitle = styled.div`
-    width: 50%;
+    width: 100%;
     height: 25vh;
+    min-height: 30vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
    
 `;
+export const ContainerLineChart = styled.div`
+    width: 50%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+   
+`;
 
 export const SubTitleVentas = styled.div`
-    font-size: 12px;
-    margin: 0px 0px 0px 0px;
-    width: 75%;
+font-size: 15px;
+margin: 10px 0px 5px 0px;
+font-weight: 700;
+    width: 90%;
 `;
 
 export const DataContainer = styled.div`
 width: 100%;
 display: flex;
-height: 80%;
+height: 100%;
 flex-direction: column;
 justify-content: flex-start;
 align-items: center;
@@ -258,7 +269,7 @@ margin-bottom: 0px;
 
 export const SubTitle = styled.div`
 font-size: 15px;
-margin: 10px 0px 5px 0px;
+margin: 10px 0px 10px 0px;
 font-weight: 700;
 text-align: center;
 `;
