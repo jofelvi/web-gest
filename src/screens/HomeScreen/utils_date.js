@@ -71,7 +71,7 @@ export const groupHoursByYear = (hourList) => {
   }
   return hourList.reduce((acc, value) => {
     return {
-      day: moment(value.fecha_alta).format('YYYY'),
+      year: moment(value.fecha_alta).format('YYYY'),
       totalnumero: (acc.totalnumero || 0) + value.totalnumero,
       totalpvm: (acc.totalpvm || 0) + value.totalpvm
     }
