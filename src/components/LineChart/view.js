@@ -37,7 +37,7 @@ class LineChart extends React.Component {
       }   
     return (
 
-      <ChartLineContainer height={(window.innerHeight / 3.5)} width={(window.innerWidth/3.3)} scale={cols} data={this.props.dataLine} padding={[50, 50, 50, 40]} forceFit={true} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
+      <ChartLineContainer height={(window.innerHeight / 3.9)} width={(window.innerWidth/3.3)} scale={cols} data={this.props.dataLine} padding={[20, 50, 50, 40]} forceFit={true} numeroPedidosEstado={this.props.numeroPedidosType} PVMestado={this.props.PVMtype}>
        
         <Coord type={'rect'} scale ={[1, 1]} />
         <Axis name={'year'} 
