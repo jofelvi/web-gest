@@ -1,15 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Row, Col, Button } from 'antd';
-import { Container, ContentContainer, TaskText, ProcessText } from './styles';
-
+import InputData from '../InputData'
+import { Row, Col, Button, Card, Input } from 'antd';
+import { Container, ContentContainer, TaskText, ProcessText , ContainerTextArea, Label, ContainerInputData} from './styles';
+const { TextArea } = Input;
 const TaskDetail = ({
   history,
-  selectedTask: { id, processInstanceId, name, processDefinitionName }
+  selectedTask: { id, processInstanceId, name, processDefinitionName, due }
 }) => (
   <Container>
-    <Row>
+    <Card title={name} bordered={false} >
+
+      <ContainerInputData>
+      <InputData></InputData> 
+      </ContainerInputData>
+      <ContainerTextArea>
+        <Label>Comentario</Label>
+      <TextArea rows={4} />
+      </ContainerTextArea>
+     
+    </Card>
+    {/* <Row>
       <Col>
         <TaskText>{name}</TaskText>
       </Col>
@@ -33,7 +44,7 @@ const TaskDetail = ({
           Completar
         </Button>
       </Col>
-    </Row>
+    </Row> */}
   </Container>
 );
 

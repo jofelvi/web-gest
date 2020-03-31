@@ -13,6 +13,17 @@ export const ProcessText = styled.span`
   font-weight: 400;
   font-size: 16px;
 `;
+export const ContainerTextArea = styled.div`
+ 
+`;
+
+export const ContainerInputData = styled.div`
+ 
+`;
+
+export const Label = styled.h5`
+
+`;
 
 export const ContentContainer = styled(Row)`
   height: 20rem;
