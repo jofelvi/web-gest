@@ -51,13 +51,16 @@ const getRender = (currentCommercialDeal, record) => {
     
 }
 const change = (currentCommercialDeal,updateClientsFilter)=>{
+    updateClientsFilter(true);
     columnsUsers.map((el)=>{
-        if(el.dataIndex === 'idestado'){
+       if(el.dataIndex === 'idestado'){
+            
             el.render = ({},record) =>{ return getRender(currentCommercialDeal, record)};
-        }
+       }
+       
         return el;
     });
-    updateClientsFilter(true);
+   
 }
 
 //componet
@@ -69,10 +72,10 @@ const CommercialDealsUsers = ({
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
-            change(currentCommercialDeal, updateClientsFilter)
-        } else {
-            updateClientsFilter(false);
-        }
+             change(currentCommercialDeal, updateClientsFilter)
+   
+        } 
+       
         
     },[currentCommercialDeal, users, updateFilterOfClient]);
     return (
