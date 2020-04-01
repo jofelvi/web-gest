@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Button } from "antd";
 
 export const Container = styled.div`
-   width: 50%;
+   width: 100%;
    display: flex;
    padding: 5px;
    flex-direction: row;
-   justify-content: flex-start;
+   justify-content: center;
    align-items: flex-end;
 
 `;

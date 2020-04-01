@@ -1,12 +1,24 @@
 import React from "react";
 
-import { Container, ButtonCustom, Label, ContainerData } from './styles';
+import { Container, ButtonCustom, Label, ContainerData, ContainerDataLabel } from './styles';
 
   const InputData = ({
     title,
+    data,
+    onClick,
+    noButton,
   ...rest}) => {        return(
          
-  <Container> <Label>joooi{title}</Label><ContainerData>8987979</ContainerData><ButtonCustom shape="circle" icon={'edit'}></ButtonCustom> </Container>
+  <Container> 
+    <ContainerDataLabel>
+      <Label>{title}:</Label>
+      <ContainerData>{data}</ContainerData>
+    </ContainerDataLabel>
+    {!noButton && (
+    <ButtonCustom {...rest} shape="circle" onClick = {onClick} icon={'edit'} size= {'small'}>
+    </ButtonCustom>
+    )}
+  </Container>
         )
     }
     InputData.propTypes = {
