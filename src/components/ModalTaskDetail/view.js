@@ -3,8 +3,7 @@ import React from "react";
 import { Container, ButtonCustom, Label, ContainerData, ContainerDataLabel } from './styles';
 import { Modal } from 'antd';
 
-
-  const ModalTaskDetail = ({
+const ModalTaskDetail = ({
     visible,
     handleOk,
     handleCancel,
@@ -12,20 +11,19 @@ import { Modal } from 'antd';
     data,
     titleModal,
     footer,
-  ...rest}) => {        return(
-         
-  <Container> 
-    <Modal
+    ...rest}) => {        
+    return(
+      <Container> 
+        <Modal
           title={titleModal}
           visible={visible}
-          //onOk={handleOk}
           footer={footer}
           onCancel={handleCancel}
         >
-          {content}
+        {content}
         </Modal>
-  </Container>
-  )}
+      </Container>
+    )}
 
     ModalTaskDetail.propTypes = {
  
