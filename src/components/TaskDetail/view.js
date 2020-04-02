@@ -49,6 +49,7 @@ const TaskDetail = ({
   return (
     <CardCustom title={name} bordered={false} >
       <Container>
+        <div>
         <ContainerInputData>
           <EditButtons
             setInputKey={setInputKey}
@@ -67,6 +68,15 @@ const TaskDetail = ({
           <TabsTaskDetail>
           </TabsTaskDetail>
         </ContainerTabs>
+        <Button
+          type="primary"
+          onClick={() =>
+            history.push(`/task/${id}/process/${processInstanceId}`)
+          }
+        >
+          Completar
+        </Button>
+        </div>
         <ContainerModal>
           <Formik
             initialValues={{
@@ -124,6 +134,7 @@ const TaskDetail = ({
             }
           </Formik>
         </ContainerModal>
+        
       </Container>
     </CardCustom>
   )

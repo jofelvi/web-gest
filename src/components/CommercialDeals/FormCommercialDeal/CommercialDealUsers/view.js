@@ -78,6 +78,7 @@ const CommercialDealsUsers = ({
        
         
     },[currentCommercialDeal, users, updateFilterOfClient]);
+    console.log("users", users);
     return (
         <div>
             <Table 
