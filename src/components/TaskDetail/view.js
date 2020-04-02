@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import InputDataButton from '../InputDataButton'
 import { Input, Button } from 'antd';
-import TabsTaskDetail from '../TabsTaskDetail'
-import ModalTaskDetail from '../ModalTaskDetail'
+import TabsTaskDetail from '../TabsTaskDetail';
+import ModalTaskDetail from '../ModalTaskDetail';
+import { returnTheLabelForData } from './utils';
 import {
   Container,
   CardCustom,
-  ContainerSide,
   ContainerTextArea,
   ContainerTabs,
   Label,
@@ -90,7 +89,7 @@ const TaskDetail = ({
                 <ModalTaskDetail
                   visible={isVisible}
                   handleCancel={handleCancel}
-                  titleModal={mapperInputData.map(input => (input[inputKey]))}
+                  titleModal={returnTheLabelForData(mapperInputData, inputKey)}
                   footer={[
                     <Button
                       key="back"
@@ -109,12 +108,12 @@ const TaskDetail = ({
                   ]}
                   content={
                     <ContentContainer>
-                      <Label>{mapperInputData.map(input => (input[inputKey]))}
+                      <Label>{returnTheLabelForData(mapperInputData, inputKey)}
                       </Label>
                       <Input
                         id={inputKey}
                         value={values[inputKey]}
-                        placeholder={mapperInputData.map(input => (input[inputKey]))}
+                        placeholder={returnTheLabelForData(mapperInputData, inputKey)}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
