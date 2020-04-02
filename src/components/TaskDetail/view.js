@@ -62,7 +62,7 @@ const TaskDetail = ({
         </ContainerInputData>
         <ContainerTextArea>
           <Label>Comentario</Label>
-          <TextArea rows={4} />
+          <TextArea placeholder = {'Solicitud de nueva entidad'} rows={4} />
         </ContainerTextArea>
         <ContainerTabs>
           <TabsTaskDetail>
@@ -114,7 +114,7 @@ const TaskDetail = ({
                       <Input
                         id= {inputKey}
                         value={values[inputKey]}
-                        placeholder= {inputKey}
+                        placeholder= { mapperInputData.map(input =>(input[inputKey])) }
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
