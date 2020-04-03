@@ -15,7 +15,7 @@ function callback(key) {
   ...rest}) => {        return(
          
   <Container> 
-    <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: '50vh'}} >
+    <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: '40vh'}} >
     <TabPane tab={"Datos"} key={"1"}  style={{width: '100%', height: '100%'}}>
       <Table dataSource={dataSource} columns={columns}></Table>
     </TabPane>
