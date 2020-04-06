@@ -59,3 +59,8 @@ export const del = async url => {
   const headers = await getHeaders();
   return getInitializedApi().delete(url, { headers });
 };
+
+export const patch = async url => {
+  const headers = await getHeaders();
+  return getInitializedApi().patch(url, { headers });
+};

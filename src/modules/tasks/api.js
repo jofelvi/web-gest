@@ -1,4 +1,4 @@
-import { get } from '../../lib/restClient';
+import { get, put, patch } from '../../lib/restClient';
 
 export const fetchTasks = () => get(`/task`);
 
@@ -9,6 +9,8 @@ export const fetchTasksCount = () => get('/task/count');
 export const fetchTasksByUser = user => get(`/task?assignee=${user}`);
 
 export const fetchTaskForm = id => get(`/task/${id}/form`);
+
+export const editTask = id => patch(`/task/${id}`);
 
 export const fetchTaskList = (sortBy, sortOrder = 'asc') =>
   get(`/tasklist/all?sortBy=${sortBy}&sortOrder=${sortOrder}`);

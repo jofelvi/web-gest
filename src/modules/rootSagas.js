@@ -9,6 +9,7 @@ import {
   watchFetchTasksByUser,
   watchFetchTaskList,
   watchFetchTaskForm,
+  watchEditTask
  
 } from './tasks/sagas';
 
@@ -114,6 +115,7 @@ export default function* rootSaga() {
     watchfetchClientsData(),
     watchfetchPendingTasks(),
 		watchloadClientesCbim(),    
-		watchloadClienteCbimEntidades(),    
+    watchloadClienteCbimEntidades(),
+    watchEditTask(),    
   ]);
 }

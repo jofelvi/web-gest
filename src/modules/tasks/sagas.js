@@ -23,7 +23,8 @@ import {
   FETCH_TASKS_BY_USER,
   FETCH_TASK_LIST,
   FETCH_TASK_FORM,
-  FETCH_TASK
+  FETCH_TASK,
+  EDIT_TASK
 } from './actionTypes';
 
 import utils from '../../lib/utils';
@@ -193,4 +194,19 @@ function* fetchTaskList({ payload }) {
 
 export function* watchFetchTaskList() {
   yield takeLatest(FETCH_TASK_LIST, fetchTaskList);
+}
+
+function* editTask({ payload }) {
+  try {
+    const response = yield call(api.editTask, payload.id);
+    console.log("response edit task", response )
+  }catch (e) {
+    console.error(e);
+  }
+}
+
+
+
+export function* watchEditTask() {
+  yield takeLatest(EDIT_TASK, editTask);
 }
