@@ -12,7 +12,8 @@ import {
   Label,
   ContainerInputData,
   ContainerModal,
-  ContentContainer
+  ContentContainer,
+  ButtonContainer
 } from './styles';
 import { mapperInputData, validationSchema } from './constants';
 import { Formik } from 'formik';
@@ -68,14 +69,17 @@ const TaskDetail = ({
           <TabsTaskDetail>
           </TabsTaskDetail>
         </ContainerTabs>
+        <ButtonContainer>
         <Button
           type="primary"
           onClick={() =>
             history.push(`/task/${id}/process/${processInstanceId}`)
           }
+          style= {{backgroundColor: '001529'}}
         >
           Completar
         </Button>
+        </ButtonContainer>
         </div>
         <ContainerModal>
           <Formik

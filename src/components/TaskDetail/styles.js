@@ -19,6 +19,11 @@ export const ContentContainer = styled.div`
   justify-content: center;
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
 
 
 export const TaskText = styled.h1`
