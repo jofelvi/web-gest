@@ -17,22 +17,12 @@ class CommercialDealLines extends React.Component {
     }
     addRow = e => {
         e.preventDefault();
-        const columnsToValidate = [
-            'udsminimas',
-            'udsmaximas',
-            'descuento',
-            'txtdescuento'
-        ];
-        this.props.form.validateFields(columnsToValidate,(err, values) => {
-          if (!err) {
-            var {lines} = this.state;
-            lines.push(values);
-            this.setState({lines: lines});
-          }
-        });
+      
+        
       };
     render(){
-        const { getFieldDecorator } = this.props.form;
+
+        //const { getFieldDecorator } = this.props.form;
         const lines = this.props.currentCommercialDeal.escalados;
         //this.setState({lines: lines});
         return (
@@ -64,56 +54,28 @@ class CommercialDealLines extends React.Component {
                             md={{span:5}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    {getFieldDecorator('udsminimas', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                    <InputNumber style={{width:'100%'}}/>
                                 </Form.Item>
                             </Col>
                             <Col 
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('udsmaximas', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                <InputNumber style={{width:'100%'}}/>
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('descuento', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                    <InputNumber style={{width:'100%'}}/>
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('txtdescuento', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<Input/>)}
+                                    <Input/>
                                 </Form.Item>
                             </Col>
                             <Col

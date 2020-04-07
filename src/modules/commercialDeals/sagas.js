@@ -51,8 +51,9 @@ export function* watchloadCommercialDeals() {
 
 function* createCommercialDeal({payload}) {
   try {
-    const response = yield call(api.createCommercialDeal,payload);
-    yield put(createCommercialDealSuccess({ deal: response.data }));
+    console.log("Payload create comercial deal", payload)
+    //const response = yield call(api.createCommercialDeal,payload);
+    //yield put(createCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
     console.error(e);
     yield put(createCommercialDealFailed);
