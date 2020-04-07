@@ -36,18 +36,11 @@ class FormDefinition extends React.Component {
         const { currentStep} = this.state;
         this.setState({ currentStep: currentStep - 1});
     };
-    handleSubmit = e => {
+    goToNextStep = e => {
         e.preventDefault();
         const { currentStep} = this.state;
-     console.log("soy el current step", currentStep)
-           
-                    //this.props.createCommercialDeal({values})
-                    this.setState({ currentStep: currentStep + 1});
-                    //this.props.showEditCommercialDeal(false);
-                    //this.props.showNewCommercialDeal(false);
-              
-        
-        
+        console.log("soy el current step", currentStep)
+        this.setState({ currentStep: currentStep + 1})         
       };
     onStepChange = currentStep => {
         this.setState({ currentStep: currentStep});
@@ -82,16 +75,26 @@ class FormDefinition extends React.Component {
                 currentStep = {currentStep}
                 locale = {locale}
                 dealTypes = {this.props.dealTypes}
+                onClick = {(e)=>{ this.goToNextStep(e)}}
                 ></CommercialDealBasicData>
                 </div>
                 <div style={{display:currentStep !== 1 ? 'none': 'block'}}>
-                    <CommercialDealLines></CommercialDealLines>
+                    <CommercialDealLines 
+                    onClickNext = {(e)=>{ this.goToNextStep(e)}}
+                    onClickBack = {this.backStep}
+                    ></CommercialDealLines>
                 </div>
                 <div style={{display: this.props.currentCommercialDeal.tipo !== "Campaña" && currentStep === 2 ? 'block': 'none'}}>
-                    <CommercialDealProducts></CommercialDealProducts>
+                    <CommercialDealProducts  
+                    onClickNext = {(e)=>{ this.goToNextStep(e)}}
+                    onClickBack = {this.backStep}
+                    ></CommercialDealProducts>
                 </div>
                 <div style={{display: this.props.currentCommercialDeal.tipo !== "Promoción" && currentStep === 3 ? 'block': 'none'}}>
-                    <CommercialDealUsers></CommercialDealUsers>
+                    <CommercialDealUsers  
+                    onClickNext = {(e)=>{ this.goToNextStep(e)}}
+                    onClickBack = {this.backStep}s
+                    ></CommercialDealUsers>
                 </div>
                 {/* <Divider></Divider> */}
                 

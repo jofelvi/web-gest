@@ -108,17 +108,20 @@ class CommercialDealBasicData extends React.Component {
                     <Row gutter={8} type="flex">
                         {this.props.currentStep > 0 ?  
                             <Col>
-                                <Button type="primary" htmlType="submit" onClick={this.backStep}>
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickBack}>
                                     Atrás
                                 </Button>
                             </Col>
                         : ''}
                         
                             <Col> 
-                                <Button type="primary" htmlType="submit" onClick={(e)=>{ handleSubmit(e)
-                                
-                                }}>
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickNext}>
                                     Siguiente
+                                </Button>
+                            </Col>
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                                    Guardar
                                 </Button>
                             </Col>
                         

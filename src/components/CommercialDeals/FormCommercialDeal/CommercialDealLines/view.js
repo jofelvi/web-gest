@@ -116,6 +116,29 @@ class CommercialDealLines extends React.Component {
                             </Row> 
                         )}
                     </Row> 
+                    <Form.Item>
+                    <Row gutter={8} type="flex">
+                        {this.props.currentStep > 0 ?  
+                            <Col>
+                                <Button type="primary" htmlType="submit" onClick={this.onClickBack}>
+                                    Atrás
+                                </Button>
+                            </Col>
+                        : ''}
+                        
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickNext}>
+                                    Siguiente
+                                </Button>
+                            </Col>
+                            <Col> 
+                                <Button type="primary" htmlType="submit" >
+                                    Guardar
+                                </Button>
+                            </Col>
+                        
+                    </Row>
+                </Form.Item>    
                         
                 
             </div>);
