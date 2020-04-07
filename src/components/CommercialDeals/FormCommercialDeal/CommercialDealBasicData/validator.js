@@ -1,19 +1,17 @@
 import * as Yup from 'yup';
 
-const invalidEmail = 'email no válido';
-const passwordRequiredMessage = 'Introduce una contraseña';
-const emailRequiredMessage = 'Introduce un email';
+const requiredData = 'Este campo no puede estar vacío';
 
-const passwordValidation = Yup.string()
-  .required(passwordRequiredMessage);
-
-const emailValidation = Yup.string()
-  .email(invalidEmail)
-  .required(emailRequiredMessage);
+const requiredValidation = Yup.string()
+  .required(requiredData);
 
 const basicDataSchema = Yup.object().shape({
-  email: emailValidation,
-  password: passwordValidation,
+  nombre: requiredValidation,
+  tipo:requiredValidation,
+  fechainicio: requiredValidation,
+  fechafin: requiredValidation,
+  margen: requiredValidation,
+  ind_surtido: requiredValidation
 });
 
 export default basicDataSchema;

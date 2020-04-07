@@ -72,11 +72,12 @@ class FormDefinition extends React.Component {
                 >
                 <div>
                 <CommercialDealBasicData
-                currentStep = {currentStep}
-                locale = {locale}
-                dealTypes = {this.props.dealTypes}
-                onClickNext = {(e)=>{ this.goToNextStep(e)}}
-                onClickBack = {this.backStep}
+                    currentStep = {currentStep}
+                    locale = {locale}
+                    dealTypes = {this.props.dealTypes}
+                    onClickNext = {(e)=>{ this.goToNextStep(e)}}
+                    onClickBack = {this.backStep}
+                    
                 ></CommercialDealBasicData>
                 </div>
                 <div style={{display:currentStep !== 1 ? 'none': 'block'}}>
