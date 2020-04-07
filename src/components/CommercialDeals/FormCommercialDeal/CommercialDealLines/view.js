@@ -21,7 +21,7 @@ class CommercialDealLines extends React.Component {
         
       };
     render(){
-
+        const {currentStep} = this.props;
         //const { getFieldDecorator } = this.props.form;
         const lines = this.props.currentCommercialDeal.escalados;
         //this.setState({lines: lines});
@@ -118,9 +118,9 @@ class CommercialDealLines extends React.Component {
                     </Row> 
                     <Form.Item>
                     <Row gutter={8} type="flex">
-                        {this.props.currentStep > 0 ?  
+                        {currentStep > 0 ?  
                             <Col>
-                                <Button type="primary" htmlType="submit" onClick={this.onClickBack}>
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickBack}>
                                     Atrás
                                 </Button>
                             </Col>

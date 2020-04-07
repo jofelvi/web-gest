@@ -38,7 +38,7 @@ class FormDefinition extends React.Component {
     };
     goToNextStep = e => {
         e.preventDefault();
-        const { currentStep} = this.state;
+        const { currentStep } = this.state;
         console.log("soy el current step", currentStep)
         this.setState({ currentStep: currentStep + 1})         
       };
@@ -75,25 +75,29 @@ class FormDefinition extends React.Component {
                 currentStep = {currentStep}
                 locale = {locale}
                 dealTypes = {this.props.dealTypes}
-                onClick = {(e)=>{ this.goToNextStep(e)}}
+                onClickNext = {(e)=>{ this.goToNextStep(e)}}
+                onClickBack = {this.backStep}
                 ></CommercialDealBasicData>
                 </div>
                 <div style={{display:currentStep !== 1 ? 'none': 'block'}}>
                     <CommercialDealLines 
+                    currentStep = {currentStep}
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
                     ></CommercialDealLines>
                 </div>
                 <div style={{display: this.props.currentCommercialDeal.tipo !== "Campaña" && currentStep === 2 ? 'block': 'none'}}>
-                    <CommercialDealProducts  
+                    <CommercialDealProducts
+                    currentStep = {currentStep}  
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
                     ></CommercialDealProducts>
                 </div>
                 <div style={{display: this.props.currentCommercialDeal.tipo !== "Promoción" && currentStep === 3 ? 'block': 'none'}}>
-                    <CommercialDealUsers  
+                    <CommercialDealUsers
+                    currentStep = {currentStep}  
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
-                    onClickBack = {this.backStep}s
+                    onClickBack = {this.backStep}
                     ></CommercialDealUsers>
                 </div>
                 {/* <Divider></Divider> */}

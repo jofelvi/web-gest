@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Table, Switch} from 'antd';
+import {Table, Switch, Col, Button, Row} from 'antd';
 
 var columnsUsers=[
     {
@@ -68,7 +68,10 @@ const CommercialDealsUsers = ({
     currentCommercialDeal,
     users,
     updateClientsFilter,
-    updateFilterOfClient
+    updateFilterOfClient,
+    onClickNext,
+    onClickBack,
+    currentStep
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
@@ -90,6 +93,27 @@ const CommercialDealsUsers = ({
                 rowKey='idcliente'
                 locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
             ></Table>
+             <Row gutter={8} type="flex">
+                        {currentStep > 0 ?  
+                            <Col>
+                                <Button type="primary" htmlType="submit" onClick={onClickBack}>
+                                    Atrás
+                                </Button>
+                            </Col>
+                        : ''}
+                        
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={onClickNext}>
+                                    Siguiente
+                                </Button>
+                            </Col>
+                            <Col> 
+                                <Button type="primary" htmlType="submit" >
+                                    Guardar
+                                </Button>
+                            </Col>
+                        
+                    </Row>
         </div>);
 };
 CommercialDealsUsers.propTypes = {

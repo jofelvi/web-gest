@@ -29,7 +29,7 @@ class CommercialDealBasicData extends React.Component {
         
       };
     render(){
-        const { createCommercialDeal } = this.props;
+        const { createCommercialDeal, currentStep} = this.props;
 
         //const { getFieldDecorator } = this.props.form;
         const lines = this.props.currentCommercialDeal.escalados;
@@ -106,7 +106,7 @@ class CommercialDealBasicData extends React.Component {
         </Row>
         <Form.Item>
                     <Row gutter={8} type="flex">
-                        {this.props.currentStep > 0 ?  
+                        {currentStep > 0 ?  
                             <Col>
                                 <Button type="primary" htmlType="submit" onClick={this.props.onClickBack}>
                                     Atrás

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Table, Switch} from 'antd';
+import {Table, Switch, Row, Button, Col} from 'antd';
 //properties
 var columnsProducts=[
     {
@@ -276,7 +276,10 @@ const CommercialDealProducts = ({
     brands,
     subBrands,
     updateProductsFilter,
-    updateFilter
+    updateFilter,
+    currentStep,
+    onClickBack,
+    onClickNext
 })=> {
     useEffect(()=>{
         if(!updateFilter){
@@ -298,6 +301,27 @@ const CommercialDealProducts = ({
                 rowKey='codindas'
                 locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
             ></Table>
+             <Row gutter={8} type="flex">
+                        {currentStep > 0 ?  
+                            <Col>
+                                <Button type="primary" htmlType="submit" onClick={onClickBack}>
+                                    Atrás
+                                </Button>
+                            </Col>
+                        : ''}
+                        
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={onClickNext}>
+                                    Siguiente
+                                </Button>
+                            </Col>
+                            <Col> 
+                                <Button type="primary" htmlType="submit" >
+                                    Guardar
+                                </Button>
+                            </Col>
+                        
+                    </Row>
         </div>);
 };
 
