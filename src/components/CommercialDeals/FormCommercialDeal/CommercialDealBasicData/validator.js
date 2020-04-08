@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const requiredData = 'Este campo no puede estar vacío';
+const requiredData = 'Este campo es obligatorio';
 
 const requiredValidation = Yup.string()
   .required(requiredData);

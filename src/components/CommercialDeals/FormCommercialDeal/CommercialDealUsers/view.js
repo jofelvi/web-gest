@@ -71,7 +71,8 @@ const CommercialDealsUsers = ({
     updateFilterOfClient,
     onClickNext,
     onClickBack,
-    currentStep
+    currentStep,
+    commercialDealType
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
@@ -82,7 +83,10 @@ const CommercialDealsUsers = ({
         
     },[currentCommercialDeal, users, updateFilterOfClient]);
     return (
+       
         <div>
+             { commercialDealType != 0 ?
+             <div>
             <Table 
                 className="commercial-deals-products"
                 dataSource={users}
@@ -114,6 +118,8 @@ const CommercialDealsUsers = ({
                             </Col>
                         
                     </Row>
+                    </div>
+                    : <span>'no aplica'</span>}
         </div>);
 };
 CommercialDealsUsers.propTypes = {

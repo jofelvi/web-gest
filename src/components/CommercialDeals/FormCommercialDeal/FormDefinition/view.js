@@ -39,7 +39,6 @@ class FormDefinition extends React.Component {
     goToNextStep = e => {
         e.preventDefault();
         const { currentStep } = this.state;
-        console.log("soy el current step", currentStep)
         this.setState({ currentStep: currentStep + 1})         
       };
     onStepChange = currentStep => {
@@ -49,8 +48,9 @@ class FormDefinition extends React.Component {
     render(){
         //CommercialDealLinesForm = Form.create(this.props.currentCommercialDeal)(CommercialDealLines);
         //const { getFieldDecorator } = this.props.form;
-        const {createCommercialDeal} = this.props
+        const {dealTypes, commercialDealType} = this.props
         const { currentStep} = this.state;
+  
         return  (
         <div>
             <Steps 
@@ -74,7 +74,7 @@ class FormDefinition extends React.Component {
                 <CommercialDealBasicData
                     currentStep = {currentStep}
                     locale = {locale}
-                    dealTypes = {this.props.dealTypes}
+                    dealTypes = {dealTypes}
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
                     
@@ -94,13 +94,19 @@ class FormDefinition extends React.Component {
                     onClickBack = {this.backStep}
                     ></CommercialDealProducts>
                 </div>
-                <div style={{display: this.props.currentCommercialDeal.tipo !== "Promoción" && currentStep === 3 ? 'block': 'none'}}>
+                
+                <div>
+                {commercialDealType && (commercialDealType === 1 || commercialDealType === 2 || commercialDealType === 3)&& currentStep === 3 && (
                     <CommercialDealUsers
+                    commercialDealType = { commercialDealType }
                     currentStep = {currentStep}  
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
-                    ></CommercialDealUsers>
+                    ></CommercialDealUsers>) }
+                    {currentStep === 3 && commercialDealType === 0 && (
+                    <span>Este paso no aplica</span>)}
                 </div>
+                
                 {/* <Divider></Divider> */}
                 
             </Form>

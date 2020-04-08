@@ -46,7 +46,7 @@ class CommercialDealBasicData extends React.Component {
         }
     }
     render(){
-        const { createCommercialDeal, currentStep} = this.props;
+        const { createCommercialDeal, currentStep, setCommercialDealType, commercialDealType} = this.props;
         const lines = this.props.currentCommercialDeal.escalados;
         //this.setState({lines: lines});
         return (
@@ -64,21 +64,38 @@ class CommercialDealBasicData extends React.Component {
                         ind_surtido,
                 
                     } = values;
-                    createCommercialDeal({ 
-                        nombre: nombre,
-                        descripcion: descripcion,
-                        codcupon: codcupon,
-                        fechainicio: moment(fechainicio).format(),
-                        fechafin: moment(fechafin).format(),
-                        idtipo: tipo,
-                        margen: margen,
-                        ind_surtido: ind_surtido,
-                        escalados: [],
-                        productos: [],
-                        clientes: [],
-                        idestado: 2
-                    });
-
+                    if(tipo === 3){
+                        createCommercialDeal({ 
+                            nombre: nombre,
+                            descripcion: descripcion,
+                            codcupon: codcupon,
+                            fechainicio: moment(fechainicio).format(),
+                            fechafin: moment(fechafin).format(),
+                            idtipo: tipo,
+                            margen: margen,
+                            ind_surtido: ind_surtido,
+                            escalados: [],
+                            productos: [],
+                            clientes: [],
+                            idestado: 2
+                        });
+                    }else{
+                        createCommercialDeal({ 
+                            nombre: nombre,
+                            descripcion: descripcion,
+                            codcupon: '',
+                            fechainicio: moment(fechainicio).format(),
+                            fechafin: moment(fechafin).format(),
+                            idtipo: tipo,
+                            margen: 0,
+                            ind_surtido: ind_surtido,
+                            escalados: [],
+                            productos: [],
+                            clientes: [],
+                            idestado: 2
+                        });
+                    }
+                    setCommercialDealType({idtipo: tipo})
                     this.goToNextIfValidationOk(errors)
                 }}
 
@@ -134,10 +151,11 @@ class CommercialDealBasicData extends React.Component {
                                         onBlur={handleBlur}
                                     >
                                     {this.props.dealTypes && (this.props.dealTypes.map((dealType)=>{
-                                        console.log(dealType);
+                                        
                                         return <Select.Option 
                                                     key={dealType.idtipo} 
                                                     value={dealType.idtipo}
+                                                    
                                                 >
                                                     {dealType.nombre}
                                                </Select.Option>

@@ -16,7 +16,8 @@ import {
   setCurrentCommercialDeal,
   updateProductsFilter,
   loadDealTypesSuccess,
-  updateClientsFilter
+  updateClientsFilter,
+  setCommercialDealType,
 } from './actions';
 
 const defaultState = {
@@ -103,6 +104,11 @@ export default handleActions(
       ...state,
       updateFilterOfClient: payload
     }),
+    [setCommercialDealType]:  (state, { payload}) => ({
+      ...state,
+      commercialDealType: payload
+    }),
+    
   },
   defaultState
 );
