@@ -13,47 +13,43 @@ import './styles.css'
 import { Formik } from 'formik';
 import basicDataSchema from './validator';
 import { handleInput } from '../../../../lib/forms'
+import { continueProcessFailed } from '../../../../modules/forms/actions';
 
 const initialValues = {
-    escalados: [
-        {
-            descuento: 0.00,
-            txtdescuento: "(10+1)",
-            udsmaximas: 0,
-            udsminimas: 0
-        }
-    ]
+   escalados: [],
+
 }
 class CommercialDealLines extends React.Component {
     state = {
         lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : [],
        
     }
-    addRow = e => {
-        e.preventDefault();
+    addRow = (values) => {
       
-        
+        var {lines} = this.state;
+        lines.push(values);
+        this.setState({lines: lines});   
       };
   
     render(){
     
-    const {currentStep, editCommercialDeal } = this.props;
-        //const { getFieldDecorator } = this.props.form;
-        const lines = this.props.currentCommercialDeal.escalados;
-        //this.setState({lines: lines});
-        
-
+    const {currentStep, editCommercialDeal, idCommercialDeal } = this.props;
+    const lines = this.props.currentCommercialDeal.escalados;
+       
         return (
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values, id,  errors) => {
-                
-                  console.log("values lines", values)
-                        editCommercialDeal({ id, values});
+                onSubmit={(values,  errors) => { 
                     
+                     if (values){
+                        initialValues.escalados.push({udsminimas: values.udsminimas,
+                        udsmaximas: values.udsmaximas,
+                        descuento: values.descuento,
+                        txtdescuento: values.txtdescuento})
+                    }
                     
-                    //setCommercialDealType({idtipo: tipo})
-                   // this.goToNextIfValidationOk(errors)
+                    editCommercialDeal({ id: idCommercialDeal , values: {escalados: initialValues.escalados} });
+                    this.addRow(values)
                 }}
 
                 validationSchema={basicDataSchema}
@@ -64,7 +60,6 @@ class CommercialDealLines extends React.Component {
                     values,
                     setFieldValue,
                     handleSubmit,
-                    handleBlur,
                     errors,
                 } = props;
                 return(
@@ -159,8 +154,8 @@ class CommercialDealLines extends React.Component {
                             md={{span:4}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" onClick={this.addRow}>
-                                       Agregar
+                                    <Button type="primary" htmlType="submit" onClick={handleSubmit} >
+                                       Agregar y Guardar
                                     </Button>
                                 </Form.Item>
                             </Col>

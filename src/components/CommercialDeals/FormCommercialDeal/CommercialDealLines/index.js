@@ -8,7 +8,8 @@ import {
 export default connect(
     state => ({
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
-      users: state.commercialDeals.users
+      users: state.commercialDeals.users,
+      idCommercialDeal: state.commercialDeals.idCommercialDeal
     }),
     { editCommercialDeal }
   )(View);
