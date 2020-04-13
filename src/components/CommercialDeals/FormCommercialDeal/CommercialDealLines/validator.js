@@ -6,12 +6,9 @@ const requiredValidation = Yup.string()
   .required(requiredData);
 
 const basicDataSchema = Yup.object().shape({
-  nombre: requiredValidation,
-  tipo:requiredValidation,
-  fechainicio: requiredValidation,
-  fechafin: requiredValidation,
-  margen: requiredValidation,
-  ind_surtido: requiredValidation,
+  descuento: requiredValidation,
+  udsmaximas:requiredValidation,
+  udsminimas: requiredValidation
 });
 
 export default basicDataSchema;

@@ -10,22 +10,64 @@ import {
     Icon
 } from 'antd';
 import './styles.css'
+import { Formik } from 'formik';
+import basicDataSchema from './validator';
+import { handleInput } from '../../../../lib/forms'
 
+const initialValues = {
+    escalados: [
+        {
+            descuento: 0.00,
+            txtdescuento: "(10+1)",
+            udsmaximas: 0,
+            udsminimas: 0
+        }
+    ]
+}
 class CommercialDealLines extends React.Component {
     state = {
-        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : []
+        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : [],
+       
     }
     addRow = e => {
         e.preventDefault();
       
         
       };
+  
     render(){
-        const {currentStep} = this.props;
+    
+    const {currentStep, editCommercialDeal } = this.props;
         //const { getFieldDecorator } = this.props.form;
         const lines = this.props.currentCommercialDeal.escalados;
         //this.setState({lines: lines});
+        
+
         return (
+            <Formik
+                initialValues={initialValues}
+                onSubmit={(values, id,  errors) => {
+                
+                  console.log("values lines", values)
+                        editCommercialDeal({ id, values});
+                    
+                    
+                    //setCommercialDealType({idtipo: tipo})
+                   // this.goToNextIfValidationOk(errors)
+                }}
+
+                validationSchema={basicDataSchema}
+            >
+            {(props) => {
+
+                const {
+                    values,
+                    setFieldValue,
+                    handleSubmit,
+                    handleBlur,
+                    errors,
+                } = props;
+                return(
             <div>
                    <Row 
                     className="commercial-deal-form-lines-header"
@@ -54,28 +96,63 @@ class CommercialDealLines extends React.Component {
                             md={{span:5}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <InputNumber style={{width:'100%'}}/>
+                                    <InputNumber 
+                                        id= 'udsminimas' 
+                                        name= 'udsminimas' 
+                                        style={{width:'100%'}}
+                                        onChange={handleInput(setFieldValue, 'udsminimas')}
+                                        value = {values.udsminimas}
+                                        placeholder="Introduce las unidades mínimas"
+                                        
+                                    />
+                                    {errors.udsminimas && (<div style={{ color: 'red' }}>{errors.udsminimas}</div>)}
+
                                 </Form.Item>
                             </Col>
                             <Col 
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                <InputNumber style={{width:'100%'}}/>
+                                <InputNumber 
+                                    id = 'udsmaximas' 
+                                    name = 'udsmaximas' 
+                                    style={{width:'100%'}}
+                                    onChange={handleInput(setFieldValue, 'udsmaximas')}
+                                    value = {values.udsmaximas}
+                                    placeholder="Introduce las unidades máximas"
+                                    
+                                />
+                                {errors.udsmaximas && (<div style={{ color: 'red' }}>{errors.udsmaximas}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    <InputNumber style={{width:'100%'}}/>
+                                    <InputNumber 
+                                        id = 'descuento' 
+                                        name = 'descuento' 
+                                        style={{width:'100%'}}
+                                        onChange={handleInput(setFieldValue, 'descuento')}
+                                        value = {values.descuento}
+                                        placeholder="Introduce el valor del descuento"
+                                        
+                                    />
+                                    {errors.descuento && (<div style={{ color: 'red' }}>{errors.descuento}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    <Input/>
+                                    <Input 
+                                        id = 'txtdescuento' 
+                                        name = 'txtdescuento'
+                                        onChange={handleInput(setFieldValue, 'txtdescuento')}
+                                        value = {values.txtdescuento}
+                                        placeholder="Introduce texto de descuento"
+                                    />
+                                    {errors.txtdescuento && (<div style={{ color: 'red' }}>{errors.txtdescuento}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
@@ -132,7 +209,7 @@ class CommercialDealLines extends React.Component {
                                 </Button>
                             </Col>
                             <Col> 
-                                <Button type="primary" htmlType="submit" >
+                                <Button type="primary" htmlType="submit" onClick={handleSubmit}  >
                                     Guardar
                                 </Button>
                             </Col>
@@ -141,7 +218,10 @@ class CommercialDealLines extends React.Component {
                 </Form.Item>    
                         
                 
-            </div>);
+            </div>
+            )}}
+         </Formik>   
+        );
     };
 };
 

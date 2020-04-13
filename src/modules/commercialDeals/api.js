@@ -1,8 +1,9 @@
-import { get, post } from '../../lib/restClient';
+import { get, post, put } from '../../lib/restClient';
 
 //commercial deals
 export const getCommercialDeals = () => get('/ntr/condcomercial')
 export const createCommercialDeal = (dealDef) => post('/ntr/condcomercial/create',dealDef); 
+export const editCommercialDeal = (id, dealDef) => put(`/ntr/condcomercial/${id}`,dealDef); 
 
 //lists
 export const getFamlies = () => get('/ntr/familia');
