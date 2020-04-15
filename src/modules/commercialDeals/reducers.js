@@ -22,6 +22,7 @@ import {
   setProductsCommercialDeal,
   setEscaladosCommercialDeal,
   setUsersCommercialDeal,
+  editCommercialDealSuccess,
 } from './actions';
 
 const defaultState = {
@@ -101,8 +102,20 @@ export default handleActions(
     }),
     [createCommercialDealSuccess]: (state, { payload}) => ({
       ...state,
-      deal: payload.deal
+      deal: payload.deal,
+      list: [payload.deal, ...state.list]
     }),
+    [editCommercialDealSuccess]: (state, { payload}) => ({
+      ...state,
+      deal: payload.deal,
+      list: state.list.map( deal => {
+        if(deal.idcondcomercial === payload.deal.idcondcomercial){
+          return payload.deal;
+        }
+        return deal;
+      })
+    }),
+    
     [updateProductsFilter]:  (state, { payload}) => ({
       ...state,
       updateFilter: payload

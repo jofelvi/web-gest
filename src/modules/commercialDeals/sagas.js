@@ -31,7 +31,8 @@ import {
   loadUsersSuccess,
   loadDealTypesSuccess,
   loadDealTypesFailed,
-  getCommercialDealId
+  getCommercialDealId,
+  editCommercialDealSuccess
 } from './actions';
 
 import * as api from './api';
@@ -55,7 +56,7 @@ function* createCommercialDeal({payload}) {
   try {
     const response = yield call(api.createCommercialDeal,payload);
     yield put (getCommercialDealId({idCommercialDeal: response.data.idcondcomercial}))
-    yield put(createCommercialDealSuccess({ deal: response }));
+    yield put(createCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
     console.error(e);
     yield put(createCommercialDealFailed);
@@ -70,7 +71,8 @@ export function* watchCreateCommercialDeal() {
 function* editCommercialDeal({payload}) {
   try {
     const response = yield call(api.editCommercialDeal,payload.id.idCommercialDeal, payload.values );
-    //yield put(editCommercialDealSuccess({ deal: response.data }));
+    console.log("edit response", response.data)
+    yield put(editCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
       console.error(e);
       yield put(createCommercialDealFailed);
