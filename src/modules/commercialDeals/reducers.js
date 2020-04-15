@@ -18,7 +18,9 @@ import {
   loadDealTypesSuccess,
   updateClientsFilter,
   setCommercialDealType,
-  getCommercialDealId
+  getCommercialDealId,
+  setProductsCommercialDeal,
+  setEscaladosCommercialDeal
 } from './actions';
 
 const defaultState = {
@@ -36,7 +38,10 @@ const defaultState = {
   newCommercialDealVisible:false,
   currentCommercialDeal: {},
   updateFilter: false,
-  updateFilterOfClient: false
+  updateFilterOfClient: false,
+  productos: [],
+  escalados: []
+
 };
 
 export default handleActions(
@@ -113,6 +118,15 @@ export default handleActions(
       ...state,
       idCommercialDeal: payload
     }),
+    [setProductsCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      productos: payload.productos,
+    }),
+    [setEscaladosCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      escalados: payload.escalados,
+    }),
+    
   },
   defaultState
 );

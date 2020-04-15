@@ -95,14 +95,14 @@ class FormDefinition extends React.Component {
                     ></CommercialDealProducts>
                 </div>
                 
-                <div>
-                {commercialDealType && (commercialDealType === 1 || commercialDealType === 2 || commercialDealType === 3)&& currentStep === 3 && (
+                <div style={{display: this.props.currentCommercialDeal.tipo !== "Promocion" && currentStep === 3 ? 'block': 'none'}}>
+               
                     <CommercialDealUsers
                     commercialDealType = { commercialDealType }
                     currentStep = {currentStep}  
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
-                    ></CommercialDealUsers>) }
+                    ></CommercialDealUsers>
                     {currentStep === 3 && commercialDealType === 0 && (
                     <span>Este paso no aplica</span>)}
                 </div>

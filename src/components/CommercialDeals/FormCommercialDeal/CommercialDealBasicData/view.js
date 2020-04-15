@@ -53,7 +53,6 @@ class CommercialDealBasicData extends React.Component {
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values, errors) => {
-                    console.log( "values", values)
                     const {
                         nombre,
                         descripcion,

@@ -68,7 +68,6 @@ export function* watchCreateCommercialDeal() {
 
 
 function* editCommercialDeal({payload}) {
- 
   try {
     const response = yield call(api.editCommercialDeal,payload.id.idCommercialDeal, payload.values );
     //yield put(editCommercialDealSuccess({ deal: response.data }));

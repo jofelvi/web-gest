@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {Table, Switch, Row, Button, Col} from 'antd';
 //properties
@@ -54,7 +54,8 @@ var columnsProducts=[
         title: 'Asociado',
         dataIndex: 'indactivo',
         key: 'indactivo',
-        render: (colVal, record) => {}
+        render: () => ( <Switch/>  )     
+        
     }
 ];
 const filterColumns = {
@@ -64,7 +65,21 @@ const filterColumns = {
     "nombresubmarca":"idsubmarca"
 };
 //methods
-const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal)=>{
+const getSelectedProducts = (productos, record ) => {
+    if(!productos.length){
+        
+        return [{codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
+    }else{
+        const productosFiltered = productos.filter( product => product.codindas !== record.codindas )
+        if(productos.length === productos.length ){
+            return [...productos, {codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
+        }
+        return productosFiltered;
+    }    
+  
+}
+
+const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos)=>{
     columnsProducts.map((el)=>{
         if(el.title === "Familia"){
             el.filters = families.map((family)=>{
@@ -102,18 +117,26 @@ const getFilters = (families, subFamilies, products, brands, subBrands, currentC
                 }
             });
         } else if(el.dataIndex === 'indactivo'){
-            el.render = ({},record) =>{ return getRender(currentCommercialDeal, record)};
+            el.render = ({},record) =>{ 
+               return <Switch 
+                        checked= {!!(productos || []).find(product => product.codindas === record.codindas)} 
+                        onChange = {(e)=>{setProductsCommercialDeal({productos: getSelectedProducts(productos, record)})       
+                
+                      }}/>
+            };
         }
         return el;
     });
     return true;
 };
+
 const getRender = (currentCommercialDeal, record) => {
+   
     if(currentCommercialDeal.productos !== null && currentCommercialDeal.productos !== undefined){
         const exist = currentCommercialDeal.productos.filter((product) => {
+           
             return product.codindas === record.codindas
         }).length > 0;
-
         if(exist){
             return <Switch defaultChecked/>
         }  
@@ -208,7 +231,7 @@ const updateFilters = (currentData, filters, column) =>{
     });
     return applyFilters;
 }
-const changeData = (currentData,filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter)=>{
+const changeData = (currentData,filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos)=>{
     var applyFilters = false;
     if(Object.keys(filters).length > 0){
         columnsProducts.map((column)=> {
@@ -230,7 +253,7 @@ const changeData = (currentData,filters,families, subFamilies, products, brands,
     }
     console.log(applyFilters);
     if(!applyFilters){
-        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal); 
+        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos); 
         updateProductsFilter(true);
     }
     return true;
@@ -279,14 +302,25 @@ const CommercialDealProducts = ({
     updateFilter,
     currentStep,
     onClickBack,
-    onClickNext
+    onClickNext,
+    editCommercialDeal,
+    idCommercialDeal,
+    setProductsCommercialDeal, 
+    productos,
+    escalados,
 })=> {
     useEffect(()=>{
         if(!updateFilter){
-            changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter);
+            changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos);
         }
+        
         updateProductsFilter(false);
-    },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter]);
+    },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
+   
+    const submitProducts = (productos, escalados, id) =>{
+        editCommercialDeal({id, values: {productos, escalados}})
+    }
+   
     return (
        
         <div>
@@ -316,7 +350,7 @@ const CommercialDealProducts = ({
                                 </Button>
                             </Col>
                             <Col> 
-                                <Button type="primary" htmlType="submit" >
+                                <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, idCommercialDeal))} >
                                     Guardar
                                 </Button>
                             </Col>

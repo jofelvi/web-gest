@@ -15,10 +15,6 @@ import basicDataSchema from './validator';
 import { handleInput } from '../../../../lib/forms'
 import { continueProcessFailed } from '../../../../modules/forms/actions';
 
-const initialValues = {
-   escalados: [],
-
-}
 class CommercialDealLines extends React.Component {
     state = {
         lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : [],
@@ -30,26 +26,26 @@ class CommercialDealLines extends React.Component {
         lines.push(values);
         this.setState({lines: lines});   
       };
-  
+
+    getSelectedEscalados = (escalados, values ) => {
+           if(!escalados.length){
+                return [values];
+            }else{
+                return [...escalados, values];
+            }      
+    }
     render(){
     
-    const {currentStep, editCommercialDeal, idCommercialDeal } = this.props;
+    const {currentStep, editCommercialDeal, idCommercialDeal, escalados , setEscaladosCommercialDeal } = this.props;
     const lines = this.props.currentCommercialDeal.escalados;
        
         return (
             <Formik
-                initialValues={initialValues}
-                onSubmit={(values,  errors) => { 
-                    
-                     if (values){
-                        initialValues.escalados.push({udsminimas: values.udsminimas,
-                        udsmaximas: values.udsmaximas,
-                        descuento: values.descuento,
-                        txtdescuento: values.txtdescuento})
-                    }
-                    
-                    editCommercialDeal({ id: idCommercialDeal , values: {escalados: initialValues.escalados} });
-                    this.addRow(values)
+                
+                onSubmit={(values,  errors) => {  
+                    setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
+                                
+                    this.addRow(values);
                 }}
 
                 validationSchema={basicDataSchema}
@@ -203,11 +199,7 @@ class CommercialDealLines extends React.Component {
                                     Siguiente
                                 </Button>
                             </Col>
-                            <Col> 
-                                <Button type="primary" htmlType="submit" onClick={handleSubmit}  >
-                                    Guardar
-                                </Button>
-                            </Col>
+                           
                         
                     </Row>
                 </Form.Item>    
