@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Menu, Dropdown, Button, Icon} from 'antd';
 
 const menu = (cmp) => <Menu>
+    {console.log({cmp})}
     <Menu.Item key="1" onClick={() => {
         cmp.setCurrentCommercialDeal(cmp.deal);
         console.log(cmp.deal);

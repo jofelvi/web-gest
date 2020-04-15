@@ -18,8 +18,8 @@ export default connect(
       subBrands:state.commercialDeals.subBrands,
       updateFilter:state.commercialDeals.updateFilter,
       idCommercialDeal: state.commercialDeals.idCommercialDeal,
-      productos: state.commercialDeals.productos,
-      escalados: state.commercialDeals.escalados,
+      productos: state.commercialDeals.currentCommercialDeal.productos,
+      escalados: state.commercialDeals.currentCommercialDeal.escalados,
 
     }),
     { updateProductsFilter, editCommercialDeal, setProductsCommercialDeal}

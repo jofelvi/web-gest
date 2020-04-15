@@ -16,9 +16,9 @@ export default connect(
         users: state.commercialDeals.users,
         updateFilterOfClient: state.commercialDeals.updateFilterOfClient,
         idCommercialDeal: state.commercialDeals.idCommercialDeal,
-        productos: state.commercialDeals.productos,
-        escalados: state.commercialDeals.escalados,
-        clientes: state.commercialDeals.clientes,
+        productos: state.commercialDeals.currentCommercialDeal.productos,
+        escalados: state.commercialDeals.currentCommercialDeal.escalados,
+        clientes: state.commercialDeals.currentCommercialDeal.clientes,
   
       }),
     

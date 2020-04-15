@@ -4,7 +4,10 @@ import {
   createCommercialDeal,
   showEditCommercialDeal,
   showNewCommercialDeal,
-  setCommercialDealType
+  setCommercialDealType,
+  editCommercialDeal,
+ 
+
 } from '../../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -14,5 +17,5 @@ export default connect(
       commercialDealType: state.commercialDeals.commercialDealType
 
     }),
-    {createCommercialDeal, setCommercialDealType }
+    {createCommercialDeal, setCommercialDealType, editCommercialDeal }
   )(View);
