@@ -31,32 +31,41 @@ var columnsUsers=[
         title: 'Asociado',
         dataIndex: 'idestado',
         key: 'idestado',
-        render: (colVal, record) => {}
+        render: () => ( <Switch/>  )
     }
 ];
 
 //methods
-const getRender = (currentCommercialDeal, record) => {
-    console.log("entra al render");
-    if(currentCommercialDeal.clientes !== null && currentCommercialDeal.clientes !== undefined){
-        const exist = currentCommercialDeal.clientes.filter((cliente) => {
-            return cliente.idcliente === record.idcliente
-        }).length > 0;
-
-        if(exist){
-            return <Switch defaultChecked/>
-        }  
-    }
-    return <Switch/>
-    
+const getSelectedUsers = (clientes, record ) => {
+    if(!clientes.length){
+        return [{idcliente: record.idcliente, nombre: record.nombre}];
+    }else{
+        const clientesFiltered = clientes.filter( cliente => cliente.idcliente !== record.idcliente )
+       if(clientes.length === clientesFiltered.length ){
+            return [...clientes, {idcliente: record.idcliente, nombre: record.nombre }];
+        }
+       
+        return clientesFiltered;
+    }    
+  
 }
-const change = (currentCommercialDeal,updateClientsFilter)=>{
+
+const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDeal, clientes)=>{
     updateClientsFilter(true);
     columnsUsers.map((el)=>{
        if(el.dataIndex === 'idestado'){
+            el.render = ({},record) =>{ 
+           
+                return <Switch
+                    id = "clienteAsociado" 
+                    checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
+                    onChange = {(e)=>{
+                        updateClientsFilter(true);
+                        const clientesAsociados = getSelectedUsers(clientes, record);
+                        setUsersCommercialDeal({clientes: clientesAsociados })}}/>
+                    };
             
-            el.render = ({},record) =>{ return getRender(currentCommercialDeal, record)};
-       }
+            }
        
         return el;
     });
@@ -72,16 +81,24 @@ const CommercialDealsUsers = ({
     onClickNext,
     onClickBack,
     currentStep,
-    commercialDealType
+    commercialDealType,
+    editCommercialDeal,
+    setUsersCommercialDeal,
+    productos,
+    escalados,
+    clientes,
+    idCommercialDeal
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
-             change(currentCommercialDeal, updateClientsFilter)
-   
+             change(currentCommercialDeal, updateClientsFilter, setUsersCommercialDeal, clientes)
         } 
-       
-        
-    },[currentCommercialDeal, users, updateFilterOfClient]);
+        updateClientsFilter(false);       
+    },[currentCommercialDeal, users, updateFilterOfClient, setUsersCommercialDeal, clientes]);
+    
+    const submitClients = (productos, escalados, clientes, id) =>{
+        editCommercialDeal({id, values: {productos, escalados, clientes}})
+    }
     return (
        
         <div>
@@ -90,7 +107,7 @@ const CommercialDealsUsers = ({
             <Table 
                 className="commercial-deals-products"
                 dataSource={users}
-                onChange = {() => change(currentCommercialDeal,updateClientsFilter)}
+                onChange = {(pagination, filters, sorter, data) => change(currentCommercialDeal,updateClientsFilter, setUsersCommercialDeal, clientes)}
                 columns={columnsUsers}
                 size='small'
                 pagination={true}
@@ -112,7 +129,7 @@ const CommercialDealsUsers = ({
                                 </Button>
                             </Col>
                             <Col> 
-                                <Button type="primary" htmlType="submit" >
+                                <Button type="primary" htmlType="submit" onClick={(e)=>(submitClients(productos, escalados, clientes, idCommercialDeal))}>
                                     Guardar
                                 </Button>
                             </Col>

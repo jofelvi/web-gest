@@ -72,8 +72,8 @@ function* editCommercialDeal({payload}) {
     const response = yield call(api.editCommercialDeal,payload.id.idCommercialDeal, payload.values );
     //yield put(editCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
-    console.error(e);
-    yield put(createCommercialDealFailed);
+      console.error(e);
+      yield put(createCommercialDealFailed);
   }
 }
 

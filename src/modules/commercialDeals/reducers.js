@@ -20,7 +20,8 @@ import {
   setCommercialDealType,
   getCommercialDealId,
   setProductsCommercialDeal,
-  setEscaladosCommercialDeal
+  setEscaladosCommercialDeal,
+  setUsersCommercialDeal,
 } from './actions';
 
 const defaultState = {
@@ -40,8 +41,8 @@ const defaultState = {
   updateFilter: false,
   updateFilterOfClient: false,
   productos: [],
-  escalados: []
-
+  escalados: [],
+  clientes: []
 };
 
 export default handleActions(
@@ -126,6 +127,15 @@ export default handleActions(
       ...state,
       escalados: payload.escalados,
     }),
+    
+    [setUsersCommercialDeal]: (state, { payload}) =>{ 
+      console.log({state})
+      console.log({payload})
+      return ({
+        ...state,
+        clientes: payload.clientes,
+      })
+    }
     
   },
   defaultState

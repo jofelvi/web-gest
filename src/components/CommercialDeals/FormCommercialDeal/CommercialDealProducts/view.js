@@ -54,7 +54,7 @@ var columnsProducts=[
         title: 'Asociado',
         dataIndex: 'indactivo',
         key: 'indactivo',
-        render: () => ( <Switch/>  )     
+        render: () => ( <Switch id = "productoAsociado"/>  )     
         
     }
 ];
@@ -119,6 +119,7 @@ const getFilters = (families, subFamilies, products, brands, subBrands, currentC
         } else if(el.dataIndex === 'indactivo'){
             el.render = ({},record) =>{ 
                return <Switch 
+                        id = "productoAsociado"
                         checked= {!!(productos || []).find(product => product.codindas === record.codindas)} 
                         onChange = {(e)=>{setProductsCommercialDeal({productos: getSelectedProducts(productos, record)})       
                 
