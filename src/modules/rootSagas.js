@@ -36,7 +36,8 @@ import {
   watchloadUsers,
   watchloadBrands,
   watchloadSubBrands,
-  watchloadDealTypes
+  watchloadDealTypes,
+  watchEditCommercialDeal
 } from './commercialDeals/sagas';
 
 import{
@@ -114,6 +115,7 @@ export default function* rootSaga() {
     watchfetchClientsData(),
     watchfetchPendingTasks(),
 		watchloadClientesCbim(),    
-		watchloadClienteCbimEntidades(),    
+    watchloadClienteCbimEntidades(), 
+    watchEditCommercialDeal()   
   ]);
 }

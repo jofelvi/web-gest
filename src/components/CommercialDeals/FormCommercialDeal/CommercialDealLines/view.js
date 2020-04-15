@@ -10,32 +10,55 @@ import {
     Icon
 } from 'antd';
 import './styles.css'
+import { Formik } from 'formik';
+import basicDataSchema from './validator';
+import { handleInput } from '../../../../lib/forms'
+import { continueProcessFailed } from '../../../../modules/forms/actions';
 
 class CommercialDealLines extends React.Component {
     state = {
-        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : []
+        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : [],
+       
     }
-    addRow = e => {
-        e.preventDefault();
-        const columnsToValidate = [
-            'udsminimas',
-            'udsmaximas',
-            'descuento',
-            'txtdescuento'
-        ];
-        this.props.form.validateFields(columnsToValidate,(err, values) => {
-          if (!err) {
-            var {lines} = this.state;
-            lines.push(values);
-            this.setState({lines: lines});
-          }
-        });
+    addRow = (values) => {
+      
+        var {lines} = this.state;
+        lines.push(values);
+        this.setState({lines: lines});   
       };
+
+    getSelectedEscalados = (escalados, values ) => {
+           if(!escalados.length){
+                return [values];
+            }else{
+                return [...escalados, values];
+            }      
+    }
     render(){
-        const { getFieldDecorator } = this.props.form;
-        const lines = this.props.currentCommercialDeal.escalados;
-        //this.setState({lines: lines});
+    
+    const {currentStep, editCommercialDeal, idCommercialDeal, escalados , setEscaladosCommercialDeal } = this.props;
+    const lines = this.props.currentCommercialDeal.escalados;
+       
         return (
+            <Formik
+                
+                onSubmit={(values,  errors) => {  
+                    setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
+                                
+                    this.addRow(values);
+                }}
+
+                validationSchema={basicDataSchema}
+            >
+            {(props) => {
+
+                const {
+                    values,
+                    setFieldValue,
+                    handleSubmit,
+                    errors,
+                } = props;
+                return(
             <div>
                    <Row 
                     className="commercial-deal-form-lines-header"
@@ -64,64 +87,71 @@ class CommercialDealLines extends React.Component {
                             md={{span:5}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    {getFieldDecorator('udsminimas', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                    <InputNumber 
+                                        id= 'udsminimas' 
+                                        name= 'udsminimas' 
+                                        style={{width:'100%'}}
+                                        onChange={handleInput(setFieldValue, 'udsminimas')}
+                                        value = {values.udsminimas}
+                                        placeholder="Introduce las unidades mínimas"
+                                        
+                                    />
+                                    {errors.udsminimas && (<div style={{ color: 'red' }}>{errors.udsminimas}</div>)}
+
                                 </Form.Item>
                             </Col>
                             <Col 
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('udsmaximas', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                <InputNumber 
+                                    id = 'udsmaximas' 
+                                    name = 'udsmaximas' 
+                                    style={{width:'100%'}}
+                                    onChange={handleInput(setFieldValue, 'udsmaximas')}
+                                    value = {values.udsmaximas}
+                                    placeholder="Introduce las unidades máximas"
+                                    
+                                />
+                                {errors.udsmaximas && (<div style={{ color: 'red' }}>{errors.udsmaximas}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('descuento', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<InputNumber style={{width:'100%'}}/>)}
+                                    <InputNumber 
+                                        id = 'descuento' 
+                                        name = 'descuento' 
+                                        style={{width:'100%'}}
+                                        onChange={handleInput(setFieldValue, 'descuento')}
+                                        value = {values.descuento}
+                                        placeholder="Introduce el valor del descuento"
+                                        
+                                    />
+                                    {errors.descuento && (<div style={{ color: 'red' }}>{errors.descuento}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:5}}
                             sm={{span:22}}>
                                  <Form.Item>
-                                    {getFieldDecorator('txtdescuento', {
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Rellene la información',
-                                        },
-                                        ],
-                                    })(<Input/>)}
+                                    <Input 
+                                        id = 'txtdescuento' 
+                                        name = 'txtdescuento'
+                                        onChange={handleInput(setFieldValue, 'txtdescuento')}
+                                        value = {values.txtdescuento}
+                                        placeholder="Introduce texto de descuento"
+                                    />
+                                    {errors.txtdescuento && (<div style={{ color: 'red' }}>{errors.txtdescuento}</div>)}
                                 </Form.Item>
                             </Col>
                             <Col
                             md={{span:4}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" onClick={this.addRow}>
-                                       Agregar
+                                    <Button type="primary" htmlType="submit" onClick={handleSubmit} >
+                                       Agregar y Guardar
                                     </Button>
                                 </Form.Item>
                             </Col>
@@ -154,9 +184,31 @@ class CommercialDealLines extends React.Component {
                             </Row> 
                         )}
                     </Row> 
+                    <Form.Item>
+                    <Row gutter={8} type="flex">
+                        {currentStep > 0 ?  
+                            <Col>
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickBack}>
+                                    Atrás
+                                </Button>
+                            </Col>
+                        : ''}
+                        
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={this.props.onClickNext}>
+                                    Siguiente
+                                </Button>
+                            </Col>
+                           
+                        
+                    </Row>
+                </Form.Item>    
                         
                 
-            </div>);
+            </div>
+            )}}
+         </Formik>   
+        );
     };
 };
 

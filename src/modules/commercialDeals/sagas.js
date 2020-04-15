@@ -3,6 +3,7 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 import { 
   LOAD_COMMERCIAL_DEALS,
   CREATE_COMMERCIAL_DEAL,
+  EDIT_COMMERCIAL_DEAL,
   LOAD_FAMILIES,
   LOAD_SUB_FAMILIES,
   LOAD_PRODUCTS,
@@ -29,7 +30,9 @@ import {
   loadUsersFailed,
   loadUsersSuccess,
   loadDealTypesSuccess,
-  loadDealTypesFailed
+  loadDealTypesFailed,
+  getCommercialDealId,
+  editCommercialDealSuccess
 } from './actions';
 
 import * as api from './api';
@@ -52,6 +55,7 @@ export function* watchloadCommercialDeals() {
 function* createCommercialDeal({payload}) {
   try {
     const response = yield call(api.createCommercialDeal,payload);
+    yield put (getCommercialDealId({idCommercialDeal: response.data.idcondcomercial}))
     yield put(createCommercialDealSuccess({ deal: response.data }));
   } catch (e) {
     console.error(e);
@@ -63,6 +67,21 @@ export function* watchCreateCommercialDeal() {
   yield takeLatest(CREATE_COMMERCIAL_DEAL, createCommercialDeal);
 }
 
+
+function* editCommercialDeal({payload}) {
+  try {
+    const response = yield call(api.editCommercialDeal,payload.id.idCommercialDeal, payload.values );
+    console.log("edit response", response.data)
+    yield put(editCommercialDealSuccess({ deal: response.data }));
+  } catch (e) {
+      console.error(e);
+      yield put(createCommercialDealFailed);
+  }
+}
+
+export function* watchEditCommercialDeal() {
+  yield takeLatest(EDIT_COMMERCIAL_DEAL, editCommercialDeal);
+}
 //Lists
 
 //families

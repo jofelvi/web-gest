@@ -3,18 +3,16 @@ import View from './view';
 import { 
   createCommercialDeal,
   showEditCommercialDeal,
-  showNewCommercialDeal
+  showNewCommercialDeal,
+  setCommercialDealType
 } from '../../../../modules/commercialDeals/actions';
 
 export default connect(
     state => ({
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
-      dealTypes: state.commercialDeals.dealTypes,
+      users: state.commercialDeals.users,
       commercialDealType: state.commercialDeals.commercialDealType
+
     }),
-    { 
-      createCommercialDeal,
-      showEditCommercialDeal,
-      showNewCommercialDeal
-    }
+    {createCommercialDeal, setCommercialDealType }
   )(View);

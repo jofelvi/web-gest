@@ -16,7 +16,9 @@ const FormCommercialDeal = ({
     editCommercialDealVisible,
     newCommercialDealVisible,
     showEditCommercialDeal,
-    showNewCommercialDeal
+    showNewCommercialDeal,
+    setProductsCommercialDeal,
+    setUsersCommercialDeal
 }) => {
     useEffect(()=>{
         defineFormComponent(currentCommercialDeal);
@@ -32,6 +34,8 @@ const FormCommercialDeal = ({
                 onCancel={()=> {
                     showEditCommercialDeal(false);
                     showNewCommercialDeal(false);
+                    setProductsCommercialDeal({productos: []})
+                    setUsersCommercialDeal({clientes: []})
                 }}
                 onOk={()=> {
                     showEditCommercialDeal(false);

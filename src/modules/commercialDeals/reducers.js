@@ -16,7 +16,13 @@ import {
   setCurrentCommercialDeal,
   updateProductsFilter,
   loadDealTypesSuccess,
-  updateClientsFilter
+  updateClientsFilter,
+  setCommercialDealType,
+  getCommercialDealId,
+  setProductsCommercialDeal,
+  setEscaladosCommercialDeal,
+  setUsersCommercialDeal,
+  editCommercialDealSuccess,
 } from './actions';
 
 const defaultState = {
@@ -34,7 +40,10 @@ const defaultState = {
   newCommercialDealVisible:false,
   currentCommercialDeal: {},
   updateFilter: false,
-  updateFilterOfClient: false
+  updateFilterOfClient: false,
+  productos: [],
+  escalados: [],
+  clientes: []
 };
 
 export default handleActions(
@@ -93,8 +102,20 @@ export default handleActions(
     }),
     [createCommercialDealSuccess]: (state, { payload}) => ({
       ...state,
-      deal: payload.deal
+      deal: payload.deal,
+      list: [payload.deal, ...state.list]
     }),
+    [editCommercialDealSuccess]: (state, { payload}) => ({
+      ...state,
+      deal: payload.deal,
+      list: state.list.map( deal => {
+        if(deal.idcondcomercial === payload.deal.idcondcomercial){
+          return payload.deal;
+        }
+        return deal;
+      })
+    }),
+    
     [updateProductsFilter]:  (state, { payload}) => ({
       ...state,
       updateFilter: payload
@@ -103,6 +124,32 @@ export default handleActions(
       ...state,
       updateFilterOfClient: payload
     }),
+    [setCommercialDealType]:  (state, { payload}) => ({
+      ...state,
+      commercialDealType: payload
+    }),
+    [getCommercialDealId]:  (state, { payload}) => ({
+      ...state,
+      idCommercialDeal: payload
+    }),
+    [setProductsCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      productos: payload.productos,
+    }),
+    [setEscaladosCommercialDeal]: (state, { payload}) => ({
+      ...state,
+      escalados: payload.escalados,
+    }),
+    
+    [setUsersCommercialDeal]: (state, { payload}) =>{ 
+      console.log({state})
+      console.log({payload})
+      return ({
+        ...state,
+        clientes: payload.clientes,
+      })
+    }
+    
   },
   defaultState
 );

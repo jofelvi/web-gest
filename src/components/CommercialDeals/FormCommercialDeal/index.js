@@ -3,7 +3,9 @@ import View from './view';
 
 import { 
     showEditCommercialDeal,
-    showNewCommercialDeal
+    showNewCommercialDeal,
+    setProductsCommercialDeal,
+    setUsersCommercialDeal
   } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -12,5 +14,5 @@ export default connect(
       editCommercialDealVisible: state.commercialDeals.editCommercialDealVisible,
       newCommercialDealVisible: state.commercialDeals.newCommercialDealVisible
     }),
-    { showEditCommercialDeal, showNewCommercialDeal }
+    { showEditCommercialDeal, showNewCommercialDeal, setProductsCommercialDeal, setUsersCommercialDeal }
   )(View);
