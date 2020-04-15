@@ -46,13 +46,32 @@ class CommercialDealBasicData extends React.Component {
         }
     }
     render(){
-        const { createCommercialDeal, currentStep, setCommercialDealType, commercialDealType} = this.props;
-        const lines = this.props.currentCommercialDeal.escalados;
+        const { 
+            createCommercialDeal, 
+            currentStep, setCommercialDealType, 
+            commercialDealType, 
+            currentCommercialDeal,
+            editCommercialDeal
+        } = this.props;
+        const lines = currentCommercialDeal.escalados;
         //this.setState({lines: lines});
+       
+        const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
+        console.log({currentCommercialDeal})
+        const formikInitialValue = id ? {
+            ...initialValues, 
+            ...currentCommercialDeal,
+            fechainicio: currentCommercialDeal.fechainicio ? moment(currentCommercialDeal.fechainicio): '',
+            fechafin: currentCommercialDeal.fechafin ? moment(currentCommercialDeal.fechafin): '',
+
+        } : initialValues
         return (
             <Formik
-                initialValues={initialValues}
-                onSubmit={(values, errors) => {
+                enableReinitialize
+                initialValues={formikInitialValue}
+                //initialValues = {initialValues}
+                onSubmit={(values, errors) => { 
+
                     const {
                         nombre,
                         descripcion,
@@ -64,39 +83,59 @@ class CommercialDealBasicData extends React.Component {
                         ind_surtido,
                 
                     } = values;
-                    if(tipo === 3){
-                        createCommercialDeal({ 
-                            nombre: nombre,
-                            descripcion: descripcion,
-                            codcupon: codcupon,
-                            fechainicio: moment(fechainicio).format(),
-                            fechafin: moment(fechafin).format(),
-                            idtipo: tipo,
-                            margen: margen,
-                            ind_surtido: ind_surtido,
-                            escalados: [],
-                            productos: [],
-                            clientes: [],
-                            idestado: 2
-                        });
+                    console.log({currentCommercialDeal})
+
+                    if(id){
+                       
+                        editCommercialDeal({
+                            id, 
+                            values: {
+                                //...values,
+                                escalados:currentCommercialDeal.escalados, 
+                                productos: currentCommercialDeal.productos, 
+                                clientes: currentCommercialDeal.clientes
+                            }
+                        })
                     }else{
-                        createCommercialDeal({ 
-                            nombre: nombre,
-                            descripcion: descripcion,
-                            codcupon: '',
-                            fechainicio: moment(fechainicio).format(),
-                            fechafin: moment(fechafin).format(),
-                            idtipo: tipo,
-                            margen: 0,
-                            ind_surtido: ind_surtido,
-                            escalados: [],
-                            productos: [],
-                            clientes: [],
-                            idestado: 2
-                        });
+                        if(tipo === 3){
+                            createCommercialDeal({ 
+                                nombre: nombre,
+                                descripcion: descripcion,
+                                codcupon: codcupon,
+                                fechainicio: moment(fechainicio).format(),
+                                fechafin: moment(fechafin).format(),
+                                idtipo: tipo,
+                                margen: margen,
+                                ind_surtido: ind_surtido,
+                                escalados: [],
+                                productos: [],
+                                clientes: [],
+                                idestado: 2
+                            });
+                            this.goToNextIfValidationOk(errors)
+
+                        }else{
+                            createCommercialDeal({ 
+                                nombre: nombre,
+                                descripcion: descripcion,
+                                codcupon: '',
+                                fechainicio: moment(fechainicio).format(),
+                                fechafin: moment(fechafin).format(),
+                                idtipo: tipo,
+                                margen: 0,
+                                ind_surtido: ind_surtido,
+                                escalados: [],
+                                productos: [],
+                                clientes: [],
+                                idestado: 2
+                            });
+                            this.goToNextIfValidationOk(errors)
+
+                        }
                     }
+                   
                     setCommercialDealType({idtipo: tipo})
-                    this.goToNextIfValidationOk(errors)
+                   
                 }}
 
                 validationSchema={basicDataSchema}
@@ -121,7 +160,7 @@ class CommercialDealBasicData extends React.Component {
                                         name = 'nombre'
                                         onChange={handleInput(setFieldValue, 'nombre')}
                                         value = {values.nombre}
-                                        placeholder="Introduce el nombre de la "
+                                        placeholder= 'introducir nombre'
                                         type="text"
                                     />
                                     {errors.nombre && (<div style={{ color: 'red' }}>{errors.nombre}</div>)}
@@ -264,7 +303,7 @@ class CommercialDealBasicData extends React.Component {
                                 </Col>
 
                                 <Col>  
-                                    {this.state.isVisible && (
+                                    {!!id && (
                                         <Button type="primary" htmlType="submit" onClick={this.props.onClickNext}>
                                             Siguiente
                                         </Button> 
