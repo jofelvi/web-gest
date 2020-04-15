@@ -22,7 +22,7 @@ const FormCommercialDeal = ({
 }) => {
     useEffect(()=>{
         defineFormComponent(currentCommercialDeal);
-    },[currentCommercialDeal,newCommercialDealVisible,editCommercialDealVisible])
+    },[newCommercialDealVisible,editCommercialDealVisible])
     return ( 
             <Modal 
                 maskClosable={false}

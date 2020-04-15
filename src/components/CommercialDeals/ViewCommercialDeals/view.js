@@ -201,7 +201,7 @@ const ViewCommercialDeals = ({
             <ButtonGroup className="commercial-deals-top-actions">
                 <Button onClick={()=> {
                     showNewCommercialDeal(true);
-                    setCurrentCommercialDeal({});
+                    setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});
                 }} hidden={loading}>Nuevo</Button>
             </ButtonGroup>
             

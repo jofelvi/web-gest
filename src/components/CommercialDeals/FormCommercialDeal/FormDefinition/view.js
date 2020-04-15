@@ -28,9 +28,14 @@ var CommercialDealLinesForm =() =>{
 };
 
 class FormDefinition extends React.Component {
-    state={
-        currentStep: 0
+    constructor(props) {
+        super(props)
+        console.log('This is first method called upon initialization')
+        this.state={
+            currentStep: 0
+        }
     }
+    
     backStep = e => {
         e.preventDefault();
         const { currentStep} = this.state;
@@ -50,7 +55,7 @@ class FormDefinition extends React.Component {
         //const { getFieldDecorator } = this.props.form;
         const {dealTypes, commercialDealType} = this.props
         const { currentStep} = this.state;
-  
+        console.log({currentStep})
         return  (
         <div>
             <Steps 

@@ -41,9 +41,6 @@ const defaultState = {
   currentCommercialDeal: {},
   updateFilter: false,
   updateFilterOfClient: false,
-  productos: [],
-  escalados: [],
-  clientes: []
 };
 
 export default handleActions(
@@ -130,25 +127,33 @@ export default handleActions(
     }),
     [getCommercialDealId]:  (state, { payload}) => ({
       ...state,
-      idCommercialDeal: payload
+      idCommercialDeal: payload.idCommercialDeal
     }),
     [setProductsCommercialDeal]: (state, { payload}) => ({
       ...state,
-      productos: payload.productos,
+      currentCommercialDeal: { 
+        ...state.currentCommercialDeal,
+        productos: payload.productos
+      }
+     
     }),
     [setEscaladosCommercialDeal]: (state, { payload}) => ({
       ...state,
-      escalados: payload.escalados,
+      currentCommercialDeal: { 
+        ...state.currentCommercialDeal,
+        escalados: payload.escalados
+      }
+     
     }),
     
-    [setUsersCommercialDeal]: (state, { payload}) =>{ 
-      console.log({state})
-      console.log({payload})
-      return ({
-        ...state,
-        clientes: payload.clientes,
-      })
-    }
+    [setUsersCommercialDeal]: (state, { payload}) =>({
+      ...state,
+      currentCommercialDeal: { 
+        ...state.currentCommercialDeal,
+        clientes: payload.clientes
+      }
+     
+    }),
     
   },
   defaultState
