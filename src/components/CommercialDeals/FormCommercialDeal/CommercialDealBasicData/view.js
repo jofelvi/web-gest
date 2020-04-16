@@ -51,13 +51,16 @@ class CommercialDealBasicData extends React.Component {
             currentStep, setCommercialDealType, 
             commercialDealType, 
             currentCommercialDeal,
-            editCommercialDeal
+            editCommercialDeal,
+            escalados,
+            clientes,
+            productos,
+            formKey
         } = this.props;
         const lines = currentCommercialDeal.escalados;
         //this.setState({lines: lines});
        
         const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
-        console.log({currentCommercialDeal})
         const formikInitialValue = id ? {
             ...initialValues, 
             ...currentCommercialDeal,
@@ -67,6 +70,7 @@ class CommercialDealBasicData extends React.Component {
         } : initialValues
         return (
             <Formik
+                key = {formKey}
                 enableReinitialize
                 initialValues={formikInitialValue}
                 //initialValues = {initialValues}
@@ -83,7 +87,6 @@ class CommercialDealBasicData extends React.Component {
                         ind_surtido,
                 
                     } = values;
-                    console.log({currentCommercialDeal})
 
                     if(id){
                        
@@ -91,9 +94,9 @@ class CommercialDealBasicData extends React.Component {
                             id, 
                             values: {
                                 //...values,
-                                escalados:currentCommercialDeal.escalados, 
-                                productos: currentCommercialDeal.productos, 
-                                clientes: currentCommercialDeal.clientes
+                                escalados: escalados, 
+                                productos: productos, 
+                                clientes: clientes
                             }
                         })
                     }else{
@@ -110,7 +113,7 @@ class CommercialDealBasicData extends React.Component {
                                 escalados: [],
                                 productos: [],
                                 clientes: [],
-                                idestado: 2
+                                idestado: 0
                             });
                             this.goToNextIfValidationOk(errors)
 
@@ -127,7 +130,7 @@ class CommercialDealBasicData extends React.Component {
                                 escalados: [],
                                 productos: [],
                                 clientes: [],
-                                idestado: 2
+                                idestado: 0
                             });
                             this.goToNextIfValidationOk(errors)
 

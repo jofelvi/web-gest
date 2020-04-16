@@ -5,7 +5,9 @@ import {
     setCurrentCommercialDeal,
     showEditCommercialDeal,
     showNewProductCommercialDeal,
-    showViewProductsCommercialDeal
+    showViewProductsCommercialDeal,
+    setCommercialDealFormStep,
+    setFormKey,
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
@@ -14,5 +16,8 @@ import {
     { setCurrentCommercialDeal,
       showEditCommercialDeal,
       showNewProductCommercialDeal,
-      showViewProductsCommercialDeal }
+      showViewProductsCommercialDeal,
+      setCommercialDealFormStep,
+      setFormKey,
+    }
   )(View);

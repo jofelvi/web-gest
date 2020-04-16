@@ -14,7 +14,11 @@ export default connect(
     state => ({
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
       users: state.commercialDeals.users,
-      commercialDealType: state.commercialDeals.commercialDealType
+      commercialDealType: state.commercialDeals.commercialDealType,
+      productos: state.commercialDeals.currentCommercialDeal.productos,
+      escalados: state.commercialDeals.currentCommercialDeal.escalados,
+      clientes: state.commercialDeals.currentCommercialDeal.clientes,
+      formKey: state.commercialDeals.formKey,
 
     }),
     {createCommercialDeal, setCommercialDealType, editCommercialDeal }

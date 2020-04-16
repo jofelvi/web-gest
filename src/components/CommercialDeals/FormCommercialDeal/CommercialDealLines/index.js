@@ -11,7 +11,9 @@ export default connect(
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
       users: state.commercialDeals.users,
       idCommercialDeal: state.commercialDeals.idCommercialDeal,
+      productos: state.commercialDeals.currentCommercialDeal.productos,
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
+      clientes: state.commercialDeals.currentCommercialDeal.clientes,
      
     }),
     { editCommercialDeal, setEscaladosCommercialDeal }
