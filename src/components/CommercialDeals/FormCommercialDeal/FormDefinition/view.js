@@ -28,34 +28,24 @@ var CommercialDealLinesForm =() =>{
 };
 
 class FormDefinition extends React.Component {
-    constructor(props) {
-        super(props)
-        console.log('This is first method called upon initialization')
-        this.state={
-            currentStep: 0
-        }
-    }
+    
     
     backStep = e => {
         e.preventDefault();
-        const { currentStep} = this.state;
-        this.setState({ currentStep: currentStep - 1});
+        const { currentStep} = this.props;
+        this.props.setCommercialDealFormStep({ currentStep: currentStep - 1});
     };
     goToNextStep = e => {
         e.preventDefault();
-        const { currentStep } = this.state;
-        this.setState({ currentStep: currentStep + 1})         
+        const { currentStep } = this.props;
+        this.props.setCommercialDealFormStep({ currentStep: currentStep + 1})         
       };
     onStepChange = currentStep => {
-        this.setState({ currentStep: currentStep});
+        this.props.setCommercialDealFormStep({ currentStep: currentStep});
     };
 
     render(){
-        //CommercialDealLinesForm = Form.create(this.props.currentCommercialDeal)(CommercialDealLines);
-        //const { getFieldDecorator } = this.props.form;
-        const {dealTypes, commercialDealType} = this.props
-        const { currentStep} = this.state;
-        console.log({currentStep})
+        const {dealTypes, commercialDealType, currentStep} = this.props
         return  (
         <div>
             <Steps 

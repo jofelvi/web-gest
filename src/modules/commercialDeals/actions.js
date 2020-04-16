@@ -41,7 +41,9 @@ import {
   SET_PRODUCTS_COMMERCIAL_DEAL,
   SET_ESCALADOS_COMMERCIAL_DEAL,
   SET_USERS_COMMERCIAL_DEAL,
-  EDIT_COMMERCIAL_DEAL_SUCCESS
+  EDIT_COMMERCIAL_DEAL_SUCCESS,
+  SET_COMMERCIAL_DEAL_FORM_STEP,
+  SET_FORM_KEY
 } from './actionTypes';
 
 export const {
@@ -85,7 +87,9 @@ export const {
   setProductsCommercialDeal,
   setEscaladosCommercialDeal,
   setUsersCommercialDeal,
-  editCommercialDealSuccess
+  editCommercialDealSuccess,
+  setCommercialDealFormStep,
+  setFormKey
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
@@ -127,8 +131,8 @@ export const {
   SET_PRODUCTS_COMMERCIAL_DEAL,
   SET_ESCALADOS_COMMERCIAL_DEAL,
   SET_USERS_COMMERCIAL_DEAL,
-  EDIT_COMMERCIAL_DEAL_SUCCESS
-  
+  EDIT_COMMERCIAL_DEAL_SUCCESS,
+  SET_COMMERCIAL_DEAL_FORM_STEP,
+  SET_FORM_KEY
 
-  
 );

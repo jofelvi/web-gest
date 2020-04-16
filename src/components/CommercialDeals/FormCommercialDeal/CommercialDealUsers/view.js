@@ -37,6 +37,7 @@ var columnsUsers=[
 
 //methods
 const getSelectedUsers = (clientes, record ) => {
+    
     if(!clientes.length){
         return [{idcliente: record.idcliente, nombre: record.nombre}];
     }else{
@@ -57,13 +58,13 @@ const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDea
             el.render = ({},record) =>{ 
            
                 return <Switch
-                    id = "clienteAsociado" 
-                    checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
-                    onChange = {(e)=>{
-                        updateClientsFilter(true);
-                        const clientesAsociados = getSelectedUsers(clientes, record);
-                        setUsersCommercialDeal({clientes: clientesAsociados })}}/>
-                    };
+                            id = "clienteAsociado" 
+                            checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
+                            onChange = {(e)=>{
+                                updateClientsFilter(true);
+                                const clientesAsociados = getSelectedUsers(clientes, record);
+                                setUsersCommercialDeal({clientes: clientesAsociados })}}/>
+                            };
             
             }
        
@@ -124,11 +125,7 @@ const CommercialDealsUsers = ({
                             </Col>
                         : ''}
                         
-                            <Col> 
-                                <Button type="primary" htmlType="submit" onClick={onClickNext}>
-                                    Siguiente
-                                </Button>
-                            </Col>
+                            
                             <Col> 
                                 <Button type="primary" htmlType="submit" onClick={(e)=>(submitClients(productos, escalados, clientes, idCommercialDeal))}>
                                     Guardar

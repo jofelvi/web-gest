@@ -23,7 +23,10 @@ import {
   setEscaladosCommercialDeal,
   setUsersCommercialDeal,
   editCommercialDealSuccess,
+  setCommercialDealFormStep,
+  setFormKey
 } from './actions';
+const generateKey = ()=>`${Math.random()}`;
 
 const defaultState = {
   list:[],
@@ -41,7 +44,10 @@ const defaultState = {
   currentCommercialDeal: {},
   updateFilter: false,
   updateFilterOfClient: false,
+  currentStep: 0,
+  formKey: generateKey()
 };
+
 
 export default handleActions(
   {
@@ -153,6 +159,14 @@ export default handleActions(
         clientes: payload.clientes
       }
      
+    }),
+    [setCommercialDealFormStep]:  (state, { payload}) => ({
+      ...state,
+      currentStep: payload.currentStep
+    }),
+    [setFormKey]:  (state) => ({
+      ...state,
+      formKey: generateKey() 
     }),
     
   },

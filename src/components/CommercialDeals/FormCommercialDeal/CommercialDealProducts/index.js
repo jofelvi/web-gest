@@ -20,6 +20,8 @@ export default connect(
       idCommercialDeal: state.commercialDeals.idCommercialDeal,
       productos: state.commercialDeals.currentCommercialDeal.productos,
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
+      clientes: state.commercialDeals.currentCommercialDeal.clientes,
+
 
     }),
     { updateProductsFilter, editCommercialDeal, setProductsCommercialDeal}

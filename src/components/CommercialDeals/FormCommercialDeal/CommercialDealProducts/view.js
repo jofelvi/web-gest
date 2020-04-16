@@ -70,8 +70,9 @@ const getSelectedProducts = (productos, record ) => {
         
         return [{codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
     }else{
+      
         const productosFiltered = productos.filter( product => product.codindas !== record.codindas )
-        if(productos.length === productos.length ){
+        if(productos.length === productosFiltered.length ){
             return [...productos, {codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
         }
         return productosFiltered;
@@ -79,7 +80,8 @@ const getSelectedProducts = (productos, record ) => {
   
 }
 
-const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos)=>{
+const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter)=>{
+   
     columnsProducts.map((el)=>{
         if(el.title === "Familia"){
             el.filters = families.map((family)=>{
@@ -120,8 +122,11 @@ const getFilters = (families, subFamilies, products, brands, subBrands, currentC
             el.render = ({},record) =>{ 
                return <Switch 
                         id = "productoAsociado"
-                        checked= {!!(productos || []).find(product => product.codindas === record.codindas)} 
-                        onChange = {(e)=>{setProductsCommercialDeal({productos: getSelectedProducts(productos, record)})       
+                        checked= {productos.find(product => product.codindas === record.codindas)} 
+                        onChange = {(e)=>{
+                            const productosAsociados = getSelectedProducts(productos, record)
+                            setProductsCommercialDeal({productos: productosAsociados
+                            })       
                 
                       }}/>
             };
@@ -254,42 +259,42 @@ const changeData = (currentData,filters,families, subFamilies, products, brands,
     }
     console.log(applyFilters);
     if(!applyFilters){
-        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos); 
+        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter); 
         updateProductsFilter(true);
     }
     return true;
 };
 
-const getFilterFamilies = (families, subFamilies, products, updateProductsFilter)=>{
-    columnsProducts.map((el)=>{
-        if(el.dataIndex === "nombresubfamilia"){
-            const auxFilters = subFamilies.map((subFamily)=> {
-                if(families.indexOf(subFamily.idfamilia) !== -1){
-                    return {
-                        text:subFamily.nombre,
-                        value:subFamily.idsubfamilia
-                    }
-                }
-                return null;
-            });
-            el.filters = auxFilters.filter((item)=> item !== null && item !== undefined); 
-        } else if(el.dataIndex === "nombre"){
-            const auxFilters = products.map((product)=> {
-                if(families.indexOf(product.idfamilia) !== -1){
-                    return {
-                        text:product.nombre,
-                        value:product.nombre
-                    }
-                }
-                return null;
-            });
-            el.filters = auxFilters.filter((item)=> item !== null && item !== undefined);
-        }
-        return el;
-    });
-    updateProductsFilter(true);
-    return true;
-};
+// const getFilterFamilies = (families, subFamilies, products, updateProductsFilter)=>{
+//     columnsProducts.map((el)=>{
+//         if(el.dataIndex === "nombresubfamilia"){
+//             const auxFilters = subFamilies.map((subFamily)=> {
+//                 if(families.indexOf(subFamily.idfamilia) !== -1){
+//                     return {
+//                         text:subFamily.nombre,
+//                         value:subFamily.idsubfamilia
+//                     }
+//                 }
+//                 return null;
+//             });
+//             el.filters = auxFilters.filter((item)=> item !== null && item !== undefined); 
+//         } else if(el.dataIndex === "nombre"){
+//             const auxFilters = products.map((product)=> {
+//                 if(families.indexOf(product.idfamilia) !== -1){
+//                     return {
+//                         text:product.nombre,
+//                         value:product.nombre
+//                     }
+//                 }
+//                 return null;
+//             });
+//             el.filters = auxFilters.filter((item)=> item !== null && item !== undefined);
+//         }
+//         return el;
+//     });
+//     updateProductsFilter(true);
+//     return true;
+// };
 
 //components
 const CommercialDealProducts = ({
@@ -309,6 +314,7 @@ const CommercialDealProducts = ({
     setProductsCommercialDeal, 
     productos,
     escalados,
+    clientes,
 })=> {
     useEffect(()=>{
         if(!updateFilter){
@@ -318,8 +324,8 @@ const CommercialDealProducts = ({
         updateProductsFilter(false);
     },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
    
-    const submitProducts = (productos, escalados, id) =>{
-        editCommercialDeal({id, values: {productos, escalados}})
+    const submitProducts = (productos, escalados, clientes, id) =>{
+        editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
    
     return (
@@ -329,7 +335,7 @@ const CommercialDealProducts = ({
                 className="commercial-deals-products"
                 dataSource={products}
                 onChange={(pagination, filters, sorter, data) => 
-                    changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal, updateProductsFilter)}
+                    changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos)}
                 columns={columnsProducts}
                 size='small'
                 pagination={true}
@@ -351,7 +357,7 @@ const CommercialDealProducts = ({
                                 </Button>
                             </Col>
                             <Col> 
-                                <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, idCommercialDeal))} >
+                                <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, clientes, idCommercialDeal))} >
                                     Guardar
                                 </Button>
                             </Col>

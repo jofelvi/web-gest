@@ -36,16 +36,24 @@ class CommercialDealLines extends React.Component {
     }
     render(){
     
-    const {currentStep, editCommercialDeal, idCommercialDeal, escalados , setEscaladosCommercialDeal } = this.props;
+    const {currentStep, editCommercialDeal, currentCommercialDeal, idCommercialDeal, escalados , productos, clientes, setEscaladosCommercialDeal } = this.props;
     const lines = this.props.currentCommercialDeal.escalados;
+    const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
        
         return (
             <Formik
                 
                 onSubmit={(values,  errors) => {  
-                    setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
-                                
-                    this.addRow(values);
+                    editCommercialDeal({
+                        id, 
+                        values: {
+                            //...values,
+                            escalados: escalados, 
+                            productos: productos, 
+                            clientes: clientes
+                        }
+                    })           
+                    
                 }}
 
                 validationSchema={basicDataSchema}
@@ -150,8 +158,11 @@ class CommercialDealLines extends React.Component {
                             md={{span:4}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" onClick={handleSubmit} >
-                                       Agregar y Guardar
+                                    <Button type="primary" htmlType="submit" onClick={() =>{
+                                            setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
+                                            this.addRow(values);
+                                        }}>
+                                       Agregar
                                     </Button>
                                 </Form.Item>
                             </Col>
@@ -197,6 +208,11 @@ class CommercialDealLines extends React.Component {
                             <Col> 
                                 <Button type="primary" htmlType="submit" onClick={this.props.onClickNext}>
                                     Siguiente
+                                </Button>
+                            </Col>
+                            <Col> 
+                                <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                                    Guardar
                                 </Button>
                             </Col>
                            

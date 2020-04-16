@@ -5,12 +5,9 @@ import FormDefinition from './FormDefinition';
 import './styles.css';
 
 var FormComponent = () =>{
-    return <div></div>;
+    return <div><FormDefinition/></div>;
 };
 
-const defineFormComponent = (currentCommercialDeal) =>{
-    FormComponent = Form.create(currentCommercialDeal)(FormDefinition);
-};
 const FormCommercialDeal = ({
     currentCommercialDeal,
     editCommercialDealVisible,
@@ -21,7 +18,6 @@ const FormCommercialDeal = ({
     setUsersCommercialDeal
 }) => {
     useEffect(()=>{
-        defineFormComponent(currentCommercialDeal);
     },[newCommercialDealVisible,editCommercialDealVisible])
     return ( 
             <Modal 

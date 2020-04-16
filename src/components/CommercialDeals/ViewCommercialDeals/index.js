@@ -10,7 +10,9 @@ import {
   loadBrands,
   loadSubBrands,
   loadUsers,
-  loadDealTypes
+  loadDealTypes,
+  setCommercialDealFormStep,
+  setFormKey,
 } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -40,5 +42,7 @@ export default connect(
     loadSubBrands,
     loadUsers,
     loadDealTypes,
+    setCommercialDealFormStep,
+    setFormKey,
   }
 )(View);

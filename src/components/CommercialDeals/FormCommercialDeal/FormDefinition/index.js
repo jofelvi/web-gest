@@ -3,18 +3,21 @@ import View from './view';
 import { 
   createCommercialDeal,
   showEditCommercialDeal,
-  showNewCommercialDeal
+  showNewCommercialDeal,
+  setCommercialDealFormStep
 } from '../../../../modules/commercialDeals/actions';
 
 export default connect(
     state => ({
       currentCommercialDeal:state.commercialDeals.currentCommercialDeal,
+      currentStep: state.commercialDeals.currentStep,
       dealTypes: state.commercialDeals.dealTypes,
       commercialDealType: state.commercialDeals.commercialDealType
     }),
     { 
       createCommercialDeal,
       showEditCommercialDeal,
-      showNewCommercialDeal
+      showNewCommercialDeal,
+      setCommercialDealFormStep
     }
   )(View);

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Menu, Dropdown, Button, Icon} from 'antd';
 
 const menu = (cmp) => <Menu>
-    {console.log({cmp})}
     <Menu.Item key="1" onClick={() => {
+        cmp.setFormKey()
         cmp.setCurrentCommercialDeal(cmp.deal);
-        console.log(cmp.deal);
         cmp.showEditCommercialDeal(true);
+        cmp.setCommercialDealFormStep({currentStep: 0})  
     }}>Editar</Menu.Item>
 </Menu>;
 
@@ -16,7 +16,9 @@ const ItemActions = ({
     showEditCommercialDeal,
     showNewProductCommercialDeal,
     showViewProductsCommercialDeal,
+    setCommercialDealFormStep,
     deal,
+    setFormKey,
     viewProductsCommercialDealVisible,
     newProductsCommercialDealVisible,
     editCommercialDealVisiblee,
@@ -27,7 +29,10 @@ const ItemActions = ({
             setCurrentCommercialDeal:setCurrentCommercialDeal,
             showEditCommercialDeal: showEditCommercialDeal,
             showNewProductCommercialDeal: showNewProductCommercialDeal,
-            showViewProductsCommercialDeal: showViewProductsCommercialDeal})}>
+            showViewProductsCommercialDeal: showViewProductsCommercialDeal,
+            setCommercialDealFormStep: setCommercialDealFormStep, 
+            setFormKey: setFormKey
+            })}>
                 <Button>
                 Acciones <Icon type="down" />
                 </Button>
