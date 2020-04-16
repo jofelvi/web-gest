@@ -20,7 +20,8 @@ import {
   SET_SELECTED_TASK,
   SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
-  CLEAN_SELECTED_TASK
+  CLEAN_SELECTED_TASK,
+  EDIT_TASK
 } from './actionTypes';
 
 export const {
@@ -43,7 +44,8 @@ export const {
   setSelectedTask,
   setSelectedTaskId,
   setTaskListFilter,
-  cleanSelectedTask
+  cleanSelectedTask,
+  editTask
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -64,5 +66,6 @@ export const {
   SET_SELECTED_TASK,
   SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
-  CLEAN_SELECTED_TASK
+  CLEAN_SELECTED_TASK,
+  EDIT_TASK
 );

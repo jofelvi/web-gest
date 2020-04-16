@@ -93,6 +93,7 @@ const CommercialDealsUsers = ({
         if(!updateFilterOfClient){
              change(currentCommercialDeal, updateClientsFilter, setUsersCommercialDeal, clientes)
         } 
+       
         updateClientsFilter(false);       
     },[currentCommercialDeal, users, updateFilterOfClient, setUsersCommercialDeal, clientes]);
     

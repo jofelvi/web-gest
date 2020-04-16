@@ -22,6 +22,7 @@ const TaskCard = ({
   setSelectedTask,
   selected
 }) => (
+ 
   <Container
     onClick={() =>
       setSelectedTask({
