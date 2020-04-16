@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
 import View from './view';
 
-import { updateProductsFilter} from '../../../../modules/commercialDeals/actions'
+import { 
+  updateProductsFilter,
+  editCommercialDeal,
+  setProductsCommercialDeal,
+  
+} from '../../../../modules/commercialDeals/actions'
 
 export default connect(
     state => ({
@@ -12,6 +17,10 @@ export default connect(
       brands:state.commercialDeals.brands,
       subBrands:state.commercialDeals.subBrands,
       updateFilter:state.commercialDeals.updateFilter,
+      idCommercialDeal: state.commercialDeals.idCommercialDeal,
+      productos: state.commercialDeals.currentCommercialDeal.productos,
+      escalados: state.commercialDeals.currentCommercialDeal.escalados,
+
     }),
-    { updateProductsFilter }
+    { updateProductsFilter, editCommercialDeal, setProductsCommercialDeal}
   )(View);
