@@ -323,7 +323,8 @@ const CommercialDealProducts = ({
         
         updateProductsFilter(false);
     },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
-   
+    const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
+
     const submitProducts = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
@@ -358,7 +359,7 @@ const CommercialDealProducts = ({
                             </Col>
                             <Col>
                                 { currentCommercialDeal.estado === "Borrador" &&( 
-                                    <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, clientes, idCommercialDeal))} >
+                                    <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, clientes, id))} >
                                         Guardar
                                     </Button>
                                 )}
