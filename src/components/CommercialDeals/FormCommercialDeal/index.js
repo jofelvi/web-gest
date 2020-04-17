@@ -5,7 +5,8 @@ import {
     showEditCommercialDeal,
     showNewCommercialDeal,
     setProductsCommercialDeal,
-    setUsersCommercialDeal
+    setUsersCommercialDeal,
+    setNewCommercialDeal,
   } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -14,5 +15,11 @@ export default connect(
       editCommercialDealVisible: state.commercialDeals.editCommercialDealVisible,
       newCommercialDealVisible: state.commercialDeals.newCommercialDealVisible
     }),
-    { showEditCommercialDeal, showNewCommercialDeal, setProductsCommercialDeal, setUsersCommercialDeal }
+    { 
+      showEditCommercialDeal, 
+      showNewCommercialDeal, 
+      setProductsCommercialDeal, 
+      setUsersCommercialDeal, 
+      setNewCommercialDeal ,
+    }
   )(View);

@@ -190,7 +190,8 @@ const ViewCommercialDeals = ({
     setCurrentCommercialDeal,
     token,
     setCommercialDealFormStep,
-    setFormKey
+    setFormKey,
+    setNewCommercialDeal
 }) =>{
     const [loading, setLoading] = useState(true);
     
@@ -203,6 +204,7 @@ const ViewCommercialDeals = ({
             <ButtonGroup className="commercial-deals-top-actions">
                 <Button onClick={()=> {
                     setFormKey();
+                    setNewCommercialDeal(true)
                     showNewCommercialDeal(true);
                     setCommercialDealFormStep({currentStep: 0})
                     setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});

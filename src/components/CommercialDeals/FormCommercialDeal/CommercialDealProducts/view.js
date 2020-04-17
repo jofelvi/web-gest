@@ -356,10 +356,12 @@ const CommercialDealProducts = ({
                                     Siguiente
                                 </Button>
                             </Col>
-                            <Col> 
-                                <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, clientes, idCommercialDeal))} >
-                                    Guardar
-                                </Button>
+                            <Col>
+                                { currentCommercialDeal.estado === "Borrador" &&( 
+                                    <Button type="primary" htmlType="submit" onClick ={(e)=>(submitProducts(productos, escalados, clientes, idCommercialDeal))} >
+                                        Guardar
+                                    </Button>
+                                )}
                             </Col>
                         
                     </Row>

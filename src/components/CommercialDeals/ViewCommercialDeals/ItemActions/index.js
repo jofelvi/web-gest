@@ -8,6 +8,7 @@ import {
     showViewProductsCommercialDeal,
     setCommercialDealFormStep,
     setFormKey,
+    setNewCommercialDeal,
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
@@ -19,5 +20,6 @@ import {
       showViewProductsCommercialDeal,
       setCommercialDealFormStep,
       setFormKey,
+      setNewCommercialDeal,
     }
   )(View);

@@ -87,6 +87,7 @@ class CommercialDealLines extends React.Component {
                         md={{span:5}}
                         sm={{span:22}}></Col>
                     </Row>
+                    { currentCommercialDeal.estado === "Borrador" &&(
                     <Row 
                     className="commercial-deal-form-lines-new"
                     style={{marginTop:10}}
@@ -158,7 +159,8 @@ class CommercialDealLines extends React.Component {
                             md={{span:4}}
                             sm={{span:22}}>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" onClick={() =>{
+                                    
+                                        <Button type="primary" htmlType="submit" onClick={() =>{
                                             setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
                                             this.addRow(values);
                                         }}>
@@ -166,7 +168,7 @@ class CommercialDealLines extends React.Component {
                                     </Button>
                                 </Form.Item>
                             </Col>
-                    </Row>
+                    </Row>)}
                     <Row className="commercial-deal-form-lines-body">
                         {this.state.lines.map((line) =>
                            <Row 
@@ -188,9 +190,11 @@ class CommercialDealLines extends React.Component {
                                 <Col 
                                 md={{span:4}}
                                 sm={{span:22}}>
-                                    <Button type="primary" htmlType="submit" onClick={this.deleteRow}>
-                                    <Icon type="delete" />
-                                    </Button>
+                                    { currentCommercialDeal.estado === "Borrador" &&(
+                                        <Button type="primary" htmlType="submit" onClick={this.deleteRow}>
+                                            <Icon type="delete" />
+                                        </Button>
+                                    )}
                                 </Col>
                             </Row> 
                         )}
@@ -211,9 +215,11 @@ class CommercialDealLines extends React.Component {
                                 </Button>
                             </Col>
                             <Col> 
-                                <Button type="primary" htmlType="submit" onClick={handleSubmit}>
-                                    Guardar
-                                </Button>
+                                { currentCommercialDeal.estado === "Borrador" &&(
+                                    <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                                        Guardar
+                                    </Button>
+                                )}
                             </Col>
                            
                         
