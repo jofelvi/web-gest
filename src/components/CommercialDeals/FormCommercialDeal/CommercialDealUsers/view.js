@@ -97,12 +97,14 @@ const CommercialDealsUsers = ({
        
         updateClientsFilter(false);       
     },[currentCommercialDeal, users, updateFilterOfClient, setUsersCommercialDeal, clientes]);
-    
+
+    const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
+
     const submitClients = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
     return (
-       
+     
         <div>
              { commercialDealType != 0 ?
              <div>
@@ -125,12 +127,15 @@ const CommercialDealsUsers = ({
                             </Col>
                         : ''}
                         
-                            
+                      
                             <Col> 
-                                <Button type="primary" htmlType="submit" onClick={(e)=>(submitClients(productos, escalados, clientes, idCommercialDeal))}>
-                                    Guardar
-                                </Button>
+                                { currentCommercialDeal.estado === "Borrador" && (
+                                    <Button type="primary" htmlType="submit" onClick={(e)=>(submitClients(productos, escalados, clientes, id))}>
+                                        Guardar
+                                    </Button>
+                                 )}
                             </Col>
+                       
                         
                     </Row>
                     </div>

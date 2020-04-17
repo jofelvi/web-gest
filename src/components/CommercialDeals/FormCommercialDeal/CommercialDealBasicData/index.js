@@ -19,6 +19,7 @@ export default connect(
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
       formKey: state.commercialDeals.formKey,
+      isNewCommercialDeal: state.commercialDeals.isNewCommercialDeal,
 
     }),
     {createCommercialDeal, setCommercialDealType, editCommercialDeal }

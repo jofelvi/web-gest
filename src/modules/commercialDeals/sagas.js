@@ -75,9 +75,9 @@ export function* watchCreateCommercialDeal() {
 
 function* editCommercialDeal({payload}) {
   try {
-    console.log("Edit payload", payload )
+    //console.log("Edit payload", payload )
     const response = yield call(api.editCommercialDeal,payload.id, payload.values );
-    console.log("edit response", response.data)
+    //console.log("edit response", response.data)
     const {data} = response;
     yield put(setCurrentCommercialDeal({...data}))
 

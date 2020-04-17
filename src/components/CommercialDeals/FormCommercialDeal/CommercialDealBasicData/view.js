@@ -55,7 +55,8 @@ class CommercialDealBasicData extends React.Component {
             escalados,
             clientes,
             productos,
-            formKey
+            formKey,
+            isNewCommercialDeal
         } = this.props;
         const lines = currentCommercialDeal.escalados;
         //this.setState({lines: lines});
@@ -298,11 +299,15 @@ class CommercialDealBasicData extends React.Component {
                                         </Button>
                                     </Col>
                                 )}
-                        
+                                {console.log("tipo",currentCommercialDeal.estado)}
+                                
                                 <Col> 
-                                    <Button type="primary" htmlType="submit" onClick={handleSubmit}>
-                                        Guardar
-                                    </Button>
+                                {console.log("isNewCommercialDeal", isNewCommercialDeal)}
+                                    { (isNewCommercialDeal || currentCommercialDeal.estado === "Borrador") &&(
+                                        <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                                            Guardar
+                                        </Button>
+                                    )}
                                 </Col>
 
                                 <Col>  
