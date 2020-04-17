@@ -55,9 +55,11 @@ class FormDefinition extends React.Component {
                 >
                 <Step title="Datos Básicos" description=""/>                   
                 <Step title="Lineas de Escalado" description=""/>
+                <Step title="Productos" description=""/> 
+                <Step title="Usuarios" description=""/>
                 
-                {this.props.currentCommercialDeal.tipo !== "Campaña"? <Step title="Productos" description=""/> :''}
-                {this.props.currentCommercialDeal.tipo !== "Promoción" ? <Step title="Usuarios" description=""/>: ''}
+                {/* {this.props.currentCommercialDeal.tipo !== "Campaña"? <Step title="Productos" description=""/> :''} */}
+                {/* {this.props.currentCommercialDeal.tipo !== "Promoción" ? <Step title="Usuarios" description=""/>: ''} */}
             </Steps>
             <Divider></Divider>
             <Form 
@@ -75,14 +77,14 @@ class FormDefinition extends React.Component {
                     
                 ></CommercialDealBasicData>
                 </div>
-                <div style={{display:currentStep !== 1 ? 'none': 'block'}}>
+                <div style={{display: currentStep !== 1 ? 'none': 'block'}}>
                     <CommercialDealLines 
                     currentStep = {currentStep}
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
                     onClickBack = {this.backStep}
                     ></CommercialDealLines>
                 </div>
-                <div style={{display: this.props.currentCommercialDeal.tipo !== "Campaña" && currentStep === 2 ? 'block': 'none'}}>
+                <div style={{display: currentStep === 2 ? 'block': 'none'}}>
                     <CommercialDealProducts
                     currentStep = {currentStep}  
                     onClickNext = {(e)=>{ this.goToNextStep(e)}}
@@ -90,7 +92,7 @@ class FormDefinition extends React.Component {
                     ></CommercialDealProducts>
                 </div>
                 
-                <div style={{display: this.props.currentCommercialDeal.tipo !== "Promocion" && currentStep === 3 ? 'block': 'none'}}>
+                <div style={{display: currentStep === 3 ? 'block': 'none'}}>
                
                     <CommercialDealUsers
                     commercialDealType = { commercialDealType }

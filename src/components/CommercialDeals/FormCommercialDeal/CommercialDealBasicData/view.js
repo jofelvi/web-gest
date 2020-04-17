@@ -94,7 +94,7 @@ class CommercialDealBasicData extends React.Component {
                         editCommercialDeal({
                             id, 
                             values: {
-                                //...values,
+                                codcupon: codcupon,
                                 escalados: escalados, 
                                 productos: productos, 
                                 clientes: clientes
@@ -299,10 +299,8 @@ class CommercialDealBasicData extends React.Component {
                                         </Button>
                                     </Col>
                                 )}
-                                {console.log("tipo",currentCommercialDeal.estado)}
                                 
                                 <Col> 
-                                {console.log("isNewCommercialDeal", isNewCommercialDeal)}
                                     { (isNewCommercialDeal || currentCommercialDeal.estado === "Borrador") &&(
                                         <Button type="primary" htmlType="submit" onClick={handleSubmit}>
                                             Guardar
