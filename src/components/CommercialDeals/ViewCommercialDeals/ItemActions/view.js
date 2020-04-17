@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Dropdown, Button, Icon} from 'antd';
+import {validationCommercialDeal} from './utils'
 
 const menu = (cmp) => <Menu>
     {cmp.deal.estado === "Borrador" &&(
@@ -20,13 +21,12 @@ const menu = (cmp) => <Menu>
     }}>Ver</Menu.Item>)}
      {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="3" onClick={() => {
-         console.log("activar")
+         validationCommercialDeal(cmp.deal, cmp.editCommercialDeal)
     
     }}>Activar</Menu.Item>)}
     {cmp.deal.estado === "Activo" && (
      <Menu.Item key="4" onClick={() => {
-         console.log("Desactivar")
-          
+         cmp.editCommercialDeal({id: cmp.deal.idcondcomercial, values:{ idestado: 2, productos: cmp.deal.productos, escalados: cmp.deal.escalados, clientes: cmp.deal.clientes }})
     }}>Desactivar</Menu.Item >)}
 </Menu>;
 
@@ -39,6 +39,7 @@ const ItemActions = ({
     deal,
     setFormKey,
     setNewCommercialDeal,
+    editCommercialDeal,
     viewProductsCommercialDealVisible,
     newProductsCommercialDealVisible,
     editCommercialDealVisiblee,
@@ -52,7 +53,9 @@ const ItemActions = ({
             showViewProductsCommercialDeal: showViewProductsCommercialDeal,
             setCommercialDealFormStep: setCommercialDealFormStep, 
             setFormKey: setFormKey,
-            setNewCommercialDeal: setNewCommercialDeal
+            setNewCommercialDeal: setNewCommercialDeal,
+            editCommercialDeal:editCommercialDeal
+            
             })}>
                 <Button>
                 Acciones <Icon type="down" />
