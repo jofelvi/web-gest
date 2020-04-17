@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Menu, Dropdown, Button, Icon} from 'antd';
 
 const menu = (cmp) => <Menu>
-    {console.log({cmp})}
     {cmp.deal.estado === "Borrador" &&(
     <Menu.Item key="1" onClick={() => {
         cmp.setFormKey()
@@ -22,18 +21,12 @@ const menu = (cmp) => <Menu>
      {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="3" onClick={() => {
          console.log("activar")
-        // cmp.setFormKey()
-        // cmp.setCurrentCommercialDeal(cmp.deal);
-        // cmp.showEditCommercialDeal(true);
-        // cmp.setCommercialDealFormStep({currentStep: 0})  
+    
     }}>Activar</Menu.Item>)}
     {cmp.deal.estado === "Activo" && (
      <Menu.Item key="4" onClick={() => {
          console.log("Desactivar")
-        // cmp.setFormKey()
-        // cmp.setCurrentCommercialDeal(cmp.deal);
-        // cmp.showEditCommercialDeal(true);
-        // cmp.setCommercialDealFormStep({currentStep: 0})  
+          
     }}>Desactivar</Menu.Item >)}
 </Menu>;
 

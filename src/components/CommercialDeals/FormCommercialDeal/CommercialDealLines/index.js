@@ -14,7 +14,10 @@ export default connect(
       productos: state.commercialDeals.currentCommercialDeal.productos,
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
-     
+      isNewCommercialDeal: state.commercialDeals.isNewCommercialDeal,
+      formKey: state.commercialDeals.formKey,
+
+
     }),
     { editCommercialDeal, setEscaladosCommercialDeal }
   )(View);

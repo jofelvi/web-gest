@@ -17,16 +17,16 @@ import { continueProcessFailed } from '../../../../modules/forms/actions';
 
 class CommercialDealLines extends React.Component {
     state = {
-        lines:this.props.currentCommercialDeal.escalados?  this.props.currentCommercialDeal.escalados : [],
+        lines: this.props.currentCommercialDeal.escalados && !this.props.isNewCommercialDeal?  this.props.currentCommercialDeal.escalados : [],
        
     }
     addRow = (values) => {
       
-        var {lines} = this.state;
-        lines.push(values);
+        const {currentCommercialDeal} = this.props;
+        const lines = currentCommercialDeal.escalados.push(values);
         this.setState({lines: lines});   
       };
-
+    
     getSelectedEscalados = (escalados, values ) => {
            if(!escalados.length){
                 return [values];
@@ -34,16 +34,28 @@ class CommercialDealLines extends React.Component {
                 return [...escalados, values];
             }      
     }
+    
     render(){
     
-    const {currentStep, editCommercialDeal, currentCommercialDeal, idCommercialDeal, escalados , productos, clientes, setEscaladosCommercialDeal } = this.props;
-    const lines = this.props.currentCommercialDeal.escalados;
+    const {
+            currentStep, 
+            editCommercialDeal, 
+            currentCommercialDeal, 
+            idCommercialDeal, 
+            escalados , 
+            productos, 
+            clientes, 
+            setEscaladosCommercialDeal, 
+            formKey 
+         } = this.props;
+    const lines = this.props.currentCommercialDeal.escalados  ? this.props.currentCommercialDeal.escalados: [];
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
-       
+      
         return (
             <Formik
-                
-                onSubmit={(values,  errors) => {  
+                key = {formKey}
+                onSubmit={(values,  errors) => { 
+                    
                     editCommercialDeal({
                         id, 
                         values: {
@@ -162,7 +174,7 @@ class CommercialDealLines extends React.Component {
                                     
                                         <Button type="primary" htmlType="submit" onClick={() =>{
                                             setEscaladosCommercialDeal({escalados: this.getSelectedEscalados(escalados, values)});
-                                            this.addRow(values);
+                                            this.addRow(this.props.currentCommercialDeal.escalados);
                                         }}>
                                        Agregar
                                     </Button>
@@ -170,7 +182,7 @@ class CommercialDealLines extends React.Component {
                             </Col>
                     </Row>)}
                     <Row className="commercial-deal-form-lines-body">
-                        {this.state.lines.map((line) =>
+                        {lines.map((line) =>
                            <Row 
                            style={{marginTop:10, paddingTop:'10px', borderWidth:'2px 0 0 0', borderStyle:'solid', borderColor:'rgba(0,0,0,0.2)'}}
                            gutter={18}>
