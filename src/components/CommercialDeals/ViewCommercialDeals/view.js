@@ -183,6 +183,7 @@ const ViewCommercialDeals = ({
     loadSubFamilies,
     loadProducts,
     loadUsers,
+    getUsersCount,
     loadBrands,
     loadSubBrands,
     loadDealTypes,
@@ -204,6 +205,7 @@ const ViewCommercialDeals = ({
             <ButtonGroup className="commercial-deals-top-actions">
                 <Button onClick={()=> {
                     setFormKey();
+                    loadUsers({page: 1});
                     setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});
                     setNewCommercialDeal(true)
                     showNewCommercialDeal(true);
@@ -252,9 +254,9 @@ const ViewCommercialDeals = ({
         loadProducts();
         loadBrands();
         loadSubBrands();
-        loadUsers();  
+        getUsersCount();  
         loadDealTypes();
-    },[list, token,loadFamilies, loadSubFamilies, loadProducts, loadBrands, loadSubBrands, loadUsers,loadDealTypes]);
+    },[list, token]);
     return <div>
         {type === "all"? renderTable(list, loading):
          <div>sin resultados</div>}

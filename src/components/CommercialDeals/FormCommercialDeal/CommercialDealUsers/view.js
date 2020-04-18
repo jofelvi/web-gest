@@ -77,6 +77,7 @@ const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDea
 const CommercialDealsUsers = ({
     currentCommercialDeal,
     users,
+    usersMeta,
     updateClientsFilter,
     updateFilterOfClient,
     onClickNext,
@@ -88,21 +89,31 @@ const CommercialDealsUsers = ({
     productos,
     escalados,
     clientes,
+    loadUsers,
     idCommercialDeal
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
-             change(currentCommercialDeal, updateClientsFilter, setUsersCommercialDeal, clientes)
+            change(currentCommercialDeal, updateClientsFilter, setUsersCommercialDeal, clientes)
         } 
        
         updateClientsFilter(false);       
-    },[currentCommercialDeal, users, updateFilterOfClient, setUsersCommercialDeal, clientes]);
+    },[currentCommercialDeal, updateFilterOfClient, setUsersCommercialDeal, clientes]);
 
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
 
     const submitClients = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
+
+    const paginationOptions = {
+        onChange: (page) => {
+            loadUsers({page})
+        },
+        total: usersMeta.total,
+        current: usersMeta.page,
+        pageSize: usersMeta.pageSize,
+    };
     return (
      
         <div>
@@ -114,7 +125,8 @@ const CommercialDealsUsers = ({
                 onChange = {(pagination, filters, sorter, data) => change(currentCommercialDeal,updateClientsFilter, setUsersCommercialDeal, clientes)}
                 columns={columnsUsers}
                 size='small'
-                pagination={true}
+                loading={usersMeta.searchLoading}
+                pagination={paginationOptions}
                 rowKey='idcliente'
                 locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
             ></Table>

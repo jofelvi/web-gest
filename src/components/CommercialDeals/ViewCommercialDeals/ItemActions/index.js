@@ -8,6 +8,7 @@ import {
     showViewProductsCommercialDeal,
     setCommercialDealFormStep,
     setFormKey,
+    loadUsers,
     setNewCommercialDeal,
     editCommercialDeal,
   } from '../../../../modules/commercialDeals/actions';
@@ -21,6 +22,7 @@ import {
       showViewProductsCommercialDeal,
       setCommercialDealFormStep,
       setFormKey,
+      loadUsers,
       setNewCommercialDeal,
       editCommercialDeal
     }

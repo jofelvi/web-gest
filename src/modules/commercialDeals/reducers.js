@@ -1,5 +1,7 @@
 import { handleActions } from 'redux-actions';
 
+import { NUM_CLIENTES_PAG } from './constants';
+
 import {
   loadCommercialDealsSuccess,
   loadFamiliesSuccess,
@@ -7,7 +9,10 @@ import {
   loadProductsSuccess,
   loadBrandsSuccess,
   loadSubBrandsSuccess,
+  loadUsers,
   loadUsersSuccess,
+  loadUsersFailed,
+  getUsersCountSuccess,
   createCommercialDealSuccess,
   showNewCommercialDeal,
   showEditCommercialDeal,
@@ -37,6 +42,13 @@ const defaultState = {
   brands:[],
   subBrands:[],
   users:[],
+  usersMeta: {
+    page: 1,
+    pageSize: NUM_CLIENTES_PAG,
+    total: 0,
+    emailComo: '',
+    searchLoading: false,
+  },
   dealTypes:[],
   viewProductsCommercialDealVisible: false,
   newProductsCommercialDealVisible: false,
@@ -77,9 +89,35 @@ export default handleActions(
       ...state,
       subBrands: payload.subBrands
     }),
+    [loadUsers]: (state)=>({
+      ...state,
+      usersMeta: {
+        ...state.usersMeta,
+        searchLoading: true,
+      }
+    }),
+    [loadUsersFailed]: (state)=>({
+      ...state,
+      usersMeta: {
+        ...state.usersMeta,
+        searchLoading: false,
+      }
+    }),
     [loadUsersSuccess]: (state, { payload })=>({
       ...state,
-      users: payload.users
+      users: payload.users,
+      usersMeta: {
+        ...state.usersMeta,
+        ...payload.userMeta,
+        searchLoading: false,
+      }
+    }),
+    [getUsersCountSuccess]: (state, { payload })=>({
+      ...state,
+      usersMeta: {
+        ...state.usersMeta,
+        total: payload.count,
+      }
     }),
     [loadDealTypesSuccess]:(state, { payload })=>({
       ...state,

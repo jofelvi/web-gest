@@ -10,6 +10,7 @@ import {
   LOAD_BRANDS,
   LOAD_SUB_BRANDS,
   LOAD_USERS,
+  GET_USERS_COUNT,
   LOAD_DEAL_TYPES
 } from './actionTypes';
 import {
@@ -29,6 +30,8 @@ import {
   loadSubBrandsFailed,
   loadUsersFailed,
   loadUsersSuccess,
+  getUsersCountFailed,
+  getUsersCountSuccess,
   loadDealTypesSuccess,
   loadDealTypesFailed,
   getCommercialDealId,
@@ -157,10 +160,22 @@ export function* watchloadSubBrands() {
   yield takeLatest(LOAD_SUB_BRANDS, loadSubBrands);
 }
 //users
-function* loadUsers() {
+function* getUsersCount() {
   try {
-    const response = yield call(api.getUsers);
-    yield put(loadUsersSuccess({ users: response.data }));
+    const response = yield call(api.getUsersCount, {});
+    yield put(getUsersCountSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(getUsersCountFailed());
+  }
+}
+export function* watchgetUsersCount() {
+  yield takeLatest(GET_USERS_COUNT, getUsersCount);
+}
+function* loadUsers({payload = { page: 1}}) {
+  try {
+    const response = yield call(api.getUsers, payload);
+    yield put(loadUsersSuccess({ users: response.data, userMeta: payload }));
   } catch (e) {
     console.error(e);
     yield put(loadUsersFailed());

@@ -7,6 +7,7 @@ const menu = (cmp) => <Menu>
     {cmp.deal.estado === "Borrador" &&(
     <Menu.Item key="1" onClick={() => {
         cmp.setFormKey()
+        cmp.loadUsers({page: 1});
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0})  
@@ -14,6 +15,7 @@ const menu = (cmp) => <Menu>
     {(cmp.deal.estado === "Activo" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="2" onClick={() => {
         cmp.setFormKey()
+        cmp.loadUsers({page: 1});
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0}) 
@@ -38,6 +40,7 @@ const ItemActions = ({
     setCommercialDealFormStep,
     deal,
     setFormKey,
+    loadUsers,
     setNewCommercialDeal,
     editCommercialDeal,
     viewProductsCommercialDealVisible,
@@ -53,6 +56,7 @@ const ItemActions = ({
             showViewProductsCommercialDeal: showViewProductsCommercialDeal,
             setCommercialDealFormStep: setCommercialDealFormStep, 
             setFormKey: setFormKey,
+            loadUsers: loadUsers,
             setNewCommercialDeal: setNewCommercialDeal,
             editCommercialDeal:editCommercialDeal
             
