@@ -6,6 +6,7 @@ import {
   editCommercialDeal,
   setUsersCommercialDeal,
   loadUsers,
+  loadUsersByEmail
 } from '../../../../modules/commercialDeals/actions'
 
 
@@ -22,5 +23,5 @@ export default connect(
         clientes: state.commercialDeals.currentCommercialDeal.clientes,
       }),
     
-    {updateClientsFilter, editCommercialDeal, setUsersCommercialDeal, loadUsers }
+    {updateClientsFilter, editCommercialDeal, setUsersCommercialDeal, loadUsers, loadUsersByEmail }
   )(View);

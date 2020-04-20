@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Table, Switch, Col, Button, Row} from 'antd';
+import {Table, Switch, Col, Button, Row, Input } from 'antd';
+
+import { getColumnSearchProps } from './utils';
+
 
 var columnsUsers=[
     {
@@ -25,6 +28,7 @@ var columnsUsers=[
         title: 'Email',
         dataIndex: 'email',
         key: 'email',
+        ...getColumnSearchProps('email'),
         sorter: (a,b) => a.email - b.email
     },
     {
@@ -90,6 +94,7 @@ const CommercialDealsUsers = ({
     escalados,
     clientes,
     loadUsers,
+    loadUsersByEmail,
     idCommercialDeal
 })=> {
     useEffect(()=>{
@@ -99,6 +104,8 @@ const CommercialDealsUsers = ({
        
         updateClientsFilter(false);       
     },[currentCommercialDeal, updateFilterOfClient, setUsersCommercialDeal, clientes]);
+
+ 
 
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
 

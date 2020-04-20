@@ -19,6 +19,10 @@ export const getUsers = ({ emailComo = '', page = 1 }) => {
   const queryParams = `?offset=${(page - 1) * NUM_CLIENTES_PAG}&limit=${NUM_CLIENTES_PAG}${emailComo ? `&emailComo=${emailComo}` : ''}`;
   return get(`/ntr/cliente${queryParams}`)
 };
+export const getUsersByEmail = ({ emailComo = ''}) => {
+  const queryParams = `?&emailComo=${emailComo}` 
+  return get(`/ntr/cliente${queryParams}`)
+};
 export const getBrands = () =>get('/ntr/marca');
 export const getSubBrands = () => get('/ntr/submarca');
 export const getDealTypes = () => get('ntr/def/cctipo');

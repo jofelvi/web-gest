@@ -11,7 +11,8 @@ import {
   LOAD_SUB_BRANDS,
   LOAD_USERS,
   GET_USERS_COUNT,
-  LOAD_DEAL_TYPES
+  LOAD_DEAL_TYPES,
+  LOAD_USERS_BY_EMAIL
 } from './actionTypes';
 import {
   loadCommercialDealsSuccess,
@@ -172,7 +173,8 @@ function* getUsersCount() {
 export function* watchgetUsersCount() {
   yield takeLatest(GET_USERS_COUNT, getUsersCount);
 }
-function* loadUsers({payload = { page: 1}}) {
+function* loadUsers({payload = { emailComo: '', page: 1}}) {
+  console.log({payload})
   try {
     const response = yield call(api.getUsers, payload);
     yield put(loadUsersSuccess({ users: response.data, userMeta: payload }));
@@ -183,6 +185,19 @@ function* loadUsers({payload = { page: 1}}) {
 }
 export function* watchloadUsers() {
   yield takeLatest(LOAD_USERS, loadUsers);
+}
+function* loadUsersByEmail({payload = { emailComo: ''}}) {
+  console.log({payload})
+  try {
+    const response = yield call(api.getUsersByEmail, payload);
+    yield put(loadUsersSuccess({ users: response.data, userMeta: payload }));
+  } catch (e) {
+    console.error(e);
+    yield put(loadUsersFailed());
+  }
+}
+export function* watchloadUsersByEmail() {
+  yield takeLatest(LOAD_USERS_BY_EMAIL, loadUsersByEmail);
 }
 //dealTypes
 function* loadDealTypes() {

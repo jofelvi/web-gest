@@ -47,7 +47,8 @@ import {
   EDIT_COMMERCIAL_DEAL_SUCCESS,
   SET_COMMERCIAL_DEAL_FORM_STEP,
   SET_FORM_KEY,
-  SET_NEW_COMMERCIAL_DEAL
+  SET_NEW_COMMERCIAL_DEAL,
+  LOAD_USERS_BY_EMAIL
 } from './actionTypes';
 
 export const {
@@ -97,7 +98,8 @@ export const {
   editCommercialDealSuccess,
   setCommercialDealFormStep,
   setFormKey,
-  setNewCommercialDeal
+  setNewCommercialDeal,
+  loadUsersByEmail
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
@@ -145,6 +147,7 @@ export const {
   EDIT_COMMERCIAL_DEAL_SUCCESS,
   SET_COMMERCIAL_DEAL_FORM_STEP,
   SET_FORM_KEY,
-  SET_NEW_COMMERCIAL_DEAL
+  SET_NEW_COMMERCIAL_DEAL,
+  LOAD_USERS_BY_EMAIL
 
 );
