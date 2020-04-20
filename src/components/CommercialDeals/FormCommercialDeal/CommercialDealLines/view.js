@@ -34,6 +34,19 @@ class CommercialDealLines extends React.Component {
                 return [...escalados, values];
             }      
     }
+    deleteSelectedEscalados = (lines, values) => {
+        const escaladosFiltered = lines.filter( line => line.idescalado !== values.idescalado )
+        return escaladosFiltered;
+    }
+
+    deleteRow = (linea) => {
+        const {currentCommercialDeal} = this.props;
+        const lines = currentCommercialDeal.escalados
+        let indexOfLineTodalete = lines.indexOf(linea)
+        lines.splice(indexOfLineTodalete, 1);
+        this.setState({lines: lines});  
+
+    }
     
     render(){
     
@@ -50,12 +63,10 @@ class CommercialDealLines extends React.Component {
          } = this.props;
     const lines = this.props.currentCommercialDeal.escalados  ? this.props.currentCommercialDeal.escalados: [];
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
-      
         return (
             <Formik
                 key = {formKey}
                 onSubmit={(values,  errors) => { 
-                    
                     editCommercialDeal({
                         id, 
                         values: {
@@ -203,7 +214,18 @@ class CommercialDealLines extends React.Component {
                                 md={{span:4}}
                                 sm={{span:22}}>
                                     { currentCommercialDeal.estado === "Borrador" &&(
-                                        <Button type="primary" htmlType="submit" onClick={this.deleteRow}>
+                                        <Button type="primary" htmlType="submit" onClick={()=>{
+                                            setEscaladosCommercialDeal({escalados:this.deleteSelectedEscalados(lines, line)})
+                                            editCommercialDeal({
+                                                id, 
+                                                values: {
+                                                    //...values,
+                                                    escalados: escalados,
+                                                    productos: productos, 
+                                                    clientes: clientes
+                                                }
+                                            }) 
+                                            this.deleteRow(this.props.currentCommercialDeal.escalados)}}>
                                             <Icon type="delete" />
                                         </Button>
                                     )}
