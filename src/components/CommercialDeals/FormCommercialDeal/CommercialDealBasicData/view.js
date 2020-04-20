@@ -18,6 +18,7 @@ import { Formik } from 'formik';
 import basicDataSchema from './validator';
 import { handleInput } from '../../../../lib/forms';
 import moment from 'moment';
+import { mapTipoToIntegerIdTipo } from './utils'
 
 const initialValues = 
     { 
@@ -28,8 +29,10 @@ const initialValues =
       fechainicio: '',
       fechafin: '',
       margen: '',
-      ind_surtido: true 
+      ind_surtido: false 
     };
+   
+
 
 class CommercialDealBasicData extends React.Component {
     state = {
@@ -76,7 +79,6 @@ class CommercialDealBasicData extends React.Component {
                 initialValues={formikInitialValue}
                 //initialValues = {initialValues}
                 onSubmit={(values, errors) => { 
-
                     const {
                         nombre,
                         descripcion,
@@ -90,14 +92,22 @@ class CommercialDealBasicData extends React.Component {
                     } = values;
 
                     if(id){
-                       
+                        
                         editCommercialDeal({
                             id, 
                             values: {
+                                nombre: nombre,
+                                descripcion: descripcion,
+                                fechainicio: fechainicio,
+                                margen: margen,
+                                ind_surtido: ind_surtido,
+                                idtipo: mapTipoToIntegerIdTipo(tipo),
+                                fechafin: fechafin,
                                 codcupon: codcupon,
                                 escalados: escalados, 
                                 productos: productos, 
-                                clientes: clientes
+                                clientes: clientes,
+                                
                             }
                         })
                     }else{
