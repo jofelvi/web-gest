@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect , useState} from 'react';
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -121,6 +121,7 @@ const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDea
                             id = "clienteAsociado" 
                             checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
                             onChange = {(e)=>{
+                                console.log("on change")
                                 updateClientsFilter(true);
                                 const clientesAsociados = getSelectedUsers(clientes, record);
                                 setUsersCommercialDeal({clientes: clientesAsociados })}}/>
@@ -161,17 +162,18 @@ const CommercialDealsUsers = ({
         } 
        
         updateClientsFilter(false);       
-    },[currentCommercialDeal, updateFilterOfClient, setUsersCommercialDeal, clientes]);
-    
- console.log("emailSearched from reducers", emailComo)
-
+    },[currentCommercialDeal, updateFilterOfClient, clientes]);
+console.log("emailComo", emailComo)
 const getColumnSearchProps = (dataIndex, loadUsers, getUsersCount) => ({
-    filterDropdown: ({}) => (
+    filterDropdown: ({ confirm, clearFilters }) => (
         <Formik
             onSubmit={(values) => { 
                 console.log("values", values)
-                getUsersCount({emailComo: values.searchEmail})   
-                loadUsers({page: 1, emailComo: values.searchEmail})                  
+                getUsersCount({emailComo: values.emailComo})   
+                loadUsers({page: 1, emailComo: values.emailComo})
+                confirm()
+              
+                            
             }}
         >
         {(props) => {
@@ -182,16 +184,17 @@ const getColumnSearchProps = (dataIndex, loadUsers, getUsersCount) => ({
                 handleSubmit,
                 errors,
                 } = props;
-            return(
+                return(
+                    
                 <div style={{ padding: 8 }}>
                     <Input
                         // ref={node => {
                         // console.log(node);
                         // }}
-                        id= "searchEmail"
+                        id= "emailComo"
                         placeholder={`Buscar ${dataIndex}`}
-                        value={values.searchEmail}
-                        onChange={handleInput(setFieldValue, 'searchEmail')}
+                        value={values.emailComo  || ' '  }
+                        onChange={handleInput(setFieldValue, 'emailComo')}
                         // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
                         style={{ width: 188, marginBottom: 8, display: 'block' }}
                     />
@@ -206,19 +209,33 @@ const getColumnSearchProps = (dataIndex, loadUsers, getUsersCount) => ({
                     </Button>
                     <Button 
                         onClick={() => {
-                            getUsersCount({emailComo: ''})   
-                            loadUsers({page: 1, emailComo: ''})}} 
+                            getUsersCount({emailComo: ''});   
+                            loadUsers({page: 1, emailComo: ''});
+                            confirm()
+
+
+                        }} 
+                            
                         size="small" 
                         style={{ width: 90 }}
                     >
                         Reset
                     </Button>
                 </div>
-            )
+                )
+                
         }}
 
         </Formik>
+    
     ),
+    onFilterDropdownVisibleChange: visible => {
+        console.log(visible)
+        if (visible) {
+          return {values : {emailComo: ''}}
+        }
+      },
+    
   });
 
 
@@ -252,7 +269,14 @@ var columnsUsers=[
         title: 'Asociado',
         dataIndex: 'idestado',
         key: 'idestado',
-        render: () => ( <Switch/>  )
+        render: ({}, record) => ( <Switch
+            id = "clienteAsociado" 
+            checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
+            onChange = {(e)=>{
+                console.log("on change")
+                updateClientsFilter(true);
+                const clientesAsociados = getSelectedUsers(clientes, record);
+                setUsersCommercialDeal({clientes: clientesAsociados })}}/>  )
     }
 ];
 
@@ -261,12 +285,8 @@ var columnsUsers=[
     const submitClients = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
-console.log("users meta", usersMeta)
-console.log("users", users)
     const paginationOptions =(emailSearched) => ({
         onChange: (page) => {
-            console.log("page", {page})
-            console.log("email pagination" ,emailSearched )
             loadUsers({page: page, emailComo: emailSearched})
         },
         total: usersMeta.total,

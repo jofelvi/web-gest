@@ -27,13 +27,13 @@ const columnsToShow = [
         sorter: (a,b) => a.nombre - b.nombre,
         sortDirections: ['descend', 'ascend']
     },
+    // {
+    //     title: 'Descripción',
+    //     dataIndex: 'descripcion',
+    //     key: 'descripcion'
+    // },
     {
-        title: 'Descripción',
-        dataIndex: 'descripcion',
-        key: 'descripcion'
-    },
-    {
-        title: 'Tipo de Condición',
+        title: 'Tipo',
         dataIndex: 'tipo',
         key: 'tipo',
         filters: [
@@ -88,17 +88,17 @@ const columnsToShow = [
         sortDirections: ['descend', 'ascend'],
         render: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
     },
-    {
-        title: 'Código Campaña',
-        dataIndex: 'codcupon',
-        key: 'codcupon'
-    },
-    {
-        title: 'Margen',
-        dataIndex: 'margen',
-        key: 'margen',
-        render: (data) => String.Format('{0}%',data)
-    },
+    // {
+    //     title: 'Código Campaña',
+    //     dataIndex: 'codcupon',
+    //     key: 'codcupon'
+    // },
+    // {
+    //     title: 'Margen',
+    //     dataIndex: 'margen',
+    //     key: 'margen',
+    //     render: (data) => String.Format('{0}%',data)
+    // },
     {
         title: 'Surtido',
         dataIndex: 'ind_surtido',
