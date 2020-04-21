@@ -4,13 +4,16 @@ import {Table, Switch, Col, Button, Row, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import {Formik} from 'formik'
+import { handleInput } from '../../../../../lib/forms';
 
-const getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({valueEmail, loadUsers}) => (
+const getColumnSearchProps = dataIndex =>
+    (
+        {
+    filterDropdown: ({loadUsers}) => (
         <Formik
                 onSubmit={(values) => { 
                     console.log("values", values)   
-                    loadUsers({page: 1, emailComo: ''})       
+                    loadUsers({page: 1, emailComo: values.searchEmail})       
                     
                 }}
             >
@@ -54,3 +57,5 @@ const getColumnSearchProps = dataIndex => ({
       </Formik>
     ),
   });
+
+  export default getColumnSearchProps;

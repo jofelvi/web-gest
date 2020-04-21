@@ -7,7 +7,7 @@ const menu = (cmp) => <Menu>
     {cmp.deal.estado === "Borrador" &&(
     <Menu.Item key="1" onClick={() => {
         cmp.setFormKey()
-        cmp.loadUsers({page: 1});
+        cmp.loadUsers({page: 1, emailComo: ''});
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0})  
@@ -15,7 +15,7 @@ const menu = (cmp) => <Menu>
     {(cmp.deal.estado === "Activo" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="2" onClick={() => {
         cmp.setFormKey()
-        cmp.loadUsers({page: 1});
+        cmp.loadUsers({page: 1, emailComo: ''});
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0}) 

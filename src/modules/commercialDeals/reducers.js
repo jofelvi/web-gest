@@ -30,7 +30,8 @@ import {
   editCommercialDealSuccess,
   setCommercialDealFormStep,
   setFormKey,
-  setNewCommercialDeal
+  setNewCommercialDeal,
+  setEmailSearched
 } from './actions';
 const generateKey = ()=>`${Math.random()}`;
 
@@ -211,6 +212,10 @@ export default handleActions(
     [setNewCommercialDeal]:  (state, { payload}) => ({
       ...state,
       isNewCommercialDeal: payload
+    }),
+    [setEmailSearched]:  (state, { payload}) => ({
+      ...state,
+      emailComo: payload.emailComo
     }),
     
   },
