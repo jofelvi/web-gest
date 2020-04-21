@@ -11,6 +11,7 @@ import {
     loadUsers,
     setNewCommercialDeal,
     editCommercialDeal,
+    getUsersCount
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
@@ -24,6 +25,7 @@ import {
       setFormKey,
       loadUsers,
       setNewCommercialDeal,
-      editCommercialDeal
+      editCommercialDeal,
+      getUsersCount
     }
   )(View);
