@@ -15,6 +15,7 @@ import {
   setCommercialDealFormStep,
   setFormKey,
   setNewCommercialDeal,
+  setNewCc,
 
 } from '../../../modules/commercialDeals/actions';
 
@@ -33,7 +34,8 @@ export default connect(
     subBrands: state.commercialDeals.subBrands,
     users: state.commercialDeals.users,
     dealTypes: state.commercialDeals.dealTypes,
-    token: state.auth.token
+    token: state.auth.token,
+    
   }),
   { 
     showNewCommercialDeal,
@@ -49,6 +51,7 @@ export default connect(
     setCommercialDealFormStep,
     setFormKey,
     setNewCommercialDeal,
+    setNewCc,
   
   }
 )(View);

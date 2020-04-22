@@ -32,7 +32,8 @@ import {
   setFormKey,
   setNewCommercialDeal,
   setEmailSearched,
-  setAsociatedProducts
+  setAsociatedProducts,
+  setNewCc,
 } from './actions';
 const generateKey = ()=>`${Math.random()}`;
 
@@ -64,6 +65,7 @@ const defaultState = {
   formKey: generateKey(),
   isNewCommercialDeal: false,
   isAsociatedProduct: false,
+  isNew: false,
 };
 
 
@@ -223,6 +225,10 @@ export default handleActions(
     [setAsociatedProducts]:  (state, { payload}) => ({
       ...state,
       isAsociatedProduct: payload.isAsociatedProduct
+    }),
+    [setNewCc]:  (state, { payload}) => ({
+      ...state,
+      isNew: payload.isNew
     }),
     
   },

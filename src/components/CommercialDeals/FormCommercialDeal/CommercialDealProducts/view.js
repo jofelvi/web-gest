@@ -301,6 +301,15 @@ const changeData = (currentData,filters,families, subFamilies, products, brands,
 // };
 
 //components
+const setByDefaultAsocietedProductFilter = (isNew, setAsociatedProducts) => {
+ 
+    if((isNew)){
+        setAsociatedProducts({isAsociatedProduct: false})
+    }else{
+        setAsociatedProducts({isAsociatedProduct: true})
+    } 
+
+}
 const CommercialDealProducts = ({
     currentCommercialDeal,
     families,
@@ -321,19 +330,26 @@ const CommercialDealProducts = ({
     escalados,
     clientes,
     isAsociatedProduct,
+    isNew
 })=> {
+
     useEffect(()=>{
         if(!updateFilter){
             changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos);
-        }
-        
+        } 
         updateProductsFilter(false);
-    },[currentCommercialDeal,families, products,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
+    },[families,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
+
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
+    
+    useEffect(()=> {
+        setByDefaultAsocietedProductFilter(isNew, setAsociatedProducts)
+   }, [isNew])
 
     const submitProducts = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
+    
     const handleToggle = (isAssociated) =>{
         if(isAssociated){
             setAsociatedProducts({isAsociatedProduct: false})
@@ -341,7 +357,8 @@ const CommercialDealProducts = ({
             setAsociatedProducts({isAsociatedProduct: true})
         }
     }
-    const findingAsociatedproductsOnList = (asociatedproducts, products)=>{
+
+    const findingAsociatedProductsOnList = (asociatedproducts, products)=>{
         return asociatedproducts.map((asociatedProduct)=> {
                     return products.find( product => asociatedProduct.codindas === product.codindas);
                 })   
@@ -360,7 +377,7 @@ const CommercialDealProducts = ({
             </Row>
             <Table 
                 className="commercial-deals-products"
-                dataSource={isAsociatedProduct? findingAsociatedproductsOnList(productos, products) : products}
+                dataSource={isAsociatedProduct? findingAsociatedProductsOnList(productos, products) : products}
                 onChange={(pagination, filters, sorter, data) => 
                     changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos)}
                 columns={columnsProducts}

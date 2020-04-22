@@ -193,6 +193,7 @@ const ViewCommercialDeals = ({
     setCommercialDealFormStep,
     setFormKey,
     setNewCommercialDeal,
+    setNewCc
     
 }) =>{
     const [loading, setLoading] = useState(true);
@@ -213,6 +214,7 @@ const ViewCommercialDeals = ({
                     showNewCommercialDeal(true);
                     setCommercialDealFormStep({currentStep: 0})
                     setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});
+                    setNewCc({isNew: true})
                 }} hidden={loading}>Nuevo</Button>
             </ButtonGroup>
             

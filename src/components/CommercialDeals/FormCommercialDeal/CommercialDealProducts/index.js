@@ -22,8 +22,9 @@ export default connect(
       productos: state.commercialDeals.currentCommercialDeal.productos,
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
-      isAsociatedProduct: state.commercialDeals.isAsociatedProduct
-
+      isAsociatedProduct: state.commercialDeals.isAsociatedProduct,
+      formKey: state.commercialDeals.formKey,
+      isNew: state.commercialDeals.isNew
     }),
     { 
       updateProductsFilter, 
