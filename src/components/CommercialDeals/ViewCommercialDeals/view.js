@@ -207,8 +207,7 @@ const ViewCommercialDeals = ({
                 <Button onClick={()=> {
                     setFormKey();
                     getUsersCount({emailComo: ''});  
-                    loadUsers({page: 1, emailComo: ''});
-                    getUsersCount({emailComo: ''});  
+                    loadUsers({page: 1, emailComo: ''}); 
                     setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});
                     setNewCommercialDeal(true)
                     showNewCommercialDeal(true);
