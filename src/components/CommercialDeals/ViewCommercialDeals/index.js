@@ -14,7 +14,8 @@ import {
   loadDealTypes,
   setCommercialDealFormStep,
   setFormKey,
-  setNewCommercialDeal
+  setNewCommercialDeal,
+
 } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -48,5 +49,6 @@ export default connect(
     setCommercialDealFormStep,
     setFormKey,
     setNewCommercialDeal,
+  
   }
 )(View);

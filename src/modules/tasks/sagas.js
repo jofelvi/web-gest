@@ -199,7 +199,6 @@ export function* watchFetchTaskList() {
 function* editTask({ payload }) {
   try {
     const response = yield call(api.editTask, payload.id);
-    console.log("response edit task", response )
   }catch (e) {
     console.error(e);
   }
