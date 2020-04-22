@@ -6,7 +6,6 @@ import {
   editCommercialDeal,
   setUsersCommercialDeal,
   loadUsers,
-  loadUsersByEmail,
   getUsersCount
 } from '../../../../modules/commercialDeals/actions'
 
@@ -25,5 +24,5 @@ export default connect(
         emailComo: state.commercialDeals.emailComo,
       }),
     
-    {updateClientsFilter, editCommercialDeal, setUsersCommercialDeal, loadUsers, loadUsersByEmail, getUsersCount }
+    {updateClientsFilter, editCommercialDeal, setUsersCommercialDeal, loadUsers, getUsersCount }
   )(View);

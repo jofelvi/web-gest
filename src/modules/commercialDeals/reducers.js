@@ -50,6 +50,7 @@ const defaultState = {
     emailComo: '',
     searchLoading: false,
   },
+  emailComo: '',
   dealTypes:[],
   viewProductsCommercialDealVisible: false,
   newProductsCommercialDealVisible: false,

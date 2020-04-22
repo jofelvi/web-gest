@@ -175,7 +175,6 @@ export function* watchgetUsersCount() {
   yield takeLatest(GET_USERS_COUNT, getUsersCount);
 }
 function* loadUsers({payload = { emailComo: '', page: 1}}) {
-  console.log("Payload load users", {payload})
   try {
     const response = yield call(api.getUsers, payload);
     yield put(setEmailSearched({emailComo: payload.emailComo}));
@@ -188,19 +187,8 @@ function* loadUsers({payload = { emailComo: '', page: 1}}) {
 export function* watchloadUsers() {
   yield takeLatest(LOAD_USERS, loadUsers);
 }
-function* loadUsersByEmail({payload = { emailComo: ''}}) {
-  console.log({payload})
-  try {
-    const response = yield call(api.getUsersByEmail, payload);
-    yield put(loadUsersSuccess({ users: response.data, userMeta: payload }));
-  } catch (e) {
-    console.error(e);
-    yield put(loadUsersFailed());
-  }
-}
-export function* watchloadUsersByEmail() {
-  yield takeLatest(LOAD_USERS_BY_EMAIL, loadUsersByEmail);
-}
+
+
 //dealTypes
 function* loadDealTypes() {
   try {
