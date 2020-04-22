@@ -5,6 +5,7 @@ import {
   updateProductsFilter,
   editCommercialDeal,
   setProductsCommercialDeal,
+  setAsociatedProducts,
   
 } from '../../../../modules/commercialDeals/actions'
 
@@ -21,8 +22,13 @@ export default connect(
       productos: state.commercialDeals.currentCommercialDeal.productos,
       escalados: state.commercialDeals.currentCommercialDeal.escalados,
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
-
+      isAsociatedProduct: state.commercialDeals.isAsociatedProduct
 
     }),
-    { updateProductsFilter, editCommercialDeal, setProductsCommercialDeal}
+    { 
+      updateProductsFilter, 
+      editCommercialDeal, 
+      setProductsCommercialDeal, 
+      setAsociatedProducts
+    }
   )(View);

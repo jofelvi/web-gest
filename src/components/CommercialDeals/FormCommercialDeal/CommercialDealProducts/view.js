@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { 
+    ColAsociado,
+    LabelAsociado
+} from './styles'
 import {Table, Switch, Row, Button, Col} from 'antd';
 //properties
 var columnsProducts=[
@@ -311,10 +315,12 @@ const CommercialDealProducts = ({
     onClickNext,
     editCommercialDeal,
     idCommercialDeal,
-    setProductsCommercialDeal, 
+    setProductsCommercialDeal,
+    setAsociatedProducts, 
     productos,
     escalados,
     clientes,
+    isAsociatedProduct,
 })=> {
     useEffect(()=>{
         if(!updateFilter){
@@ -328,13 +334,33 @@ const CommercialDealProducts = ({
     const submitProducts = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
-   
+    const handleToggle = (isAssociated) =>{
+        if(isAssociated){
+            setAsociatedProducts({isAsociatedProduct: false})
+        }else if(!isAssociated){
+            setAsociatedProducts({isAsociatedProduct: true})
+        }
+    }
+    const findingAsociatedproductsOnList = (asociatedproducts, products)=>{
+        return asociatedproducts.map((asociatedProduct)=> {
+                    return products.find( product => asociatedProduct.codindas === product.codindas);
+                })   
+    }
+    
     return (
        
         <div>
+            <Row>
+                <ColAsociado>
+                    <LabelAsociado>
+                        Productos asociados
+                    </LabelAsociado>
+                    <Switch checked={isAsociatedProduct} onChange={() => (handleToggle(isAsociatedProduct))}/>
+                </ColAsociado>
+            </Row>
             <Table 
                 className="commercial-deals-products"
-                dataSource={products}
+                dataSource={isAsociatedProduct? findingAsociatedproductsOnList(productos, products) : products}
                 onChange={(pagination, filters, sorter, data) => 
                     changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos)}
                 columns={columnsProducts}

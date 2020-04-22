@@ -31,7 +31,8 @@ import {
   setCommercialDealFormStep,
   setFormKey,
   setNewCommercialDeal,
-  setEmailSearched
+  setEmailSearched,
+  setAsociatedProducts
 } from './actions';
 const generateKey = ()=>`${Math.random()}`;
 
@@ -61,7 +62,8 @@ const defaultState = {
   updateFilterOfClient: false,
   currentStep: 0,
   formKey: generateKey(),
-  isNewCommercialDeal: false
+  isNewCommercialDeal: false,
+  isAsociatedProduct: false,
 };
 
 
@@ -217,6 +219,10 @@ export default handleActions(
     [setEmailSearched]:  (state, { payload}) => ({
       ...state,
       emailComo: payload.emailComo
+    }),
+    [setAsociatedProducts]:  (state, { payload}) => ({
+      ...state,
+      isAsociatedProduct: payload.isAsociatedProduct
     }),
     
   },
