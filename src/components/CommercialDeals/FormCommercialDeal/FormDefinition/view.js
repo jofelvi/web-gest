@@ -56,7 +56,7 @@ class FormDefinition extends React.Component {
                 <Step title="Datos Básicos" description=""/>                   
                 <Step title="Lineas de Escalado" description=""/>
                 <Step title="Productos" description=""/> 
-                <Step title="Usuarios" description=""/>
+                <Step title="Clientes" description=""/>
                 
                 {/* {this.props.currentCommercialDeal.tipo !== "Campaña"? <Step title="Productos" description=""/> :''} */}
                 {/* {this.props.currentCommercialDeal.tipo !== "Promoción" ? <Step title="Usuarios" description=""/>: ''} */}

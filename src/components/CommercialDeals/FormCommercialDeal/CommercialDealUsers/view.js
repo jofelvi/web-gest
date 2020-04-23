@@ -10,6 +10,7 @@ import {
     ColAsociado,
     LabelAsociado
 } from './styles'
+import  utils  from "../../../../lib/utils"
 
 
 //methods
@@ -138,9 +139,15 @@ const CommercialDealsUsers = ({
             </Formik>
         ),
     });
-
+//Cambiar el orden: Nombre, Apellido 1, Apellido 2, email, fecha de alta, Estado, asociado 
 
     var columnsUsers=[
+        {
+            title: 'Nombre',
+            dataIndex: 'nombre',
+            key:  'nombre',
+            sorter: (a,b) => a.nomcli_cbim - b.nomcli_cbim
+        },
         {
             title: 'Apellido 1',
             dataIndex: 'apellido1',
@@ -153,18 +160,28 @@ const CommercialDealsUsers = ({
             key: 'apellido2',
             sorter: (a,b) => a.apellido2 - b.apellido2
         },
-        {
-            title: 'Nombre',
-            dataIndex: 'nomcli_cbim',
-            key: 'nomcli_cbim',
-            sorter: (a,b) => a.nomcli_cbim - b.nomcli_cbim
-        },
+        
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
             ...getColumnSearchProps('email', loadUsers, getUsersCount),
             sorter: (a,b) => a.email - b.email
+        },
+        {
+            title: 'Fecha de alta',
+            dataIndex: 'fecha_alta',
+            key: 'fecha_alta',
+            render: (value, record) => {
+                return utils.renderDate(value)
+                
+            }
+        },
+        {
+            title: 'Estado',
+            dataIndex: 'estado',
+            key: 'estado',
+            sorter: (a,b) => a.estado - b.estado
         },
         {
             title: 'Asociado',
