@@ -50,15 +50,7 @@ const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDea
     });
    
 }
-const setByDefaultAsocietedClientFilter = (isNew, setAsociatedClients) => {
- 
-    if((isNew)){
-        setAsociatedClients({isAsociatedClient: false})
-    }else{
-        setAsociatedClients({isAsociatedClient: true})
-    } 
 
-}
 
 //componet
 const CommercialDealsUsers = ({
@@ -81,7 +73,6 @@ const CommercialDealsUsers = ({
     getUsersCount,
     isAsociatedClient,
     setAsociatedClients,
-    isNew,
     idCommercialDeal
 })=> {
     useEffect(()=>{
@@ -91,12 +82,7 @@ const CommercialDealsUsers = ({
        
         updateClientsFilter(false);       
     },[currentCommercialDeal, updateFilterOfClient, clientes]);
-    useEffect(()=>{
-        setByDefaultAsocietedClientFilter(isNew, setAsociatedClients)
-         
-    },[isNew]);
-
-
+    
     const getColumnSearchProps = (dataIndex, loadUsers, getUsersCount) => ({
         filterDropdown: ({ confirm }) => (
             <Formik

@@ -7,7 +7,6 @@ import {
     setProductsCommercialDeal,
     setUsersCommercialDeal,
     setNewCommercialDeal,
-    setNewCc,
   } from '../../../modules/commercialDeals/actions';
 
 export default connect(
@@ -22,6 +21,5 @@ export default connect(
       setProductsCommercialDeal, 
       setUsersCommercialDeal, 
       setNewCommercialDeal ,
-      setNewCc
     }
   )(View);

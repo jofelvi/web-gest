@@ -24,7 +24,6 @@ export default connect(
         clientes: state.commercialDeals.currentCommercialDeal.clientes,
         emailComo: state.commercialDeals.emailComo,
         isAsociatedClient: state.commercialDeals.isAsociatedClient,
-        isNew: state.commercialDeals.isNew
 
       }),
     
