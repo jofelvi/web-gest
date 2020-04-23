@@ -9,15 +9,15 @@ const alertMessage = (tipo, dataToAdd)=>{
 
 export const validationCommercialDeal = (currentCommericialDeal, editCommercialDeal) =>{
 
-    const hasNoProducts = currentCommericialDeal && !currentCommericialDeal.productos.length;
-    const hasNoClients = currentCommericialDeal && !currentCommericialDeal.clientes.length;
-    const hasNoCode = currentCommericialDeal && !currentCommericialDeal.codcupon;
+    const hasProducts = currentCommericialDeal && currentCommericialDeal.productos.length > 0;
+    const hasClients = currentCommericialDeal && currentCommericialDeal.clientes.length > 0;
+    const hasCode = currentCommericialDeal && currentCommericialDeal.codcupon;
 
     if(currentCommericialDeal.tipo === "Promoción"){
         //debe tener productos asociados
-        if (hasNoProducts){
+        if (!hasProducts){
             alertMessage(currentCommericialDeal.tipo, "productos");
-        }else{
+        }else if(hasProducts){
             editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: 0, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: [] }})
 
         }
@@ -29,13 +29,16 @@ export const validationCommercialDeal = (currentCommericialDeal, editCommercialD
     if(currentCommericialDeal.tipo === "Acuerdo Comercial"){
         // 1. Debe tener productos asociados
         // 2. Debe tener clientes asociados
-        if (hasNoProducts){
-            alertMessage(currentCommericialDeal.tipo, "productos");
-        }
-        if(hasNoClients){
-            alertMessage(currentCommericialDeal.tipo, "clientes");
-        }else{
+        
+        if(hasProducts && hasClients){
             editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: 0, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: currentCommericialDeal.clientes }})
+        }else{
+            if(!hasProducts){
+                alertMessage(currentCommericialDeal.tipo, "productos");
+            }
+            if(!hasClients){
+                alertMessage(currentCommericialDeal.tipo, "clientes");
+            }
         }
         // 3. No debe tener código de campaña informado
         // 4. El margen debe ser 0%
@@ -44,27 +47,33 @@ export const validationCommercialDeal = (currentCommericialDeal, editCommercialD
     if(currentCommericialDeal.tipo === "Plan de Compra"){
         // 1. Debe tener productos asociados  
         // 2. Debe tener clientes asociados
-        if (hasNoProducts){
-            alertMessage(currentCommericialDeal.tipo, "productos");
-        }if(hasNoClients){
-            alertMessage(currentCommericialDeal.tipo, "clientes");
+        if(hasProducts && hasClients){
+            editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: 0, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: currentCommericialDeal.clientes }})
         }else{
-            editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: currentCommericialDeal.clientes }})
-
+            if(!hasProducts){
+                alertMessage(currentCommericialDeal.tipo, "productos");
+            }
+            if(!hasClients){
+                alertMessage(currentCommericialDeal.tipo, "clientes");
+            }
         }
         // 3. No debe tener código de campaña informado
         
     }
     if(currentCommericialDeal.tipo === "Campaña"){
         // 1. Debe tener productos asociados
-        if (hasNoProducts){
-            alertMessage(currentCommericialDeal.tipo, "productos");
-        }if(hasNoCode){
-            alertMessage(currentCommericialDeal.tipo, "código campaña");
-        }
-        else{
+        if(hasCode && hasProducts){
             editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: 0, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: [] }})
+
+        }else{
+            if (!hasProducts){
+                alertMessage(currentCommericialDeal.tipo, "productos");
+            }
+            if(!hasCode){
+                alertMessage(currentCommericialDeal.tipo, "código campaña");
+            }
         }
+        
         // 2. No debe tener Clientes asociados, de hecho, en el alta no hay que llegar hasta el paso de asociación de clientes.
         // 3. Debe tener código de campaña informado
         // 4. El margen debe ser 0%

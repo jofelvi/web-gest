@@ -11,11 +11,13 @@ import {
     loadUsers,
     setNewCommercialDeal,
     editCommercialDeal,
-    getUsersCount
+    getUsersCount,
+    setNewCc
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
     state => ({
+      
     }),
     { setCurrentCommercialDeal,
       showEditCommercialDeal,
@@ -26,6 +28,8 @@ import {
       loadUsers,
       setNewCommercialDeal,
       editCommercialDeal,
-      getUsersCount
+      getUsersCount,
+      setNewCc,
+      
     }
   )(View);

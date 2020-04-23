@@ -233,10 +233,13 @@ export default handleActions(
       isAsociatedClient: payload.isAsociatedClient
     }),
     
-    [setNewCc]:  (state, { payload}) => ({
-      ...state,
-      isNew: payload.isNew
-    }),
+    [setNewCc]:  (state, { payload}) => {
+      console.log("set New cc payload", payload)
+      return ({
+        ...state,
+        isNew: payload.isNew
+      })
+    } 
     
   },
   defaultState

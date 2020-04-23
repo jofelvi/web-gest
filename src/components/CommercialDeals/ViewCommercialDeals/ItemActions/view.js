@@ -22,6 +22,7 @@ const menu = (cmp) => <Menu>
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0}) 
         cmp.setNewCommercialDeal(false) 
+        
     }}>Ver</Menu.Item>)}
      {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="3" onClick={() => {
@@ -46,6 +47,7 @@ const ItemActions = ({
     setNewCommercialDeal,
     editCommercialDeal,
     getUsersCount,
+    setNewCc,
     viewProductsCommercialDealVisible,
     newProductsCommercialDealVisible,
     editCommercialDealVisiblee,
@@ -62,7 +64,8 @@ const ItemActions = ({
             getUsersCount: getUsersCount,
             loadUsers: loadUsers,
             setNewCommercialDeal: setNewCommercialDeal,
-            editCommercialDeal:editCommercialDeal
+            editCommercialDeal:editCommercialDeal,
+            setNewCc: setNewCc
             
             })}>
                 <Button>
