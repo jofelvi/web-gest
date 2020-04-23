@@ -21,8 +21,12 @@ const FormCommercialDeal = ({
 }) => {
     useEffect(()=>{
     },[newCommercialDealVisible,editCommercialDealVisible])
+    console.log({currentCommercialDeal});
+    const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
+
     return ( 
             <Modal 
+                title = {id ? '' : 'Nueva condición comercial'}
                 maskClosable={false}
                 destroyOnClose={false}
                 className="commercial-deals-modal-form"

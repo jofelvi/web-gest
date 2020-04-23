@@ -18,7 +18,8 @@ import { Formik } from 'formik';
 import basicDataSchema from './validator';
 import { handleInput } from '../../../../lib/forms';
 import moment from 'moment';
-import { mapTipoToIntegerIdTipo } from './utils'
+import { mapTipoToIntegerIdTipo } from './utils';
+import { ColBasicData } from './styles';
 
 const initialValues = 
     { 
@@ -166,9 +167,35 @@ class CommercialDealBasicData extends React.Component {
 
                 return(
                     <div style={{display: this.props.currentStep !== 0 ? 'none': 'block'}}>
-                        <Row style={{marginTop:30}} gutter={18}>
+                     <Row style={{marginTop:30}} gutter={18}>
+                        <Col md={{span:12}} sm={{span:22}}>
+                                <Form.Item label="Tipo de Condición">
+                                    <Select 
+                                        id = 'tipo' 
+                                        name = 'tipo'
+                                        value = {values.tipo}
+                                        onChange={handleInput(setFieldValue, 'tipo')}
+                                        onBlur={handleBlur}
+                                    >
+                                    {this.props.dealTypes && (this.props.dealTypes.map((dealType)=>{
+                                        
+                                        return <Select.Option 
+                                                    key={dealType.idtipo} 
+                                                    value={dealType.idtipo}
+                                                    
+                                                >
+                                                    {dealType.nombre}
+                                               </Select.Option>
+                                    }))}
+                                    </Select>
+                                    {errors.tipo && (<div style={{ color: 'red' }}>{errors.tipo}</div>)}
+
+                                </Form.Item>
+                            </Col>
+                        
+                       
                             <Col md={{span:12}} sm={{span:22}}>
-                                <Form.Item label="Nombre de Condición">
+                                <Form.Item label="Nombre">
                                     <Input 
                                         id = 'nombre'  
                                         name = 'nombre'
@@ -191,31 +218,6 @@ class CommercialDealBasicData extends React.Component {
                                         placeholder="Introduce una descripción "
                                         type="text"
                                     />
-                                </Form.Item>
-                            </Col>
-
-                            <Col md={{span:12}} sm={{span:22}}>
-                                <Form.Item label="Tipo de Condición">
-                                    <Select 
-                                        id = 'tipo' 
-                                        name = 'tipo'
-                                        value = {values.tipo}
-                                        onChange={handleInput(setFieldValue, 'tipo')}
-                                        onBlur={handleBlur}
-                                    >
-                                    {this.props.dealTypes && (this.props.dealTypes.map((dealType)=>{
-                                        
-                                        return <Select.Option 
-                                                    key={dealType.idtipo} 
-                                                    value={dealType.idtipo}
-                                                    
-                                                >
-                                                    {dealType.nombre}
-                                               </Select.Option>
-                                    }))}
-                                    </Select>
-                                    {errors.tipo && (<div style={{ color: 'red' }}>{errors.tipo}</div>)}
-
                                 </Form.Item>
                             </Col>
 
