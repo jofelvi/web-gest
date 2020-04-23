@@ -34,7 +34,7 @@ import {
   setEmailSearched,
   setAsociatedProducts,
   setAsociatedClients,
-  setNewCc,
+ 
 } from './actions';
 const generateKey = ()=>`${Math.random()}`;
 
@@ -67,7 +67,6 @@ const defaultState = {
   isNewCommercialDeal: false,
   isAsociatedProduct: false,
   isAsociatedClient: false,
-  isNew: false,
 };
 
 
@@ -232,14 +231,6 @@ export default handleActions(
       ...state,
       isAsociatedClient: payload.isAsociatedClient
     }),
-    
-    [setNewCc]:  (state, { payload}) => {
-      console.log("set New cc payload", payload)
-      return ({
-        ...state,
-        isNew: payload.isNew
-      })
-    } 
     
   },
   defaultState

@@ -301,15 +301,7 @@ const changeData = (currentData,filters,families, subFamilies, products, brands,
 // };
 
 //components
-const setByDefaultAsocietedProductFilter = (isNew, setAsociatedProducts) => {
- 
-    if((isNew)){
-        setAsociatedProducts({isAsociatedProduct: false})
-    }else{
-        setAsociatedProducts({isAsociatedProduct: true})
-    } 
 
-}
 const CommercialDealProducts = ({
     currentCommercialDeal,
     families,
@@ -330,9 +322,8 @@ const CommercialDealProducts = ({
     escalados,
     clientes,
     isAsociatedProduct,
-    isNew
+    
 })=> {
-
     useEffect(()=>{
         if(!updateFilter){
             changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos);
@@ -341,10 +332,6 @@ const CommercialDealProducts = ({
     },[families,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
 
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
-    
-    useEffect(()=> {
-        setByDefaultAsocietedProductFilter(isNew, setAsociatedProducts)
-   }, [isNew])
 
     const submitProducts = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})

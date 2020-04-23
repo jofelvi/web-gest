@@ -15,7 +15,8 @@ import {
   setCommercialDealFormStep,
   setFormKey,
   setNewCommercialDeal,
-  setNewCc,
+  setAsociatedProducts,
+  setAsociatedClients,
 
 } from '../../../modules/commercialDeals/actions';
 
@@ -51,7 +52,8 @@ export default connect(
     setCommercialDealFormStep,
     setFormKey,
     setNewCommercialDeal,
-    setNewCc,
+    setAsociatedProducts,
+    setAsociatedClients,
   
   }
 )(View);

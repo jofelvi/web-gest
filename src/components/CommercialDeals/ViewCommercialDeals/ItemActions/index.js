@@ -12,12 +12,14 @@ import {
     setNewCommercialDeal,
     editCommercialDeal,
     getUsersCount,
-    setNewCc
+   
+    setAsociatedProducts,
+    setAsociatedClients,
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
     state => ({
-      
+
     }),
     { setCurrentCommercialDeal,
       showEditCommercialDeal,
@@ -29,7 +31,8 @@ import {
       setNewCommercialDeal,
       editCommercialDeal,
       getUsersCount,
-      setNewCc,
+      setAsociatedProducts,
+      setAsociatedClients,
       
     }
   )(View);

@@ -11,7 +11,10 @@ const menu = (cmp) => <Menu>
         cmp.loadUsers({page: 1, emailComo: ''})                     
         cmp.setCurrentCommercialDeal(cmp.deal);
         cmp.showEditCommercialDeal(true);
-        cmp.setCommercialDealFormStep({currentStep: 0})  
+        cmp.setCommercialDealFormStep({currentStep: 0})
+        cmp.setAsociatedProducts({isAsociatedProduct: true})
+        cmp.setAsociatedClients({isAsociatedClient: true})
+ 
     }}>Editar</Menu.Item>)}
     {(cmp.deal.estado === "Activo" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="2" onClick={() => {
@@ -22,7 +25,9 @@ const menu = (cmp) => <Menu>
         cmp.showEditCommercialDeal(true);
         cmp.setCommercialDealFormStep({currentStep: 0}) 
         cmp.setNewCommercialDeal(false) 
-        
+        cmp.setAsociatedProducts({isAsociatedProduct: true}) 
+        cmp.setAsociatedClients({isAsociatedClient: true})
+
     }}>Ver</Menu.Item>)}
      {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="3" onClick={() => {
@@ -47,7 +52,8 @@ const ItemActions = ({
     setNewCommercialDeal,
     editCommercialDeal,
     getUsersCount,
-    setNewCc,
+    setAsociatedProducts,
+    setAsociatedClients,
     viewProductsCommercialDealVisible,
     newProductsCommercialDealVisible,
     editCommercialDealVisiblee,
@@ -65,7 +71,8 @@ const ItemActions = ({
             loadUsers: loadUsers,
             setNewCommercialDeal: setNewCommercialDeal,
             editCommercialDeal:editCommercialDeal,
-            setNewCc: setNewCc
+            setAsociatedProducts: setAsociatedProducts,
+            setAsociatedClients: setAsociatedClients,
             
             })}>
                 <Button>

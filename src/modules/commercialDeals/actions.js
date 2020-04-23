@@ -105,7 +105,7 @@ export const {
   setEmailSearched,
   setAsociatedProducts,
   setAsociatedClients,
-  setNewCc,
+  
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
   LOAD_COMMERCIAL_DEALS_SUCCESS,
