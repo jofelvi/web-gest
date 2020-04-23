@@ -50,6 +50,7 @@ import {
   SET_NEW_COMMERCIAL_DEAL,
   SET_EMAIL_SEARCHED,
   SET_ASOCIATED_PRODUCTS,
+  SET_ASOCIATED_CLIENTS,
   SET_NEW_CC
 } from './actionTypes';
 
@@ -103,6 +104,7 @@ export const {
   setNewCommercialDeal,
   setEmailSearched,
   setAsociatedProducts,
+  setAsociatedClients,
   setNewCc,
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
@@ -154,6 +156,7 @@ export const {
   SET_NEW_COMMERCIAL_DEAL,
   SET_EMAIL_SEARCHED,
   SET_ASOCIATED_PRODUCTS,
+  SET_ASOCIATED_CLIENTS,
   SET_NEW_CC
 
 );

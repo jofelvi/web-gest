@@ -6,6 +6,10 @@ import {Table, Switch, Col, Button, Row, Input } from 'antd';
 import {Formik} from 'formik';
 import { handleInput } from '../../../../lib/forms';
 import { SearchOutlined } from '@ant-design/icons';
+import { 
+    ColAsociado,
+    LabelAsociado
+} from './styles'
 
 
 //methods
@@ -46,6 +50,15 @@ const change = (currentCommercialDeal,updateClientsFilter, setUsersCommercialDea
     });
    
 }
+const setByDefaultAsocietedClientFilter = (isNew, setAsociatedClients) => {
+ 
+    if((isNew)){
+        setAsociatedClients({isAsociatedClient: false})
+    }else{
+        setAsociatedClients({isAsociatedClient: true})
+    } 
+
+}
 
 //componet
 const CommercialDealsUsers = ({
@@ -66,6 +79,9 @@ const CommercialDealsUsers = ({
     loadUsers,
     emailComo,
     getUsersCount,
+    isAsociatedClient,
+    setAsociatedClients,
+    isNew,
     idCommercialDeal
 })=> {
     useEffect(()=>{
@@ -75,6 +91,11 @@ const CommercialDealsUsers = ({
        
         updateClientsFilter(false);       
     },[currentCommercialDeal, updateFilterOfClient, clientes]);
+    useEffect(()=>{
+        setByDefaultAsocietedClientFilter(isNew, setAsociatedClients)
+         
+    },[isNew]);
+
 
     const getColumnSearchProps = (dataIndex, loadUsers, getUsersCount) => ({
         filterDropdown: ({ confirm }) => (
@@ -163,7 +184,7 @@ const CommercialDealsUsers = ({
             title: 'Asociado',
             dataIndex: 'idestado',
             key: 'idestado',
-            render: ({}, record) => ( 
+            render: ( _, record) => ( 
                         <Switch
                             id = "clienteAsociado" 
                             checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
@@ -182,6 +203,15 @@ const CommercialDealsUsers = ({
     const submitClients = (productos, escalados, clientes, id) =>{
         editCommercialDeal({id, values: {productos, escalados, clientes}})
     }
+
+    const handleToggle = (isAssociated) =>{
+        if(isAssociated){
+            setAsociatedClients({isAsociatedClient: false})
+        }else if(!isAssociated){
+            setAsociatedClients({isAsociatedClient: true})
+        }
+    }
+
     const paginationOptions =(emailSearched) => ({
         onChange: (page) => {
             loadUsers({page: page, emailComo: emailSearched})
@@ -190,19 +220,34 @@ const CommercialDealsUsers = ({
         current: usersMeta.page,
         pageSize: usersMeta.pageSize,
     });
+    const paginationAsociatedClientsOptions =(emailSearched) => ({
+        total: clientes.length,
+        pageSize: usersMeta.pageSize,
+    });
     return (
      
         <div>
              { commercialDealType != 0 ?
              <div>
+                <Row>
+                    <ColAsociado>
+                        <LabelAsociado>
+                            Clientes asociados
+                        </LabelAsociado>
+                        <Switch
+                        id="filterAsociado" 
+                        checked={isAsociatedClient} 
+                        onChange={() => (handleToggle(isAsociatedClient))}/>
+                    </ColAsociado>
+                </Row>
                 <Table 
                     className="commercial-deals-products"
-                    dataSource={users}
+                    dataSource={isAsociatedClient ? clientes : users}
                     onChange = {(pagination, filters, sorter, data) => change(currentCommercialDeal,updateClientsFilter, setUsersCommercialDeal, clientes, columnsUsers)}
                     columns={columnsUsers}
                     size='small'
                     loading={usersMeta.searchLoading}
-                    pagination={paginationOptions(emailComo)}
+                    pagination={isAsociatedClient ? paginationAsociatedClientsOptions(emailComo) : paginationOptions(emailComo)}
                     rowKey='idcliente'
                     locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
                 ></Table>

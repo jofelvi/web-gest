@@ -377,7 +377,7 @@ const CommercialDealProducts = ({
             </Row>
             <Table 
                 className="commercial-deals-products"
-                dataSource={isAsociatedProduct? findingAsociatedProductsOnList(productos, products) : products}
+                dataSource={isAsociatedProduct ? findingAsociatedProductsOnList(productos, products) : products}
                 onChange={(pagination, filters, sorter, data) => 
                     changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos)}
                 columns={columnsProducts}
