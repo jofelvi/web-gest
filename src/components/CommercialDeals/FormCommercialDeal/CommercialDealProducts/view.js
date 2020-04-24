@@ -84,7 +84,7 @@ const getSelectedProducts = (productos, record ) => {
   
 }
 
-const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter)=>{
+const getFilters = (families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter, isNotEditable)=>{
    
     columnsProducts.map((el)=>{
         if(el.title === "Familia"){
@@ -125,12 +125,13 @@ const getFilters = (families, subFamilies, products, brands, subBrands, currentC
         } else if(el.dataIndex === 'indactivo'){
             el.render = ({},record) =>{ 
                return <Switch 
+                        disabled= {isNotEditable ? true : false}
                         id = "productoAsociado"
                         checked= {productos.find(product => product.codindas === record.codindas)} 
                         onChange = {(e)=>{
+                           
                             const productosAsociados = getSelectedProducts(productos, record)
-                            setProductsCommercialDeal({productos: productosAsociados
-                            })       
+                            setProductsCommercialDeal({productos: productosAsociados})     
                 
                       }}/>
             };
@@ -241,7 +242,7 @@ const updateFilters = (currentData, filters, column) =>{
     });
     return applyFilters;
 }
-const changeData = (currentData,filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos)=>{
+const changeData = (currentData,filters,families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos, isNotEditable)=>{
     var applyFilters = false;
     if(Object.keys(filters).length > 0){
         columnsProducts.map((column)=> {
@@ -263,7 +264,7 @@ const changeData = (currentData,filters,families, subFamilies, products, brands,
     }
     console.log(applyFilters);
     if(!applyFilters){
-        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter); 
+        getFilters(families, subFamilies, products, brands, subBrands, currentCommercialDeal, setProductsCommercialDeal, productos, updateProductsFilter, isNotEditable); 
         updateProductsFilter(true);
     }
     return true;
@@ -322,11 +323,12 @@ const CommercialDealProducts = ({
     escalados,
     clientes,
     isAsociatedProduct,
+    isNotEditable
     
 })=> {
     useEffect(()=>{
         if(!updateFilter){
-            changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos);
+            changeData(products,{},families, subFamilies, products, brands, subBrands, currentCommercialDeal, updateProductsFilter, setProductsCommercialDeal, productos, isNotEditable);
         } 
         updateProductsFilter(false);
     },[families,updateFilter,brands,subBrands,updateProductsFilter, setProductsCommercialDeal, productos]);
@@ -350,7 +352,6 @@ const CommercialDealProducts = ({
                     return products.find( product => asociatedProduct.codindas === product.codindas);
                 })   
     }
-    
     return (
        
         <div>
@@ -366,7 +367,7 @@ const CommercialDealProducts = ({
                 className="commercial-deals-products"
                 dataSource={isAsociatedProduct ? findingAsociatedProductsOnList(productos, products) : products}
                 onChange={(pagination, filters, sorter, data) => 
-                    changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos)}
+                    changeData(data.currentDataSource,filters, families, subFamilies, products, brands, subBrands,currentCommercialDeal,  updateProductsFilter, setProductsCommercialDeal, productos, isNotEditable)}
                 columns={columnsProducts}
                 size='small'
                 pagination={true}

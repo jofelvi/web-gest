@@ -51,7 +51,7 @@ import {
   SET_EMAIL_SEARCHED,
   SET_ASOCIATED_PRODUCTS,
   SET_ASOCIATED_CLIENTS,
-  SET_NEW_CC
+  SET_CC_NOT_EDITABLE
 } from './actionTypes';
 
 export const {
@@ -105,6 +105,7 @@ export const {
   setEmailSearched,
   setAsociatedProducts,
   setAsociatedClients,
+  setCcNotEditable,
   
 } = createActions(
   LOAD_COMMERCIAL_DEALS,
@@ -157,6 +158,8 @@ export const {
   SET_EMAIL_SEARCHED,
   SET_ASOCIATED_PRODUCTS,
   SET_ASOCIATED_CLIENTS,
-  SET_NEW_CC
+  SET_CC_NOT_EDITABLE
+ 
+
 
 );

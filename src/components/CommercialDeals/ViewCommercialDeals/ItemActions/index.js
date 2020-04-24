@@ -12,9 +12,9 @@ import {
     setNewCommercialDeal,
     editCommercialDeal,
     getUsersCount,
-   
     setAsociatedProducts,
     setAsociatedClients,
+    setCcNotEditable
   } from '../../../../modules/commercialDeals/actions';
 
   export default connect(
@@ -33,6 +33,7 @@ import {
       getUsersCount,
       setAsociatedProducts,
       setAsociatedClients,
+      setCcNotEditable,
       
     }
   )(View);

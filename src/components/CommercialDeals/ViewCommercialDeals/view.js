@@ -194,7 +194,8 @@ const ViewCommercialDeals = ({
     setFormKey,
     setNewCommercialDeal,
     setAsociatedProducts, 
-    setAsociatedClients
+    setAsociatedClients,
+    setCcNotEditable
     
 }) =>{
     const [loading, setLoading] = useState(true);
@@ -217,6 +218,7 @@ const ViewCommercialDeals = ({
                     setCurrentCommercialDeal({productos: [], esscalados: [], clientes: []});
                     setAsociatedProducts({isAsociatedProduct: false})
                     setAsociatedClients({isAsociatedClient: false})
+                    setCcNotEditable({isNotEditable: false});
                 }} hidden={loading}>Nuevo</Button>
             </ButtonGroup>
             

@@ -17,6 +17,7 @@ import {
   setNewCommercialDeal,
   setAsociatedProducts,
   setAsociatedClients,
+  setCcNotEditable,
 
 } from '../../../modules/commercialDeals/actions';
 
@@ -54,6 +55,7 @@ export default connect(
     setNewCommercialDeal,
     setAsociatedProducts,
     setAsociatedClients,
+    setCcNotEditable,
   
   }
 )(View);

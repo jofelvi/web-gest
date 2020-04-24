@@ -74,7 +74,8 @@ const CommercialDealsUsers = ({
     getUsersCount,
     isAsociatedClient,
     setAsociatedClients,
-    idCommercialDeal
+    idCommercialDeal,
+    isNotEditable,
 })=> {
     useEffect(()=>{
         if(!updateFilterOfClient){
@@ -190,6 +191,7 @@ const CommercialDealsUsers = ({
             render: ( _, record) => ( 
                         <Switch
                             id = "clienteAsociado" 
+                            disabled ={isNotEditable ? true : false}
                             checked= {clientes.find(cliente => cliente.idcliente === record.idcliente)} 
                             onChange = {(e)=>{
                                 //console.log("on change")
