@@ -222,6 +222,7 @@ class CommercialDealBasicData extends React.Component {
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>
+                                {values.tipo === 3 || values.tipo === "Campaña" && (
                                 <Form.Item label="Codigo de Campaña">
                                     <Input 
                                         id= 'codcupon'
@@ -233,6 +234,7 @@ class CommercialDealBasicData extends React.Component {
                                     {errors.codcupon && (<div style={{ color: 'red' }}>{errors.codcupon}</div>)}
 
                                 </Form.Item>
+                                )}
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>
@@ -270,6 +272,7 @@ class CommercialDealBasicData extends React.Component {
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>
+                            {values.tipo === 2 || values.tipo === "Plan de Compra" && (
                                 <Form.Item label="Margen">
                                     <InputNumber 
                                         id = 'margen' 
@@ -281,6 +284,7 @@ class CommercialDealBasicData extends React.Component {
                                     {errors.margen && (<div style={{ color: 'red' }}>{errors.margen}</div>)}
 
                                 </Form.Item>
+                                )}
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>

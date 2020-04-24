@@ -12,7 +12,6 @@ import {
   LOAD_USERS,
   GET_USERS_COUNT,
   LOAD_DEAL_TYPES,
-  LOAD_USERS_BY_EMAIL
 } from './actionTypes';
 import {
   loadCommercialDealsSuccess,
