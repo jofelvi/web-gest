@@ -21,7 +21,6 @@ const FormCommercialDeal = ({
 }) => {
     useEffect(()=>{
     },[newCommercialDealVisible,editCommercialDealVisible])
-    console.log({currentCommercialDeal});
     const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
 
     return ( 

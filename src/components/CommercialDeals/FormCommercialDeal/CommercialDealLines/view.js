@@ -67,7 +67,6 @@ class CommercialDealLines extends React.Component {
          } = this.props;
         const lines = this.props.currentCommercialDeal.escalados  ? this.props.currentCommercialDeal.escalados: [];
         const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
-    //const {lines} = this.state;
         return (
             <Formik
                 key = {formKey}
@@ -198,7 +197,6 @@ class CommercialDealLines extends React.Component {
                             </Col>
                     </Row>)}
                     <Row className="commercial-deal-form-lines-body">
-                        {console.log({lines})}
                         {lines.map((line) =>
                            <Row 
                            style={{marginTop:10, paddingTop:'10px', borderWidth:'2px 0 0 0', borderStyle:'solid', borderColor:'rgba(0,0,0,0.2)'}}
