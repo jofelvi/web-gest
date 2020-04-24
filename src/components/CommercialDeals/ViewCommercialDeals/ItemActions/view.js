@@ -14,6 +14,7 @@ const menu = (cmp) => <Menu>
         cmp.setCommercialDealFormStep({currentStep: 0})
         cmp.setAsociatedProducts({isAsociatedProduct: true})
         cmp.setAsociatedClients({isAsociatedClient: true})
+        cmp.setCcNotEditable({isNotEditable: false});
  
     }}>Editar</Menu.Item>)}
     {(cmp.deal.estado === "Activo" || cmp.deal.estado === "Inactivo") &&(
@@ -27,11 +28,12 @@ const menu = (cmp) => <Menu>
         cmp.setNewCommercialDeal(false) 
         cmp.setAsociatedProducts({isAsociatedProduct: true}) 
         cmp.setAsociatedClients({isAsociatedClient: true})
-
+        cmp.setCcNotEditable({isNotEditable: true});
     }}>Ver</Menu.Item>)}
      {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
      <Menu.Item key="3" onClick={() => {
          validationCommercialDeal(cmp.deal, cmp.editCommercialDeal)
+         
     
     }}>Activar</Menu.Item>)}
     {cmp.deal.estado === "Activo" && (
@@ -54,6 +56,7 @@ const ItemActions = ({
     getUsersCount,
     setAsociatedProducts,
     setAsociatedClients,
+    setCcNotEditable,
     viewProductsCommercialDealVisible,
     newProductsCommercialDealVisible,
     editCommercialDealVisiblee,
@@ -73,6 +76,7 @@ const ItemActions = ({
             editCommercialDeal:editCommercialDeal,
             setAsociatedProducts: setAsociatedProducts,
             setAsociatedClients: setAsociatedClients,
+            setCcNotEditable: setCcNotEditable
             
             })}>
                 <Button>

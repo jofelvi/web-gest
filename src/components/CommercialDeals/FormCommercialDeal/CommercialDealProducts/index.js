@@ -24,6 +24,7 @@ export default connect(
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
       isAsociatedProduct: state.commercialDeals.isAsociatedProduct,
       formKey: state.commercialDeals.formKey,
+      isNotEditable: state.commercialDeals.isNotEditable,
     }),
     { 
       updateProductsFilter, 

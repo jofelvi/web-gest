@@ -34,6 +34,7 @@ import {
   setEmailSearched,
   setAsociatedProducts,
   setAsociatedClients,
+  setCcNotEditable,
  
 } from './actions';
 const generateKey = ()=>`${Math.random()}`;
@@ -67,6 +68,7 @@ const defaultState = {
   isNewCommercialDeal: false,
   isAsociatedProduct: false,
   isAsociatedClient: false,
+  isNotEditable: false,
 };
 
 
@@ -230,6 +232,10 @@ export default handleActions(
     [setAsociatedClients]:  (state, { payload}) => ({
       ...state,
       isAsociatedClient: payload.isAsociatedClient
+    }),
+    [setCcNotEditable]:  (state, { payload}) => ({
+      ...state,
+      isNotEditable: payload.isNotEditable
     }),
     
   },
