@@ -26,7 +26,6 @@ const TasksListScreen = ({
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, history);
   }, [pathname]);
-  console.log("tasks", tasks);
   return (
     <Row>
       <Row>
