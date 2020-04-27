@@ -21,3 +21,8 @@ export const PriorityContainer = styled(Col)`
   display: flex;
   justify-content: flex-end;
 `;
+
+export const ColContainer = styled(Col)`
+  padding: 0px 7px 10px 7px;
+`;
+

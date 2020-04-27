@@ -64,7 +64,7 @@ class LineChart extends React.Component {
 
         <Tooltip
           containerTpl='<div class="g2-tooltip"><p class="g2-tooltip-title"></p><table class="g2-tooltip-list"></table></div>'
-          itemTpl='<tr class="g2-tooltip-list-item"><td style="color:{color}"> total {name}</td><td>{value}</td></tr>'
+          itemTpl={`<tr class="g2-tooltip-list-item"><td style="color:{color}"> total ${sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) === 'totalpvm' ? 'pvm' : 'número'}</td><td>{value}</td></tr>`}
           offset={50}
           g2-tooltip={{
             position: 'absolute',
@@ -82,7 +82,25 @@ class LineChart extends React.Component {
         {/* <Geom type='line' position={this.props.dataLine && (this.props.PVMtype||this.props.numeroPedidosType)? sortingTime(this.props.dataLine) + '*' + sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType):"year*totalPVM"}> */}
         <Geom
           type='line'
-          position={sortingTime(this.props.dataLine) + '*' + (sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) ? sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) : "totalPVM")}>
+          position={sortingTime(this.props.dataLine) + '*' + (sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) ? sortingQuantity(this.props.PVMtype, this.props.numeroPedidosType) : "totalPVM")}
+        //   tooltip={[getToolTipVariableForinfo(this.props.numeroPedidosType, this.props.PVMtype), (subfamilia, totalnumero, totalpvm) => {
+        //     if(totalnumero){
+        //       return { 
+        //         name: subfamilia.toLowerCase(),
+        //         value: formatNumber(totalnumero)
+        //       };
+        //     }
+        //     if(totalpvm){
+            
+        //       return { 
+        //         name: subfamilia.toLowerCase(),
+        //         value: formatNumber(totalpvm) 
+        //       };
+        //     }
+        //   }
+        // ]}
+          >
+          
         </Geom>
 
 

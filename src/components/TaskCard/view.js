@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Row, Col } from 'antd';
 
-import { Container, TaskTitle, PriorityContainer } from './styles';
+import { Container, TaskTitle, PriorityContainer, ColContainer } from './styles';
 
 import { calculateTimeDistance } from '../../lib/date';
 
@@ -45,23 +45,23 @@ const TaskCard = ({
       </Col>
     </Row>
     <Row>
-      <Col span={10}>
+      <ColContainer span={10}>
         {processDefinitionName
           ? processDefinitionName
           : 'No hay proceso relacionado'}
-      </Col>
-      <Col span={14}>
+      </ColContainer>
+      <ColContainer span={14}>
         {assignee ? assignee : 'No hay encargado actualmente'}
-      </Col>
+      </ColContainer>
     </Row>
     <Row type="flex">
-      <Col span={10}>
+      <ColContainer span={10}>
         Vencimiento:
         {due ? `Pendiente ${calculateTimeDistance(due)}` : ' no data'}
-      </Col>
-      <Col span={10}>
+      </ColContainer>
+      <ColContainer span={10}>
         {created ? `Creada ${calculateTimeDistance(created)}` : ''}
-      </Col>
+      </ColContainer>
       <PriorityContainer span={4}>{priority}</PriorityContainer>
     </Row>
   </Container>
