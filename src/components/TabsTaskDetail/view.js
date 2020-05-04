@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Container, ButtonCustom, Label, ContainerData, ContainerDataLabel } from './styles';
+import { Container } from './styles';
 import {Tabs, Table} from 'antd';
-import { dataSource, columns } from './constants'
+import { columns } from './constants'
 const { TabPane } = Tabs;
 
 function callback(key) {
@@ -12,23 +12,20 @@ function callback(key) {
   const TabsTaskDetail = ({
     title,
     data,
-  ...rest}) => {        return(
-         
+    dataForTable,
+  ...rest}) => {     
+      
+    return(     
   <Container> 
     <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: 'fit-content'}} >
-    <TabPane tab={"Datos"} key={"1"}  style={{width: '100%', height: '100%'}}>
-      <Table dataSource={dataSource} columns={columns}></Table>
+    <TabPane tab={"Datos"} key={"1"}  style={{width: '100%', height: '100%', maxHeight: '220px', overflow: 'auto'}}>
+      <Table dataSource={dataForTable} columns={columns}></Table>
     </TabPane>
     <TabPane tab={"Diagrama"} key={"2"}  style={{width: '100%', height: '100%'}}>
     </TabPane>
     <TabPane tab={"Historial"} key={"3"}  style={{width: '100%', height: '100%'}}>
     </TabPane>
     </Tabs>
-    {/* <ContainerDataLabel>
-      <Label>{title}:</Label>
-      <ContainerData>{data}</ContainerData>
-    </ContainerDataLabel>
-    <ButtonCustom {...rest} shape="circle" icon={'edit'} size= {'small'}></ButtonCustom>  */}
   </Container>
         )
     }

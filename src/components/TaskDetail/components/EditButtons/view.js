@@ -3,7 +3,6 @@ import React from 'react';
 import ContainerEditButton from '../ContainerEditButton';
 import Utils from '../../../../lib/utils';
 
-import { MEASURING_UNIT_SELECTED } from '../../../../modules/charts/constants'
 
 const EditButtons = ({
   setInputKey,

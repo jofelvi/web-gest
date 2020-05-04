@@ -26,15 +26,7 @@ const subfamiliaT ='#8d5524';
 const menosDeSeisMeses ='#17A589';
 const entreSeisYDoceMeses ='#2471A3';
 const masDeDoceMeses ='#F1C40F';
-const codeColors1 = '';
-const codeColors2 = '';
-const codeColors3 = '';
-const codeColors4 = '';
-const codeColors5 = '';
-const codeColors6 = '';
-const codeColors7 = '';
-const codeColors8 = '';
-const codeColors9 = '';
+
 const sectionColor = new Map()
   .set('< 6 meses', [menosDeSeisMeses])
   .set('6-12 meses', [entreSeisYDoceMeses])

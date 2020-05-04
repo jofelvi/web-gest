@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Button } from 'antd';
 import TabsTaskDetail from '../TabsTaskDetail';
@@ -17,12 +17,16 @@ import {
 } from './styles';
 import { mapperInputData, validationSchema } from './constants';
 import { Formik } from 'formik';
-import EditButtons from './components/EditButtons'
+import EditButtons from './components/EditButtons';
+import { transformData } from './utils_data';
+import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
+
 const { TextArea } = Input;
 
 const TaskDetail = ({
+  getTaskVariables,
   history,
-  selectedTask: {
+  selectedTask :{
     id,
     processInstanceId,
     name,
@@ -30,10 +34,19 @@ const TaskDetail = ({
     assignee,
     due,
     created,
-    priority }
+    priority
+
+  },
+  taskVariables,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputKey, setInputKey] = useState('');
+ 
+	useEffect(() => {
+      getTaskVariables({ history, taskId: id });
+    }, [id]);
+
+  const dataForTableTab =  taskVariables ?  transformData(taskVariables, processData) : '';
 
   const showModal = () => {
     setIsVisible(true)
@@ -66,7 +79,7 @@ const TaskDetail = ({
           <TextArea placeholder={'Solicitud de nueva entidad'} rows={4} />
         </ContainerTextArea>
         <ContainerTabs>
-          <TabsTaskDetail>
+          <TabsTaskDetail dataForTable = {dataForTableTab}>
           </TabsTaskDetail>
         </ContainerTabs>
         <ButtonContainer>
