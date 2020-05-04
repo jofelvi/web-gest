@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, ButtonCustom, Label, ContainerData, ContainerDataLabel } from './styles';
+import { Container, } from './styles';
 import { Modal } from 'antd';
 
 const ModalTaskDetail = ({

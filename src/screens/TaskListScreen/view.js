@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import TasksList from '../../components/TasksList';
 import TaskFilter from '../../components/TaskFilter';
-import TaskDetail from '../../components/TaskDetail/view';
+import TaskDetail from '../../components/TaskDetail';
 
 const getTaskList = (fetchTaskList, pathname, history) => {
   if (pathname.includes('user')) {

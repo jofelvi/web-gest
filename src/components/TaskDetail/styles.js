@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row, Card } from 'antd';
+import { Card } from 'antd';
 
 export const Container = styled.div`
   padding: 0px;
