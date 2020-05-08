@@ -34,18 +34,21 @@ const TaskDetail = ({
     assignee,
     due,
     created,
-    priority
-
+    priority,  
   },
+  tableKey,
   taskVariables,
+  setTableKey,
+  tableK
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputKey, setInputKey] = useState('');
  
 	useEffect(() => {
       getTaskVariables({ history, taskId: id });
+      setTableKey()
     }, [id]);
-
+  
   const dataForTableTab =  taskVariables ?  transformData(taskVariables, processData) : '';
 
   const showModal = () => {
@@ -59,7 +62,7 @@ const TaskDetail = ({
   const handleCancel = e => {
     setIsVisible(false)
   };
-
+  
   return (
     <CardCustom title={name} bordered={false} >
       <Container>
@@ -79,7 +82,7 @@ const TaskDetail = ({
           <TextArea placeholder={'Solicitud de nueva entidad'} rows={4} />
         </ContainerTextArea>
         <ContainerTabs>
-          <TabsTaskDetail dataForTable = {dataForTableTab}>
+          <TabsTaskDetail tableKey = {tableK} dataForTable = {dataForTableTab}>
           </TabsTaskDetail>
         </ContainerTabs>
         <ButtonContainer>

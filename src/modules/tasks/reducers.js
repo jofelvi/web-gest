@@ -9,13 +9,16 @@ import {
   setSelectedTask,
   setSelectedTaskId,
   setTaskListFilter,
-  cleanSelectedTask
+  cleanSelectedTask,
+  setTableKey
 } from './actions';
+import { generateKey } from '../utils'
 
 const defaultState = {
   list: [],
   taskList: [],
   sortBy: 'name',
+  tableKey: generateKey(),
 };
 
 export default handleActions(
@@ -57,7 +60,11 @@ export default handleActions(
     [cleanSelectedTask]: state => ({
       ...state,
       selectedTask: null
-    })
+    }),
+    [setTableKey]:  (state) => ({
+      ...state,
+      tableKey: generateKey() 
+    }),
   },
   defaultState
 );
