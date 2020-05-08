@@ -5,15 +5,18 @@ import {
 } from '../../modules/forms/actions';
 import {
 	  setTableKey,
+	  fetchTaskForm
   } from '../../modules/tasks/actions';
 import View from './view';
 export default connect(
 	state => ({
 		taskVariables: state.forms.taskVariables,
-		tableK: state.tasks.tableKey,	
+		tableK: state.tasks.tableKey,
+		taskName: state.forms.taskName,
 	}),
 	{ 
 		getTaskVariables,
 		setTableKey,
+		fetchTaskForm
 	},
 )(View)

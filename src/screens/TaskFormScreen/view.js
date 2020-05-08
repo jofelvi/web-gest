@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
-
 const TaskFormScreen = ({
   match: {
     params: { taskId }
@@ -10,25 +9,31 @@ const TaskFormScreen = ({
   taskName,
   fetchTaskForm,
   fetchTask,
-  history
+  history,
 }) => {
   useEffect(() => {
     fetchTaskForm({ taskId, history });
     fetchTask(taskId);
   }, []);
-  console.log(process);
+  
   const processId = process ? process.processDefinitionId.split(':')[0] : null;
   console.log(processId);
+  const routeA = () => import(`../../screens/Forms/${processId}/${taskName}`);
+  const routeB = () => import(`../../screens/Forms/${processId}`);
+  console.log("original", {processId});
+  console.log("original", {taskName});
+  console.log("original", {taskId});
   const DynamicTask = Loadable({
     loader: taskName
-      ? () => import(`../../screens/Forms/${processId}/${taskName}`)
-      : () => import(`../../screens/Forms/${processId}`),
+      ? routeA
+      : routeB,
     loading() {
       return <div>Loading...</div>;
     }
   });
 
-  return processId && taskName ? <DynamicTask /> : <h1>Loading task!</h1>;
+  return processId && taskName ? <DynamicTask /> 
+  : <h1>Loading task!</h1>;
 };
 
 TaskFormScreen.propTypes = {
