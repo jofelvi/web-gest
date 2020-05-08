@@ -17,12 +17,8 @@ const TaskFormScreen = ({
   }, []);
   
   const processId = process ? process.processDefinitionId.split(':')[0] : null;
-  console.log(processId);
   const routeA = () => import(`../../screens/Forms/${processId}/${taskName}`);
   const routeB = () => import(`../../screens/Forms/${processId}`);
-  console.log("original", {processId});
-  console.log("original", {taskName});
-  console.log("original", {taskId});
   const DynamicTask = Loadable({
     loader: taskName
       ? routeA
