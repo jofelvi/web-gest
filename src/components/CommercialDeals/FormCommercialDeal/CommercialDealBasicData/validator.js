@@ -10,9 +10,9 @@ const basicDataSchema = Yup.object().shape({
   tipo:requiredValidation,
   fechainicio: requiredValidation,
   fechafin: requiredValidation,
-  margen: requiredValidation,
-  ind_surtido: requiredValidation,
-  codcupon: requiredValidation
+  // margen: requiredValidation,
+  // ind_surtido: requiredValidation,
+  // codcupon: requiredValidation
 });
 
 export default basicDataSchema;
