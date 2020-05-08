@@ -45,7 +45,7 @@ const TaskDetail = ({
     }, [selectedTask.id]);
 
   const processId = selectedTask ? selectedTask.processDefinitionId.split(':')[0] : null;
-  const taskNameAndProcessCreatedInForms = (taskName && taskName !== 'validarActualizacionEntidad') && (taskName && taskName !== 'validarActualizacionCliente') &&(processId === 'completedForm' || processId === 'registrar_cliente' || processId === 'registrar_nueva_entidad' || processId === 'signup' || processId === 'tramitar_pedido')
+  const taskNameAndProcessCreatedInForms = (taskName && taskName !== 'validarActualizacionEntidad') && (taskName && taskName !== 'validarActualizacionCliente') &&(processId === 'registrar_cliente' || processId === 'registrar_nueva_entidad'  || processId === 'tramitar_pedido')
 
   const getProcessData = (taskName, processId)=>{
     if(taskNameAndProcessCreatedInForms){ 
