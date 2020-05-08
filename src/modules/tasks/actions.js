@@ -21,7 +21,8 @@ import {
   SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
   CLEAN_SELECTED_TASK,
-  EDIT_TASK
+  EDIT_TASK,
+  SET_TABLE_KEY,
 } from './actionTypes';
 
 export const {
@@ -45,7 +46,8 @@ export const {
   setSelectedTaskId,
   setTaskListFilter,
   cleanSelectedTask,
-  editTask
+  editTask,
+  setTableKey
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -67,5 +69,6 @@ export const {
   SET_SELECTED_TASK_ID,
   SET_TASK_LIST_FILTER,
   CLEAN_SELECTED_TASK,
-  EDIT_TASK
+  EDIT_TASK,
+  SET_TABLE_KEY
 );

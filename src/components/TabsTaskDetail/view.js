@@ -13,13 +13,20 @@ function callback(key) {
     title,
     data,
     dataForTable,
+    tableKey,
   ...rest}) => {     
-      
+    
     return(     
   <Container> 
     <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: 'fit-content'}} >
     <TabPane tab={"Datos"} key={"1"}  style={{width: '100%', height: '100%', maxHeight: '220px', overflow: 'auto'}}>
-      <Table dataSource={dataForTable} columns={columns}></Table>
+      <Table 
+      defaultCurrent={2} 
+      pagination={{defaultCurrent: tableKey ? 1 : ''}}
+      key = {tableKey}
+      dataSource={dataForTable} 
+      columns={columns}> 
+      </Table>
     </TabPane>
     <TabPane tab={"Diagrama"} key={"2"}  style={{width: '100%', height: '100%'}}>
     </TabPane>

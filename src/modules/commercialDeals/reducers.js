@@ -37,8 +37,7 @@ import {
   setCcNotEditable,
  
 } from './actions';
-const generateKey = ()=>`${Math.random()}`;
-
+import { generateKey } from '../utils'
 const defaultState = {
   list:[],
   families:[],

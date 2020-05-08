@@ -4,6 +4,8 @@ import { Input, Button } from 'antd';
 import TabsTaskDetail from '../TabsTaskDetail';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
+import Loadable from 'react-loadable';
+
 import {
   Container,
   CardCustom,
@@ -19,34 +21,58 @@ import { mapperInputData, validationSchema } from './constants';
 import { Formik } from 'formik';
 import EditButtons from './components/EditButtons';
 import { transformData } from './utils_data';
-import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
+// import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
 
 const { TextArea } = Input;
 
 const TaskDetail = ({
   getTaskVariables,
   history,
-  selectedTask :{
-    id,
-    processInstanceId,
-    name,
-    processDefinitionName,
-    assignee,
-    due,
-    created,
-    priority
-
-  },
+  selectedTask,
   taskVariables,
+  setTableKey,
+  tableK,
+  taskName,
+  fetchTaskForm
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputKey, setInputKey] = useState('');
- 
+  const [ processD, setProcessD ] = useState([])
 	useEffect(() => {
-      getTaskVariables({ history, taskId: id });
-    }, [id]);
+      getTaskVariables({ history, taskId: selectedTask.id });
+      setTableKey()
+      fetchTaskForm({ taskId: selectedTask.id });
+    }, [selectedTask.id]);
 
-  const dataForTableTab =  taskVariables ?  transformData(taskVariables, processData) : '';
+  const processId = selectedTask ? selectedTask.processDefinitionId.split(':')[0] : null;
+  const taskNameAndProcessCreatedInForms = (taskName && taskName !== 'validarActualizacionEntidad') && (taskName && taskName !== 'validarActualizacionCliente') &&(processId === 'completedForm' || processId === 'registrar_cliente' || processId === 'registrar_nueva_entidad' || processId === 'signup' || processId === 'tramitar_pedido')
+
+  const getProcessData = (taskName, processId)=>{
+    if(taskNameAndProcessCreatedInForms){ 
+      return require(`../../screens/Forms/${processId}/${taskName}/data`);
+    }else{
+      // console.log('no task name, no folder created for process in Forms')
+      // console.log('no folder created for process in Forms')
+      // console.log('no folder created in Form for task')
+    }
+  }
+
+  useEffect(() =>{
+      const processDa = getProcessData(taskName, processId)
+      setProcessD({processD: processDa ? processDa.processData : ''})
+    },[ selectedTask.id, taskName, processId ])
+  
+  const dataForTableTab =  taskNameAndProcessCreatedInForms && taskVariables &&  processD  ?  transformData(taskVariables, processD.processD) : '';
+  const {  
+      id,
+      processInstanceId,
+      name,
+      processDefinitionName,
+      processDefinitionId,
+      assignee,
+      due,
+      created,
+      priority, } = selectedTask;
 
   const showModal = () => {
     setIsVisible(true)
@@ -59,7 +85,7 @@ const TaskDetail = ({
   const handleCancel = e => {
     setIsVisible(false)
   };
-
+  
   return (
     <CardCustom title={name} bordered={false} >
       <Container>
@@ -79,7 +105,7 @@ const TaskDetail = ({
           <TextArea placeholder={'Solicitud de nueva entidad'} rows={4} />
         </ContainerTextArea>
         <ContainerTabs>
-          <TabsTaskDetail dataForTable = {dataForTableTab}>
+          <TabsTaskDetail tableKey = {tableK} dataForTable = {dataForTableTab}>
           </TabsTaskDetail>
         </ContainerTabs>
         <ButtonContainer>

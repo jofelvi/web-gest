@@ -18,14 +18,26 @@ const getTaskList = (fetchTaskList, pathname, history) => {
 
 const TasksListScreen = ({
   fetchTaskList,
+  fetchTaskForm,
   tasks,
   selectedTask,
   location: { pathname },
   history,
+  fetchTask
 }) => {
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, history);
+    if(selectedTask){
+      fetchTask(selectedTask.id)
+    }
+    
   }, [pathname]);
+  useEffect(() => {
+    if(selectedTask){
+      fetchTask(selectedTask.id)     
+    }
+    
+  }, [selectedTask]);
   return (
     <Row>
       <Row>

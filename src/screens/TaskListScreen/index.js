@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import { fetchTaskList } from '../../modules/tasks/actions';
+import { 
+  fetchTaskList,
+  fetchTaskForm,
+  fetchTask
+ } from '../../modules/tasks/actions';
 
 import View from './view';
 
@@ -9,5 +13,5 @@ export default connect(
     tasks: state.tasks.taskList,
     selectedTask: state.tasks.selectedTask,
   }),
-  { fetchTaskList }
+  { fetchTaskList, fetchTaskForm, fetchTask }
 )(View);
