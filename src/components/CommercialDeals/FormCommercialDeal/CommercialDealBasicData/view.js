@@ -29,7 +29,7 @@ const initialValues =
       codcupon: '',
       fechainicio: '',
       fechafin: '',
-      margen: '',
+      margen: 0,
       ind_surtido: false 
     };
    
@@ -137,7 +137,7 @@ class CommercialDealBasicData extends React.Component {
                                 fechainicio: moment(fechainicio).format(),
                                 fechafin: moment(fechafin).format(),
                                 idtipo: tipo,
-                                margen: 0,
+                                margen: margen,
                                 ind_surtido: ind_surtido,
                                 escalados: [],
                                 productos: [],
@@ -222,7 +222,7 @@ class CommercialDealBasicData extends React.Component {
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>
-                                {values.tipo === 3 || values.tipo === "Campaña" && (
+                                {(values.tipo === 3 || values.tipo === "Campaña") && (
                                 <Form.Item label="Codigo de Campaña">
                                     <Input 
                                         id= 'codcupon'
@@ -272,7 +272,7 @@ class CommercialDealBasicData extends React.Component {
                             </Col>
 
                             <Col md={{span:12}} sm={{span:22}}>
-                            {values.tipo === 2 || values.tipo === "Plan de Compra" && (
+                            {(values.tipo === 2 || values.tipo === "Plan de Compra") && (
                                 <Form.Item label="Margen">
                                     <InputNumber 
                                         id = 'margen' 
