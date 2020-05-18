@@ -10,6 +10,8 @@ export const fetchTasksByUser = user => get(`/task?assignee=${user}`);
 
 export const fetchTaskForm = id => get(`/task/${id}/form`);
 
+export const fetchTaskAssigneeUser = () => get(`/user`);
+
 export const editTask = (id, data) => patch(`/task/${id}`, data);
 
 export const fetchTaskMessage = (id) => get(`/task/${id}/message`);

@@ -12,6 +12,7 @@ import {
   watchEditTask,
   watchFetchTaskMessage,
   watchEditTaskMessage,
+  watchFetchTaskAssigneeUser,
 } from './tasks/sagas';
 
 import {
@@ -123,6 +124,7 @@ export default function* rootSaga() {
     watchEditTask(),    
     watchEditCommercialDeal(),
     watchFetchTaskMessage(),
-    watchEditTaskMessage()   
+    watchEditTaskMessage(),
+    watchFetchTaskAssigneeUser(),   
   ]);
 }

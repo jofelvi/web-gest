@@ -13,6 +13,7 @@ import {
   fetchTaskFailed,
   editTaskSuccess,
   fetchTaskMessageSuccess,
+  fetchTaskAssigneeUserSuccess,
 } from './actions';
 
 import { getTaskFormSuccess, getTaskFormFailed } from '../forms/actions';
@@ -29,6 +30,7 @@ import {
   EDIT_TASK,
   EDIT_TASK_MESSAGE,
   FETCH_TASK_MESSAGE,
+  FETCH_TASK_ASSIGNEE_USER,
 } from './actionTypes';
 
 import utils from '../../lib/utils';
@@ -201,7 +203,6 @@ export function* watchFetchTaskList() {
 }
 
 function* editTask({ payload }) {
-  console.log("payload saga editTASK",{payload})
   try {
     const response = yield call(api.editTask, payload.id, payload.values);
     
@@ -217,11 +218,8 @@ export function* watchEditTask() {
 }
 
 function* editTaskMessage({ payload }) {
-  console.log("payload saga editTASK",{payload})
   try {
     const response = yield call(api.editTaskMessage, payload.id, payload.values);
-    console.log("response edit task message", response);
-    // yield put(editTaskSuccess(response.data));
 
   }catch (e) {
     console.error(e);
@@ -233,12 +231,9 @@ export function* watchEditTaskMessage() {
 }
 
 function* fetchTaskMessage({ payload }) {
-  console.log("payload saga FETCH TASK MESSAGE",{payload})
   try {
     const response = yield call(api.fetchTaskMessage, payload.id);
-    console.log("reponse fetch task message", response)
-    yield put(fetchTaskMessageSuccess({taskMessage: response.data.message}))
-    // yield put(editTaskSuccess(response.data));
+    yield put(fetchTaskMessageSuccess({taskMessage: response.data}))
 
   }catch (e) {
     console.error(e);
@@ -247,4 +242,18 @@ function* fetchTaskMessage({ payload }) {
 
 export function* watchFetchTaskMessage() {
   yield takeLatest(FETCH_TASK_MESSAGE, fetchTaskMessage);
+}
+
+function* fetchTaskAssigneeUser({ payload }) {
+  try {
+    const response = yield call(api.fetchTaskAssigneeUser);
+  yield put(fetchTaskAssigneeUserSuccess({usersAsignee: response.data}));
+
+  }catch (e) {
+    console.error(e);
+  }
+}
+
+export function* watchFetchTaskAssigneeUser() {
+  yield takeLatest(FETCH_TASK_ASSIGNEE_USER, fetchTaskAssigneeUser);
 }

@@ -13,6 +13,7 @@ import {
   setTableKey,
   editTaskSuccess,
   fetchTaskMessageSuccess,
+  fetchTaskAssigneeUserSuccess,
 } from './actions';
 import { generateKey } from '../utils'
 
@@ -95,6 +96,11 @@ export default handleActions(
       ...state,
       tableKey: generateKey() 
     }),
+    [fetchTaskAssigneeUserSuccess]: (state, { payload }) => ({
+      ...state,
+      usersAsignee: payload.usersAsignee
+    }),
+    
   },
   defaultState
 );

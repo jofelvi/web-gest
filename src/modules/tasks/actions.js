@@ -27,6 +27,9 @@ import {
   EDIT_TASK_MESSAGE,
   FETCH_TASK_MESSAGE,
   FETCH_TASK_MESSAGE_SUCCESS,
+  FETCH_TASK_ASSIGNEE_USER,
+  FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+
 } from './actionTypes';
 
 export const {
@@ -56,6 +59,8 @@ export const {
   editTaskMessage,
   fetchTaskMessage,
   fetchTaskMessageSuccess,
+  fetchTaskAssigneeUser,
+  fetchTaskAssigneeUserSuccess,
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -83,4 +88,7 @@ export const {
   EDIT_TASK_MESSAGE,
   FETCH_TASK_MESSAGE,
   FETCH_TASK_MESSAGE_SUCCESS, 
+  FETCH_TASK_ASSIGNEE_USER,
+  FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+
 );
