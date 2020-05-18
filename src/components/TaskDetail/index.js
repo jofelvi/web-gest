@@ -5,7 +5,10 @@ import {
 } from '../../modules/forms/actions';
 import {
 	  setTableKey,
-	  fetchTaskForm
+	  fetchTaskForm,
+	  editTask,
+	  fetchTaskMessage,
+	  editTaskMessage,
   } from '../../modules/tasks/actions';
 import View from './view';
 export default connect(
@@ -13,10 +16,14 @@ export default connect(
 		taskVariables: state.forms.taskVariables,
 		tableK: state.tasks.tableKey,
 		taskName: state.forms.taskName,
+		taskMessage: state.tasks.taskMessage,
 	}),
 	{ 
 		getTaskVariables,
 		setTableKey,
-		fetchTaskForm
+		fetchTaskForm,
+		editTask,
+		fetchTaskMessage,
+		editTaskMessage,
 	},
 )(View)

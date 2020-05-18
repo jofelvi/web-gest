@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Button } from 'antd';
+import { Input, Button, Select, DatePicker } from 'antd';
 import TabsTaskDetail from '../TabsTaskDetail';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
@@ -21,9 +21,12 @@ import { mapperInputData, validationSchema } from './constants';
 import { Formik } from 'formik';
 import EditButtons from './components/EditButtons';
 import { transformData } from './utils_data';
+import { handleInput } from '../../lib/forms';
+
 // import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const TaskDetail = ({
   getTaskVariables,
@@ -33,7 +36,10 @@ const TaskDetail = ({
   setTableKey,
   tableK,
   taskName,
-  fetchTaskForm
+  fetchTaskForm,
+  editTask,
+  taskMessage,
+  editTaskMessage,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputKey, setInputKey] = useState('');
@@ -88,6 +94,22 @@ const TaskDetail = ({
   
   return (
     <CardCustom title={name} bordered={false} >
+      <Formik
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              editTaskMessage({id, values: values.taskMessage})
+              editTask({id, values})
+              //editTaskMessage({id, values})
+            }}>
+      {({
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          setFieldValue,
+          errors,
+          touched,
+        }) => (
       <Container>
         <div>
         <ContainerInputData>
@@ -102,7 +124,20 @@ const TaskDetail = ({
         </ContainerInputData>
         <ContainerTextArea>
           <Label>Comentario</Label>
-          <TextArea placeholder={'Solicitud de nueva entidad'} rows={4} />
+          {console.log({taskMessage})}
+          <TextArea 
+            placeholder={taskMessage.taskMessage} 
+            rows={4} 
+            value = {values.taskMessage}
+          />
+          <Button
+              key="submit"
+              type="primary"
+              onClick={(e) => {
+                handleSubmit(e);
+              }}>
+              Guardar
+          </Button>
         </ContainerTextArea>
         <ContainerTabs>
           <TabsTaskDetail tableKey = {tableK} dataForTable = {dataForTableTab}>
@@ -121,24 +156,7 @@ const TaskDetail = ({
         </ButtonContainer>
         </div>
         <ContainerModal>
-          <Formik
-            initialValues={{
-              due: '',
-              assignee: '',
-              priority: ''
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-
-            }}>
-            {({
-              values,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              errors,
-              touched,
-            }) => (
+          
                 <ModalTaskDetail
                   visible={isVisible}
                   handleCancel={handleCancel}
@@ -163,22 +181,44 @@ const TaskDetail = ({
                     <ContentContainer>
                       <Label>{returnTheLabelForData(mapperInputData, inputKey)}
                       </Label>
+                      {inputKey === 'priority' && (
                       <Input
                         id={inputKey}
                         value={values[inputKey]}
                         placeholder={returnTheLabelForData(mapperInputData, inputKey)}
-                        onChange={handleChange}
+                        onChange={handleInput(setFieldValue, inputKey)}
                         onBlur={handleBlur}
-                      />
+                      />)}
+                      {inputKey === 'assignee' && (
+                      <Select
+                        mode="multiple"
+                        value = {values[inputKey]}
+                        style={{ width: '100%' }}
+                        placeholder="Please select"
+                        onChange={handleInput(setFieldValue, inputKey)}
+                      >
+                        <Option key={inputKey}>{'user'}</Option>
+                      </Select>
+                      )},
+                      { inputKey === 'due' && (
+                      <DatePicker 
+                        id= 'due' 
+                        format="DD/MM/YYYY" 
+                        //locale={this.props.locale} 
+                        style={{width:'100%'}}
+                        name = 'due'
+                        value = {values[inputKey]}
+                        placeholder="Introduce una fecha de inicio"
+                        onChange={handleInput(setFieldValue, inputKey)}
+                        />
+                       )}
                     </ContentContainer>
                   }>
-                </ModalTaskDetail>
-              )
-            }
-          </Formik>
-        </ContainerModal>
-        
+                </ModalTaskDetail> 
+        </ContainerModal> 
       </Container>
+    )}
+      </Formik>
     </CardCustom>
   )
 };

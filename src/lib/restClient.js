@@ -60,7 +60,7 @@ export const del = async url => {
   return getInitializedApi().delete(url, { headers });
 };
 
-export const patch = async url => {
+export const patch = async (url, data) => {
   const headers = await getHeaders();
-  return getInitializedApi().patch(url, { headers });
+  return getInitializedApi().patch(url, data, { headers });
 };

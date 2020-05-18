@@ -10,7 +10,9 @@ import {
   setSelectedTaskId,
   setTaskListFilter,
   cleanSelectedTask,
-  setTableKey
+  setTableKey,
+  editTaskSuccess,
+  fetchTaskMessageSuccess,
 } from './actions';
 import { generateKey } from '../utils'
 
@@ -19,6 +21,7 @@ const defaultState = {
   taskList: [],
   sortBy: 'name',
   tableKey: generateKey(),
+  taskMessage: ''
 };
 
 export default handleActions(
@@ -31,6 +34,11 @@ export default handleActions(
       ...state,
       task: payload
     }),
+    [fetchTaskMessageSuccess]: (state, { payload }) => ({
+      ...state,
+      taskMessage: payload
+    }),
+    
     [fetchTasksCount]: (state, { payload }) => ({
       ...state,
       count: payload.tasksCount
@@ -39,11 +47,33 @@ export default handleActions(
       ...state,
       byUser: payload.tasksByUser
     }),
-    [fetchTaskListSuccess]: (state, { payload }) => ({
-      ...state,
-      selectedTask: null,
-      taskList: payload
+    [fetchTaskListSuccess]: (state, { payload }) => {
+      console.log({payload})
+      return({
+        ...state,
+        selectedTask: null,
+        taskList: payload
+      })
+    },
+
+    [editTaskSuccess]: (state, {payload}) => 
+    ({
+        ...state,
+        taskList: [...state.taskList.map(task => {
+          if(task.id === payload.id){
+            return {
+              ...task,
+              ...payload.values
+            }
+          }
+          return task;
+        })],
+        selectedTask: {
+          ...state.selectedTask,
+          ...payload.values,
+        }
     }),
+
     [setSelectedTask]: (state, { payload }) => ({
       ...state,
       selectedTask: payload
