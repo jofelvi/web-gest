@@ -106,6 +106,7 @@ console.log("moment", moment.ISO_8601)
   return (
     <CardCustom title={name} bordered={false} >
       <Formik
+        key = {selectedTask.id}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log({values})
