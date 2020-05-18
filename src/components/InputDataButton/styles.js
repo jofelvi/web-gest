@@ -12,7 +12,7 @@ export const Container = styled.div`
    flex-wrap: wrap;
 `;
 export const ContainerDataLabel = styled.div`
-   width: 70%;
+   width: 80%;
    display: flex;
    padding: 5px 9px 0px 5px;
    flex-direction: row;
@@ -35,7 +35,7 @@ export const ContentContainer = styled.div`
 export const ContainerData = styled.div`
   margin: 0px;
   color: rgba(0, 0, 0, 0.65);
-  font-size: 11px;
+  font-size: 10px;
   padding-right: 10px;
 `;
 

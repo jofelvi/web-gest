@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { 
   fetchTaskList,
   fetchTaskForm,
-  fetchTask
+  fetchTask,
+  fetchTaskMessage,
  } from '../../modules/tasks/actions';
 
 import View from './view';
@@ -13,5 +14,10 @@ export default connect(
     tasks: state.tasks.taskList,
     selectedTask: state.tasks.selectedTask,
   }),
-  { fetchTaskList, fetchTaskForm, fetchTask }
+  { 
+    fetchTaskList, 
+    fetchTaskForm, 
+    fetchTask,
+    fetchTaskMessage,
+  }
 )(View);

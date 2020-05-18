@@ -10,15 +10,21 @@ import {
   setSelectedTaskId,
   setTaskListFilter,
   cleanSelectedTask,
-  setTableKey
+  setTableKey,
+  editTaskSuccess,
+  fetchTaskMessageSuccess,
+  fetchTaskAssigneeUserSuccess,
+  setDetailTaskKey,
 } from './actions';
 import { generateKey } from '../utils'
-
+import moment from 'moment';
 const defaultState = {
   list: [],
   taskList: [],
   sortBy: 'name',
   tableKey: generateKey(),
+  taskMessage: '',
+  taskDetailKey: generateKey()
 };
 
 export default handleActions(
@@ -31,6 +37,11 @@ export default handleActions(
       ...state,
       task: payload
     }),
+    [fetchTaskMessageSuccess]: (state, { payload }) => ({
+      ...state,
+      taskMessage: payload
+    }),
+    
     [fetchTasksCount]: (state, { payload }) => ({
       ...state,
       count: payload.tasksCount
@@ -39,11 +50,35 @@ export default handleActions(
       ...state,
       byUser: payload.tasksByUser
     }),
-    [fetchTaskListSuccess]: (state, { payload }) => ({
-      ...state,
-      selectedTask: null,
-      taskList: payload
+    [fetchTaskListSuccess]: (state, { payload }) => {
+      console.log({payload})
+      return({
+        ...state,
+        selectedTask: null,
+        taskList: payload
+      })
+    },
+
+    [editTaskSuccess]: (state, {payload}) => 
+    ({
+        ...state,
+        taskList: [...state.taskList.map(task => {
+          if(task.id === payload.id){
+            return {
+              ...task,
+              ...payload.values,
+              //due: payload.values.due ? moment(payload.values.due,'YYYY-MM-DDTHH:mm:ssZ').format('DD-MM-YY'): task.due
+            }
+          }
+          return task;
+        })],
+        selectedTask: {
+          ...state.selectedTask,
+          ...payload.values,
+          //due: payload.values.due ? moment(payload.values.due, 'YYYY-MM-DDTHH:mm:ssZ').format('DD-MM-YY'): state.selectedTask.due
+        }
     }),
+
     [setSelectedTask]: (state, { payload }) => ({
       ...state,
       selectedTask: payload
@@ -65,6 +100,15 @@ export default handleActions(
       ...state,
       tableKey: generateKey() 
     }),
+    [setDetailTaskKey]:  (state) => ({
+      ...state,
+      taskDetailKey: generateKey() 
+    }),
+    [fetchTaskAssigneeUserSuccess]: (state, { payload }) => ({
+      ...state,
+      usersAsignee: payload.usersAsignee
+    }),
+    
   },
   defaultState
 );

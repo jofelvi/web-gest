@@ -23,18 +23,23 @@ const TasksListScreen = ({
   selectedTask,
   location: { pathname },
   history,
-  fetchTask
+  fetchTask,
+  fetchTaskMessage,
 }) => {
   useEffect(() => {
     getTaskList(fetchTaskList, pathname, history);
     if(selectedTask){
       fetchTask(selectedTask.id)
+      fetchTaskMessage({id: selectedTask.id})
+
     }
     
   }, [pathname]);
   useEffect(() => {
     if(selectedTask){
-      fetchTask(selectedTask.id)     
+      fetchTask(selectedTask.id)
+      fetchTaskMessage({id: selectedTask.id})
+     
     }
     
   }, [selectedTask]);

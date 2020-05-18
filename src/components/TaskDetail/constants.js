@@ -8,9 +8,9 @@ export const mapperInputData = [{
 }];
 
 export const validationSchema = Yup.object().shape({
-    due: Yup.string().required(),
-    assignee: Yup.string().required(),
-    priority: Yup.number().required(),
+    due: Yup.string(),
+    assignee: Yup.string(),
+    priority: Yup.number(),
 
   });
 

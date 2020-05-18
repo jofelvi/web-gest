@@ -23,6 +23,14 @@ import {
   CLEAN_SELECTED_TASK,
   EDIT_TASK,
   SET_TABLE_KEY,
+  EDIT_TASK_SUCCESS,
+  EDIT_TASK_MESSAGE,
+  FETCH_TASK_MESSAGE,
+  FETCH_TASK_MESSAGE_SUCCESS,
+  FETCH_TASK_ASSIGNEE_USER,
+  FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+  SET_DETAIL_TASK_KEY
+
 } from './actionTypes';
 
 export const {
@@ -47,7 +55,14 @@ export const {
   setTaskListFilter,
   cleanSelectedTask,
   editTask,
-  setTableKey
+  setTableKey,
+  editTaskSuccess,
+  editTaskMessage,
+  fetchTaskMessage,
+  fetchTaskMessageSuccess,
+  fetchTaskAssigneeUser,
+  fetchTaskAssigneeUserSuccess,
+  setDetailTaskKey,
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -70,5 +85,13 @@ export const {
   SET_TASK_LIST_FILTER,
   CLEAN_SELECTED_TASK,
   EDIT_TASK,
-  SET_TABLE_KEY
+  SET_TABLE_KEY,
+  EDIT_TASK_SUCCESS,
+  EDIT_TASK_MESSAGE,
+  FETCH_TASK_MESSAGE,
+  FETCH_TASK_MESSAGE_SUCCESS, 
+  FETCH_TASK_ASSIGNEE_USER,
+  FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+  SET_DETAIL_TASK_KEY
+
 );

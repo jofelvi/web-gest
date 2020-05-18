@@ -10,7 +10,10 @@ import {
   fetchTaskListSuccess,
   fetchTaskListFailed,
   fetchTaskSuccess,
-  fetchTaskFailed
+  fetchTaskFailed,
+  editTaskSuccess,
+  fetchTaskMessageSuccess,
+  fetchTaskAssigneeUserSuccess,
 } from './actions';
 
 import { getTaskFormSuccess, getTaskFormFailed } from '../forms/actions';
@@ -24,7 +27,10 @@ import {
   FETCH_TASK_LIST,
   FETCH_TASK_FORM,
   FETCH_TASK,
-  EDIT_TASK
+  EDIT_TASK,
+  EDIT_TASK_MESSAGE,
+  FETCH_TASK_MESSAGE,
+  FETCH_TASK_ASSIGNEE_USER,
 } from './actionTypes';
 
 import utils from '../../lib/utils';
@@ -198,14 +204,56 @@ export function* watchFetchTaskList() {
 
 function* editTask({ payload }) {
   try {
-    const response = yield call(api.editTask, payload.id);
+    const response = yield call(api.editTask, payload.id, payload.values);
+    
+    yield put(editTaskSuccess(payload));
+
   }catch (e) {
     console.error(e);
   }
 }
 
-
-
 export function* watchEditTask() {
   yield takeLatest(EDIT_TASK, editTask);
+}
+
+function* editTaskMessage({ payload }) {
+  try {
+    const response = yield call(api.editTaskMessage, payload.id, payload.values);
+
+  }catch (e) {
+    console.error(e);
+  }
+}
+
+export function* watchEditTaskMessage() {
+  yield takeLatest(EDIT_TASK_MESSAGE, editTaskMessage);
+}
+
+function* fetchTaskMessage({ payload }) {
+  try {
+    const response = yield call(api.fetchTaskMessage, payload.id);
+    yield put(fetchTaskMessageSuccess({taskMessage: response.data}))
+
+  }catch (e) {
+    console.error(e);
+  }
+}
+
+export function* watchFetchTaskMessage() {
+  yield takeLatest(FETCH_TASK_MESSAGE, fetchTaskMessage);
+}
+
+function* fetchTaskAssigneeUser({ payload }) {
+  try {
+    const response = yield call(api.fetchTaskAssigneeUser);
+  yield put(fetchTaskAssigneeUserSuccess({usersAsignee: response.data}));
+
+  }catch (e) {
+    console.error(e);
+  }
+}
+
+export function* watchFetchTaskAssigneeUser() {
+  yield takeLatest(FETCH_TASK_ASSIGNEE_USER, fetchTaskAssigneeUser);
 }

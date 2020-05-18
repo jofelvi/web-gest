@@ -9,8 +9,10 @@ import {
   watchFetchTasksByUser,
   watchFetchTaskList,
   watchFetchTaskForm,
-  watchEditTask
- 
+  watchEditTask,
+  watchFetchTaskMessage,
+  watchEditTaskMessage,
+  watchFetchTaskAssigneeUser,
 } from './tasks/sagas';
 
 import {
@@ -120,6 +122,9 @@ export default function* rootSaga() {
 		watchloadClientesCbim(),    
     watchloadClienteCbimEntidades(),
     watchEditTask(),    
-    watchEditCommercialDeal()   
+    watchEditCommercialDeal(),
+    watchFetchTaskMessage(),
+    watchEditTaskMessage(),
+    watchFetchTaskAssigneeUser(),   
   ]);
 }
