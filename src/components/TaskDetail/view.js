@@ -5,6 +5,10 @@ import TabsTaskDetail from '../TabsTaskDetail';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
 import Loadable from 'react-loadable';
+import * as moment from 'moment';
+import Utils from '../../lib/utils';
+
+
 
 import {
   Container,
@@ -22,6 +26,8 @@ import { Formik } from 'formik';
 import EditButtons from './components/EditButtons';
 import { transformData } from './utils_data';
 import { handleInput } from '../../lib/forms';
+import locale from 'antd/lib/date-picker/locale/es_ES';
+
 
 // import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
 
@@ -87,6 +93,7 @@ const TaskDetail = ({
   const showModal = () => {
     setIsVisible(true)
   };
+  console.log({due})
 
   const handleOk = e => {
     setIsVisible(false)
@@ -95,17 +102,25 @@ const TaskDetail = ({
   const handleCancel = e => {
     setIsVisible(false)
   };
-
+console.log("moment", moment.ISO_8601)
   return (
     <CardCustom title={name} bordered={false} >
       <Formik
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          console.log({values})
           if (isEditMessage) {
             editTaskMessage({ id, values: values.taskMessage })
             setIsEditMessage({ isEditMessage: false })
           }else{
-            editTask({ id, values:{ ...values, assignee: values && Array.isArray(values.assignee)? values.assignee.toString(): ''} })
+            editTask({
+               id, 
+               values:{ 
+                ...values, 
+                assignee: values && Array.isArray(values.assignee) ? values.assignee.toString(): '',
+                due: values.due ? moment(values.due).format('YYYY-MM-DDTHH:mm:ssZ') : due
+               } 
+            })
           }
         }}>
         {({
@@ -123,7 +138,7 @@ const TaskDetail = ({
                   <EditButtons
                     setInputKey={setInputKey}
                     showModal={showModal}
-                    due={due ? due : '09/08/2020'}
+                    due={due ? Utils.renderDate(due) : '09/08/2020'}
                     assignee={assignee ? assignee : 'ADMIN'}
                     priority={priority ? priority : 'no-data'}
                     created={created}>
@@ -146,7 +161,7 @@ const TaskDetail = ({
                       setIsEditMessage({ isEditMessage: true })
                     }}>
                     Guardar
-          </Button>
+                  </Button>
                 </ContainerTextArea>
                 <ContainerTabs>
                   <TabsTaskDetail tableKey={tableK} dataForTable={dataForTableTab}>
@@ -223,11 +238,11 @@ const TaskDetail = ({
                       {inputKey === 'due' && (
                         <DatePicker
                           id={inputKey}
-                          format="DD/MM/YYYY"
-                          //locale={this.props.locale} 
+                          //format="DD/MM/YYYY"
+                          //locale={locale} 
                           style={{ width: '100%' }}
                           name='due'
-                          value={values[inputKey]}
+                          value={values.due}
                           placeholder="Introduce una fecha de inicio"
                           onChange={handleInput(setFieldValue, inputKey)}
                         />

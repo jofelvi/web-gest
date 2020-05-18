@@ -16,7 +16,7 @@ import {
   fetchTaskAssigneeUserSuccess,
 } from './actions';
 import { generateKey } from '../utils'
-
+import moment from 'moment';
 const defaultState = {
   list: [],
   taskList: [],
@@ -64,7 +64,8 @@ export default handleActions(
           if(task.id === payload.id){
             return {
               ...task,
-              ...payload.values
+              ...payload.values,
+              //due: payload.values.due ? moment(payload.values.due,'YYYY-MM-DDTHH:mm:ssZ').format('DD-MM-YY'): task.due
             }
           }
           return task;
@@ -72,6 +73,7 @@ export default handleActions(
         selectedTask: {
           ...state.selectedTask,
           ...payload.values,
+          //due: payload.values.due ? moment(payload.values.due, 'YYYY-MM-DDTHH:mm:ssZ').format('DD-MM-YY'): state.selectedTask.due
         }
     }),
 
