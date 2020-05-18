@@ -14,6 +14,7 @@ import {
   editTaskSuccess,
   fetchTaskMessageSuccess,
   fetchTaskAssigneeUserSuccess,
+  setDetailTaskKey,
 } from './actions';
 import { generateKey } from '../utils'
 import moment from 'moment';
@@ -22,7 +23,8 @@ const defaultState = {
   taskList: [],
   sortBy: 'name',
   tableKey: generateKey(),
-  taskMessage: ''
+  taskMessage: '',
+  taskDetailKey: generateKey()
 };
 
 export default handleActions(
@@ -97,6 +99,10 @@ export default handleActions(
     [setTableKey]:  (state) => ({
       ...state,
       tableKey: generateKey() 
+    }),
+    [setDetailTaskKey]:  (state) => ({
+      ...state,
+      taskDetailKey: generateKey() 
     }),
     [fetchTaskAssigneeUserSuccess]: (state, { payload }) => ({
       ...state,

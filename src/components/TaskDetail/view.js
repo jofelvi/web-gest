@@ -48,6 +48,8 @@ const TaskDetail = ({
   editTaskMessage,
   fetchTaskAssigneeUser,
   usersAsignee,
+  taskDetailKey,
+  setDetailTaskKey
 }) => {
   const [isEditMessage, setIsEditMessage] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -93,7 +95,6 @@ const TaskDetail = ({
   const showModal = () => {
     setIsVisible(true)
   };
-  console.log({due})
 
   const handleOk = e => {
     setIsVisible(false)
@@ -102,14 +103,12 @@ const TaskDetail = ({
   const handleCancel = e => {
     setIsVisible(false)
   };
-console.log("moment", moment.ISO_8601)
   return (
     <CardCustom title={name} bordered={false} >
       <Formik
-        key = {selectedTask.id}
+        key = {taskDetailKey}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log({values})
           if (isEditMessage) {
             editTaskMessage({ id, values: values.taskMessage })
             setIsEditMessage({ isEditMessage: false })
@@ -139,6 +138,7 @@ console.log("moment", moment.ISO_8601)
                   <EditButtons
                     setInputKey={setInputKey}
                     showModal={showModal}
+                    setDetailTaskKey = {setDetailTaskKey}
                     due={due ? Utils.renderDate(due) : '09/08/2020'}
                     assignee={assignee ? assignee : 'ADMIN'}
                     priority={priority ? priority : 'no-data'}

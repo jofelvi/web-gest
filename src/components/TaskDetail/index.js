@@ -10,6 +10,7 @@ import {
 	  fetchTaskMessage,
 	  editTaskMessage,
 	  fetchTaskAssigneeUser,
+	  setDetailTaskKey,
   } from '../../modules/tasks/actions';
 import View from './view';
 export default connect(
@@ -19,6 +20,7 @@ export default connect(
 		taskName: state.forms.taskName,
 		taskMessage: state.tasks.taskMessage,
 		usersAsignee: state.tasks.usersAsignee,
+		taskDetailKey: state.tasks.taskDetailKey,
 	}),
 	{ 
 		getTaskVariables,
@@ -28,5 +30,6 @@ export default connect(
 		fetchTaskMessage,
 		editTaskMessage,
 		fetchTaskAssigneeUser,
+		setDetailTaskKey
 	},
 )(View)

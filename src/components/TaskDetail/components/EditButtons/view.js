@@ -11,11 +11,13 @@ const EditButtons = ({
   assignee,
   priority,
   created,
+  setDetailTaskKey
 }) => {
 
   const onClick = (key)=>() => { 
     showModal();
     setInputKey(key);
+    setDetailTaskKey();
   }
   const editButtons = [
     {

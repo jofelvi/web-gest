@@ -20,11 +20,12 @@ const TaskCard = ({
     priority
   },
   setSelectedTask,
-  selected
+  selected,
+  setDetailTaskKey
 }) => (
  
   <Container
-    onClick={() =>
+    onClick={() =>{
       setSelectedTask({
         id,
         name,
@@ -35,8 +36,9 @@ const TaskCard = ({
         due,
         created,
         priority
-      })
-    }
+      });
+      setDetailTaskKey();
+    }}
     selected={selected && selected.id === id}
   >
     <Row>

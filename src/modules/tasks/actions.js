@@ -29,6 +29,7 @@ import {
   FETCH_TASK_MESSAGE_SUCCESS,
   FETCH_TASK_ASSIGNEE_USER,
   FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+  SET_DETAIL_TASK_KEY
 
 } from './actionTypes';
 
@@ -61,6 +62,7 @@ export const {
   fetchTaskMessageSuccess,
   fetchTaskAssigneeUser,
   fetchTaskAssigneeUserSuccess,
+  setDetailTaskKey,
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -90,5 +92,6 @@ export const {
   FETCH_TASK_MESSAGE_SUCCESS, 
   FETCH_TASK_ASSIGNEE_USER,
   FETCH_TASK_ASSIGNEE_USER_SUCCESS,
+  SET_DETAIL_TASK_KEY
 
 );
