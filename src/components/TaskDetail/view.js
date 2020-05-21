@@ -91,15 +91,11 @@ const TaskDetail = ({
     due,
     created,
     priority, } = selectedTask;
-    const formikInitialValue = id ? {
+    const formikInitialValue = {
       assignee,
       due: moment(Utils.renderDate(due), 'DD/MM/YYYY'),
       priority,
-  } : {
-    assignee,
-    due: moment(Utils.renderDate(due), 'DD/MM/YYYY'),
-    priority,
-  };
+  }
   const showModal = () => {
     setIsVisible(true)
   };
@@ -126,7 +122,7 @@ const TaskDetail = ({
                id, 
                values:{ 
                 ...values, 
-                assignee: values && Array.isArray(values.assignee) ? values.assignee.toString(): '',
+                // assignee: values && Array.isArray(values.assignee) ? values.assignee.toString(): '',
                 due: values.due ? moment(values.due).format('YYYY-MM-DDTHH:mm:ssZ') : due
                } 
             })
@@ -226,7 +222,6 @@ const TaskDetail = ({
                       {inputKey === 'assignee' && (
                         <Select
                           id={inputKey}
-                          mode="multiple"
                           value={values.assignee}
                           style={{ width: '100%' }}
                           defaultValue={assignee}
@@ -235,12 +230,11 @@ const TaskDetail = ({
                         >
                           {usersAsignee.map(user => {
                             return(
-                            <Option
-                              key={user.id}
-                              value={user.id}
-                            >
-                              {user.firstName}
-                            </Option>
+                              <Option
+                                key={user.id}
+                              >
+                                {user.id}
+                              </Option>
                             )
                           })
                           }
