@@ -78,8 +78,8 @@ const TaskDetail = ({
   useEffect(() => {
     const processDa = getProcessData(taskName, processId)
     setProcessD({ processD: processDa ? processDa.processData : '' })
-  }, [selectedTask.id, taskName, processId])
-
+  }, [selectedTask.id, taskName, processId]);
+  
   const dataForTableTab = taskNameAndProcessCreatedInForms && taskVariables && processD ? transformData(taskVariables, processD.processD) : '';
   const {
     id,
@@ -91,7 +91,15 @@ const TaskDetail = ({
     due,
     created,
     priority, } = selectedTask;
-
+    const formikInitialValue = id ? {
+      assignee,
+      due: moment(Utils.renderDate(due), 'DD/MM/YYYY'),
+      priority,
+  } : {
+    assignee,
+    due: moment(Utils.renderDate(due), 'DD/MM/YYYY'),
+    priority,
+  };
   const showModal = () => {
     setIsVisible(true)
   };
@@ -107,8 +115,10 @@ const TaskDetail = ({
     <CardCustom title={name} bordered={false} >
       <Formik
         key = {taskDetailKey}
+        initialValues={formikInitialValue}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          console.log({ values })
           if (isEditMessage) {
             editTaskMessage({ id, values: values.taskMessage })
             setIsEditMessage({ isEditMessage: false })
@@ -220,6 +230,7 @@ const TaskDetail = ({
                           mode="multiple"
                           value={values.assignee}
                           style={{ width: '100%' }}
+                          defaultValue={assignee}
                           placeholder="Please select"
                           onChange={handleInput(setFieldValue, inputKey)}
                         >
@@ -236,13 +247,14 @@ const TaskDetail = ({
                           }
                         </Select>
                       )}
+                      
                       {inputKey === 'due' && (
                         <DatePicker
                           id={inputKey}
-                          //format="DD/MM/YYYY"
-                          //locale={locale} 
                           style={{ width: '100%' }}
                           name='due'
+                          defaultPickerValue={moment(Utils.renderDate(due), 'DD/MM/YYYY')}
+                          defaultValue={moment(Utils.renderDate(due), 'DD/MM/YYYY')}
                           value={values.due}
                           placeholder="Introduce una fecha de inicio"
                           onChange={handleInput(setFieldValue, inputKey)}
