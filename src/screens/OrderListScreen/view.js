@@ -105,7 +105,8 @@ class OrderListScreen extends React.Component {
   render() {
     const { searchByClient, searchByEntity, searchByType } = this.state;
     const { orders, order, fetchOrderById, entity, client } = this.props;
-
+    console.log({ order });
+    console.log({ orders });
 
     return (
       <Maincontainer>
