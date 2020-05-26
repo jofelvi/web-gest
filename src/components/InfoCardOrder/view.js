@@ -47,8 +47,8 @@ detailOrder
 
           <Column
             title="Cod. Producto"
-            dataIndex="codindas"
-            key="codindas"
+            dataIndex="idproducto"
+            key="idproducto"
           />
 
           <Column

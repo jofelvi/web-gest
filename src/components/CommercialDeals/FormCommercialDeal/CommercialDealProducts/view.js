@@ -72,12 +72,12 @@ const filterColumns = {
 const getSelectedProducts = (productos, record ) => {
     if(!productos.length){
         
-        return [{codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
+        return [{idproducto: record.idproducto, nombre: record.nombre, indactivo: record.indactivo}];
     }else{
       
-        const productosFiltered = productos.filter( product => product.codindas !== record.codindas )
+        const productosFiltered = productos.filter( product => product.idproducto !== record.idproducto )
         if(productos.length === productosFiltered.length ){
-            return [...productos, {codindas: record.codindas, nombre: record.nombre, indactivo: record.indactivo}];
+            return [...productos, {idproducto: record.idproducto, nombre: record.nombre, indactivo: record.indactivo}];
         }
         return productosFiltered;
     }    
@@ -127,7 +127,7 @@ const getFilters = (families, subFamilies, products, brands, subBrands, currentC
                return <Switch 
                         disabled= {isNotEditable ? true : false}
                         id = "productoAsociado"
-                        checked= {productos.find(product => product.codindas === record.codindas)} 
+                        checked= {productos.find(product => product.idproducto === record.idproducto)} 
                         onChange = {(e)=>{
                            
                             const productosAsociados = getSelectedProducts(productos, record)
@@ -146,7 +146,7 @@ const getRender = (currentCommercialDeal, record) => {
     if(currentCommercialDeal.productos !== null && currentCommercialDeal.productos !== undefined){
         const exist = currentCommercialDeal.productos.filter((product) => {
            
-            return product.codindas === record.codindas
+            return product.idproducto === record.idproducto
         }).length > 0;
         if(exist){
             return <Switch defaultChecked/>
@@ -161,7 +161,7 @@ const filterProductByColumn = (filters, product, columnName, property) => {
         if(filterValues.indexOf(product[property]) !== -1){
             return {
                 text:product.nombre,
-                value:product.codindas
+                value:product.idproducto
             }
         } else {
             return null;
@@ -169,7 +169,7 @@ const filterProductByColumn = (filters, product, columnName, property) => {
     } else {
         return {
             text:product.nombre,
-            value:product.codindas
+            value:product.idproducto
         }
     }
     
@@ -349,7 +349,7 @@ const CommercialDealProducts = ({
 
     const findingAsociatedProductsOnList = (asociatedproducts, products)=>{
         return asociatedproducts.map((asociatedProduct)=> {
-                    return products.find( product => asociatedProduct.codindas === product.codindas);
+                    return products.find( product => asociatedProduct.idproducto === product.idproducto);
                 })   
     }
     return (
@@ -371,7 +371,7 @@ const CommercialDealProducts = ({
                 columns={columnsProducts}
                 size='small'
                 pagination={true}
-                rowKey='codindas'
+                rowKey='idproducto'
                 locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
             ></Table>
              <Row gutter={8} type="flex">
