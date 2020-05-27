@@ -63,12 +63,21 @@ const TaskDetail = ({
     fetchTaskAssigneeUser()
   }, [selectedTask.id]);
   const processId = selectedTask ? selectedTask.processDefinitionId.split(':')[0] : null;
-  const taskNameAndProcessCreatedInForms = (taskName && taskName !== 'validarActualizacionEntidad') && (taskName && taskName !== 'validarRegistro')&& (taskName && taskName !== 'validarActualizacionCliente') && (processId === 'registrar_cliente' || processId === 'registrar_nueva_entidad' || processId === 'tramitar_pedido')
+  // const taskNameAndProcessCreatedInForms = (taskName && taskName !== 'validarActualizacionEntidad') && (taskName && taskName !== 'validarRegistro')&& (taskName && taskName !== 'validarActualizacionCliente') && (processId === 'registrar_cliente' || processId === 'registrar_nueva_entidad' || processId === 'tramitar_pedido')
+  const processTramitarPedido = processId === 'tramitar_pedido' && taskName === 'validarPedido';
+  const processRegistrarNuevaEntidad = processId === 'registrar_nueva_entidad' && taskName === 'validarEntidad';
+  const processRegistrarCliente = processId === 'registrar_cliente' && taskName === 'validarRegistro';
 
   const getProcessData = (taskName, processId) => {
-    if (taskNameAndProcessCreatedInForms) {
+    if(processTramitarPedido){
       return require(`../../screens/Forms/${processId}/${taskName}/data`);
-    } else {
+    }
+    if(processRegistrarNuevaEntidad){
+      return require(`../../screens/Forms/${processId}/${taskName}/data`);
+    }
+    if(processRegistrarCliente){
+      return require(`../../screens/Forms/${processId}/${taskName}/data`);
+    }else {
       // console.log('no task name, no folder created for process in Forms')
       // console.log('no folder created for process in Forms')
       // console.log('no folder created in Form for task')
@@ -80,7 +89,7 @@ const TaskDetail = ({
     setProcessD({ processD: processDa ? processDa.processData : '' })
   }, [selectedTask.id, taskName, processId]);
   
-  const dataForTableTab = taskNameAndProcessCreatedInForms && taskVariables && processD ? transformData(taskVariables, processD.processD) : '';
+  const dataForTableTab = (processTramitarPedido || processRegistrarNuevaEntidad || processRegistrarCliente)  && taskVariables && processD ? transformData(taskVariables, processD.processD) : '';
   const {
     id,
     processInstanceId,
