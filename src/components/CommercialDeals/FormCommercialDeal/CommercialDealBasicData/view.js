@@ -64,13 +64,13 @@ class CommercialDealBasicData extends React.Component {
         } = this.props;
         const lines = currentCommercialDeal.escalados;
         //this.setState({lines: lines});
-       
         const id = currentCommercialDeal && currentCommercialDeal.idcondcomercial
         const formikInitialValue = id ? {
             ...initialValues, 
             ...currentCommercialDeal,
             fechainicio: currentCommercialDeal.fechainicio ? moment(currentCommercialDeal.fechainicio): '',
             fechafin: currentCommercialDeal.fechafin ? moment(currentCommercialDeal.fechafin): '',
+            ind_surtido: currentCommercialDeal.ind_surtido ? currentCommercialDeal.ind_surtido : '',
 
         } : initialValues
         return (
@@ -294,12 +294,14 @@ class CommercialDealBasicData extends React.Component {
                                             id = 'ind_surtido' 
                                             defaultChecked
                                             name = 'ind_surtido'
+                                            checked={values.ind_surtido ? true : false}
                                             value = {values.ind_surtido}
                                             onChange={handleInput(setFieldValue, 'ind_surtido')}
                                         /> : 
                                         <Switch 
                                             id = 'ind_surtido'
                                             name = 'ind_surtido'
+                                            checked={values.ind_surtido ? true : false}
                                             value = {values.ind_surtido}
                                             onChange={handleInput(setFieldValue, 'ind_surtido')}
                                         />}
