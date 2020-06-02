@@ -20,6 +20,7 @@ export default connect(
       clientes: state.commercialDeals.currentCommercialDeal.clientes,
       formKey: state.commercialDeals.formKey,
       isNewCommercialDeal: state.commercialDeals.isNewCommercialDeal,
+      isNotEditable: state.commercialDeals.isNotEditable,
 
     }),
     {createCommercialDeal, setCommercialDealType, editCommercialDeal }

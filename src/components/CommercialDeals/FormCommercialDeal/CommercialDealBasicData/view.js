@@ -60,7 +60,8 @@ class CommercialDealBasicData extends React.Component {
             clientes,
             productos,
             formKey,
-            isNewCommercialDeal
+            isNewCommercialDeal,
+            isNotEditable,
         } = this.props;
         const lines = currentCommercialDeal.escalados;
         //this.setState({lines: lines});
@@ -291,6 +292,7 @@ class CommercialDealBasicData extends React.Component {
                                 <Form.Item label="Surtido">
                                     {this.props.currentCommercialDeal.ind_surtido ? 
                                         <Switch 
+                                            disabled= {isNotEditable ? true : false}
                                             id = 'ind_surtido' 
                                             defaultChecked
                                             name = 'ind_surtido'
@@ -299,6 +301,7 @@ class CommercialDealBasicData extends React.Component {
                                             onChange={handleInput(setFieldValue, 'ind_surtido')}
                                         /> : 
                                         <Switch 
+                                            disabled= {isNotEditable ? true : false}
                                             id = 'ind_surtido'
                                             name = 'ind_surtido'
                                             checked={values.ind_surtido ? true : false}
