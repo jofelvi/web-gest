@@ -141,13 +141,13 @@ const HomeScreen = ({
     
       setInterval(async()=>{
        await fetchSalesByHour();
-      }, 180000);
+      }, 360000);
       await fetchClientsData();
       await fetchPendingTasks();
     }
     fetchData();  
     
- }, [fetchClientsData, fetchPendingTasks, fetchSalesByYear, fetchSalesByMonth, fetchSalesByHour, fetchSalesByDay, taskId, fetchTaskForm]);
+ }, [ ]);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour,
     subfamiliesListYear, subfamiliesListMonth, subfamiliesListDay,subfamiliesListHour), setMasuringUnitToPVM, setMasuringUnitToPedidos)
