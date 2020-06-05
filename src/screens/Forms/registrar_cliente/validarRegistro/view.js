@@ -105,8 +105,7 @@ const ValidarRegistro = ({
 										const cc = clientesCbim.list[key]
 										if (cc) {
 											values.clienteCbim = { ...values.taskData, ...cc }
-											values.clienteCbim.cliente_email =
-												values.clienteCbim.entidad_email
+											values.clienteCbim.cliente_email = values.taskData.cliente_email
 										}
 									}}>
 									{clientesCbim.list.map((c, i) => { 
