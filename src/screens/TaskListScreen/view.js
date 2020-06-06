@@ -46,7 +46,7 @@ const TasksListScreen = ({
   return (
     <Row>
       <Row>
-        <Col span={12}>
+        <Col span={11}>
           <TaskFilter pathname={pathname} />
         </Col>
       </Row>
