@@ -7,6 +7,14 @@ import { Container, TaskTitle, PriorityContainer, ColContainer } from './styles'
 
 import { calculateTimeDistance } from '../../lib/date';
 
+import {
+  UserOutlined,
+  HourglassOutlined,
+  CalendarOutlined,
+  BellOutlined,
+  ContactsOutlined,
+} from '@ant-design/icons';
+
 const TaskCard = ({
   task: {
     id,
@@ -47,24 +55,21 @@ const TaskCard = ({
       </Col>
     </Row>
     <Row>
-      <ColContainer span={10}>
-        {processDefinitionName
-          ? processDefinitionName
-          : 'No hay proceso relacionado'}
-      </ColContainer>
       <ColContainer span={14}>
-        {assignee ? assignee : 'No hay encargado actualmente'}
+        <ContactsOutlined /> {processDefinitionName ? processDefinitionName : 'No hay proceso relacionado'}
+      </ColContainer>
+      <ColContainer span={8}>
+        <UserOutlined /> {assignee ? assignee : 'Sin asignar'}
       </ColContainer>
     </Row>
     <Row type="flex">
-      <ColContainer span={10}>
-        Vencimiento:
-        {due ? `Pendiente ${calculateTimeDistance(due)}` : ' no data'}
+      <ColContainer span={14}>
+        <HourglassOutlined /> Vencimiento: {due ? `${calculateTimeDistance(due)}` : '-'}
       </ColContainer>
-      <ColContainer span={10}>
-        {created ? `Creada ${calculateTimeDistance(created)}` : ''}
+      <ColContainer span={8}>
+        <CalendarOutlined /> {created ? `Creada ${calculateTimeDistance(created)}` : ''}
       </ColContainer>
-      <PriorityContainer span={4}>{priority}</PriorityContainer>
+      <PriorityContainer span={2}><BellOutlined /> {priority}</PriorityContainer>
     </Row>
   </Container>
 );
