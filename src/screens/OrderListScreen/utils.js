@@ -7,11 +7,11 @@ export const modifyOrderDate = (order) => {
     let orderFilterd = {}
 
     order.map(ord => {
-        let date = ord.fecha_alta
+        let date = ord.fecha_pedido;
 
         orderFilterd = {
             ...ord,
-            fecha_alta: Utils.renderDate(date)
+            fecha_pedido: Utils.renderDate(date)
         };
         return newOderList.push(orderFilterd);
     })

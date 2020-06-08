@@ -158,8 +158,8 @@ class OrderListScreen extends React.Component {
 
               <Column
                 title="Fecha"
-                dataIndex="fecha_alta"
-                key="fecha_alta" />
+                dataIndex="fecha_pedido"
+                key="fecha_pedido" />
 
               <Column
                 title="Entidad"
