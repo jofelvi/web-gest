@@ -61,3 +61,25 @@ function* loadWholesalersIndas(idEntity) {
 export function* watchloadWholesalersIndas() {
 	yield takeLatest(LOAD_WHOLESALERS_INDAS, loadWholesalersIndas)
 }
+// FILtros searchClientsBy, email, codcli_cbim, name.
+// function* searchOrder({ payload }) {
+
+// 	try {
+// 	  const response = yield call(api.searchOrder, payload);
+  
+  
+// 	  if (response.status === HttpStatus.UNAUTHORIZED) {
+// 		payload.history.push('/login');
+// 	  }
+  
+// 	  yield put(fetchOrdersSuccess({ orders: response.data }));
+  
+// 	} catch (e) {
+// 	  console.error(e);
+// 	  yield put(fetchOrdersFailed());
+// 	}
+//   }
+  
+//   export function* watchsearchOrder() {
+// 	yield takeLatest(SEARCH_ORDER, searchOrder);
+//   }

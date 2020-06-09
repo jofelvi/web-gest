@@ -1,9 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../lib/utils';
-import {Table, Icon, Row, Col, Tooltip, Button, Switch} from 'antd';
-
-
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { 
+    Table, 
+    Icon, 
+    Row, 
+    Col, 
+    Tooltip, 
+    Button, 
+    Switch, 
+    Input,
+    Popconfirm
+} from 'antd';
+import ModalTaskDetail from '../ModalTaskDetail';
+import { returnTheLabelForData } from './utils';
+import { mapperInputData, validationSchema, listInputFilter, messageAlertEmail } from './constants';
+import { 
+    ContentContainer,  
+    Label,
+    InputsContainer,
+    ContentContainerFilters,
+ } from './styles';
+import { Formik } from 'formik';
+import { handleInput } from '../../lib/forms';
 
 const columnsEntities = [
     {
@@ -69,6 +89,17 @@ const ClientsIndas = ({
     loadEntitiesIndas
 }) => {
     //properties
+    const showModal = () => {
+        setIsVisible(true)
+      };
+    
+      const handleOk = e => {
+        setIsVisible(false)
+      };
+    
+      const handleCancel = e => {
+        setIsVisible(false)
+      };
     const columnsClients = [
         {
             title: 'Código CBIM',
@@ -139,14 +170,15 @@ const ClientsIndas = ({
                     </Col>
                     <Col>
                         <Tooltip title="Editar">
-                            <Button icon="edit"></Button>
+                            {/* {esté boton llama a el modal} */}
+                            <Button icon="edit" onClick={() => showModal()}></Button>
                         </Tooltip>
                     </Col>
                     <Col>
                         {record.idestado === 0? 
                             <Tooltip title="Activar">
-                                <Switch></Switch>
-                                
+                                {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
+                                <Switch></Switch>    
                             </Tooltip>
                             :
                             <Tooltip title="Dar da baja">
@@ -162,6 +194,8 @@ const ClientsIndas = ({
         }
     ];
     //internal states
+    const [isVisible, setIsVisible] = useState(false);
+    const [inputKey, setInputKey] = useState('');
     const [loading, setLoading] = useState(true);
     const [loadingEntities, setLoadingEntitities] = useState(true);
     const [searchText, setSearchText] = useState('');
@@ -189,26 +223,126 @@ const ClientsIndas = ({
                     locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
                     size="small"
                     loading={loadingEntities}
-                    ></Table>
+                ></Table>
             </div>
         );
     }
-
+    const formikInitialValue = {
+        email: '',
+    }
     //render
     return (
         <div className="table-indas">
             <h2 className="table-indas-title">Clientes Transferindas</h2>
-            <Table 
-                dataSource={list} 
-                columns={columnsClients}
-                rowKey="idcliente"
-                expandedRowRender = {client => showEntities(client)}
-                pagination={{position:'both', pageSize:20}}
-                locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
-                size="middle"
-                loading={loading}
-                scroll={{x:true}}
+            <Formik
+                    // key = {taskDetailKey}
+                    initialValues={formikInitialValue}
+                    validationSchema={validationSchema}
+                    onSubmit={(values) => {
+                       console.info({ values })
+                    }
+                }>
+                {({
+                    values,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    setFieldValue,
+                    errors,
+                    touched,
+                }) => (
+                <div>
+                <ContentContainerFilters>
+                    {listInputFilter.map(inputKeyFilter =>
+                    <InputsContainer>
+                        <Label>
+                            {inputKeyFilter.label}
+                        </Label>
+                        <Input
+                            id={inputKeyFilter.inputKey}
+                            value={values[inputKeyFilter.inputKey]}
+                            placeholder={inputKeyFilter.label}
+                            onChange={handleInput(setFieldValue, inputKeyFilter)}
+                            onBlur={handleBlur}
+                            style={{width: inputKeyFilter.inputKey === 'codcli_cbim' ? '100px' : '250px'}}
+                        />
+                        </InputsContainer>
+                    )}
+                    <div style={{alignSelf: 'flex-end'}}>
+                    <Button
+                      icon= 'search'
+                      style={{alignSelf: 'flex-end', margin: '0px 10px'}}
+                    ></Button>
+                    <Button
+                      icon= 'delete'
+                      style={{alignSelf: 'flex-end'}}
+                    ></Button>
+                    </div>
+                </ContentContainerFilters>
+                
+                <Table 
+                  dataSource={list} 
+                  columns={columnsClients}
+                  rowKey="idcliente"
+                  expandedRowRender = {client => showEntities(client)}
+                  pagination={{position:'both', pageSize:20}}
+                  locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
+                  size="middle"
+                  pagination={false}
+                  loading={loading}
+                  scroll={{x:true}}
                 ></Table>
+                <ModalTaskDetail
+                  visible={isVisible}
+                  handleCancel={handleCancel}
+                  titleModal={returnTheLabelForData(mapperInputData, inputKey)}
+                  footer={[
+                    <Button
+                      key="back"
+                      onClick={handleCancel}>
+                      Atrás
+                    </Button>,
+                    <Popconfirm 
+                        okText="Confirmar" 
+                        cancelText="Cancelar" 
+                        onConfirm={(e) => handleOk(e)} 
+                        onCancel={(e) => handleOk(e)}
+                        overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                        title={messageAlertEmail} 
+                        autoAdjustOverflow={true}
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                    <Button
+                      key="submit"
+                      type="primary"
+                      onClick={(e) => {
+                        // sale el popover de la doble confirmación
+                        // handleSubmit(e);
+                        //handleOk(e);
+                      }}>
+                      Guardar
+                    </Button>
+                    </Popconfirm>
+                  ]}
+                    content={
+                      <ContentContainer>
+                        <Label>{'Editar Email'}
+                        </Label>
+                        <Input
+                          id={'email'}
+                          value={values.email}
+                          onChange={handleInput(setFieldValue, 'email')}
+                          onBlur={handleBlur}
+                        />  
+                      </ContentContainer> }>
+                </ModalTaskDetail>
+                </div>
+                )}
+                {/* { para cambio de email Modal en los buttons de guardar se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}
+                {/* { para cambio de estado se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}
+                {/* {elemento 1 Modal para cambio de email} */}
+                {/* {elemento 2 Aviso para doble confirmación de email y estado} */}
+            </Formik>
+            
         </div>
     );
 
