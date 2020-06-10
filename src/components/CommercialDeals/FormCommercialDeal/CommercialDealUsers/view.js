@@ -219,6 +219,7 @@ const CommercialDealsUsers = ({
 
     const paginationOptions =(emailSearched) => ({
         onChange: (page) => {
+            console.log('page cc', {page})
             loadUsers({page: page, emailComo: emailSearched})
         },
         total: usersMeta.total,

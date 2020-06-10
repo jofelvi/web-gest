@@ -5,7 +5,9 @@ import {
 	LOAD_ENTITIES_INDAS,
 	LOAD_WHOLESALERS_INDAS,
 	EDIT_CLIENT_INDAS,
-} from './actionTypes'
+	SEARCH_CLIENT_BY,
+	GET_USERS_COUNT,
+} from './actionTypes';
 import {
 	loadClientsIndasFailed,
 	loadClientsIndasSuccess,
@@ -15,19 +17,17 @@ import {
 	loadWholesalersIndasSuccess,
 	editClientIndasSuccess,
 	editClientIndasFailed,
-} from './actions'
-import * as api from './api'
-const getPropertyToEdit = ({payload}) => {
-	let propertyToEdit = {} 
-	if (payload && payload.email){
-		return propertyToEdit = { email: payload.email }
-	}
-}
+	getUsersCountSuccess,
+	getUsersCountFailed,
+} from './actions';
+import * as api from './api';
+import * as HttpStatus from 'http-status-codes';
+
 //clients indas
-function* loadClientsIndas() {
+function* loadClientsIndas({payload = { page: 1, emailComo: ''}}) {
 	try {
-		const response = yield call(api.getClientsIndas)
-		yield put(loadClientsIndasSuccess({ list: response.data }))
+		const response = yield call(api.getUsers, payload)
+		yield put(loadClientsIndasSuccess({ list: response.data, userMeta: payload }))
 	} catch (e) {
 		console.error(e)
 		yield put(loadClientsIndasFailed())
@@ -36,6 +36,20 @@ function* loadClientsIndas() {
 
 export function* watchloadClientsIndas() {
 	yield takeLatest(LOAD_CLIENTS_INDAS, loadClientsIndas)
+}
+
+function* getUsersCount({payload = { emailComo: ''}}) {
+	try {
+	  const response = yield call(api.getUsersCount, payload);
+	  console.log('user count',response);
+	  yield put(getUsersCountSuccess(response.data));
+	} catch (e) {
+	  console.error(e);
+	  yield put(getUsersCountFailed());
+	}
+  }
+export function* watchGetUsersCount() {
+	yield takeLatest(GET_USERS_COUNT, getUsersCount)
 }
 
 //entities indas
@@ -90,24 +104,25 @@ export function* watchEditClientIndas() {
 }
 
 // FILtros searchClientsBy, email, codcli_cbim, name.
-// function* searchOrder({ payload }) {
+function* searchClientBy({payload = {...payload, page: 1}}) {
+ 	console.log("filter payload", {payload});
+	try {
+	  const response = yield call(api.searchClientBy, payload);
+	  console.log("response search order", {response});
 
-// 	try {
-// 	  const response = yield call(api.searchOrder, payload);
   
+	  if (response.status === HttpStatus.UNAUTHORIZED) {
+		payload.history.push('/login');
+	  }
   
-// 	  if (response.status === HttpStatus.UNAUTHORIZED) {
-// 		payload.history.push('/login');
-// 	  }
+	  yield put(loadClientsIndasSuccess({ list: response.data }))
   
-// 	  yield put(fetchOrdersSuccess({ orders: response.data }));
+	} catch (e) {
+	  console.error(e);
+	  yield put(loadClientsIndasFailed());
+	}
+  }
   
-// 	} catch (e) {
-// 	  console.error(e);
-// 	  yield put(fetchOrdersFailed());
-// 	}
-//   }
-  
-//   export function* watchsearchOrder() {
-// 	yield takeLatest(SEARCH_ORDER, searchOrder);
-//   }
+  export function* watchSearchClientBy() {
+	yield takeLatest(SEARCH_CLIENT_BY, searchClientBy);
+  }

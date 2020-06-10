@@ -15,7 +15,14 @@ import {
 } from 'antd';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
-import { mapperInputData, validationSchema, listInputFilter, messageAlertEmail } from './constants';
+import { 
+    mapperInputData, 
+    validationSchema, 
+    listInputFilter, 
+    messageAlertEmail,
+    messageAlertUserActivation, 
+    messageAlertUserDeactivation,
+} from './constants';
 import { 
     ContentContainer,  
     Label,
@@ -86,16 +93,21 @@ const ClientsIndas = ({
     editClientIndas,
     setCurrentClientEmail,
     currentEmail,
+    searchClientBy,
     wholesalersIndas,
     token,
-    loadClientsIndas, 
-    loadEntitiesIndas
+    loadClientsIndas,
+    usersMeta, 
+    getUsersCount,
+    loadEntitiesIndas,
 }) => {
+    console.info({list});
     const [isVisible, setIsVisible] = useState(false);
     const [id, setId] = useState('');
     // const [currentEmail, setCurrentEmail] = useState('');
     const [inputKey, setInputKey] = useState('');
     const [loading, setLoading] = useState(true);
+    const [isDataChange, setIsDataChange] = useState(false);
     const [loadingEntities, setLoadingEntitities] = useState(true);
     const [searchText, setSearchText] = useState('');
     const showModal = () => {
@@ -192,12 +204,43 @@ const ClientsIndas = ({
                     <Col>
                         {record.idestado === 0? 
                             <Tooltip title="Activar">
+                                <Popconfirm 
+                                  okText="Confirmar" 
+                                  cancelText="Cancelar" 
+                                  onConfirm={(e) => {
+                                    console.info('estado actual inactivo');
+                                    // editClientIndas({id, idestado: 1 });
+                                    // console.info('estado actual activo');
+                                    // editClientIndas({id, idestado: 0 });
+                                    handleOk(e);
+                                  }} 
+                                  onCancel={(e) => handleOk(e)}
+                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                                  title={messageAlertUserDeactivation} 
+                                  autoAdjustOverflow={true}
+                        i         con={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                                 {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
-                                <Switch></Switch>    
+                                  <Switch></Switch>    
+                                </Popconfirm>
                             </Tooltip>
                             :
-                            <Tooltip title="Dar da baja">
-                                <Switch defaultChecked></Switch>
+                            <Tooltip title="Dar de baja">
+                                <Popconfirm 
+                                  okText="Confirmar" 
+                                  cancelText="Cancelar" 
+                                  onConfirm={(e) => {
+                                    console.info('estado actual activo');
+                                    //editClientIndas({id, idestado: 0 });
+                                    handleOk(e);
+                                  }} 
+                                  onCancel={(e) => handleOk(e)}
+                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                                  title={messageAlertUserActivation} 
+                                  autoAdjustOverflow={true}
+                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
+                                  <Switch defaultChecked></Switch>    
+                                </Popconfirm>
                                 
                             </Tooltip>
                         }
@@ -215,14 +258,17 @@ const ClientsIndas = ({
     useEffect(() =>{
         if(list.length > 0){
             setLoading(false);
+            getUsersCount(); 
         }
-        loadClientsIndas();
+        // loadClientsIndas();
     },[list, entitiesIndas]);
 
-    useEffect(() =>{   
-        loadClientsIndas();
+    useEffect(() =>{  
+        if (isDataChange) {
+            loadClientsIndas({page: 1, emailComo: ''});
+        }
     },[list]);
-    
+
     const formikInitialValue = {
         email: currentEmail,
     }
@@ -237,18 +283,22 @@ const ClientsIndas = ({
                     dataSource={entities} 
                     columns={columnsEntities}
                     rowKey="codentidad_cbim"
-                    locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
                     size="small"
                     loading={loadingEntities}
                 ></Table>
             </div>
         );
     }
-    const formikInitialValueEmpty = {
-        email: '',
-    }
+    const paginationOptions =(emailSearched) => ({
+        onChange: (page, pageSize) => {
+            console.info({ page, pageSize });
+            loadClientsIndas({page: page, emailComo: emailSearched})
+        },
+        total: usersMeta.total,
+        current: usersMeta.page,
+        pageSize: usersMeta.pageSize,
+    });
     
-    //render
     return (
         <div className="table-indas">
             <h2 className="table-indas-title">Clientes Transferindas</h2>
@@ -261,15 +311,14 @@ const ClientsIndas = ({
                       console.info({ id, values });
                       if (values && values.email) {
                         console.info('email');
+                        setIsDataChange(true);
                         editClientIndas({id, email: values.email});
                       }
-                      if (values && values.idestado === 0) {
-                        console.info('estado activo');
-                        editClientIndas({id, idestado: 1 });
-                      } else if (values && values.idestado === 1) {
-                        console.info('estado inactivo');
-                        editClientIndas({id, idestado: 0 });
-                      }
+                    //   if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
+                    //     setIsDataChange(true);
+                    //     console.info('filtro por', values);
+                    //     searchClientBy(values);
+                    //   }
                     }}>
                 {({
                     values,
@@ -291,7 +340,7 @@ const ClientsIndas = ({
                             id={inputKeyFilter.inputKey}
                             value={values[inputKeyFilter.inputKey]}
                             placeholder={inputKeyFilter.label}
-                            onChange={handleInput(setFieldValue, inputKeyFilter)}
+                            onChange={handleInput(setFieldValue, inputKeyFilter.inputKey)}
                             onBlur={handleBlur}
                             style={{width: inputKeyFilter.inputKey === 'codcli_cbim' ? '100px' : '250px'}}
                         />
@@ -301,6 +350,7 @@ const ClientsIndas = ({
                     <Button
                       icon= 'search'
                       style={{alignSelf: 'flex-end', margin: '0px 10px'}}
+                      onClick={(e) => handleSubmit()}
                     ></Button>
                     <Button
                       icon= 'delete'
@@ -314,10 +364,8 @@ const ClientsIndas = ({
                   columns={columnsClients}
                   rowKey="idcliente"
                   expandedRowRender = {client => showEntities(client)}
-                  pagination={{position:'both', pageSize:20}}
-                  locale={{filterConfirm:'ok', filterReset:'limpiar',filterTitle:'filtro'}}
                   size="middle"
-                  pagination={false}
+                  pagination={paginationOptions('')}
                   loading={loading}
                   scroll={{x:true}}
                 ></Table>

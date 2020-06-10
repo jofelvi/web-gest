@@ -4,6 +4,8 @@ import {
   editClientIndas,
   setCurrentClientEmail,
   loadClientsIndas,
+  searchClientBy,
+  getUsersCount,
  } from '../../modules/clients-indas/actions';
 
 import View from './view';
@@ -15,10 +17,14 @@ export default connect(
     wholesalersIndas: state.clientsIndas.wholesalersIndas,
     token: state.auth.token,
     currentEmail: state.clientsIndas.currentEmail,
+    usersMeta: state.clientsIndas.usersMeta,
+
   }),
   {
     editClientIndas,
     setCurrentClientEmail,
     loadClientsIndas,
+    searchClientBy,
+    getUsersCount,
   }
 )(View);

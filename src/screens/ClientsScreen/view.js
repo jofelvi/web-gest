@@ -9,7 +9,7 @@ const ClientsIndasScreen = ({
     loadWholesalersIndas
 }) => {
     useEffect(() =>{
-        loadClientsIndas();
+        loadClientsIndas({page: 1, emailComo: ''});
         loadEntitiesIndas();
         //loadWholesalersIndas();
     },[
