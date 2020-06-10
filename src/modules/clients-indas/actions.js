@@ -9,7 +9,11 @@ import {
     LOAD_ENTITIES_INDAS_SUCCESS,
     LOAD_WHOLESALERS_INDAS,
     LOAD_WHOLESALERS_INDAS_FAILED,
-    LOAD_WHOLESALERS_INDAS_SUCCESS
+    LOAD_WHOLESALERS_INDAS_SUCCESS,
+    EDIT_CLIENT_INDAS,
+    EDIT_CLIENT_INDAS_SUCCESS,
+    EDIT_CLIENT_INDAS_FAILED,
+    SET_CURRENT_CLIENT_EMAIL,
 } from './actionTypes';
 
 export const {
@@ -21,7 +25,11 @@ export const {
     loadEntitiesIndasSuccess,
     loadWholesalersIndas,
     loadWholesalersIndasFailed,
-    loadWholesalersIndasSuccess
+    loadWholesalersIndasSuccess,
+    editClientIndas,
+    editClientIndasSuccess,
+    editClientIndasFailed,
+    setCurrentClientEmail,
 } = createActions(
     LOAD_CLIENTS_INDAS,
     LOAD_CLIENTS_INDAS_FAILED,
@@ -31,5 +39,9 @@ export const {
     LOAD_ENTITIES_INDAS_SUCCESS,
     LOAD_WHOLESALERS_INDAS,
     LOAD_WHOLESALERS_INDAS_FAILED,
-    LOAD_WHOLESALERS_INDAS_SUCCESS
+    LOAD_WHOLESALERS_INDAS_SUCCESS,
+    EDIT_CLIENT_INDAS,
+    EDIT_CLIENT_INDAS_SUCCESS,
+    EDIT_CLIENT_INDAS_FAILED,
+    SET_CURRENT_CLIENT_EMAIL,
 );

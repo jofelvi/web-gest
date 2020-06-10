@@ -4,6 +4,7 @@ import {
 	LOAD_CLIENTS_INDAS,
 	LOAD_ENTITIES_INDAS,
 	LOAD_WHOLESALERS_INDAS,
+	EDIT_CLIENT_INDAS,
 } from './actionTypes'
 import {
 	loadClientsIndasFailed,
@@ -12,9 +13,16 @@ import {
 	loadEntitiesIndasSuccess,
 	loadWholesalersIndasFailed,
 	loadWholesalersIndasSuccess,
+	editClientIndasSuccess,
+	editClientIndasFailed,
 } from './actions'
 import * as api from './api'
-
+const getPropertyToEdit = ({payload}) => {
+	let propertyToEdit = {} 
+	if (payload && payload.email){
+		return propertyToEdit = { email: payload.email }
+	}
+}
 //clients indas
 function* loadClientsIndas() {
 	try {
@@ -61,6 +69,26 @@ function* loadWholesalersIndas(idEntity) {
 export function* watchloadWholesalersIndas() {
 	yield takeLatest(LOAD_WHOLESALERS_INDAS, loadWholesalersIndas)
 }
+
+function* editClientIndas({ payload }) {
+	console.log({ payload });
+	const isPayloadEmail = payload && payload.email;
+	const {id, email, idestado } = payload;
+	console.log({ id, email, idestado, isPayloadEmail });
+	try {
+		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email } : { idestado: idestado } );
+		console.info({response});
+		yield put(editClientIndasSuccess());
+	} catch (e) {
+		console.error(e);
+		yield put(editClientIndasFailed());
+	}
+}
+
+export function* watchEditClientIndas() {
+	yield takeLatest(EDIT_CLIENT_INDAS, editClientIndas)
+}
+
 // FILtros searchClientsBy, email, codcli_cbim, name.
 // function* searchOrder({ payload }) {
 

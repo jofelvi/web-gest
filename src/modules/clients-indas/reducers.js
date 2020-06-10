@@ -2,13 +2,15 @@ import { handleActions } from 'redux-actions';
 import {
     loadClientsIndasSuccess,
     loadEntitiesIndasSuccess,
-    loadWholesalersIndasSuccess
+    loadWholesalersIndasSuccess,
+    setCurrentClientEmail,
 } from './actions';
 
 const defaultState = {
     list: [],
     entitiesIndas: [],
-    wholesalersIndas: []
+    wholesalersIndas: [],
+    currentEmail: '',
 };
 export default handleActions({
     [loadClientsIndasSuccess]:(state,{ payload }) => ({
@@ -22,5 +24,10 @@ export default handleActions({
     [loadWholesalersIndasSuccess]:(state,{ payload }) => ({
         ...state,
         wholesalersIndas: payload.wholesalersIndas
+    }),
+    [setCurrentClientEmail]:(state,{ payload }) => ({
+        ...state,
+        currentEmail: payload.currentEmail
     })
+    
 },defaultState);

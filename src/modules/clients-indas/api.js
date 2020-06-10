@@ -1,4 +1,4 @@
-import { get, post } from '../../lib/restClient'
+import { get, post, patch } from '../../lib/restClient'
 
 export const getClientsIndas = () => get('/ntr/cliente')
 // Añadir  la busqueda por codcli_cbim, email, nombre
@@ -33,7 +33,7 @@ export const getClientsIndas = () => get('/ntr/cliente')
 // 	}
 // 	return get(`ntr/pedido?${queryParams}`);
 //   };
-  
+export const editClientTR = (id,data) => patch(`/multi/cliente/${id}`, data);
 export const getEntitiesIndas = queryParams => {
 	return !queryParams
 		? get('/ntr/entidad')

@@ -83,12 +83,21 @@ const columnsEntities = [
 const ClientsIndas = ({
     list,
     entitiesIndas,
+    editClientIndas,
+    setCurrentClientEmail,
+    currentEmail,
     wholesalersIndas,
     token,
     loadClientsIndas, 
     loadEntitiesIndas
 }) => {
-    //properties
+    const [isVisible, setIsVisible] = useState(false);
+    const [id, setId] = useState('');
+    // const [currentEmail, setCurrentEmail] = useState('');
+    const [inputKey, setInputKey] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [loadingEntities, setLoadingEntitities] = useState(true);
+    const [searchText, setSearchText] = useState('');
     const showModal = () => {
         setIsVisible(true)
       };
@@ -171,7 +180,13 @@ const ClientsIndas = ({
                     <Col>
                         <Tooltip title="Editar">
                             {/* {esté boton llama a el modal} */}
-                            <Button icon="edit" onClick={() => showModal()}></Button>
+                            <Button 
+                                icon="edit" 
+                                onClick={() => {
+                                    setId(idcliente)
+                                    setCurrentClientEmail({ currentEmail: record.email });
+                                    showModal();
+                                }}></Button>
                         </Tooltip>
                     </Col>
                     <Col>
@@ -194,21 +209,23 @@ const ClientsIndas = ({
         }
     ];
     //internal states
-    const [isVisible, setIsVisible] = useState(false);
-    const [inputKey, setInputKey] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [loadingEntities, setLoadingEntitities] = useState(true);
-    const [searchText, setSearchText] = useState('');
+   
 
     //hooks
     useEffect(() =>{
         if(list.length > 0){
             setLoading(false);
         }
-    },[
-        list,
-        entitiesIndas
-    ]);
+        loadClientsIndas();
+    },[list, entitiesIndas]);
+
+    useEffect(() =>{   
+        loadClientsIndas();
+    },[list]);
+    
+    const formikInitialValue = {
+        email: currentEmail,
+    }
     //methods
     const showEntities = (client) => {
         var entities = entitiesIndas.filter(entity => entity.idcliente === client.idcliente);
@@ -227,9 +244,10 @@ const ClientsIndas = ({
             </div>
         );
     }
-    const formikInitialValue = {
+    const formikInitialValueEmpty = {
         email: '',
     }
+    
     //render
     return (
         <div className="table-indas">
@@ -238,10 +256,21 @@ const ClientsIndas = ({
                     // key = {taskDetailKey}
                     initialValues={formikInitialValue}
                     validationSchema={validationSchema}
+                    enableReinitialize
                     onSubmit={(values) => {
-                       console.info({ values })
-                    }
-                }>
+                      console.info({ id, values });
+                      if (values && values.email) {
+                        console.info('email');
+                        editClientIndas({id, email: values.email});
+                      }
+                      if (values && values.idestado === 0) {
+                        console.info('estado activo');
+                        editClientIndas({id, idestado: 1 });
+                      } else if (values && values.idestado === 1) {
+                        console.info('estado inactivo');
+                        editClientIndas({id, idestado: 0 });
+                      }
+                    }}>
                 {({
                     values,
                     handleChange,
@@ -305,7 +334,10 @@ const ClientsIndas = ({
                     <Popconfirm 
                         okText="Confirmar" 
                         cancelText="Cancelar" 
-                        onConfirm={(e) => handleOk(e)} 
+                        onConfirm={(e) => {
+                            handleSubmit();
+                            handleOk(e);
+                        }} 
                         onCancel={(e) => handleOk(e)}
                         overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
                         title={messageAlertEmail} 
