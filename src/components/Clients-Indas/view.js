@@ -12,7 +12,8 @@ import {
     Switch, 
     Input,
     Modal,
-    Popconfirm
+    Popconfirm,
+    Checkbox
 } from 'antd';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
@@ -23,6 +24,7 @@ import {
     messageAlertEmail,
     getMessageEditMail,
     getMessageActivationAndName,
+    //info,
 } from './constants';
 import { 
     ContentContainer,  
@@ -31,7 +33,7 @@ import {
     ContentContainerFilters,
  } from './styles';
 import { Formik } from 'formik';
-import { handleInput } from '../../lib/forms';
+import { handleInput, handleInputChecked } from '../../lib/forms';
 
 const columnsEntities = [
     {
@@ -108,7 +110,10 @@ const ClientsIndas = ({
     filterValues
 }) => {
     const [isVisible, setIsVisible] = useState(false);
+    const [isVisibleEditStateNonActive, setIsVisibleEditStateNonActive] = useState(false);
+    const [isVisibleEditStateActive, setIsVisibleEditStateActive] = useState(false);
     const [id, setId] = useState('');
+    const [clientState, setClientState] = useState();
     // const [currentEmail, setCurrentEmail] = useState('');
     const [inputKey, setInputKey] = useState('');
     const [loading, setLoading] = useState(true);
@@ -119,16 +124,24 @@ const ClientsIndas = ({
     const [searchText, setSearchText] = useState('');
 
     const showModal = () => {
-        setIsVisible(true)
+      setIsVisible(true)
       };
-    
-      const handleOk = e => {
-        setIsVisible(false)
-      };
-    
-      const handleCancel = e => {
-        setIsVisible(false)
-      };
+   
+    const handleOk = e => {
+      setIsVisible(false)
+    };
+    const handleCancel = e => {
+      setIsVisible(false)
+    };
+    const showModalEditStateActive = () => {
+        setIsVisibleEditStateActive(true)
+    };
+    const handleOkEditStateActive = e => {
+        setIsVisibleEditStateActive(false)
+    };
+    const handleCancelEditStateActive = e => {
+        setIsVisibleEditStateActive(false)
+    };
 
     const columnsClients = [
         {
@@ -212,51 +225,20 @@ const ClientsIndas = ({
                         </Tooltip>
                     </Col>
                     <Col>
-                        {record.idestado === 0? 
-                            <Tooltip title="Activar">
-                                <Popconfirm 
-                                  okText="Confirmar" 
-                                  cancelText="Cancelar" 
-                                  onConfirm={(e) => {
-                                    //console.info('estado actual inactivo');
-                                    editClientIndas({ id: idcliente, idestado: 1 });
-                                    setIsDataChange(true);
-                                    // console.info('estado actual activo');
-                                    // editClientIndas({id, idestado: 0 });
-                                    handleOk(e);
-                                  }} 
-                                  onCancel={(e) => handleOk(e)}
-                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
-                                  autoAdjustOverflow={true}
-                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
-                                <Switch checked={false}></Switch>
-                                </Popconfirm>
-                                
-                            </Tooltip>
-                            :
-                            <Tooltip title="Dar de baja">
-                                <Popconfirm 
-                                  okText="Confirmar" 
-                                  cancelText="Cancelar" 
-                                  onConfirm={(e) => {
-                                    // console.info('estado actual activo');
-                                    editClientIndas({ id: idcliente, idestado: 0 });
-                                    setIsDataChange(true);
-                                    handleOk(e);
-                                  }} 
-                                  onCancel={(e) => handleOk(e)}
-                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
-                                  autoAdjustOverflow={true}
-                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
-                                  <Switch checked= {true}></Switch>    
-                                </Popconfirm>
-                                
-                            </Tooltip>
-                        }
+                            <div>
+                                <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
+                                <Switch 
+                                    name='nonActive' 
+                                    checked={record.idestado === 0 ? false : true} 
+                                    onChange={() =>{
+                                        showModalEditStateActive();
+                                        setId(idcliente);
+                                        setNameClient(record.nomcli_cbim);
+                                        setClientState(record.idestado);
+                                    }}
+                                    ></Switch> 
+                                </Tooltip>
+                            </div>
                     </Col>
                     
                 </Row>
@@ -297,7 +279,7 @@ const ClientsIndas = ({
 
     const formikInitialValue = {
         email: currentEmail,
-
+        ind_renovar_pass: false
     }
     //methods
     const showEntities = (client) => {
@@ -318,7 +300,6 @@ const ClientsIndas = ({
     }
     const paginationOptions =(filterValues) => ({
         onChange: (page, pageSize, current) => {
-            console.info({ page, pageSize, defaultCurrent: usersMeta.page, filterValues });
             loadClientsIndas({ 
                 page: page, 
                 emailComo: filterValues.emailComo, 
@@ -331,10 +312,21 @@ const ClientsIndas = ({
         defaultCurrent: usersMeta.page,
         pageSize: usersMeta.pageSize,
     });
-    const paginationFilteredClientsOptions =() => ({
-        total: list.length >= 30 ? usersMeta.total : list.length ,
-        pageSize: usersMeta.pageSize,
-    });
+    const paginationFilteredClientsOptions =(filterValues) => {
+        return ({
+            onChange: (page, pageSize, current) => {
+                loadClientsIndas({ 
+                    page: page, 
+                    emailComo: filterValues.emailComo, 
+                    nombreComo: filterValues.nombreComo,
+                    codcli_cbim: filterValues.codcli_cbim 
+                });
+            },
+            total: list.length >= 30 ? usersMeta.total : list.length ,
+            current: usersMeta.page,
+            pageSize: usersMeta.pageSize,
+        })
+    }
     
     return (
         <div className="table-indas">
@@ -344,15 +336,13 @@ const ClientsIndas = ({
                     initialValues={formikInitialValue}
                     validationSchema={validationSchema}
                     enableReinitialize
-                    onSubmit={(values) => {    
-                      // console.info({ id, values, filterValues });
+                    onSubmit={(values) => {   
                       if (values && values.email) {
                         setIsDataChange(true);
                         editClientIndas({id, email: values.email});   
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
                         setIsFiltered(true);
-                        // console.log({ values });
                         setFilterValues({ 
                             mailComo: values ? values.emailComo : "", 
                             nombreComo: values ? values.nombreComo : "", 
@@ -409,12 +399,22 @@ const ClientsIndas = ({
                       onClick={() => {
                         setIsFiltered(false);
                         setFormKey();
+                        setFilterValues({
+                          emailComo: '', 
+                          nombreComo: '', 
+                          codcli_cbim: '',
+                        });
+                        getClientsCount({ 
+                            emailComo: '', 
+                            nombreComo: '', 
+                            codcli_cbim: '' 
+                        });
                         loadClientsIndas({ 
                           page: 1, 
                           emailComo: '', 
                           nombreComo: '', 
                           codcli_cbim: '', 
-                        })
+                        });
                       }}
                     ></Button>
                     </div>
@@ -426,7 +426,7 @@ const ClientsIndas = ({
                   rowKey="idcliente"
                   expandedRowRender = {client => showEntities(client)}
                   size="middle"
-                  pagination={isFiltered ? paginationFilteredClientsOptions() : paginationOptions(filterValues)}
+                  pagination={isFiltered ? paginationFilteredClientsOptions(filterValues) : paginationOptions(filterValues)}
                   loading={loading}
                   scroll={{x:true}}
                 ></Table>
@@ -476,6 +476,39 @@ const ClientsIndas = ({
                         />  
                       </ContentContainer> }>
                 </ModalTaskDetail>
+                <Modal
+                    visible={isVisibleEditStateActive}
+                    title={clientState === 0 ? 'Activar Cliente' : 'Baja de cliente'}
+                    footer={[
+                        <Popconfirm 
+                            okText="Confirmar" 
+                            cancelText="Cancelar" 
+                            onConfirm={(e) => {
+                                if (clientState === 0){
+                                    editClientIndas({ id: id, idestado: 1, ind_renovar_pass: values.ind_renovar_pass });
+                                }
+                                else {
+                                    editClientIndas({ id: id, idestado: 0, ind_renovar_pass: values.ind_renovar_pass});
+                                }              
+                                setIsDataChange(true);
+                                handleOkEditStateActive(e);
+                                setFormKey();
+                            }} 
+                            onCancel={(e) => {
+                                setFormKey();
+                                handleOkEditStateActive(e)}}
+                            overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                            title={getMessageActivationAndName(nameClient, clientState)} 
+                            autoAdjustOverflow={true}
+                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button>
+                        </Popconfirm>
+                    ]}    
+                >   
+                    <Checkbox onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} value={values.ind_renovar_pass}>
+                        Enviar correo de renovación de contraseña.
+                    </Checkbox> 
+                </Modal> 
                 </div>
                 )}
                 {/* { para cambio de email Modal en los buttons de guardar se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}

@@ -53,24 +53,18 @@ export default handleActions({
           searchLoading: false,
         }
       }),
-    [editClientIndasSuccess]: (state)=> {
-        // console.log({ state });
-        return({
-            ...state,
-            list: state.list,
-            isEdited: true,
-        })
-    },
-    [loadClientsIndas]:(state) => {
-        console.log("load client indas reducers", { state })
-        return({
-            ...state,
-            usersMeta: {
-                ...state.usersMeta,
-                searchLoading: true,
-            }
-        });
-    },
+    [editClientIndasSuccess]: (state)=> ({
+        ...state,
+        list: state.list,
+        isEdited: true,
+    }),
+    [loadClientsIndas]:(state) => ({
+        ...state,
+        usersMeta: {
+            ...state.usersMeta,
+            searchLoading: true,
+        }
+    }),
     [getClientsCountSuccess]: (state, { payload })=>({
         ...state,
         usersMeta: {
@@ -91,7 +85,6 @@ export default handleActions({
         currentEmail: payload.currentEmail
     }),
     [setFilterValues]:  (state, { payload}) => {
-        // console.info({ payload });
         const { emailComo, nombreComo, codcli_cbim } = payload;
         return ({
         ...state,

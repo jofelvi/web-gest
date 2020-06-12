@@ -1,4 +1,11 @@
+import React from 'react';
 import * as Yup from 'yup';
+import { 
+    Button, 
+    Checkbox, 
+    Modal,
+    Popconfirm
+} from 'antd';
 
 export const mapperInputData = [{
     email: 'Asignado a',

@@ -50,7 +50,6 @@ return queryParams;
 export const editClientTR = (id,data) => patch(`/multi/cliente/${id}`, data);
 
 export const getUsersCount = ({ emailComo = '', nombreComo = '', codcli_cbim = '' }) => {
-	console.log({ emailComo, nombreComo });
 	let queryParams = '';
 	if (emailComo && !nombreComo) {
  		queryParams = `?emailComo=${emailComo}`;
@@ -68,29 +67,24 @@ export const getUsersCount = ({ emailComo = '', nombreComo = '', codcli_cbim = '
   }; 
 
 export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', page = 1 }) => {
-	console.log({ page, emailComo, nombreComo, codcli_cbim });
 	let offsetLimit = `?offset=${(page - 1) * NUM_CLIENTES_PAG}&limit=${NUM_CLIENTES_PAG}`;
 	let queryParams = '';
 	if (emailComo && nombreComo && codcli_cbim) {
 		queryParams = `${offsetLimit}&emailComo=${emailComo}&nombreComo=${nombreComo}&codcli_cbim=${codcli_cbim}`;
 	} else if (!nombreComo && !codcli_cbim && !emailComo) {
-		// console.log({offsetLimit})
 		queryParams = offsetLimit;
 	}
 	if (!nombreComo && !codcli_cbim && emailComo) {
-		// console.log("por email");
 		queryParams = `${offsetLimit}&emailComo=${emailComo}`;
 	} else if (nombreComo && codcli_cbim){
 		queryParams = `${offsetLimit}&nombreComo=${nombreComo}&codcli_cbim=${codcli_cbim}`;
 	}
 	if (!nombreComo && !emailComo && codcli_cbim) {
-		// console.log("por codcli_cbim");
 		queryParams = `${offsetLimit}&codcli_cbim=${codcli_cbim}`;
 	} else if (nombreComo && emailComo) {
 		queryParams = `${offsetLimit}&nombreComo=${nombreComo}&emailComo=${emailComo}`;
 	}
 	if (!codcli_cbim && !emailComo && nombreComo) {
-		// console.log("por nombreComo");
 		queryParams = `${offsetLimit}&nombreComo=${nombreComo}`;
 	} else if (codcli_cbim && emailComo) {
 		queryParams = `${offsetLimit}&emailComo=${emailComo}&codcli_cbim=${codcli_cbim}`;

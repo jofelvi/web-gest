@@ -7,11 +7,17 @@ const ClientsIndasScreen = ({
     loadClientsIndas, 
     loadEntitiesIndas,
     filterValues,
-    loadWholesalersIndas
+    loadWholesalersIndas,
+    getClientsCount
 }) => {
     useEffect(() =>{
         if(filterValues && (filterValues.emailComo || filterValues.nombreComo || filterValues.codcli_cbim )) {
             loadClientsIndas({page: 1, emailComo: filterValues.emailComo, nombreComo: filterValues.nombreComo, codcli_cbim: filterValues.codcli_cbim });
+            getClientsCount({ 
+                emailComo: filterValues.emailComo, 
+                nombreComo: filterValues.nombreComo, 
+                codcli_cbim: filterValues.codcli_cbim  
+            });
         } else {
             loadClientsIndas();
         }
