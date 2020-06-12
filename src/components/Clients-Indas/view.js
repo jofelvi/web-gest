@@ -11,6 +11,7 @@ import {
     Button, 
     Switch, 
     Input,
+    Modal,
     Popconfirm
 } from 'antd';
 import ModalTaskDetail from '../ModalTaskDetail';
@@ -20,8 +21,8 @@ import {
     validationSchema, 
     listInputFilter, 
     messageAlertEmail,
-    messageAlertUserActivation, 
-    messageAlertUserDeactivation,
+    getMessageEditMail,
+    getMessageActivationAndName,
 } from './constants';
 import { 
     ContentContainer,  
@@ -93,23 +94,30 @@ const ClientsIndas = ({
     editClientIndas,
     setCurrentClientEmail,
     currentEmail,
+    formKey,
+    setFilterValues,
     searchClientBy,
     wholesalersIndas,
     token,
     loadClientsIndas,
     usersMeta, 
-    getUsersCount,
+    getClientsCount,
     loadEntitiesIndas,
+    setFormKey,
+    isEdited,
+    filterValues
 }) => {
-    console.info({list});
     const [isVisible, setIsVisible] = useState(false);
     const [id, setId] = useState('');
     // const [currentEmail, setCurrentEmail] = useState('');
     const [inputKey, setInputKey] = useState('');
     const [loading, setLoading] = useState(true);
+    const [nameClient, setNameClient] = useState('')
     const [isDataChange, setIsDataChange] = useState(false);
     const [loadingEntities, setLoadingEntitities] = useState(true);
+    const [isFiltered, setIsFiltered] = useState(false);
     const [searchText, setSearchText] = useState('');
+
     const showModal = () => {
         setIsVisible(true)
       };
@@ -121,6 +129,7 @@ const ClientsIndas = ({
       const handleCancel = e => {
         setIsVisible(false)
       };
+
     const columnsClients = [
         {
             title: 'Código CBIM',
@@ -195,7 +204,8 @@ const ClientsIndas = ({
                             <Button 
                                 icon="edit" 
                                 onClick={() => {
-                                    setId(idcliente)
+                                    setId(idcliente);
+                                    setNameClient(record.nomcli_cbim);
                                     setCurrentClientEmail({ currentEmail: record.email });
                                     showModal();
                                 }}></Button>
@@ -208,20 +218,22 @@ const ClientsIndas = ({
                                   okText="Confirmar" 
                                   cancelText="Cancelar" 
                                   onConfirm={(e) => {
-                                    console.info('estado actual inactivo');
-                                    // editClientIndas({id, idestado: 1 });
+                                    //console.info('estado actual inactivo');
+                                    editClientIndas({ id: idcliente, idestado: 1 });
+                                    setIsDataChange(true);
                                     // console.info('estado actual activo');
                                     // editClientIndas({id, idestado: 0 });
                                     handleOk(e);
                                   }} 
                                   onCancel={(e) => handleOk(e)}
                                   overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                                  title={messageAlertUserDeactivation} 
+                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
                                   autoAdjustOverflow={true}
-                        i         con={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                                 {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
-                                  <Switch></Switch>    
+                                <Switch checked={false}></Switch>
                                 </Popconfirm>
+                                
                             </Tooltip>
                             :
                             <Tooltip title="Dar de baja">
@@ -229,17 +241,18 @@ const ClientsIndas = ({
                                   okText="Confirmar" 
                                   cancelText="Cancelar" 
                                   onConfirm={(e) => {
-                                    console.info('estado actual activo');
-                                    //editClientIndas({id, idestado: 0 });
+                                    // console.info('estado actual activo');
+                                    editClientIndas({ id: idcliente, idestado: 0 });
+                                    setIsDataChange(true);
                                     handleOk(e);
                                   }} 
                                   onCancel={(e) => handleOk(e)}
                                   overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                                  title={messageAlertUserActivation} 
+                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
                                   autoAdjustOverflow={true}
                                   icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                                 {/* {este switch onChange llama a un aviso de la segunda confirmación (modal como el de taskModal), si se confirma se llama al update de estado en las dos llamadas} */}
-                                  <Switch defaultChecked></Switch>    
+                                  <Switch checked= {true}></Switch>    
                                 </Popconfirm>
                                 
                             </Tooltip>
@@ -251,26 +264,40 @@ const ClientsIndas = ({
             width:200
         }
     ];
-    //internal states
-   
 
-    //hooks
     useEffect(() =>{
-        if(list.length > 0){
+        if(list && list.length > 0){
             setLoading(false);
-            getUsersCount(); 
         }
-        // loadClientsIndas();
     },[list, entitiesIndas]);
 
-    useEffect(() =>{  
-        if (isDataChange) {
-            loadClientsIndas({page: 1, emailComo: ''});
+    useEffect(() =>{
+        if(!isFiltered){
+            getClientsCount({ emailComo: '', nombreComo: '', codcli_cbim: '' });
         }
-    },[list]);
+        if (isDataChange) {
+            loadClientsIndas({ 
+                page: usersMeta.page, 
+            });
+        }
+        setIsDataChange(false);
+    },[isEdited]);
+
+    useEffect(() => {
+        if (isFiltered && isDataChange) {
+            loadClientsIndas({ 
+              page: usersMeta.page, 
+              emailComo: filterValues ? filterValues.emailComo : "", 
+              nombreComo: filterValues ? filterValues.nombreComo : "", 
+              codcli_cbim: filterValues ? filterValues.codcli_cbim : "",
+            });
+        }
+        setIsDataChange(false);
+    },[isEdited]);
 
     const formikInitialValue = {
         email: currentEmail,
+
     }
     //methods
     const showEntities = (client) => {
@@ -289,13 +316,23 @@ const ClientsIndas = ({
             </div>
         );
     }
-    const paginationOptions =(emailSearched) => ({
-        onChange: (page, pageSize) => {
-            console.info({ page, pageSize });
-            loadClientsIndas({page: page, emailComo: emailSearched})
+    const paginationOptions =(filterValues) => ({
+        onChange: (page, pageSize, current) => {
+            console.info({ page, pageSize, defaultCurrent: usersMeta.page, filterValues });
+            loadClientsIndas({ 
+                page: page, 
+                emailComo: filterValues.emailComo, 
+                nombreComo: filterValues.nombreComo,
+                codcli_cbim: filterValues.codcli_cbim 
+            });
         },
         total: usersMeta.total,
         current: usersMeta.page,
+        defaultCurrent: usersMeta.page,
+        pageSize: usersMeta.pageSize,
+    });
+    const paginationFilteredClientsOptions =() => ({
+        total: list.length >= 30 ? usersMeta.total : list.length ,
         pageSize: usersMeta.pageSize,
     });
     
@@ -303,22 +340,36 @@ const ClientsIndas = ({
         <div className="table-indas">
             <h2 className="table-indas-title">Clientes Transferindas</h2>
             <Formik
-                    // key = {taskDetailKey}
+                    key = {formKey}
                     initialValues={formikInitialValue}
                     validationSchema={validationSchema}
                     enableReinitialize
-                    onSubmit={(values) => {
-                      console.info({ id, values });
+                    onSubmit={(values) => {    
+                      // console.info({ id, values, filterValues });
                       if (values && values.email) {
-                        console.info('email');
                         setIsDataChange(true);
-                        editClientIndas({id, email: values.email});
+                        editClientIndas({id, email: values.email});   
                       }
-                    //   if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
-                    //     setIsDataChange(true);
-                    //     console.info('filtro por', values);
-                    //     searchClientBy(values);
-                    //   }
+                      if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
+                        setIsFiltered(true);
+                        // console.log({ values });
+                        setFilterValues({ 
+                            mailComo: values ? values.emailComo : "", 
+                            nombreComo: values ? values.nombreComo : "", 
+                            codcli_cbim: values ? values.codcli_cbim : "" 
+                        });
+                        getClientsCount({
+                            emailComo: values.emailComo, 
+                            nombreComo: values.nombreComo, 
+                            codcli_cbim: values.codcli_cbim 
+                        });   
+                        loadClientsIndas({ 
+                            page: 1, 
+                            emailComo: values.emailComo, 
+                            nombreComo: values.nombreComo, 
+                            codcli_cbim: values.codcli_cbim 
+                        });
+                      }
                     }}>
                 {({
                     values,
@@ -355,6 +406,16 @@ const ClientsIndas = ({
                     <Button
                       icon= 'delete'
                       style={{alignSelf: 'flex-end'}}
+                      onClick={() => {
+                        setIsFiltered(false);
+                        setFormKey();
+                        loadClientsIndas({ 
+                          page: 1, 
+                          emailComo: '', 
+                          nombreComo: '', 
+                          codcli_cbim: '', 
+                        })
+                      }}
                     ></Button>
                     </div>
                 </ContentContainerFilters>
@@ -365,7 +426,7 @@ const ClientsIndas = ({
                   rowKey="idcliente"
                   expandedRowRender = {client => showEntities(client)}
                   size="middle"
-                  pagination={paginationOptions('')}
+                  pagination={isFiltered ? paginationFilteredClientsOptions() : paginationOptions(filterValues)}
                   loading={loading}
                   scroll={{x:true}}
                 ></Table>
@@ -388,7 +449,7 @@ const ClientsIndas = ({
                         }} 
                         onCancel={(e) => handleOk(e)}
                         overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                        title={messageAlertEmail} 
+                        title={getMessageEditMail(nameClient)} 
                         autoAdjustOverflow={true}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                     <Button

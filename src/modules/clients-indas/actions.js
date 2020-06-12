@@ -15,9 +15,11 @@ import {
     EDIT_CLIENT_INDAS_FAILED,
     SET_CURRENT_CLIENT_EMAIL,
     SEARCH_CLIENT_BY,
-    GET_USERS_COUNT,
-    GET_USERS_COUNT_SUCCESS,
-    GET_USERS_COUNT_FAILED,
+    GET_CLIENTS_COUNT,
+    GET_CLIENTS_COUNT_SUCCESS,
+    GET_CLIENTS_COUNT_FAILED,
+    SET_FILTER_VALUES,
+    SET_FORM_KEY,
 } from './actionTypes';
 
 export const {
@@ -35,9 +37,11 @@ export const {
     editClientIndasFailed,
     setCurrentClientEmail,
     searchClientBy,
-    getUsersCount,
-    getUsersCountSuccess,
-    getUsersCountFailed,
+    getClientsCount,
+    getClientsCountFailed,
+	getClientsCountSuccess,
+    setFilterValues,
+    setFormKey,
 } = createActions(
     LOAD_CLIENTS_INDAS,
     LOAD_CLIENTS_INDAS_FAILED,
@@ -53,7 +57,9 @@ export const {
     EDIT_CLIENT_INDAS_FAILED,
     SET_CURRENT_CLIENT_EMAIL,
     SEARCH_CLIENT_BY,
-    GET_USERS_COUNT,
-    GET_USERS_COUNT_SUCCESS,
-    GET_USERS_COUNT_FAILED,
+    GET_CLIENTS_COUNT,
+    GET_CLIENTS_COUNT_SUCCESS,
+    GET_CLIENTS_COUNT_FAILED,
+    SET_FILTER_VALUES,
+    SET_FORM_KEY,
 );

@@ -5,10 +5,13 @@ import {
   setCurrentClientEmail,
   loadClientsIndas,
   searchClientBy,
-  getUsersCount,
+  getClientsCount,
+  setFormKey,
+  setFilterValues,
  } from '../../modules/clients-indas/actions';
 
 import View from './view';
+import { startProcess } from '../../modules/forms/actions';
 
 export default connect(
   state => ({
@@ -18,13 +21,17 @@ export default connect(
     token: state.auth.token,
     currentEmail: state.clientsIndas.currentEmail,
     usersMeta: state.clientsIndas.usersMeta,
-
+    filterValues: state.clientsIndas.filterValues,
+    formKey: state.clientsIndas.formKey,
+    isEdited: state.clientsIndas.isEdited
   }),
   {
     editClientIndas,
     setCurrentClientEmail,
     loadClientsIndas,
     searchClientBy,
-    getUsersCount,
+    getClientsCount,
+    setFormKey,
+    setFilterValues,
   }
 )(View);

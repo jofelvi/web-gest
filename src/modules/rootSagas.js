@@ -70,8 +70,8 @@ import {
   watchloadEntitiesInda,
   watchloadWholesalersIndas,
   watchEditClientIndas,
-  watchSearchClientBy,
-  watchGetUsersCount,
+  // watchSearchClientBy,
+  watchGetClientsCount,
 } from './clients-indas/sagas';
 
 import {
@@ -130,7 +130,7 @@ export default function* rootSaga() {
     watchEditTaskMessage(),
     watchFetchTaskAssigneeUser(),
     watchEditClientIndas(),
-    watchSearchClientBy(),
-    watchGetUsersCount(),  
+    // watchSearchClientBy(),
+    watchGetClientsCount(),  
   ]);
 }

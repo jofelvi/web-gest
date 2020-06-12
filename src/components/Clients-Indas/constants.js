@@ -23,6 +23,20 @@ export const validationSchema = Yup.object().shape({
     email: Yup.string(),
   });
 export const messageAlertEmail = `Se procederá al cambio de Email del cliente ‘nomcli_cbim’. \n\ A partir de entonces, la Farmacia solo podrá \n\ entrar en transferindas.com \n\ usando este nuevo valor de Email. \n\ Confirme por favor el cambio.`
-
+export const getMessageEditMail = (name) => {
+    let messageAlertUser = '';
+    return messageAlertUser = `Se procederá al cambio de Email del cliente ${name}. \n\ A partir de entonces, la Farmacia solo podrá \n\ entrar en transferindas.com \n\ usando este nuevo valor de Email. \n\ Confirme por favor el cambio.`
+}
 export const messageAlertUserDeactivation = `Se va a desactivar el cliente ‘nomcli_cbim’. \n\ Se cerrará el acceso a transferindas.com, por lo que no podrá realizar nuevos pedidos. \n\ Confirme por favor el cambio.`;
 export const messageAlertUserActivation = `Se va a activar el cliente ‘nomcli_cbim’. \n\ Se abrirá el acceso a transferindas.com, por lo que podrá realizar nuevos pedidos. \n\ Confirme por favor el cambio.`
+
+export const getMessageActivationAndName = (name, idestado) => {
+    let messageAlertUser = '';
+    if(idestado === 0) {
+        return messageAlertUser = `Se va a activar el cliente ${name}. \n\ Se abrirá el acceso a transferindas.com, por lo que podrá realizar nuevos pedidos. \n\ Confirme por favor el cambio.`
+    } else if (idestado === 1) {
+        return messageAlertUser = `Se va a desactivar el cliente ${name}. \n\ Se cerrará el acceso a transferindas.com, por lo que no podrá realizar nuevos pedidos. \n\ Confirme por favor el cambio.`
+    }
+    return messageAlertUser;
+}
+

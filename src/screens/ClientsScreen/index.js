@@ -13,7 +13,9 @@ export default connect(
     list: state.clientsIndas.list,
     entitiesIndas: state.clientsIndas.entitiesIndas,
     wholesalersIndas: state.clientsIndas.wholesalersIndas,
-    token: state.auth.token
+    token: state.auth.token,
+    filterValues: state.clientsIndas.filterValues,
+
   }),
   { 
       loadClientsIndas, 

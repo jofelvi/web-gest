@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from 'redux-saga/effects'
+import { takeLatest, put, call, select } from 'redux-saga/effects'
 
 import {
 	LOAD_CLIENTS_INDAS,
@@ -6,7 +6,7 @@ import {
 	LOAD_WHOLESALERS_INDAS,
 	EDIT_CLIENT_INDAS,
 	SEARCH_CLIENT_BY,
-	GET_USERS_COUNT,
+	GET_CLIENTS_COUNT,
 } from './actionTypes';
 import {
 	loadClientsIndasFailed,
@@ -17,20 +17,24 @@ import {
 	loadWholesalersIndasSuccess,
 	editClientIndasSuccess,
 	editClientIndasFailed,
-	getUsersCountSuccess,
-	getUsersCountFailed,
+	getClientsCountFailed,
+	getClientsCountSuccess,
+	setFilterValues,
 } from './actions';
 import * as api from './api';
 import * as HttpStatus from 'http-status-codes';
 
 //clients indas
-function* loadClientsIndas({payload = { page: 1, emailComo: ''}}) {
+function* loadClientsIndas({payload = { page: 1, emailComo: '', nombreComo: '', codcli_cbim: ''}}) {
+	console.log("LOAD CLIENT INDAS", payload);
 	try {
-		const response = yield call(api.getUsers, payload)
-		yield put(loadClientsIndasSuccess({ list: response.data, userMeta: payload }))
+		const response = yield call(api.getUsers, payload);
+		console.log("response load clients indas", {response});
+		// yield put(setFilterValues({ fliterValues: payload }));
+		yield put(loadClientsIndasSuccess({ list: response.data, userMeta: payload }));
 	} catch (e) {
-		console.error(e)
-		yield put(loadClientsIndasFailed())
+		console.error(e);
+		yield put(loadClientsIndasFailed());
 	}
 }
 
@@ -38,18 +42,19 @@ export function* watchloadClientsIndas() {
 	yield takeLatest(LOAD_CLIENTS_INDAS, loadClientsIndas)
 }
 
-function* getUsersCount({payload = { emailComo: ''}}) {
+function* getClientsCount({payload = { emailComo: '', nombreComo: '', codcli_cbim: '' }}) {
+	// console.log("get users count", { payload });
 	try {
 	  const response = yield call(api.getUsersCount, payload);
-	  console.log('user count',response);
-	  yield put(getUsersCountSuccess(response.data));
+	//   console.log('user count',response);
+	  yield put(getClientsCountSuccess(response.data));
 	} catch (e) {
 	  console.error(e);
-	  yield put(getUsersCountFailed());
+	  yield put(getClientsCountFailed());
 	}
   }
-export function* watchGetUsersCount() {
-	yield takeLatest(GET_USERS_COUNT, getUsersCount)
+export function* watchGetClientsCount() {
+	yield takeLatest(GET_CLIENTS_COUNT, getClientsCount)
 }
 
 //entities indas
@@ -88,7 +93,7 @@ function* editClientIndas({ payload }) {
 	console.log({ payload });
 	const isPayloadEmail = payload && payload.email;
 	const {id, email, idestado } = payload;
-	console.log({ id, email, idestado, isPayloadEmail });
+	// console.log({ id, email, idestado, isPayloadEmail });
 	try {
 		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email } : { idestado: idestado } );
 		console.info({response});
@@ -104,25 +109,25 @@ export function* watchEditClientIndas() {
 }
 
 // FILtros searchClientsBy, email, codcli_cbim, name.
-function* searchClientBy({payload = {...payload, page: 1}}) {
- 	console.log("filter payload", {payload});
-	try {
-	  const response = yield call(api.searchClientBy, payload);
-	  console.log("response search order", {response});
+// function* searchClientBy({payload = {...payload, page: 1}}) {
+//  	console.log("filter payload", {payload});
+// 	try {
+// 	  const response = yield call(api.searchClientBy, payload);
+// 	  console.log("response search order", {response});
 
   
-	  if (response.status === HttpStatus.UNAUTHORIZED) {
-		payload.history.push('/login');
-	  }
+// 	  if (response.status === HttpStatus.UNAUTHORIZED) {
+// 		payload.history.push('/login');
+// 	  }
   
-	  yield put(loadClientsIndasSuccess({ list: response.data }))
+// 	  yield put(loadClientsIndasSuccess({ list: response.data }))
   
-	} catch (e) {
-	  console.error(e);
-	  yield put(loadClientsIndasFailed());
-	}
-  }
+// 	} catch (e) {
+// 	  console.error(e);
+// 	  yield put(loadClientsIndasFailed());
+// 	}
+//   }
   
-  export function* watchSearchClientBy() {
-	yield takeLatest(SEARCH_CLIENT_BY, searchClientBy);
-  }
+//   export function* watchSearchClientBy() {
+// 	yield takeLatest(SEARCH_CLIENT_BY, searchClientBy);
+//   }

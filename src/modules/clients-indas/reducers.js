@@ -7,10 +7,14 @@ import {
     loadWholesalersIndasSuccess,
     setCurrentClientEmail,
     loadClientsIndas,
-    getUsersCountSuccess,
-    loadClientsIndasFailed
+    getClientsCountFailed,
+	getClientsCountSuccess,
+    loadClientsIndasFailed,
+    setFilterValues,
+    setFormKey,
+    editClientIndasSuccess,
 } from './actions';
-
+import { generateKey } from '../utils';
 const defaultState = {
     list: [],
     entitiesIndas: [],
@@ -23,11 +27,19 @@ const defaultState = {
         emailComo: '',
         searchLoading: false,
     },
+    filterValues: {
+        emailComo: '',
+        nombreComo: '',
+        codcli_cbim: '',
+    },
+    formKey: generateKey(),
+    isEdited: false,
 };
 export default handleActions({
     [loadClientsIndasSuccess]:(state,{ payload }) => ({
         ...state,
         list: payload.list,
+        isEdited: false,
         usersMeta: {
             ...state.usersMeta,
             ...payload.userMeta,
@@ -41,18 +53,29 @@ export default handleActions({
           searchLoading: false,
         }
       }),
-    [loadClientsIndas]:(state) => ({
-        ...state,
-        usersMeta: {
-            ...state.usersMeta,
-            searchLoading: true,
-        }
-    }),
-    [getUsersCountSuccess]: (state, { payload })=>({
+    [editClientIndasSuccess]: (state)=> {
+        // console.log({ state });
+        return({
+            ...state,
+            list: state.list,
+            isEdited: true,
+        })
+    },
+    [loadClientsIndas]:(state) => {
+        console.log("load client indas reducers", { state })
+        return({
+            ...state,
+            usersMeta: {
+                ...state.usersMeta,
+                searchLoading: true,
+            }
+        });
+    },
+    [getClientsCountSuccess]: (state, { payload })=>({
         ...state,
         usersMeta: {
           ...state.usersMeta,
-          total: payload.count,
+          total: payload ? payload.count : '',
         }
     }),
     [loadEntitiesIndasSuccess]:(state,{ payload }) => ({
@@ -66,6 +89,22 @@ export default handleActions({
     [setCurrentClientEmail]:(state,{ payload }) => ({
         ...state,
         currentEmail: payload.currentEmail
-    })
+    }),
+    [setFilterValues]:  (state, { payload}) => {
+        // console.info({ payload });
+        const { emailComo, nombreComo, codcli_cbim } = payload;
+        return ({
+        ...state,
+        filterValues: {
+            emailComo: payload ?  emailComo : '',
+            nombreComo: payload ? nombreComo : '',
+            codcli_cbim: payload ?codcli_cbim : '',
+        }
+      })
+    },
+    [setFormKey]:  (state) => ({
+        ...state,
+        formKey: generateKey() 
+    }),
     
 },defaultState);
