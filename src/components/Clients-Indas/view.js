@@ -226,17 +226,41 @@ const ClientsIndas = ({
                     </Col>
                     <Col>
                             <div>
-                                <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
-                                <Switch 
-                                    name='nonActive' 
-                                    checked={record.idestado === 0 ? false : true} 
-                                    onChange={() =>{
-                                        showModalEditStateActive();
-                                        setId(idcliente);
-                                        setNameClient(record.nomcli_cbim);
-                                        setClientState(record.idestado);
-                                    }}
+                                <Popconfirm 
+                                  okText="Confirmar" 
+                                  cancelText="Cancelar" 
+                                  onConfirm={(e) => {
+                                    if (record.idestado === 0){
+                                        editClientIndas({ id: idcliente, idestado: 1 });
+                                    }
+                                    else {
+                                        editClientIndas({ id: idcliente, idestado: 0 });
+                                    }              
+                                    setIsDataChange(true);
+                                    handleOkEditStateActive(e);
+                                    setFormKey();
+                                  }} 
+                                  onCancel={(e) => {
+                                    setFormKey();
+                                    handleOkEditStateActive(e)}}
+                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
+                                  autoAdjustOverflow={true}
+                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                    <Switch 
+                                      name='nonActive' 
+                                      checked={record.idestado === 0 ? false : true} 
+                                      onChange={() =>{
+                                        // showModalEditStateActive();
+                                        // setId(idcliente);
+                                        // setNameClient(record.nomcli_cbim);
+                                        //setClientState(record.idestado);
+                                      }}
                                     ></Switch> 
+                                    {/* <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button> */}
+                                </Popconfirm>
+                                <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
+                                
                                 </Tooltip>
                             </div>
                     </Col>
@@ -339,7 +363,8 @@ const ClientsIndas = ({
                     onSubmit={(values) => {   
                       if (values && values.email) {
                         setIsDataChange(true);
-                        editClientIndas({id, email: values.email});   
+                        editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
+                        setFormKey();  
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
                         setIsFiltered(true);
@@ -437,25 +462,32 @@ const ClientsIndas = ({
                   footer={[
                     <Button
                       key="back"
-                      onClick={handleCancel}>
+                      onClick={()=> {
+                          setFormKey()
+                          handleCancel()
+                      }}>
                       Atrás
                     </Button>,
                     <Popconfirm 
                         okText="Confirmar" 
                         cancelText="Cancelar" 
                         onConfirm={(e) => {
-                            handleSubmit();
-                            handleOk(e);
+                          handleSubmit();
+                          handleOk(e);
                         }} 
-                        onCancel={(e) => handleOk(e)}
+                        onCancel={(e) => {
+                            handleOk(e)
+                            setFormKey()
+                        }}
                         overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
                         title={getMessageEditMail(nameClient)} 
                         autoAdjustOverflow={true}
-                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> 
                     <Button
                       key="submit"
                       type="primary"
                       onClick={(e) => {
+                          
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
                         //handleOk(e);
@@ -474,41 +506,11 @@ const ClientsIndas = ({
                           onChange={handleInput(setFieldValue, 'email')}
                           onBlur={handleBlur}
                         />  
+                        <Checkbox onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} checked={values.ind_renovar_pass}>
+                        Enviar correo de renovación de contraseña.
+                        </Checkbox>
                       </ContentContainer> }>
                 </ModalTaskDetail>
-                <Modal
-                    visible={isVisibleEditStateActive}
-                    title={clientState === 0 ? 'Activar Cliente' : 'Baja de cliente'}
-                    footer={[
-                        <Popconfirm 
-                            okText="Confirmar" 
-                            cancelText="Cancelar" 
-                            onConfirm={(e) => {
-                                if (clientState === 0){
-                                    editClientIndas({ id: id, idestado: 1, ind_renovar_pass: values.ind_renovar_pass });
-                                }
-                                else {
-                                    editClientIndas({ id: id, idestado: 0, ind_renovar_pass: values.ind_renovar_pass});
-                                }              
-                                setIsDataChange(true);
-                                handleOkEditStateActive(e);
-                                setFormKey();
-                            }} 
-                            onCancel={(e) => {
-                                setFormKey();
-                                handleOkEditStateActive(e)}}
-                            overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                            title={getMessageActivationAndName(nameClient, clientState)} 
-                            autoAdjustOverflow={true}
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button>
-                        </Popconfirm>
-                    ]}    
-                >   
-                    <Checkbox onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} value={values.ind_renovar_pass}>
-                        Enviar correo de renovación de contraseña.
-                    </Checkbox> 
-                </Modal> 
                 </div>
                 )}
                 {/* { para cambio de email Modal en los buttons de guardar se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}

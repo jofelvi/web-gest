@@ -86,9 +86,10 @@ export function* watchloadWholesalersIndas() {
 
 function* editClientIndas({ payload }) {
 	const isPayloadEmail = payload && payload.email;
-	const {id, email, idestado } = payload;
+	const {id, email, idestado, ind_renovar_pass } = payload;
+	
 	try {
-		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email } : { idestado: idestado } );
+		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado } );
 		yield put(editClientIndasSuccess());
 	} catch (e) {
 		console.error(e);
