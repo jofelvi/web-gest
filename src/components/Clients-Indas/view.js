@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../lib/utils';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { 
     Table, 
     Icon, 
@@ -31,6 +31,9 @@ import {
     Label,
     InputsContainer,
     ContentContainerFilters,
+    TextContainer,
+    CheckboxPasswordReset,
+    ConfirmationText,
  } from './styles';
 import { Formik } from 'formik';
 import { handleInput, handleInputChecked } from '../../lib/forms';
@@ -226,7 +229,7 @@ const ClientsIndas = ({
                     </Col>
                     <Col>
                             <div>
-                                <Popconfirm 
+                                {/* <Popconfirm 
                                   okText="Confirmar" 
                                   cancelText="Cancelar" 
                                   onConfirm={(e) => {
@@ -246,19 +249,19 @@ const ClientsIndas = ({
                                   overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
                                   title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
                                   autoAdjustOverflow={true}
-                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> */}
                                     <Switch 
                                       name='nonActive' 
                                       checked={record.idestado === 0 ? false : true} 
                                       onChange={() =>{
-                                        // showModalEditStateActive();
-                                        // setId(idcliente);
-                                        // setNameClient(record.nomcli_cbim);
-                                        //setClientState(record.idestado);
+                                        showModalEditStateActive();
+                                        setId(idcliente);
+                                        setNameClient(record.nomcli_cbim);
+                                        setClientState(record.idestado);
                                       }}
                                     ></Switch> 
                                     {/* <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button> */}
-                                </Popconfirm>
+                                {/* </Popconfirm> */}
                                 <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
                                 
                                 </Tooltip>
@@ -458,46 +461,57 @@ const ClientsIndas = ({
                 <ModalTaskDetail
                   visible={isVisible}
                   handleCancel={handleCancel}
-                  titleModal={returnTheLabelForData(mapperInputData, inputKey)}
+                  titleModal={
+                  <div>
+                    <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
+                    Cambio de Email
+                  </div>}
                   footer={[
                     <Button
                       key="back"
-                      onClick={()=> {
+                      onClick={(e)=> {
                           setFormKey()
+                          handleOk(e)
                           handleCancel()
                       }}>
                       Atrás
                     </Button>,
-                    <Popconfirm 
-                        okText="Confirmar" 
-                        cancelText="Cancelar" 
-                        onConfirm={(e) => {
-                          handleSubmit();
-                          handleOk(e);
-                        }} 
-                        onCancel={(e) => {
-                            handleOk(e)
-                            setFormKey()
-                        }}
-                        overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                        title={getMessageEditMail(nameClient)} 
-                        autoAdjustOverflow={true}
-                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> 
+                    // <Popconfirm 
+                    //     okText="Confirmar" 
+                    //     cancelText="Cancelar" 
+                    //     onConfirm={(e) => {
+                    //       handleSubmit();
+                    //       handleOk(e);
+                    //     }} 
+                    //     onCancel={(e) => {
+                           
+                    //     }}
+                    //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                    //     title={} 
+                    //     autoAdjustOverflow={true}
+                    //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> 
                     <Button
                       key="submit"
                       type="primary"
                       onClick={(e) => {
-                          
+                        handleSubmit();
+                        handleOk(e);
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
                         //handleOk(e);
                       }}>
                       Guardar
                     </Button>
-                    </Popconfirm>
+                    // </Popconfirm>
                   ]}
                     content={
                       <ContentContainer>
+                          <TextContainer>
+                            {getMessageEditMail(nameClient)}
+                          </TextContainer>
+                          <ConfirmationText>
+                              Confirme por favor el cambio.
+                          </ConfirmationText>
                         <Label>{'Editar Email'}
                         </Label>
                         <Input
@@ -506,11 +520,71 @@ const ClientsIndas = ({
                           onChange={handleInput(setFieldValue, 'email')}
                           onBlur={handleBlur}
                         />  
-                        <Checkbox onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} checked={values.ind_renovar_pass}>
+                        <CheckboxPasswordReset onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} checked={values.ind_renovar_pass}>
                         Enviar correo de renovación de contraseña.
-                        </Checkbox>
+                        </CheckboxPasswordReset>
                       </ContentContainer> }>
                 </ModalTaskDetail>
+                <Modal
+                    visible={isVisibleEditStateActive}
+                    title={clientState === 0 ? 
+                    <div>
+                        <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
+                            Activar Cliente
+                    </div> : 
+                    <div>
+                        <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
+                            Baja de Cliente
+                    </div> }
+                    onCancel={() => {
+                        handleCancelEditStateActive()
+                    }}
+                    footer={[
+                        // <Popconfirm 
+                        //     okText="Confirmar" 
+                        //     cancelText="Cancelar" 
+                        //     onConfirm={(e) => {
+                               
+                        //     }} 
+                        //     onCancel={(e) => {
+                        //         handleOkEditStateActive(e)}}
+                        //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
+                        //     title={getMessageActivationAndName(nameClient, clientState)} 
+                        //     autoAdjustOverflow={true}
+                        //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+
+                        <Button onClick={(e) => {
+                             if (clientState === 0){
+                                editClientIndas({ id: id, idestado: 1, ind_renovar_pass: values.ind_renovar_pass });
+                            }
+                            else {
+                                editClientIndas({ id: id, idestado: 0, ind_renovar_pass: false });
+                            }              
+                            setIsDataChange(true);
+                            handleOkEditStateActive(e);
+                            setFormKey();
+                        }}>
+                            Aceptar
+                        </Button>,
+                        <Button onClick={(e) => {
+                            setFormKey();
+                            handleCancelEditStateActive()
+                            handleOkEditStateActive(e);
+                        }}>
+                            Cancelar
+                        </Button>
+                        // </Popconfirm>
+                    ]}    
+                >   <TextContainer>
+                      {getMessageActivationAndName(nameClient, clientState)}
+                      <ConfirmationText>Confirme por favor el cambio.</ConfirmationText>
+                    </TextContainer>
+                    {clientState === 0 && (
+                    <CheckboxPasswordReset onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} value={values.ind_renovar_pass}>
+                        Enviar correo de renovación de contraseña.
+                    </CheckboxPasswordReset> 
+                    )}
+                </Modal> 
                 </div>
                 )}
                 {/* { para cambio de email Modal en los buttons de guardar se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}
