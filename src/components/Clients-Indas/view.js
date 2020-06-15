@@ -301,6 +301,14 @@ const ClientsIndas = ({
               codcli_cbim: filterValues ? filterValues.codcli_cbim : "",
             });
         }
+        if (isFiltered && !isDataChange){
+            loadClientsIndas({ 
+                page: usersMeta.page, 
+                emailComo: filterValues ? filterValues.emailComo : "", 
+                nombreComo: filterValues ? filterValues.nombreComo : "", 
+                codcli_cbim: filterValues ? filterValues.codcli_cbim : "",
+              });
+        }
         setIsDataChange(false);
     },[isEdited]);
 
@@ -363,9 +371,8 @@ const ClientsIndas = ({
                         setCurrentClientEmail({ currentEmail: '' });
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
-                        setIsFiltered(true);
                         setFilterValues({ 
-                            mailComo: values ? values.emailComo : "", 
+                            emailComo: values ? values.emailComo : "", 
                             nombreComo: values ? values.nombreComo : "", 
                             codcli_cbim: values ? values.codcli_cbim : "" 
                         });
@@ -380,6 +387,8 @@ const ClientsIndas = ({
                             nombreComo: values.nombreComo, 
                             codcli_cbim: values.codcli_cbim 
                         });
+                        setIsFiltered(true);
+
                       }
                     }}>
                 {({
