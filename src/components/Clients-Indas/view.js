@@ -340,15 +340,8 @@ const ClientsIndas = ({
         pageSize: usersMeta.pageSize,
     });
     const paginationFilteredClientsOptions =(filterValues) => {
+        console.log("current", usersMeta.page, "total", usersMeta.total, "pageSize", usersMeta.pageSize)
         return ({
-            onChange: (page, pageSize, current) => {
-                loadClientsIndas({ 
-                    page: page, 
-                    emailComo: filterValues.emailComo, 
-                    nombreComo: filterValues.nombreComo,
-                    codcli_cbim: filterValues.codcli_cbim 
-                });
-            },
             total: list.length >= 30 ? usersMeta.total : list.length ,
             current: usersMeta.page,
             pageSize: usersMeta.pageSize,
