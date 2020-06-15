@@ -340,7 +340,6 @@ const ClientsIndas = ({
         pageSize: usersMeta.pageSize,
     });
     const paginationFilteredClientsOptions =(filterValues) => {
-        console.log("current", usersMeta.page, "total", usersMeta.total, "pageSize", usersMeta.pageSize)
         return ({
             total: list.length >= 30 ? usersMeta.total : list.length ,
             current: usersMeta.page,
@@ -356,11 +355,12 @@ const ClientsIndas = ({
                     initialValues={formikInitialValue}
                     validationSchema={validationSchema}
                     enableReinitialize
-                    onSubmit={(values) => {   
+                    onSubmit={(values) => { 
                       if (values && values.email) {
                         setIsDataChange(true);
                         editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
-                        setFormKey();  
+                        setFormKey();
+                        setCurrentClientEmail({ currentEmail: '' });
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
                         setIsFiltered(true);
@@ -463,9 +463,10 @@ const ClientsIndas = ({
                     <Button
                       key="back"
                       onClick={(e)=> {
-                          setFormKey()
-                          handleOk(e)
-                          handleCancel()
+                          setFormKey();
+                          handleOk(e);
+                          handleCancel();
+                          setCurrentClientEmail({ currentEmail: '' });
                       }}>
                       Atrás
                     </Button>,
@@ -489,6 +490,7 @@ const ClientsIndas = ({
                       onClick={(e) => {
                         handleSubmit();
                         handleOk(e);
+                        
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
                         //handleOk(e);
