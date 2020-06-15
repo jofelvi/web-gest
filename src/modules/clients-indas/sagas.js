@@ -89,7 +89,7 @@ function* editClientIndas({ payload }) {
 	const {id, email, idestado, ind_renovar_pass } = payload;
 	
 	try {
-		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado } );
+		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado , ind_renovar_pass: idestado === 0 ? false : ind_renovar_pass } );
 		yield put(editClientIndasSuccess());
 	} catch (e) {
 		console.error(e);
