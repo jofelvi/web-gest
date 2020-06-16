@@ -128,35 +128,16 @@ export function* watchfetchSalesByDay() {
 yield takeLatest(FETCH_SALES_BY_DAY, fetchSalesByDay);
 }
 
-
-
-
 function* fetchSalesByHour({ payload }) {
   const date = {
     dateFrom: moment().subtract(2,'days').format('YYYY-MM-DD'),
     dateTo: moment().format('YYYY-MM-DD')
   }
 try {
-  let objectHour = {};
-  const listHour = [];
   const response = yield call(api.getHourSales, date);
   const responseEntitiesNewOld = yield call(api.getClientsSubcriptions, date);
   const responseEntitiesActives = yield call(api.getClientsActives, date);
   const responseSubfamily = yield call(api.getSubfamiliesByYear, date);
-  response.data.forEach( res => {
-    if(res.hour.length<5){
-      objectHour = {
-        ...res,
-        hour: "0"+res.hour  
-      }
-      listHour.push(objectHour)
-    
-      return listHour;
-    }
-    listHour.push(res);
-    return listHour
-  })
-   
   if (response.status === HttpStatus.UNAUTHORIZED) {
     payload.history.push('/login');
   }

@@ -46,9 +46,9 @@ detailOrder
           />
 
           <Column
-            title="Cod. Producto"
-            dataIndex="idproducto"
-            key="idproducto"
+            title="Cod. Nacional"
+            dataIndex="codnacional"
+            key="codnacional"
           />
 
           <Column

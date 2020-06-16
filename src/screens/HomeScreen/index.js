@@ -58,10 +58,17 @@ const getMonths = (dayList = [], hourList ) => {
 };
 
 const getHours = (hourList = []) => {
+  const filterForHourFormat = hourList? hourList.map(hourObj =>{
+    if(hourObj.hour.length<5) {
+      return {...hourObj, hour: `0${hourObj.hour}`};
+    }
+    return {...hourObj};    
+  }) : [];
+  console.log({ filterForHourFormat });
   if (!hourList) {
     return [];
   }
-  const hourAddedList = sortingHours([...hourList, ...generateHours(new Date().getHours() + 1)]).reduce((acc, value) => {
+  const hourAddedList = sortingHours([...filterForHourFormat, ...generateHours(new Date().getHours() + 1)]).reduce((acc, value) => {
     if (value.hour) {
       return { ...acc, [value.hour]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
         
