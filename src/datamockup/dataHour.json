@@ -1,14 +1,14 @@
 { "data": {
     "data": [
-        { "hour": "00:00", "totalnumero": 1 , "totalpvm": 10},
-    { "hour": "01:00", "totalnumero": 1, "totalpvm": 20},
-    { "hour": "02:00", "totalnumero": 1, "totalpvm": 30 },
-    { "hour": "03:00", "totalnumero": 1, "totalpvm": 40 },
-    { "hour": "04:00", "totalnumero": 1, "totalpvm": 50 },
-    { "hour": "05:00", "totalnumero": 1, "totalpvm": 60 },
-    { "hour": "05:00", "totalnumero": 1, "totalpvm": 60 },
-    { "hour": "04:00", "totalnumero": 1, "totalpvm": 60 },
-    { "hour": "15:00", "totalnumero": 2, "totalpvm": 60 }
+    {"fecha_pedido":"2020-06-15T06:16:25+00:00",  "hour": "00:00", "totalnumero": 1 , "totalpvm": 10},
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "1:00", "totalnumero": 1, "totalpvm": 20},
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "2:00", "totalnumero": 1, "totalpvm": 30 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "3:00", "totalnumero": 1, "totalpvm": 40 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "4:00", "totalnumero": 1, "totalpvm": 50 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "5:00", "totalnumero": 1, "totalpvm": 60 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "5:00", "totalnumero": 1, "totalpvm": 60 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "4:00", "totalnumero": 1, "totalpvm": 60 },
+    { "fecha_pedido":"2020-06-15T06:16:25+00:00", "hour": "15:00", "totalnumero": 2, "totalpvm": 60 }
    
     ]
 }

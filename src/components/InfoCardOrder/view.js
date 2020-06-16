@@ -39,16 +39,16 @@ detailOrder
         <TableContainer>
          
       <Table dataSource= {detailOrder} pagination= {false}>
-          <Column
+          {/* <Column
             title="Item"
             dataIndex="idpedido"
             key="idpedido"
-          />
+          /> */}
 
           <Column
-            title="Cod. Producto"
-            dataIndex="idproducto"
-            key="idproducto"
+            title="Cod. Nacional"
+            dataIndex="codnacional"
+            key="codnacional"
           />
 
           <Column
