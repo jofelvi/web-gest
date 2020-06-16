@@ -86,6 +86,7 @@ export default handleActions({
     }),
     [setFilterValues]:  (state, { payload}) => {
         const { emailComo, nombreComo, codcli_cbim } = payload;
+        
         return ({
         ...state,
         filterValues: {
