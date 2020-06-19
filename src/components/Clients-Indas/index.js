@@ -8,6 +8,7 @@ import {
   getClientsCount,
   setFormKey,
   setFilterValues,
+  loadEntitiesIndas,
  } from '../../modules/clients-indas/actions';
 
 import View from './view';
@@ -33,5 +34,6 @@ export default connect(
     getClientsCount,
     setFormKey,
     setFilterValues,
+    loadEntitiesIndas
   }
 )(View);

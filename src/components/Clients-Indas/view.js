@@ -279,21 +279,38 @@ const ClientsIndas = ({
             setLoading(false);
         }
     },[list, entitiesIndas]);
-
+    useEffect(() =>{
+        // if(filterValues && (filterValues.emailComo || filterValues.nombreComo || filterValues.codcli_cbim )) {
+        //     console.log("Clients screen load clientes filtered");
+        //     loadClientsIndas({page: 1, emailComo: filterValues.emailComo, nombreComo: filterValues.nombreComo, codcli_cbim: filterValues.codcli_cbim });
+        //     getClientsCount({ 
+        //         emailComo: filterValues.emailComo, 
+        //         nombreComo: filterValues.nombreComo, 
+        //         codcli_cbim: filterValues.codcli_cbim  
+        //     });
+        // } else {
+            if(!isFiltered){
+            loadClientsIndas();
+        // }
+        loadEntitiesIndas();}
+        //loadWholesalersIndas();
+    },[token]);
     useEffect(() =>{
         if(!isFiltered){
             getClientsCount({ emailComo: '', nombreComo: '', codcli_cbim: '' });
         }
         if (isDataChange) {
+            console.log("client load if data change");
             loadClientsIndas({ 
                 page: usersMeta.page, 
             });
         }
         setIsDataChange(false);
     },[isEdited]);
-
+    console.log({isEdited});
     useEffect(() => {
         if (isFiltered && isDataChange) {
+            console.log("loadCLient si filtered y data change")
             loadClientsIndas({ 
               page: usersMeta.page, 
               emailComo: filterValues ? filterValues.emailComo : "", 
@@ -302,6 +319,7 @@ const ClientsIndas = ({
             });
         }
         if (isFiltered && !isDataChange){
+            console.log("loadCLient si filtered y NOdata change")
             loadClientsIndas({ 
                 page: usersMeta.page, 
                 emailComo: filterValues ? filterValues.emailComo : "", 
@@ -335,6 +353,7 @@ const ClientsIndas = ({
     }
     const paginationOptions =(filterValues) => ({
         onChange: (page, pageSize, current) => {
+            console.log("loadCLients pagination options onchange no filter")
             loadClientsIndas({ 
                 page: page, 
                 emailComo: filterValues.emailComo, 
@@ -348,6 +367,7 @@ const ClientsIndas = ({
         pageSize: usersMeta.pageSize,
     });
     const paginationFilteredClientsOptions =(filterValues) => {
+        console.log("loadCLients pagination options onchange FILTERED")
         return ({
             total: list.length >= 30 ? usersMeta.total : list.length ,
             current: usersMeta.page,
@@ -380,7 +400,8 @@ const ClientsIndas = ({
                             emailComo: values.emailComo, 
                             nombreComo: values.nombreComo, 
                             codcli_cbim: values.codcli_cbim 
-                        });   
+                        });
+                        console.log("loadCliente indas filtered ON SUBMIT")   
                         loadClientsIndas({ 
                             page: 1, 
                             emailComo: values.emailComo, 
@@ -439,6 +460,7 @@ const ClientsIndas = ({
                             nombreComo: '', 
                             codcli_cbim: '' 
                         });
+                        console.log(" load clients indas unfilter");
                         loadClientsIndas({ 
                           page: 1, 
                           emailComo: '', 

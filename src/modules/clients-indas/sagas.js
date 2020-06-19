@@ -90,9 +90,10 @@ function* editClientIndas({ payload }) {
 	
 	try {
 		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado , ind_renovar_pass: idestado === 0 ? false : ind_renovar_pass } );
+		console.log({response});
 		yield put(editClientIndasSuccess());
 	} catch (e) {
-		console.error(e);
+		console.log("cliente email edit error", {e});
 		yield put(editClientIndasFailed());
 	}
 }

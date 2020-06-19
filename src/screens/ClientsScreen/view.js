@@ -10,22 +10,23 @@ const ClientsIndasScreen = ({
     loadWholesalersIndas,
     getClientsCount
 }) => {
-    useEffect(() =>{
-        if(filterValues && (filterValues.emailComo || filterValues.nombreComo || filterValues.codcli_cbim )) {
-            loadClientsIndas({page: 1, emailComo: filterValues.emailComo, nombreComo: filterValues.nombreComo, codcli_cbim: filterValues.codcli_cbim });
-            getClientsCount({ 
-                emailComo: filterValues.emailComo, 
-                nombreComo: filterValues.nombreComo, 
-                codcli_cbim: filterValues.codcli_cbim  
-            });
-        } else {
-            loadClientsIndas();
-        }
-        loadEntitiesIndas();
-        //loadWholesalersIndas();
-    },[
-        token, filterValues
-    ]);
+    // useEffect(() =>{
+    //     // if(filterValues && (filterValues.emailComo || filterValues.nombreComo || filterValues.codcli_cbim )) {
+    //     //     console.log("Clients screen load clientes filtered");
+    //     //     loadClientsIndas({page: 1, emailComo: filterValues.emailComo, nombreComo: filterValues.nombreComo, codcli_cbim: filterValues.codcli_cbim });
+    //     //     getClientsCount({ 
+    //     //         emailComo: filterValues.emailComo, 
+    //     //         nombreComo: filterValues.nombreComo, 
+    //     //         codcli_cbim: filterValues.codcli_cbim  
+    //     //     });
+    //     // } else {
+    //         loadClientsIndas();
+    //     // }
+    //     loadEntitiesIndas();
+    //     //loadWholesalersIndas();
+    // },[
+    //     token,
+    // ]);
     return (
         <ClientsIndas></ClientsIndas>
     );
