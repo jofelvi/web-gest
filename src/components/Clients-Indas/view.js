@@ -280,20 +280,10 @@ const ClientsIndas = ({
         }
     },[list, entitiesIndas]);
     useEffect(() =>{
-        // if(filterValues && (filterValues.emailComo || filterValues.nombreComo || filterValues.codcli_cbim )) {
-        //     console.log("Clients screen load clientes filtered");
-        //     loadClientsIndas({page: 1, emailComo: filterValues.emailComo, nombreComo: filterValues.nombreComo, codcli_cbim: filterValues.codcli_cbim });
-        //     getClientsCount({ 
-        //         emailComo: filterValues.emailComo, 
-        //         nombreComo: filterValues.nombreComo, 
-        //         codcli_cbim: filterValues.codcli_cbim  
-        //     });
-        // } else {
-            if(!isFiltered){
+        if(!isFiltered){
             loadClientsIndas();
-        // }
-        loadEntitiesIndas();}
-        //loadWholesalersIndas();
+            loadEntitiesIndas();
+        }  
     },[token]);
     useEffect(() =>{
         if(!isFiltered){
@@ -369,8 +359,18 @@ const ClientsIndas = ({
     const paginationFilteredClientsOptions =(filterValues) => {
         console.log("loadCLients pagination options onchange FILTERED")
         return ({
-            total: list.length >= 30 ? usersMeta.total : list.length ,
+            onChange: (page, pageSize, current) => {
+                console.log("loadCLients pagination options onchange filter")
+                loadClientsIndas({ 
+                    page: page, 
+                    emailComo: filterValues.emailComo, 
+                    nombreComo: filterValues.nombreComo,
+                    codcli_cbim: filterValues.codcli_cbim 
+                });
+            },
+            total: usersMeta.total >= 30 ? usersMeta.total : list.length ,
             current: usersMeta.page,
+            defaultCurrent: usersMeta.page,
             pageSize: usersMeta.pageSize,
         })
     }
