@@ -110,7 +110,10 @@ const ClientsIndas = ({
     loadEntitiesIndas,
     setFormKey,
     isEdited,
-    filterValues
+    filterValues,
+    errorMessage,
+    editClientIndasFailed,
+    isEditSuccesful,
 }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [isVisibleEditStateNonActive, setIsVisibleEditStateNonActive] = useState(false);
@@ -125,7 +128,7 @@ const ClientsIndas = ({
     const [loadingEntities, setLoadingEntitities] = useState(true);
     const [isFiltered, setIsFiltered] = useState(false);
     const [searchText, setSearchText] = useState('');
-
+    console.log({ errorMessage, isEditSuccesful });
     const showModal = () => {
       setIsVisible(true)
       };
@@ -262,7 +265,7 @@ const ClientsIndas = ({
                                     ></Switch> 
                                     {/* <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button> */}
                                 {/* </Popconfirm> */}
-                                <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
+                                <Tooltip title={record.idestado=== 0 ? "Activar": "Dar de Baja"}>
                                 
                                 </Tooltip>
                             </div>
@@ -279,6 +282,13 @@ const ClientsIndas = ({
             setLoading(false);
         }
     },[list, entitiesIndas]);
+    useEffect(() =>{
+        if(isEditSuccesful){
+            editClientIndasFailed("");
+            handleOk();
+            setFormKey();
+        }
+    },[isEditSuccesful]);
 
     useEffect(() =>{
         if(!isFiltered){
@@ -365,10 +375,11 @@ const ClientsIndas = ({
                     enableReinitialize
                     onSubmit={(values) => { 
                       if (values && values.email) {
+                        console.log({ values });
                         setIsDataChange(true);
                         editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
-                        setFormKey();
                         setCurrentClientEmail({ currentEmail: '' });
+                         
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
                         setFilterValues({ 
@@ -497,8 +508,8 @@ const ClientsIndas = ({
                       key="submit"
                       type="primary"
                       onClick={(e) => {
+                        console.log({ errorMessage });
                         handleSubmit();
-                        handleOk(e);
                         
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
@@ -524,6 +535,7 @@ const ClientsIndas = ({
                           onChange={handleInput(setFieldValue, 'email')}
                           onBlur={handleBlur}
                         />  
+                        {errorMessage === 'Este email ya existe' && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
                         <CheckboxPasswordReset onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} checked={values.ind_renovar_pass}>
                         Enviar correo de renovación de contraseña.
                         </CheckboxPasswordReset>

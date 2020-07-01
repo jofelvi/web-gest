@@ -67,7 +67,7 @@ const TasksListScreen = ({
 TasksListScreen.propTypes = {
   fetchTaskList: PropTypes.func.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  selectedTask: PropTypes.string.isRequired,
+  // selectedTask: PropTypes.string.isRequired,
   history: PropTypes.shape({}).isRequired,
 };
 
