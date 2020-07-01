@@ -121,7 +121,7 @@ const TaskDetail = ({
       <Formik
         key = {taskDetailKey}
         initialValues={formikInitialValue}
-        validationSchema={validationSchema}
+        // validationSchema={validationSchema}
         onSubmit={(values) => {
           if (isEditMessage) {
             editTaskMessage({ id, values: values.taskMessage })
