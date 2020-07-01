@@ -265,7 +265,7 @@ const ClientsIndas = ({
                                     ></Switch> 
                                     {/* <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button> */}
                                 {/* </Popconfirm> */}
-                                <Tooltip title={record. idestado=== 0 ? "Activar": "Dar de Baja"}>
+                                <Tooltip title={record.idestado=== 0 ? "Activar": "Dar de Baja"}>
                                 
                                 </Tooltip>
                             </div>
@@ -285,6 +285,7 @@ const ClientsIndas = ({
     useEffect(() =>{
         if(isEditSuccesful){
             editClientIndasFailed("");
+            handleOk();
             setFormKey();
         }
     },[isEditSuccesful]);
@@ -509,7 +510,7 @@ const ClientsIndas = ({
                       onClick={(e) => {
                         console.log({ errorMessage });
                         handleSubmit();
-                       
+                        
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
                         //handleOk(e);
