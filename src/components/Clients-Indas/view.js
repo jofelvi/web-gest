@@ -128,7 +128,6 @@ const ClientsIndas = ({
     const [loadingEntities, setLoadingEntitities] = useState(true);
     const [isFiltered, setIsFiltered] = useState(false);
     const [searchText, setSearchText] = useState('');
-    console.log({ errorMessage, isEditSuccesful });
     const showModal = () => {
       setIsVisible(true)
       };
@@ -299,17 +298,14 @@ const ClientsIndas = ({
             getClientsCount({ emailComo: '', nombreComo: '', codcli_cbim: '' });
         }
         if (isDataChange) {
-            console.log("client load if data change");
             loadClientsIndas({ 
                 page: usersMeta.page, 
             });
         }
         setIsDataChange(false);
     },[isEdited]);
-    console.log({isEdited});
     useEffect(() => {
         if (isFiltered && isDataChange) {
-            console.log("loadCLient si filtered y data change")
             loadClientsIndas({ 
               page: usersMeta.page, 
               emailComo: filterValues ? filterValues.emailComo : "", 
@@ -318,7 +314,6 @@ const ClientsIndas = ({
             });
         }
         if (isFiltered && !isDataChange){
-            console.log("loadCLient si filtered y NOdata change")
             loadClientsIndas({ 
                 page: usersMeta.page, 
                 emailComo: filterValues ? filterValues.emailComo : "", 
@@ -352,7 +347,6 @@ const ClientsIndas = ({
     }
     const paginationOptions =(filterValues) => ({
         onChange: (page, pageSize, current) => {
-            console.log("loadCLients pagination options onchange no filter")
             loadClientsIndas({ 
                 page: page, 
                 emailComo: filterValues.emailComo, 
@@ -366,10 +360,8 @@ const ClientsIndas = ({
         pageSize: usersMeta.pageSize,
     });
     const paginationFilteredClientsOptions =(filterValues) => {
-        console.log("loadCLients pagination options onchange FILTERED")
         return ({
             onChange: (page, pageSize, current) => {
-                console.log("loadCLients pagination options onchange filter")
                 loadClientsIndas({ 
                     page: page, 
                     emailComo: filterValues.emailComo, 
@@ -394,7 +386,6 @@ const ClientsIndas = ({
                     enableReinitialize
                     onSubmit={(values) => { 
                       if (values && values.email) {
-                        console.log({ values });
                         setIsDataChange(true);
                         editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
                         setCurrentClientEmail({ currentEmail: '' });
@@ -411,7 +402,6 @@ const ClientsIndas = ({
                             nombreComo: values.nombreComo, 
                             codcli_cbim: values.codcli_cbim 
                         });
-                        console.log("loadCliente indas filtered ON SUBMIT")   
                         loadClientsIndas({ 
                             page: 1, 
                             emailComo: values.emailComo, 
@@ -470,7 +460,6 @@ const ClientsIndas = ({
                             nombreComo: '', 
                             codcli_cbim: '' 
                         });
-                        console.log(" load clients indas unfilter");
                         loadClientsIndas({ 
                           page: 1, 
                           emailComo: '', 
@@ -529,7 +518,6 @@ const ClientsIndas = ({
                       key="submit"
                       type="primary"
                       onClick={(e) => {
-                        console.log({ errorMessage });
                         handleSubmit();
                         
                         // sale el popover de la doble confirmación

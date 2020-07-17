@@ -89,14 +89,12 @@ function* editClientIndas({ payload }) {
 	const {id, email, idestado, ind_renovar_pass } = payload;	
 	try {
 		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado , ind_renovar_pass: idestado === 0 ? false : ind_renovar_pass } );
-		console.log({response})
 		if(response && response.status === 204){
 			yield put(editClientIndasSuccess());
 		}
 		
 	} catch (e) {
 		console.error(e);
-		console.log({e});
 		if (e.response.status === 500) {
 			console.log("entra error 500")
 			yield put(editClientIndasFailed("Este email ya existe"));
