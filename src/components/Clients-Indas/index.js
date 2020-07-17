@@ -9,6 +9,7 @@ import {
   setFormKey,
   setFilterValues,
   loadEntitiesIndas,
+  editClientIndasFailed,
  } from '../../modules/clients-indas/actions';
 
 import View from './view';
@@ -24,7 +25,9 @@ export default connect(
     usersMeta: state.clientsIndas.usersMeta,
     filterValues: state.clientsIndas.filterValues,
     formKey: state.clientsIndas.formKey,
-    isEdited: state.clientsIndas.isEdited
+    isEdited: state.clientsIndas.isEdited,
+    errorMessage: state.clientsIndas.errorMessage,
+    isEditSuccesful: state.clientsIndas.isEditSuccesful,
   }),
   {
     editClientIndas,
@@ -34,6 +37,7 @@ export default connect(
     getClientsCount,
     setFormKey,
     setFilterValues,
-    loadEntitiesIndas
+    loadEntitiesIndas,
+    editClientIndasFailed,
   }
 )(View);

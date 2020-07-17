@@ -13,6 +13,7 @@ import {
     setFilterValues,
     setFormKey,
     editClientIndasSuccess,
+    editClientIndasFailed,
 } from './actions';
 import { generateKey } from '../utils';
 const defaultState = {
@@ -34,6 +35,8 @@ const defaultState = {
     },
     formKey: generateKey(),
     isEdited: false,
+    errorMessage: '',
+    isEditSuccesful: false,
 };
 export default handleActions({
     [loadClientsIndasSuccess]:(state,{ payload }) => ({
@@ -53,11 +56,15 @@ export default handleActions({
           searchLoading: false,
         }
       }),
-    [editClientIndasSuccess]: (state)=> ({
-        ...state,
-        list: state.list,
-        isEdited: true,
-    }),
+    [editClientIndasSuccess]: (state, { payload })=> {
+        console.log("edit success", { payload });
+        return({
+            ...state,
+            list: state.list,
+            isEdited: true,
+            isEditSuccesful: true,
+        })
+    },
     [loadClientsIndas]:(state) => ({
         ...state,
         usersMeta: {
@@ -84,6 +91,15 @@ export default handleActions({
         ...state,
         currentEmail: payload.currentEmail
     }),
+    [editClientIndasFailed]:(state,{ payload }) => {
+        console.log({ payload });
+        return({
+            ...state,
+            errorMessage: payload ? payload : '',
+            isEditSuccesful: false,
+        })
+    },
+    
     [setFilterValues]:  (state, { payload}) => {
         const { emailComo, nombreComo, codcli_cbim } = payload;
         
