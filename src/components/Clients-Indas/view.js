@@ -128,7 +128,6 @@ const ClientsIndas = ({
     const [loadingEntities, setLoadingEntitities] = useState(true);
     const [isFiltered, setIsFiltered] = useState(false);
     const [searchText, setSearchText] = useState('');
-    console.log({ errorMessage, isEditSuccesful });
     const showModal = () => {
       setIsVisible(true)
       };
@@ -283,6 +282,10 @@ const ClientsIndas = ({
         }
     },[list, entitiesIndas]);
     useEffect(() =>{
+        if(!isFiltered){
+            loadClientsIndas();
+            loadEntitiesIndas();
+        }  
         if(isEditSuccesful){
             editClientIndasFailed("");
             handleOk();
@@ -301,7 +304,6 @@ const ClientsIndas = ({
         }
         setIsDataChange(false);
     },[isEdited]);
-
     useEffect(() => {
         if (isFiltered && isDataChange) {
             loadClientsIndas({ 
@@ -359,8 +361,17 @@ const ClientsIndas = ({
     });
     const paginationFilteredClientsOptions =(filterValues) => {
         return ({
-            total: list.length >= 30 ? usersMeta.total : list.length ,
+            onChange: (page, pageSize, current) => {
+                loadClientsIndas({ 
+                    page: page, 
+                    emailComo: filterValues.emailComo, 
+                    nombreComo: filterValues.nombreComo,
+                    codcli_cbim: filterValues.codcli_cbim 
+                });
+            },
+            total: usersMeta.total >= 30 ? usersMeta.total : list.length ,
             current: usersMeta.page,
+            defaultCurrent: usersMeta.page,
             pageSize: usersMeta.pageSize,
         })
     }
@@ -375,7 +386,6 @@ const ClientsIndas = ({
                     enableReinitialize
                     onSubmit={(values) => { 
                       if (values && values.email) {
-                        console.log({ values });
                         setIsDataChange(true);
                         editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
                         setCurrentClientEmail({ currentEmail: '' });
@@ -391,7 +401,7 @@ const ClientsIndas = ({
                             emailComo: values.emailComo, 
                             nombreComo: values.nombreComo, 
                             codcli_cbim: values.codcli_cbim 
-                        });   
+                        });
                         loadClientsIndas({ 
                             page: 1, 
                             emailComo: values.emailComo, 
@@ -508,7 +518,6 @@ const ClientsIndas = ({
                       key="submit"
                       type="primary"
                       onClick={(e) => {
-                        console.log({ errorMessage });
                         handleSubmit();
                         
                         // sale el popover de la doble confirmación
