@@ -27,7 +27,7 @@ export const fetchOrders = async (page) => {
 
 
 export const searchOrder = async ({
-  codentidad_cbim, codcli_cbim, tipo, pages, fecha_desde, fecha_hasta, dates
+  codentidad_cbim, codpedido_origen, codcli_cbim, tipo, pages, fecha_desde, fecha_hasta, dates
 }) => {
     
   let offset;
@@ -54,6 +54,10 @@ let queryParams = generatingOffset(pages, offset)
   //BY ENTITY
   if (codentidad_cbim) {
     queryParams += `&codentidad_cbim=${codentidad_cbim}`;
+  }
+  //BY COD PEDIDO
+  if (codpedido_origen) {
+    queryParams += `&codpedido_origen=${codpedido_origen}`;
   }
   return get(`ntr/pedido?${queryParams}`);
 };
