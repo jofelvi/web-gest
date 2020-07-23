@@ -48,7 +48,7 @@ export const validationCommercialDeal = (currentCommericialDeal, editCommercialD
         // 1. Debe tener productos asociados  
         // 2. Debe tener clientes asociados
         if(hasProducts && hasClients){
-            editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: 0, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: currentCommericialDeal.clientes }})
+            editCommercialDeal({id: currentCommericialDeal.idcondcomercial, values:{ idestado: 1, codcupon: null, margen: currentCommericialDeal.margen, productos: currentCommericialDeal.productos, escalados: currentCommericialDeal.escalados, clientes: currentCommericialDeal.clientes }})
         }else{
             if(!hasProducts){
                 alertMessage(currentCommericialDeal.tipo, "productos");
