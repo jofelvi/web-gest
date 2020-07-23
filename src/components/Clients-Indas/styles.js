@@ -20,6 +20,10 @@ export const ContentContainerFilters = styled.div`
 `;
 export const TextContainer = styled.div`
   padding: 0px 0px 10px 0px;
+
+  b {
+    font-size: 18px;
+  }
 `;
 export const CheckboxPasswordReset = styled(Checkbox)`
   padding: 10px 0px 10px 0px;

@@ -40,9 +40,9 @@ export const messageAlertUserActivation = `Se va a activar el cliente ‘nomcli
 export const getMessageActivationAndName = (name, idestado) => {
     let messageAlertUser = '';
     if(idestado === 0) {
-        return messageAlertUser = `Se va a activar el cliente ${name}. \n\ Se abrirá el acceso a transferindas.com, por lo que podrá realizar nuevos pedidos.`
+        return messageAlertUser = `Se va a activar el cliente <b>${name}</b>. \n\ Se abrirá el acceso a transferindas.com, por lo que podrá realizar nuevos pedidos.`
     } else if (idestado === 1) {
-        return messageAlertUser = `Se va a desactivar el cliente ${name}. \n\ Se cerrará el acceso a transferindas.com, por lo que no podrá realizar nuevos pedidos. `
+        return messageAlertUser = `Se va a desactivar el cliente <b>${name}</b>. \n\ Se cerrará el acceso a transferindas.com, por lo que no podrá realizar nuevos pedidos. `
     }
     return messageAlertUser;
 }

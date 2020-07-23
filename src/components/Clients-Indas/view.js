@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../lib/utils';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ClearOutlined } from '@ant-design/icons';
 import { 
-    Table, 
-    Icon, 
+    Table,
     Row, 
     Col, 
     Tooltip, 
@@ -12,8 +11,6 @@ import {
     Switch, 
     Input,
     Modal,
-    Popconfirm,
-    Checkbox
 } from 'antd';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
@@ -445,8 +442,7 @@ const ClientsIndas = ({
                       onClick={(e) => handleSubmit()}
                     ></Button>
                     <Button
-                      icon= 'delete'
-                      style={{alignSelf: 'flex-end'}}
+                      style={{width: 32, height: 33, padding: 0, paddingTop: 1}}
                       onClick={() => {
                         setIsFiltered(false);
                         setFormKey();
@@ -467,7 +463,9 @@ const ClientsIndas = ({
                           codcli_cbim: '', 
                         });
                       }}
-                    ></Button>
+                    >
+                        <ClearOutlined />
+                    </Button>
                     </div>
                 </ContentContainerFilters>
                 
@@ -579,12 +577,13 @@ const ClientsIndas = ({
                         //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
 
                         <Button onClick={(e) => {
-                             if (clientState === 0){
+                            if (clientState === 0){
                                 editClientIndas({ id: id, idestado: 1, ind_renovar_pass: values.ind_renovar_pass });
                             }
                             else {
                                 editClientIndas({ id: id, idestado: 0, ind_renovar_pass: false });
-                            }              
+                            }
+                            setLoading(true);              
                             setIsDataChange(true);
                             handleOkEditStateActive(e);
                             setFormKey();
@@ -601,7 +600,7 @@ const ClientsIndas = ({
                         // </Popconfirm>
                     ]}    
                 >   <TextContainer>
-                      {getMessageActivationAndName(nameClient, clientState)}
+                      <div dangerouslySetInnerHTML={{ __html: getMessageActivationAndName(nameClient, clientState)} }/>
                       <ConfirmationText>Confirme por favor el cambio.</ConfirmationText>
                     </TextContainer>
                     {clientState === 0 && (
