@@ -31,6 +31,7 @@ class OrderListScreen extends React.Component {
     searchByDateFrom: '',
     searchByDateTo: '',
     searchByClient: '',
+    searchByCodPedido: '',
     searchByEntity: '',
     searchByType: '',
     pag: 0,
@@ -87,7 +88,7 @@ class OrderListScreen extends React.Component {
   handleSubmitOrdersSearch = () => {
 
     const { searchOrder } = this.props;
-    const { searchByDateFrom, pag, searchByDateTo, searchByOrderDate, searchByClient, searchByEntity, searchByType } = this.state;
+    const { searchByDateFrom, pag, searchByDateTo, searchByOrderDate, searchByClient, searchByCodPedido, searchByEntity, searchByType } = this.state;
 
     searchOrder({
       fecha_desde: searchByDateFrom,
@@ -95,6 +96,7 @@ class OrderListScreen extends React.Component {
       codentidad_cbim: searchByEntity,
       tipo: searchByType,
       codcli_cbim: searchByClient,
+      codpedido_origen: searchByCodPedido,
       pages: pag,
       dates: searchByOrderDate
 
@@ -103,7 +105,7 @@ class OrderListScreen extends React.Component {
   }
 
   render() {
-    const { searchByClient, searchByEntity, searchByType } = this.state;
+    const { searchByClient, searchByCodPedido, searchByEntity, searchByType } = this.state;
     const { orders, order, fetchOrderById, entity, client } = this.props;
 
     return (
@@ -116,6 +118,12 @@ class OrderListScreen extends React.Component {
               format={dateFormat}
               onChange={this.searchedValueDate}
               placeholder={['desde', 'hasta']}
+            />
+
+            <InputBox
+              placeholder="Nº Pedido"
+              value={searchByCodPedido}
+              onChange={(event) => this.searchedValue('searchByCodPedido', event.target.value)}
             />
 
             <InputBox
@@ -149,9 +157,9 @@ class OrderListScreen extends React.Component {
             <Table dataSource={modifyOrderDate(orders)} className="table" pagination={false} scroll={{ x: true }}>
 
               <Column
-                title="nº pedido"
-                dataIndex="idpedido"
-                key="idpedido"
+                title="Nº pedido"
+                dataIndex="codpedido_origen"
+                key="codpedido_origen"
               />
 
               <Column
