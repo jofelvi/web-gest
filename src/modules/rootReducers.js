@@ -21,5 +21,5 @@ export default combineReducers({
   clientsIndas,
   orders,
   charts,
-	clientesCbim,
+	clientesCbim
 });
