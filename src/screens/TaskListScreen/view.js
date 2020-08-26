@@ -5,20 +5,17 @@ import { Row, Col } from 'antd';
 import TasksList from '../../components/TasksList';
 import TaskFilter from '../../components/TaskFilter';
 import TaskDetail from '../../components/TaskDetail';
+import TaskFilterGeneral from '../../components/TaskFilterGeneral';
 
-const getTaskList = (fetchTaskList, pathname, history) => {
-  if (pathname.includes('user')) {
-    return fetchTaskList({ type: 'user', history });
-  }
-  if (pathname.includes('group')) {
-    return fetchTaskList({ type: 'group', history });
-  }
-  return fetchTaskList({ type: 'all', history });
+const getTaskList = (fetchTaskList, fetchTaskListUser, history) => {
+  fetchTaskList({ history });
+  return fetchTaskListUser({ history });
+  
 };
 
 const TasksListScreen = ({
   fetchTaskList,
-  fetchTaskForm,
+  fetchTaskListUser,
   tasks,
   selectedTask,
   location: { pathname },
@@ -27,24 +24,28 @@ const TasksListScreen = ({
   fetchTaskMessage,
 }) => {
   useEffect(() => {
-    getTaskList(fetchTaskList, pathname, history);
-    if(selectedTask){
-      fetchTask(selectedTask.id)
-      fetchTaskMessage({id: selectedTask.id})
+    getTaskList(fetchTaskList, fetchTaskListUser, history);
 
+    if(selectedTask){
+      fetchTask(selectedTask.id);
+      fetchTaskMessage({id: selectedTask.id});
     }
-    
+
   }, [pathname]);
   useEffect(() => {
     if(selectedTask){
-      fetchTask(selectedTask.id)
-      fetchTaskMessage({id: selectedTask.id})
-     
+      fetchTask(selectedTask.id);
+      fetchTaskMessage({id: selectedTask.id});
     }
     
   }, [selectedTask]);
   return (
     <Row>
+      <Row>
+        <Col span={11}>
+          <TaskFilterGeneral />
+        </Col>
+      </Row>
       <Row>
         <Col span={11}>
           <TaskFilter pathname={pathname} />

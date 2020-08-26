@@ -49,8 +49,6 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path='/' exact component={HomeScreen} />
       <PrivateRoute path='/users' exact component={UsersListScreen} />
       <PrivateRoute path='/tasks' exact component={TaskListScreen} />
-      <PrivateRoute path='/tasks/user' exact component={TaskListScreen} />
-      <PrivateRoute path='/tasks/group' exact component={TaskListScreen} />
       <PrivateRoute
         path={`/task/:taskId/process/:procId`}
         exact

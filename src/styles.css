@@ -180,3 +180,9 @@ body{
 .ant-radio-disabled + span {
 	color: rgba(0, 0, 0, 0.85);
 }
+
+.filterSelected {
+    background-color: #005cb3 !important;
+    border-color: #005cb3 !important;
+    color: white !important;
+}

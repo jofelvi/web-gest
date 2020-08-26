@@ -13,6 +13,7 @@ import {
   watchFetchTaskMessage,
   watchEditTaskMessage,
   watchFetchTaskAssigneeUser,
+  watchFetchTaskListUser
 } from './tasks/sagas';
 
 import {
@@ -131,6 +132,7 @@ export default function* rootSaga() {
     watchFetchTaskAssigneeUser(),
     watchEditClientIndas(),
     // watchSearchClientBy(),
-    watchGetClientsCount(),  
+    watchGetClientsCount(), 
+    watchFetchTaskListUser() 
   ]);
 }

@@ -15,6 +15,8 @@ import {
   fetchTaskMessageSuccess,
   fetchTaskAssigneeUserSuccess,
   setDetailTaskKey,
+  setGeneralFilter,
+  fetchUserTaskListSuccess
 } from './actions';
 import { generateKey } from '../utils'
 import moment from 'moment';
@@ -51,14 +53,17 @@ export default handleActions(
       byUser: payload.tasksByUser
     }),
     [fetchTaskListSuccess]: (state, { payload }) => {
-      console.log({payload})
       return({
         ...state,
         selectedTask: null,
         taskList: payload
       })
     },
-
+    [fetchUserTaskListSuccess]: (state, { payload }) => ({
+        ...state,
+        selectedTask: null,
+        userTaskList: payload
+    }),
     [editTaskSuccess]: (state, {payload}) => 
     ({
         ...state,
@@ -108,7 +113,12 @@ export default handleActions(
       ...state,
       usersAsignee: payload.usersAsignee
     }),
-    
+    [setGeneralFilter]: (state, {payload}) => ({
+      ...state,
+      triggerGeneralFilter: payload.triggerGeneralFilter,
+      generalFilterType: payload.generalFilterType,
+      generalFilterUser: payload.generalFilterUser
+    })
   },
   defaultState
 );

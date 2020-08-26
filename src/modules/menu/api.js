@@ -9,18 +9,7 @@ const mockMenu ={
     {
       id:2,
       label:"Gestión Tareas",
-      children:[
-        {
-          id:8,
-          label:"Mis Tareas",
-          url:"/tasks/user"
-        },
-        {
-          id:9,
-          label:"Todas las tareas",
-          url:"/tasks"
-        },
-      ]
+      url:"/tasks"
     },
     {
       id:3,
@@ -32,12 +21,12 @@ const mockMenu ={
       label:"Clientes",
       children:[
         {
-          id:10,
+          id:8,
           label:"Clientes en TR",
           url:"/clients/tr"
         },
         {
-          id:11,
+          id:9,
           label:"Clientes en CBIM",
           url:"/clients/cbim"
         }
@@ -58,17 +47,17 @@ const mockMenu ={
       label:"Configuración",
       children:[
         {
-          id:12,
+          id:10,
           label:"Mi perfil",
           url:"/management/profile"
         },
         {
-          id:13,
+          id:11,
           label:"Gestión de usuarios",
           url:"/management/users"
         },
         {
-          id:14,
+          id:12,
           label:"Ayuda Online",
           url:"/management/online-help"
         }

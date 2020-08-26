@@ -5,6 +5,7 @@ import {
   fetchTaskForm,
   fetchTask,
   fetchTaskMessage,
+  fetchTaskListUser
  } from '../../modules/tasks/actions';
 
 import View from './view';
@@ -19,5 +20,6 @@ export default connect(
     fetchTaskForm, 
     fetchTask,
     fetchTaskMessage,
+    fetchTaskListUser
   }
 )(View);
