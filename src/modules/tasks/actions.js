@@ -16,6 +16,7 @@ import {
   FETCH_TASK_FORM,
   FETCH_TASK_LIST,
   FETCH_TASK_LIST_SUCCESS,
+  FETCH_TASK_LIST_USER_SUCCESS,
   FETCH_TASK_LIST_FAILED,
   SET_SELECTED_TASK,
   SET_SELECTED_TASK_ID,
@@ -29,8 +30,9 @@ import {
   FETCH_TASK_MESSAGE_SUCCESS,
   FETCH_TASK_ASSIGNEE_USER,
   FETCH_TASK_ASSIGNEE_USER_SUCCESS,
-  SET_DETAIL_TASK_KEY
-
+  SET_DETAIL_TASK_KEY,
+  SET_GENERAL_FILTER,
+  FETCH_TASK_LIST_USER
 } from './actionTypes';
 
 export const {
@@ -48,7 +50,9 @@ export const {
   fetchTasksByUserFailed,
   fetchTaskForm,
   fetchTaskList,
+  fetchTaskListUser,
   fetchTaskListSuccess,
+  fetchUserTaskListSuccess,
   fetchTaskListFailed,
   setSelectedTask,
   setSelectedTaskId,
@@ -63,6 +67,7 @@ export const {
   fetchTaskAssigneeUser,
   fetchTaskAssigneeUserSuccess,
   setDetailTaskKey,
+  setGeneralFilter
 } = createActions(
   FETCH_TASKS,
   FETCH_TASKS_SUCCESS,
@@ -78,7 +83,9 @@ export const {
   FETCH_TASKS_BY_USER_FAILED,
   FETCH_TASK_FORM,
   FETCH_TASK_LIST,
+  FETCH_TASK_LIST_USER,
   FETCH_TASK_LIST_SUCCESS,
+  FETCH_TASK_LIST_USER_SUCCESS,
   FETCH_TASK_LIST_FAILED,
   SET_SELECTED_TASK,
   SET_SELECTED_TASK_ID,
@@ -92,6 +99,6 @@ export const {
   FETCH_TASK_MESSAGE_SUCCESS, 
   FETCH_TASK_ASSIGNEE_USER,
   FETCH_TASK_ASSIGNEE_USER_SUCCESS,
-  SET_DETAIL_TASK_KEY
-
+  SET_DETAIL_TASK_KEY,
+  SET_GENERAL_FILTER
 );

@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { setToken, loginSuccess } from './modules/auth/actions';
-
 import utils from './lib/utils';
-
 import { Layout,Col } from 'antd';
-
 import { withRouter } from 'react-router-dom';
-
-/*import Header from './components/Header';
-import Sider from './components/Sider';*/
 import Routes from './routes';
 import TopBar from './components/Navigation/TopBar';
 import LeftMenu from './components/Navigation/LeftMenu';
@@ -26,7 +19,7 @@ const App = ({
   completed,
   processKey,
   token,
-  setToken,
+  setToken
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {

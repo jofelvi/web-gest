@@ -9,11 +9,10 @@ import View from './view';
 
 export default connect(
   state => ({
-    selected: state.tasks.selectedTask,
-   
+    selected: state.tasks.selectedTask
   }),
   { 
     setSelectedTask,
-    setDetailTaskKey,
-   }
+    setDetailTaskKey
+  }
 )(View);
