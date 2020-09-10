@@ -15,7 +15,6 @@ function callback(key) {
     dataForTable,
     tableKey,
   ...rest}) => {     
-    
     return(     
   <Container> 
     <Tabs defaultActiveKey="1" onChange={callback} style={{width: '100%', height: 'fit-content'}} >

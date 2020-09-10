@@ -1,4 +1,7 @@
 export const transformData = (values, taskVar) => {
+  console.log({values});
+  console.log({taskVar});
+
   const variables = [];
   Object.entries(values).map(value => {
 		var tipo = taskVar && taskVar.find(v => v.name === value[1].name) || 
@@ -20,6 +23,7 @@ export const transformData = (values, taskVar) => {
     }
     return variables;
   });
+  console.log({variables})
   return variables;
 };
 

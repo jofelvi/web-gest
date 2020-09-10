@@ -55,7 +55,7 @@ const TaskDetail = ({
   const [isVisible, setIsVisible] = useState(false);
 
   const [inputKey, setInputKey] = useState('');
-  const [processD, setProcessD] = useState([])
+  const [processD, setProcessD] = useState([]);
   useEffect(() => {
     getTaskVariables({ history, taskId: selectedTask.id });
     setTableKey()
@@ -83,13 +83,31 @@ const TaskDetail = ({
       // console.log('no folder created in Form for task')
     }
   }
+  const orderedNameListTable = (processData )=>{
+    if(!processData) return null;
+    else{
+    return processData.map(staticData =>{
+      return staticData.name;
+    
+    })}
+  }
+  const orderedDataForTable = (dataForTable, listNames)=>{
+    if(!listNames || !dataForTable) return null;
+      const dataList =  listNames.map(list => {
+        return dataForTable.find(data => data.name === list)
+      });
+     return dataList.filter(data => typeof data !== 'undefined');
+    }     
 
   useEffect(() => {
     const processDa = getProcessData(taskName, processId)
     setProcessD({ processD: processDa ? processDa.processData : '' })
   }, [selectedTask.id, taskName, processId]);
   
+
   const dataForTableTab = (processTramitarPedido || processRegistrarNuevaEntidad || processRegistrarCliente)  && taskVariables && processD ? transformData(taskVariables, processD.processD) : '';
+  const orderedDataTab = orderedDataForTable(dataForTableTab, orderedNameListTable(processD.processD));
+   
   const {
     id,
     processInstanceId,
@@ -179,7 +197,7 @@ const TaskDetail = ({
                   </Button>
                 </ContainerTextArea>
                 <ContainerTabs>
-                  <TabsTaskDetail tableKey={tableK} dataForTable={dataForTableTab}>
+                  <TabsTaskDetail tableKey={tableK} dataForTable={orderedDataTab}>
                   </TabsTaskDetail>
                 </ContainerTabs>
                 <ButtonContainer>
