@@ -1,9 +1,21 @@
 import * as dayjs from 'dayjs';
 const TOKEN_STORAGE_KEY = 'api::auth_token';
+const AUTH_NAME_STORAGE_KEY = 'api::auth_name';
+const AUTH_USER_STORAGE_KEY = 'api::auth_user';
 
 const utils = {
   getAuthToken: () => localStorage.getItem(TOKEN_STORAGE_KEY),
   setAuthToken: token => localStorage.setItem(TOKEN_STORAGE_KEY, token),
+  getMe: () => {
+    return {
+      id: localStorage.getItem(AUTH_USER_STORAGE_KEY),
+      name: localStorage.getItem(AUTH_NAME_STORAGE_KEY),
+    }
+  },
+  setMe: (me) => {
+    localStorage.setItem(AUTH_USER_STORAGE_KEY, me.id)
+    localStorage.setItem(AUTH_NAME_STORAGE_KEY, me.name)
+  },
   getTaskId: () => localStorage.getItem('taskId'),
   setTaskId: taskId => localStorage.setItem('taskId', taskId),
   removeAuthToken: () => localStorage.removeItem(TOKEN_STORAGE_KEY),

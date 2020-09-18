@@ -56,13 +56,15 @@ export default handleActions(
       return({
         ...state,
         selectedTask: null,
-        taskList: payload
+        taskList: payload.taskList,
+        filterCounts: payload.filterCounts,
       })
     },
     [fetchUserTaskListSuccess]: (state, { payload }) => ({
         ...state,
         selectedTask: null,
-        userTaskList: payload
+        taskList: payload.taskList,
+        filterCounts: payload.filterCounts,
     }),
     [editTaskSuccess]: (state, {payload}) => 
     ({

@@ -10,11 +10,14 @@ import {
 
 const button = { text: 'Filtro' };
 
+
+
 const TasksFilterGeneral = ({
     generalFilterType,
     generalFilterUser,
     triggerGeneralFilter,
-    setGeneralFilter
+    setGeneralFilter,
+    fetchTaskList,
 }) => {
     return (
         <BottomSpacedDiv>

@@ -1,4 +1,5 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
+import _ from 'underscore';
 
 import {
   fetchTasksSuccess,
@@ -149,9 +150,42 @@ export function* watchFetchTaskForm() {
 function* fetchTaskList({ payload }) {
   try {
     const sortBy = yield select(state => state.tasks.sortBy);
-    const sortOrder = payload.sortOrder;
-    const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
-    yield put(fetchTaskListSuccess(defaultResponse.data));
+    const sortOrder = payload.sortOrder != undefined ? payload.sortOrder : 'desc';
+    const filtersType = yield select(state => state.tasks.generalFilterType);
+    const filtersUser = yield select(state => state.tasks.generalFilterUser);
+
+    const defaultResponse_ = yield call( api.fetchTaskList, sortBy, sortOrder );
+
+    const defaultResponse = require('../../datamockup/dataTaskList.json')
+
+    let data = defaultResponse.data
+    if ( filtersType != null ) {
+      data = _.where(defaultResponse.data, {processDefinitionName: filtersType});
+    }
+
+
+    let username = 'rafa'
+
+    if ( filtersUser != null && filtersUser.length > 0 ) {
+      data = _.reject(data,
+          function (row) {
+            return ( _.indexOf(filtersUser, 'user') == -1 && row.assignee == username )
+              || ( _.indexOf(filtersUser, 'others') == -1 && (row.assignee != null && row.assignee != username ) )
+              || ( _.indexOf(filtersUser, 'nobody') == -1 && row.assignee == null )
+          }
+      )
+      //data = _.where(defaultResponse.data, {processDefinitionName: filtersUser});
+    }
+
+    let filterCounts = {
+      type_order: _.where(defaultResponse.data, {processDefinitionName: 'Tramitar Pedido'}).length,
+      type_approval: _.where(defaultResponse.data, {processDefinitionName: 'Registrar Cliente'}).length,
+      user_me: _.where(defaultResponse.data, {assignee: username}).length,
+      user_others: _.reject(defaultResponse.data, (row) => { return row.assignee == null || row.assignee == username } ).length,
+      user_nobody: _.reject(defaultResponse.data, (row) => { return row.assignee != null }).length
+    }
+
+    yield put(fetchTaskListSuccess({ taskList: data, filterCounts: filterCounts } ) );
 
   } catch (e) {
     console.error(e);
@@ -169,13 +203,23 @@ function* fetchTaskList({ payload }) {
 
 function* fetchTaskListUser({ payload }) {
   try {
-    console.log('called');
+    console.log('--- PAYLOAD');
+
+    console.log(payload);
     const sortBy = yield select(state => state.tasks.sortBy);
     const sortOrder = payload.sortOrder;
-    const defaultResponse = yield call( api.fetchUserTaskList, sortBy, sortOrder );
-    console.log(defaultResponse.data);
-    fetchUserTaskListSuccess(defaultResponse.data);
-    yield put(fetchUserTaskListSuccess(defaultResponse.data));
+    const defaultResponse_ = yield call( api.fetchUserTaskList, sortBy, sortOrder );
+    console.log(defaultResponse_.data);
+    const defaultResponse = require('../../datamockup/dataTaskList.json')
+
+    const filteredData = defaultResponse.data;
+
+    let filterCounts = {
+
+    }
+
+    //fetchUserTaskListSuccess(filteredData);
+    yield put(fetchUserTaskListSuccess({ data: defaultResponse.data, filterCounts: filterCounts }));
   } catch (e) {
     console.error(e);
     if (e.message.includes('401')) {

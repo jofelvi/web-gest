@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import View from './view';
 
-import { setGeneralFilter } from '../../modules/tasks/actions';
+import { fetchTaskList, setGeneralFilter} from '../../modules/tasks/actions';
 
 export default connect(
     state => ({
@@ -11,6 +11,6 @@ export default connect(
         generalFilterUser: state.tasks.generalFilterUser
     }),
     {
-        setGeneralFilter
+        setGeneralFilter, fetchTaskList
     }
 )(View);

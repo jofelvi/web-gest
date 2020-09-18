@@ -18,6 +18,7 @@ const TasksListScreen = ({
   fetchTaskListUser,
   tasks,
   selectedTask,
+  user,
   location: { pathname },
   history,
   fetchTask,
@@ -67,6 +68,7 @@ const TasksListScreen = ({
 
 TasksListScreen.propTypes = {
   fetchTaskList: PropTypes.func.isRequired,
+  user: PropTypes.any.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   // selectedTask: PropTypes.string.isRequired,
   history: PropTypes.shape({}).isRequired,
