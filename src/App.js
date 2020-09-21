@@ -27,7 +27,7 @@ const App = ({
 
     if (!token) {
       setToken({ token: utils.getAuthToken() });
-      setMe({ me: utils.getMe() });
+      setMe(utils.getMe());
     }
     loginSuccess();
   }, [setToken, token, setMe]);

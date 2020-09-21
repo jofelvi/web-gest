@@ -38,11 +38,12 @@ function* login({ payload: { values, nextAction, nextActionPayload } }) {
       user: values.user,
       password: values.password
     });
+    utils.setAuthToken(response.data);
 
     //@todo: aqui faltaria llamar a users y obtener el nombre de este
+    const profile = yield call(api.getProfile);
 
-    const me = { me: { id: values.user, name: 'Rafael Lucia'} }
-    utils.setAuthToken(response.data);
+    const me = { id: values.user, firstName: profile.data.attrs.cn[0], lastName: profile.data.attrs.sn[0] }
     utils.setMe(me);
     yield put(setToken({ token: response.data }));
     yield put(setMe(me));

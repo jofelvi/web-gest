@@ -9,7 +9,8 @@ import {Button, Row, Col} from 'antd';
 const TopBar = ({
     logout, 
     status,
-    history
+    history,
+    me
 }) => {
     return <Row className="topbar">
             {/*<div className="logo-container">
@@ -22,7 +23,7 @@ const TopBar = ({
                         <img src={usr} alt="imagen de usuario"/>
                     </Col>
                     <Col xxl={{span:17}} lg={{span:16}} md={{span:16}} xs={{span:16}} className="user-desc-container">
-                        <Col>Rafael Lucia</Col>
+                        <Col>{me.firstName} {me.lastName}</Col>
                         <Button onClick={() => {
                             logout();
                             history.push('/login');

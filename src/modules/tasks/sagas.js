@@ -153,28 +153,29 @@ function* fetchTaskList({ payload }) {
     const sortOrder = payload.sortOrder != undefined ? payload.sortOrder : 'desc';
     const filtersType = yield select(state => state.tasks.generalFilterType);
     const filtersUser = yield select(state => state.tasks.generalFilterUser);
+    const username = utils.getMe().id
 
-    const defaultResponse_ = yield call( api.fetchTaskList, sortBy, sortOrder );
-
-    const defaultResponse = require('../../datamockup/dataTaskList.json')
+    const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
+    //@dev const defaultResponse = require('../../datamockup/dataTaskList.json')
 
     let data = defaultResponse.data
+
     if ( filtersType != null ) {
       data = _.where(defaultResponse.data, {processDefinitionName: filtersType});
     }
 
-
-    let username = 'rafa'
-
     if ( filtersUser != null && filtersUser.length > 0 ) {
-      data = _.reject(data,
+      console.log(' ---- > FILTERING')
+      console.log('User: '+( _.indexOf(filtersUser, 'user') == -1))
+      console.log('Others: '+( _.indexOf(filtersUser, 'others') == -1))
+      console.log('Nobody: '+( _.indexOf(filtersUser, 'nobody') == -1))
+      data = _.filter(data,
           function (row) {
-            return ( _.indexOf(filtersUser, 'user') == -1 && row.assignee == username )
-              || ( _.indexOf(filtersUser, 'others') == -1 && (row.assignee != null && row.assignee != username ) )
-              || ( _.indexOf(filtersUser, 'nobody') == -1 && row.assignee == null )
+            return ( _.indexOf(filtersUser, 'user') > -1 && row.assignee == username )
+              || ( _.indexOf(filtersUser, 'others') > -1 && (row.assignee != null && row.assignee != username ) )
+              || ( _.indexOf(filtersUser, 'nobody') > -1 && row.assignee == null )
           }
       )
-      //data = _.where(defaultResponse.data, {processDefinitionName: filtersUser});
     }
 
     let filterCounts = {

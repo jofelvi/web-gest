@@ -41,7 +41,7 @@ export default handleActions(
     }),
     [setMe]: (state, { payload }) => ({
       ...state,
-      me: payload.me
+      me: payload
     })
   },
   defaultState

@@ -3,7 +3,7 @@
     {
       "id": "3caa4354-ed27-11ea-b13d-061fbe9269be",
       "name": "Aprobar pedido",
-      "assignee": "rafa",
+      "assignee": "admin",
       "created": "2020-09-02T16:18:56.552+02:00",
       "due": "1970-01-01T00:00:00+01:00",
       "followUp": null,
@@ -27,7 +27,7 @@
     {
       "id": "d6c3d916-f6a4-11ea-b13d-061fbe9269be",
       "name": "Validar Registro",
-      "assignee": null,
+      "assignee": "admin",
       "created": "2020-09-14T18:10:42.645+02:00",
       "due": null,
       "followUp": null,
@@ -51,7 +51,7 @@
     {
       "id": "d6c3d916-f6a4-11ea-b13d-061fbe9269be",
       "name": "Validar Registro",
-      "assignee": null,
+      "assignee": "rafa",
       "created": "2020-09-14T18:10:42.645+02:00",
       "due": null,
       "followUp": null,
