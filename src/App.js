@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setToken, loginSuccess } from './modules/auth/actions';
+import { setToken, loginSuccess, setMe } from './modules/auth/actions';
 import utils from './lib/utils';
 import { Layout,Col } from 'antd';
 import { withRouter } from 'react-router-dom';
@@ -19,15 +19,18 @@ const App = ({
   completed,
   processKey,
   token,
-  setToken
+  setToken,
+  setMe
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
+
     if (!token) {
       setToken({ token: utils.getAuthToken() });
+      setMe(utils.getMe());
     }
     loginSuccess();
-  }, [setToken, token]);
+  }, [setToken, token, setMe]);
   const [prevCompleted, setPrevCompleted] = useState(false);
 
   if (!completed && prevCompleted) {
@@ -65,6 +68,6 @@ export default withRouter(
       wContent: state.menu.wContent,
       wMenu: state.menu.wMenu
     }),
-    { setToken }
+    { setToken, setMe }
   )(App)
 );

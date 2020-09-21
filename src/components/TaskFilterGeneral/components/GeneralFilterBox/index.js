@@ -1,16 +1,25 @@
 import { connect } from 'react-redux';
 
 import View from './view';
-import { setGeneralFilter } from '../../../../modules/tasks/actions';
+import { setGeneralFilter, fetchTaskList } from '../../../../modules/tasks/actions';
+
+const setGeneralFilterAndFetch = ( filters ) => {
+    console.log('--- FILTERING')
+    console.log(filters)
+    setGeneralFilter( filters );
+    return fetchTaskList( {} );
+};
 
 export default connect(
     state => ({
         generalFilterType: state.tasks.generalFilterType,
         generalFilterUser: state.tasks.generalFilterUser,
+        filterCounts: state.tasks.filterCounts,
         taskList: state.tasks.taskList,
         username: state.auth.username
     }),
     {
+        fetchTaskList,
         setGeneralFilter
     }
 )(View);

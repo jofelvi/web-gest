@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     FilterBox,
     MainTitle,
@@ -8,16 +8,23 @@ import {
     Validate,
     Reset
 } from './styles';
+import _ from 'underscore';
+
+const setGeneralFilterAndFetch = ( setGeneralFilter, fetchTaskList, setUserFilters, filters ) => {
+    setGeneralFilter( filters );
+    return fetchTaskList( {} );
+};
 
 const GeneralFilterBox = ({
     generalFilterType,
     generalFilterUser,
+    fetchTaskList,
     setGeneralFilter,
     taskList,
-    username
+    username,
+    filterCounts
 }) => {
-    console.log(taskList);
-    console.log(username);
+    const [userFilters, setUserFilters] = useState(generalFilterUser != undefined ? generalFilterUser : []);
     return (
         <span>
             <FilterBox>
@@ -33,19 +40,19 @@ const GeneralFilterBox = ({
                             <input 
                             type="radio"
                             name="typeAsign"
-                            value="aprove"
-                            defaultChecked={generalFilterType === 'aprove' ? true : false}
+                            value="Tramitar Pedido"
+                            defaultChecked={generalFilterType === 'Tramitar Pedido' ? true : false}
                             />
-                            Aprobar Pedido ({username})
+                            Aprobar Pedido ({filterCounts.type_order ? filterCounts.type_order : '-'})
                         </CheckBoxContainer>
                         <CheckBoxContainer>
                             <input
                             type="radio"
                             name="typeAsign"
-                            value="validate"
-                            defaultChecked={ generalFilterType === 'validate' ? true : false }
+                            value="Registrar Cliente"
+                            defaultChecked={ generalFilterType === 'Registrar Cliente' ? true : false }
                             />
-                            Validar Registro
+                            Validar Registro ({filterCounts.type_approval ? filterCounts.type_approval : '-'})
                         </CheckBoxContainer>
                     </form>
 
@@ -55,49 +62,57 @@ const GeneralFilterBox = ({
 
                     {/* using form event to define the value chosen */}
                     <form onChange={(event) => {
-                        generalFilterUser = event.target.value;
+                        if (generalFilterUser && _.indexOf(generalFilterUser, event.target.value) > -1 ) {
+                            generalFilterUser = _.difference(generalFilterUser, [event.target.value])
+                        } else {
+                            if (generalFilterUser === undefined) {
+                                generalFilterUser = []
+                            }
+                            generalFilterUser.push(event.target.value)
+                        }
                     }}>
                         <CheckBoxContainer>
                             <input
-                            type="radio"
+                            type="checkbox"
                             name="usersAsign"
                             value="user"
-                            defaultChecked={ generalFilterUser === 'user' ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'user') > -1 ? true : false }
                             />
-                            Asignadas a mi
+                            Asignadas a mi ({filterCounts.user_me ? filterCounts.user_me : '-'})
                         </CheckBoxContainer>
                         <CheckBoxContainer>
                             <input
-                            type="radio"
+                            type="checkbox"
                             name="usersAsign"
                             value="others"
-                            defaultChecked={ generalFilterUser === 'others' ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'others') > -1 ? true : false }
                             />
-                            Asignadas a otros
+                            Asignadas a otros ({filterCounts.user_others ? filterCounts.user_others : '-'})
                         </CheckBoxContainer>
                         <CheckBoxContainer>
                             <input
-                            type="radio"
+                            type="checkbox"
                             name="usersAsign"
                             value="nobody"
-                            defaultChecked={ generalFilterUser === 'nobody' ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'nobody') > -1 ? true : false }
                             />
-                            Sin asignar
+                            Sin asignar ({filterCounts.user_nobody ? filterCounts.user_nobody : '-'})
                         </CheckBoxContainer>
                     </form>
 
                 </div>
                 <Reset onClick={() => {
                     generalFilterType = null;
-                    generalFilterUser = null;
-                    setGeneralFilter({
+                    generalFilterUser = [];
+                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
                         triggerGeneralFilter: false,
                         generalFilterType,
                         generalFilterUser
                     });
                 }}>Resetear</Reset>
                 <Validate onClick={() => {
-                    setGeneralFilter({
+                    setUserFilters(generalFilterUser);
+                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
                         triggerGeneralFilter: false,
                         generalFilterType,
                         generalFilterUser
@@ -105,7 +120,7 @@ const GeneralFilterBox = ({
                 }}>Aplicar</Validate>
             </FilterBox>
             <Overlay onClick={() => {
-                setGeneralFilter({
+                setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
                     triggerGeneralFilter: false,
                     generalFilterType,
                     generalFilterUser

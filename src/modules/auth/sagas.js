@@ -9,6 +9,7 @@ import {
   logoutSuccess,
   logoutFailed,
   setToken,
+  setMe,
   refreshTokenFailed,
   refreshTokenSuccess,
   checkLoginFailed,
@@ -38,7 +39,14 @@ function* login({ payload: { values, nextAction, nextActionPayload } }) {
       password: values.password
     });
     utils.setAuthToken(response.data);
+
+    //@todo: aqui faltaria llamar a users y obtener el nombre de este
+    const profile = yield call(api.getProfile);
+
+    const me = { id: values.user, firstName: profile.data.attrs.cn[0], lastName: profile.data.attrs.sn[0] }
+    utils.setMe(me);
     yield put(setToken({ token: response.data }));
+    yield put(setMe(me));
     yield put(loginSuccess());
     if (nextAction) {
       console.log({ nextAction });

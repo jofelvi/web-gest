@@ -33,6 +33,7 @@ const TaskFilter = ({
       <Col span={6}>
         <TaskFilterItem
           name={filter.name}
+          key={filter.name}
           text={filter.text}
           sortBy={sortBy}
           setTaskListFilter={setTaskListFilter}

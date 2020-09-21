@@ -32,8 +32,8 @@ export const {
   refreshTokenSuccess,
   refreshTokenFailed,
   setToken,
-  fetchMe,
-  setMe
+  setMe,
+  fetchMe
 } = createActions(
   CHECK_LOGIN,
   CHECK_LOGIN_SUCCESS,
@@ -48,6 +48,6 @@ export const {
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILED,
   SET_TOKEN,
-  FETCH_ME,
-  SET_ME
+  SET_ME,
+  FETCH_ME
 );
