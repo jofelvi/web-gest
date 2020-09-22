@@ -130,8 +130,8 @@ yield takeLatest(FETCH_SALES_BY_DAY, fetchSalesByDay);
 
 function* fetchSalesByHour({ payload }) {
   const date = {
-    dateFrom: moment().subtract(2,'days').format('YYYY-MM-DD'),
-    dateTo: moment().format('YYYY-MM-DD')
+    dateFrom: moment().format('YYYY-MM-DD'),
+    dateTo: moment().add(1, 'days').format('YYYY-MM-DD')
   }
 try {
   const response = yield call(api.getHourSales, date);

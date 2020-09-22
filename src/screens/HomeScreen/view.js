@@ -124,29 +124,33 @@ const HomeScreen = ({
   const thereIsNoDataByMonth = !subfamiliesListMonth || !entitiesMonthList || !entitiesMonthActivesList;
   
   useEffect(()=>{
+    let timerId;
+
     async function fetchData() {
       await testIfThereIsTask(taskId, utils, history);
       if(thereIsNoDataByYear){
-        await fetchSalesByYear();
+        fetchSalesByYear();
       }
       if(thereIsNoDataByDay){
-        await fetchSalesByDay();
+        fetchSalesByDay();
       }
       if(thereIsNoDataByHour){
-        await fetchSalesByHour();
+        fetchSalesByHour();
       }
       if(thereIsNoDataByMonth){
-        await fetchSalesByMonth();
+        fetchSalesByMonth();
       }
     
-      setInterval(async()=>{
-       await fetchSalesByHour();
-      }, 360000);
-      await fetchClientsData();
-      await fetchPendingTasks();
+      fetchClientsData();
+      fetchPendingTasks();
+
+      timerId = setInterval(()=>{
+        fetchSalesByHour();
+       }, 360000);
     }
     fetchData();  
     
+    return () => clearInterval(timerId);
  }, [ ]);
 
   let subfamilyDataSortedByBiggestNumber = sortingNumbers( sortingDataByTime(setTimeToYear, setTimeToMonth, setTimeToDay, setTimeToHour,
