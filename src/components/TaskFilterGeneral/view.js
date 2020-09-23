@@ -19,11 +19,14 @@ const TasksFilterGeneral = ({
     setGeneralFilter,
     fetchTaskList,
 }) => {
+    const isSelected = ((generalFilterUser && generalFilterUser.length > 0 )
+        || ( generalFilterType && generalFilterType.length > 0 ) );
+
     return (
         <BottomSpacedDiv>
             
             {/* button to trigger the general filter appearance */}
-            <TriggerFilterButton className={(generalFilterUser || generalFilterType) ? 'filterSelected' : null} onClick={() => {
+            <TriggerFilterButton className={isSelected ? 'filterSelected' : null} onClick={() => {
                 // triggers the filter
                 setGeneralFilter({
                     triggerGeneralFilter: !triggerGeneralFilter,
