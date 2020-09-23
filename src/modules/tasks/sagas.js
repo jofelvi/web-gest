@@ -155,20 +155,23 @@ function* fetchTaskList({ payload }) {
     const filtersUser = yield select(state => state.tasks.generalFilterUser);
     const username = utils.getMe().id
 
-    const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
-    //@dev const defaultResponse = require('../../datamockup/dataTaskList.json')
+    //const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
+    const defaultResponse = require('../../datamockup/dataTaskList.json')
 
     let data = defaultResponse.data
 
-    if ( filtersType != null ) {
-      data = _.where(defaultResponse.data, {processDefinitionName: filtersType});
+    //@todo refactor this structure into some abstraction
+    // left for future as there will be more filters
+    if ( filtersType ) {
+      data = _.filter(data,
+          function (row) {
+            return ( _.indexOf(filtersType, 'Tramitar Pedido') > -1 && row.processDefinitionName == 'Tramitar Pedido' )
+                || ( _.indexOf(filtersType, 'Registrar Cliente') > -1 && row.processDefinitionName == 'Registrar Cliente' )
+          }
+      )
     }
 
     if ( filtersUser != null && filtersUser.length > 0 ) {
-      console.log(' ---- > FILTERING')
-      console.log('User: '+( _.indexOf(filtersUser, 'user') == -1))
-      console.log('Others: '+( _.indexOf(filtersUser, 'others') == -1))
-      console.log('Nobody: '+( _.indexOf(filtersUser, 'nobody') == -1))
       data = _.filter(data,
           function (row) {
             return ( _.indexOf(filtersUser, 'user') > -1 && row.assignee == username )

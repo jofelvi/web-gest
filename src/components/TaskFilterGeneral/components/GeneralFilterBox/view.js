@@ -10,7 +10,7 @@ import {
 } from './styles';
 import _ from 'underscore';
 
-const setGeneralFilterAndFetch = ( setGeneralFilter, fetchTaskList, setUserFilters, filters ) => {
+const setGeneralFilterAndFetch = ( setGeneralFilter, fetchTaskList, filters ) => {
     setGeneralFilter( filters );
     return fetchTaskList( {} );
 };
@@ -25,6 +25,7 @@ const GeneralFilterBox = ({
     filterCounts
 }) => {
     const [userFilters, setUserFilters] = useState(generalFilterUser != undefined ? generalFilterUser : []);
+    const [typeFilters, setTypeFilters] = useState(generalFilterType != undefined ? generalFilterType : []);
     return (
         <span>
             <FilterBox>
@@ -33,24 +34,31 @@ const GeneralFilterBox = ({
                     <SubTitle>Tipo de tarea</SubTitle>
 
                     {/* using form event to define the value chosen */}
-                    <form onChange={(event) => {
-                        generalFilterType = event.target.value;
-                    }}>
+                        <form onChange={(event) => {
+                            if (generalFilterType && _.indexOf(generalFilterType, event.target.value) > -1 ) {
+                                generalFilterType = _.difference(generalFilterType, [event.target.value])
+                            } else {
+                                if (!generalFilterType) {
+                                    generalFilterType = []
+                                }
+                                generalFilterType.push(event.target.value)
+                            }
+                        }}>
                         <CheckBoxContainer>
                             <input 
-                            type="radio"
+                            type="checkbox"
                             name="typeAsign"
                             value="Tramitar Pedido"
-                            defaultChecked={generalFilterType === 'Tramitar Pedido' ? true : false}
+                            defaultChecked={ _.indexOf( typeFilters, 'Tramitar Pedido') > -1 }
                             />
                             Aprobar Pedido ({filterCounts.type_order ? filterCounts.type_order : '-'})
                         </CheckBoxContainer>
                         <CheckBoxContainer>
                             <input
-                            type="radio"
+                            type="checkbox"
                             name="typeAsign"
                             value="Registrar Cliente"
-                            defaultChecked={ generalFilterType === 'Registrar Cliente' ? true : false }
+                            defaultChecked={ _.indexOf( typeFilters, 'Registrar Cliente') > -1 }
                             />
                             Validar Registro ({filterCounts.type_approval ? filterCounts.type_approval : '-'})
                         </CheckBoxContainer>
@@ -76,7 +84,7 @@ const GeneralFilterBox = ({
                             type="checkbox"
                             name="usersAsign"
                             value="user"
-                            defaultChecked={ _.indexOf( userFilters, 'user') > -1 ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'user') > -1 }
                             />
                             Asignadas a mi ({filterCounts.user_me ? filterCounts.user_me : '-'})
                         </CheckBoxContainer>
@@ -85,7 +93,7 @@ const GeneralFilterBox = ({
                             type="checkbox"
                             name="usersAsign"
                             value="others"
-                            defaultChecked={ _.indexOf( userFilters, 'others') > -1 ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'others') > -1}
                             />
                             Asignadas a otros ({filterCounts.user_others ? filterCounts.user_others : '-'})
                         </CheckBoxContainer>
@@ -94,7 +102,7 @@ const GeneralFilterBox = ({
                             type="checkbox"
                             name="usersAsign"
                             value="nobody"
-                            defaultChecked={ _.indexOf( userFilters, 'nobody') > -1 ? true : false }
+                            defaultChecked={ _.indexOf( userFilters, 'nobody') > -1 }
                             />
                             Sin asignar ({filterCounts.user_nobody ? filterCounts.user_nobody : '-'})
                         </CheckBoxContainer>
@@ -104,7 +112,7 @@ const GeneralFilterBox = ({
                 <Reset onClick={() => {
                     generalFilterType = null;
                     generalFilterUser = [];
-                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
+                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, {
                         triggerGeneralFilter: false,
                         generalFilterType,
                         generalFilterUser
@@ -112,7 +120,8 @@ const GeneralFilterBox = ({
                 }}>Resetear</Reset>
                 <Validate onClick={() => {
                     setUserFilters(generalFilterUser);
-                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
+                    setTypeFilters(generalFilterType);
+                    setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, {
                         triggerGeneralFilter: false,
                         generalFilterType,
                         generalFilterUser
@@ -120,7 +129,7 @@ const GeneralFilterBox = ({
                 }}>Aplicar</Validate>
             </FilterBox>
             <Overlay onClick={() => {
-                setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, setUserFilters, {
+                setGeneralFilterAndFetch( setGeneralFilter, fetchTaskList, {
                     triggerGeneralFilter: false,
                     generalFilterType,
                     generalFilterUser
