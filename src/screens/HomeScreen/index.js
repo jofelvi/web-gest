@@ -22,7 +22,13 @@ const getYears = (yearList = [], hourList) => {
   }, {})
 
   const finalYearListLast24HoursAdded = listYearData.reduce((acc, value) => {
-    return {...acc, [value.year]: { totalnumero: value.totalnumero + acc[value.year].totalnumero, totalpvm: value.totalpvm + acc[value.year].totalpvm }}  
+    return {
+      ...acc,
+      [value.year]: {
+        totalnumero: value.totalnumero + acc[value.year].totalnumero,
+        totalpvm: value.totalpvm + acc[value.year].totalpvm
+      }
+    }  
   }, yearListEmpty )
  
   return Object.keys(finalYearListLast24HoursAdded).map(year => ({ year, ...finalYearListLast24HoursAdded[year] }));
@@ -50,9 +56,23 @@ const getMonths = (dayList = [], hourList ) => {
   const monthsList = sortingDays([...dayList,groupHoursByDay(hourList), ...generateDays()]).reduce((acc, value) => {
     const month = new Date(value.day).getMonth();
     if (!acc[monthNames[month]]) {
-      return { ...acc, [monthNames[month]]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
+      return {
+        ...acc,
+        [monthNames[month]]: {
+          totalnumero: value.totalnumero,
+          totalpvm: value.totalpvm
+        }
+      }
     }
-    return { ...acc, [monthNames[month]]: { totalnumero: Math.round(value.totalnumero + acc[monthNames[month]].totalnumero),totalpvm: Math.round(value.totalpvm + acc[monthNames[month]].totalpvm) } }
+    return {
+      ...acc,
+      [monthNames[month]]: {
+        //totalnumero: Math.round(value.totalnumero + acc[monthNames[month]].totalnumero),
+        //totalpvm: Math.round(value.totalpvm + acc[monthNames[month]].totalpvm)
+        totalnumero: value.totalnumero + acc[monthNames[month]].totalnumero,
+        totalpvm: value.totalpvm + acc[monthNames[month]].totalpvm
+      }
+    }
   }, {});
   return Object.keys(monthsList).map(month => ({ month, ...monthsList[month] }));
 };
@@ -64,13 +84,18 @@ const getHours = (hourList = []) => {
     }
     return {...hourObj};    
   }) : [];
-  console.log({ filterForHourFormat });
   if (!hourList) {
     return [];
   }
   const hourAddedList = sortingHours([...filterForHourFormat, ...generateHours(new Date().getHours() + 1)]).reduce((acc, value) => {
     if (value.hour) {
-      return { ...acc, [value.hour]: { totalnumero: value.totalnumero, totalpvm: value.totalpvm } }
+      return {
+        ...acc,
+        [value.hour]: {
+          totalnumero: acc[value.hour] ? ((acc[value.hour].totalnumero || 0) + value.totalnumero) : value.totalnumero,
+          totalpvm: acc[value.hour] ? ((acc[value.hour].totalpvm || 0) + value.totalpvm) : value.totalpvm
+        }
+      }
         
     }
   }, {})
@@ -145,7 +170,7 @@ export default connect(
     yearList: getYears(state.charts.yearList, state.charts.hourList),
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
-    daysList: getSevenDays(state.charts.yearDaysList, state.charts.hourList),
+    daysList: getSevenDays(state.charts.daysList, state.charts.hourList),
     monthsList: getMonths(state.charts.yearDaysList, state.charts.hourList),
     hourList: getHours(state.charts.hourList),
     entitiesYearList: state.charts.entitiesYearList,

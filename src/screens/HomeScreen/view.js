@@ -129,20 +129,20 @@ const HomeScreen = ({
     async function fetchData() {
       await testIfThereIsTask(taskId, utils, history);
       if(thereIsNoDataByYear){
-        fetchSalesByYear();
+        await fetchSalesByYear();
       }
       if(thereIsNoDataByDay){
-        fetchSalesByDay();
+        await fetchSalesByDay();
       }
       if(thereIsNoDataByHour){
-        fetchSalesByHour();
+        await fetchSalesByHour();
       }
       if(thereIsNoDataByMonth){
-        fetchSalesByMonth();
+        await fetchSalesByMonth();
       }
     
-      fetchClientsData();
-      fetchPendingTasks();
+      await fetchClientsData();
+      await fetchPendingTasks();
 
       timerId = setInterval(()=>{
         fetchSalesByHour();

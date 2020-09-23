@@ -26,11 +26,11 @@ export const generateHours = (num = 24) => {
   return hours;
 };
 
-export const generateSevenDays = (num = 7, key = 'days') => {
+export const generateSevenDays = (num = 6, key = 'days') => {
   let days = [];
 
   [...Array(num).keys()].map(value => {
-    days = [...days, { totalnumero: 0, totalpvm: 0, day: moment().subtract(value, key).format('YYYY-MM-DD') }];
+    days = [...days, { totalnumero: 0, totalpvm: 0, day: moment().subtract(value + 1, key).format('YYYY-MM-DD') }];
   });
   return days;
 };
