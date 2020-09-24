@@ -1,26 +1,27 @@
+
 // Datos esperados del proceso
 export const formData = [
+	{name:"codpedido_origen",    type:"String",  validation:undefined, defaultValue: '', label: 'Código Pedido' , visible: true},
+	{name:"fecha_alta",          type:"String",  validation:undefined, defaultValue: '', label: 'Fecha de pedido' , visible: true},
+	{name:"lineas",              type:"Integer", validation:undefined, defaultValue: '', label: 'Líneas' , visible: true},// Número de items del pedido
+	{name:"tipo",                type:"String",  validation:undefined, defaultValue: '', label: 'Tipo' , visible: true},// Número de items del pedido
+	{name:"nombre_estado",       type:"String",  validation:undefined, defaultValue: '', label: 'Estado' , visible: true},
 	{name:"codcli_cbim",         type:"Integer", validation:undefined, defaultValue: '', label: 'Código Cliente CBIM' , visible: true},
-	{name:"nomcli_cbim",         type:"String",  validation:undefined, defaultValue: '', label: 'Nombre Cliente CBIM' , visible: true},
-	{name:"drupal_order_id",     type:"String",  validation:undefined, defaultValue: '', label: 'Drupal id pedido' , visible: true},
-	{name:"drupal_uuid",         type:"String",  validation:undefined, defaultValue: '', label: 'Drupal uuid' , visible: true},
-	{name:"codpedido_origen",    type:"String",  validation:undefined, defaultValue: '', label: 'Código Pedido Origen' , visible: true},
-	{name:"origen",              type:"String",  validation:undefined, defaultValue: '', label: 'Origen' , visible: true},
-	{name:"idpedido",            type:"Integer", validation:undefined, defaultValue: '', label: 'idpedido' , visible: true},
-	{name:"fecha_alta",          type:"String",  validation:undefined, defaultValue: '', label: 'Fecha de alta' , visible: true},
 	{name:"codentidad_cbim",     type:"Integer", validation:undefined, defaultValue: '', label: 'Código Entidad CBIM' , visible: true},
 	{name:"nomentidad_cbim",     type:"String",  validation:undefined, defaultValue: '', label: 'Nombre Entidad CBIM' , visible: true},
-	{name:"ind_esfarmacia",      type:"Boolean", validation:undefined, defaultValue: false, label: 'Tipo de entidad' , visible: true},
-	{name:"nombre_estado",       type:"String",  validation:undefined, defaultValue: '', label: 'Estado' , visible: true},
-	{name:"codcupon",            type:"String",  validation:undefined, defaultValue: '', label: 'Código Cupón' , visible: true},
 	{name:"codmayorista",        type:"Integer", validation:undefined, defaultValue: '', label: 'Código Mayorista' , visible: true},
 	{name:"nombre_mayorista",    type:"String",  validation:undefined, defaultValue: '', label: 'Nombre Mayorista' , visible: true},
-	{name:"mensaje_error",       type:"String",  validation:undefined, defaultValue: '', label: 'Mensaje de error' , visible: true},
+	{name:"nomcli_cbim",         type:"String",  validation:undefined, defaultValue: '', label: 'Nombre Cliente CBIM' , visible: false},
+	{name:"drupal_order_id",     type:"String",  validation:undefined, defaultValue: '', label: 'Drupal id pedido' , visible: false},
+	{name:"drupal_uuid",         type:"String",  validation:undefined, defaultValue: '', label: 'Drupal uuid' , visible: false},
+	{name:"origen",              type:"String",  validation:undefined, defaultValue: '', label: 'Origen' , visible: false},
+	{name:"idpedido",            type:"Integer", validation:undefined, defaultValue: '', label: 'idpedido' , visible: false},
+	{name:"ind_esfarmacia",      type:"Boolean", validation:undefined, defaultValue: false, label: 'Tipo de entidad' , visible: false},
+	{name:"codcupon",            type:"String",  validation:undefined, defaultValue: '', label: 'Código Cupón' , visible: false},
+	{name:"mensaje_error",       type:"String",  validation:undefined, defaultValue: '', label: 'Mensaje de error' , visible: false},
 // Número de items del pedido
-	{name:"lineas",              type:"Integer", validation:undefined, defaultValue: '', label: 'Líneas' , visible: true},
-	{name:"tipo",                type:"String",  validation:undefined, defaultValue: '', label: 'Tipo' , visible: true},
-	{name:"aceptado",            type:"Boolean", validation: undefined, defaultValue: false, label: 'Aceptado' , visible: true},
-	{name:"actualizado",         type:"Boolean", validation: undefined, defaultValue: false, label: 'Actualizado' , visible: true},
+	{name:"aceptado",            type:"Boolean", validation: undefined, defaultValue: false, label: 'Aceptado' , visible: false},
+	{name:"actualizado",         type:"Boolean", validation: undefined, defaultValue: false, label: 'Actualizado' , visible: false},
 ];
 // Describe cada uno de los campos que forman una linea de pedido
 export const formDataItem = [
@@ -29,7 +30,7 @@ export const formDataItem = [
 	{name:"codindas",            type:"String",  validation:undefined, defaultValue: ''},
 	{name:"nombre",              type:"String",  validation:undefined, defaultValue: ''},
 	{name:"cantidad",            type:"Integer", validation:undefined, defaultValue: 0},
-  {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
+    {name:"descuento",           type:"Double",  validation:undefined, defaultValue: 0},
 	{name:"puntos_acumulados_unidad", type:"Integer", validation:undefined, defaultValue: 0},
 	{name:"puntos_acumulados_total",  type:"Integer", validation:undefined, defaultValue: 0},
 	{name:"puntos_coste_unidad",      type:"Integer", validation:undefined, defaultValue: 0},
@@ -66,3 +67,4 @@ export const tableCols = (tipo) => {
 	}
 	return cols;
 }
+
