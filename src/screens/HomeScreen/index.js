@@ -170,7 +170,7 @@ export default connect(
     yearList: getYears(state.charts.yearList, state.charts.hourList),
     monthList: state.charts.monthList,
     dayList: state.charts.dayList,
-    daysList: getSevenDays(state.charts.daysList, state.charts.hourList),
+    daysList: getSevenDays(state.charts.yearDaysList, state.charts.hourList),
     monthsList: getMonths(state.charts.yearDaysList, state.charts.hourList),
     hourList: getHours(state.charts.hourList),
     entitiesYearList: state.charts.entitiesYearList,
