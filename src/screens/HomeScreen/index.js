@@ -39,13 +39,13 @@ const getSevenDays = (dayList = [], hourList) => {
   if (!dayList) {
     return [];
   }
-  return [groupHoursByDay(hourList), ...generateSevenDays()].map(value => {
+  return [...[...generateSevenDays()].map(value => {
     const dayFromList = dayList.find(valueDay => valueDay.day === value.day)
     if (!dayFromList) {
       return value;
     }
     return dayFromList;
-  })
+  }), groupHoursByDay(hourList)]
 };
 
 const getMonths = (dayList = [], hourList ) => {
