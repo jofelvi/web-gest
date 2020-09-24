@@ -155,8 +155,8 @@ function* fetchTaskList({ payload }) {
     const filtersUser = yield select(state => state.tasks.generalFilterUser);
     const username = utils.getMe().id
 
-    //const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
-    const defaultResponse = require('../../datamockup/dataTaskList.json')
+    const defaultResponse = yield call( api.fetchTaskList, sortBy, sortOrder );
+    //const defaultResponse = require('../../datamockup/dataTaskList.json')
 
     let data = defaultResponse.data
 
