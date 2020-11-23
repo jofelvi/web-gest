@@ -126,6 +126,7 @@ function* loadProducts() {
   try {
     const response = yield call(api.getProducts);
     yield put(loadProductsSuccess({ products: response.data }));
+
   } catch (e) {
     console.error(e);
     yield put(loadProductsFailed());

@@ -8,9 +8,19 @@ import {
   FETCH_ENTITY_BY_ID_SUCCESS,
   FETCH_ORDER_BY_ID_SUCCESS,
   FETCH_PRODUCT_BY_ID_SUCCESS,
+  FETCH_ORDERS_COUNT_SUCCESS,
   FETCH_ORDERS_FAILED,
   SEARCH_ORDER,
-  FETCH_CLIENT_BY_ID_SUCCESS
+  COUNT_ORDERS,
+  FETCH_CLIENT_BY_ID_SUCCESS,
+  DELETE_ORDER_LINE_BY_ID,
+  DELETE_ORDER_LINE_BY_ID_FAILED,
+  DELETE_ORDER_LINE_SET_LOADING,
+  DELETE_ORDER_BY_ID,
+  DELETE_ORDER_BY_ID_SUCCESS,
+  DELETE_ORDER_BY_ID_FAILED,
+  DELETE_ORDER_SET_LOADING
+
 } from './actionTypes';
 
 export const {
@@ -18,12 +28,21 @@ export const {
   fetchOrderById,
   fetchEntityById,
   fetchEntityByIdSuccess,
+  fetchOrdersCountSuccess,
   fetchClientByIdSuccess,
   fetchProductByIdSuccess,
   fetchOrdersSuccess,
   fetchOrderByIdSuccess,
   fetchOrdersFailed,
   searchOrder,
+  countOrders,
+  deleteOrderLineById,
+  deleteOrderLineByIdFailed,
+  deleteOrderLineSetLoading,
+  deleteOrderById,
+  deleteOrderByIdSuccess,
+  deleteOrderByIdFailed,
+  deleteOrderSetLoading,
   
 } = createActions(
   FETCH_ORDERS,
@@ -31,10 +50,18 @@ export const {
   FETCH_ORDER_BY_ID,
   FETCH_ENTITY_BY_ID,
   FETCH_ENTITY_BY_ID_SUCCESS,
+  FETCH_ORDERS_COUNT_SUCCESS,
   FETCH_ORDER_BY_ID_SUCCESS,
   FETCH_PRODUCT_BY_ID_SUCCESS,
   FETCH_CLIENT_BY_ID_SUCCESS,
   FETCH_ORDERS_FAILED,
   SEARCH_ORDER,
-  
+  COUNT_ORDERS,
+  DELETE_ORDER_LINE_BY_ID,
+  DELETE_ORDER_LINE_BY_ID_FAILED,
+  DELETE_ORDER_LINE_SET_LOADING,
+  DELETE_ORDER_BY_ID,
+  DELETE_ORDER_BY_ID_SUCCESS,
+  DELETE_ORDER_BY_ID_FAILED,
+  DELETE_ORDER_SET_LOADING,
 );

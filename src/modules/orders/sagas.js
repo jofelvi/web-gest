@@ -5,6 +5,10 @@ import * as HttpStatus from 'http-status-codes'
 import {
   fetchOrdersSuccess,
   fetchOrdersFailed,
+  deleteOrderLineByIdFailed,
+  deleteOrderByIdFailed,
+  deleteOrderByIdSuccess,
+  fetchOrdersCountSuccess,
   fetchOrderByIdSuccess,
   fetchEntityByIdSuccess,
   fetchClientByIdSuccess,
@@ -13,13 +17,15 @@ import {
 import {
   FETCH_ORDERS,
   SEARCH_ORDER,
+  COUNT_ORDERS,
   FETCH_ORDER_BY_ID,
+  DELETE_ORDER_LINE_BY_ID,
+  DELETE_ORDER_BY_ID
 } from './actionTypes';
 
 import * as api from './api';
 
 function* fetchOrders({ payload }) {
-
   try {
     const response = yield call(api.fetchOrders, payload);
 
@@ -35,6 +41,25 @@ function* fetchOrders({ payload }) {
 }
 export function* watchfetchOrders() {
   yield takeLatest(FETCH_ORDERS, fetchOrders);
+}
+
+
+function* countOrders({ payload }) {
+  try {
+    const response = yield call(api.countOrders, payload);
+
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    }
+
+    yield put(fetchOrdersCountSuccess({ count: response.data.count }));
+  } catch (e) {
+    console.error(e);
+    yield put(0);
+  }
+}
+export function* watchcountOrders() {
+  yield takeLatest(COUNT_ORDERS, countOrders);
 }
 
 
@@ -64,6 +89,68 @@ function* fetchOrderById({ payload }) {
 
 export function* watchfetchOrdersById() {
   yield takeLatest(FETCH_ORDER_BY_ID, fetchOrderById);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function* deleteOrderById({ payload }) {
+  try {
+
+    //const response = yield call(api.deleteOrderLineById, payload.id);
+    const response = yield call(api.deleteOrderById, payload.id);
+    //const response = require('../../datamockup/dataOrderDelete.json')
+
+    yield sleep(2000)
+    //test with error
+    //
+    //throw 'Unrecognized error';
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    } else {
+      yield put(deleteOrderByIdSuccess());
+    }
+  } catch (e) {
+    console.error(e);
+    yield put(deleteOrderByIdFailed({
+      message: 'No se pudo borrar el pedido.'
+    }));
+  }
+}
+
+export function* watchdeleteOrderById() {
+  yield takeLatest(DELETE_ORDER_BY_ID, deleteOrderById);
+}
+
+
+function* deleteOrderLineById({ payload }) {
+  try {
+
+    const response = yield call(api.deleteOrderLineById, payload.idpedido, payload.idproducto);
+  console.log( 'response' )
+    console.log( response)
+    //const response = require('../../datamockup/dataOrder.json')
+
+    //test with error
+    //
+    //throw 'Unrecognized error';
+
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    } else {
+      yield put(fetchOrderByIdSuccess({ order: response.data }));
+    }
+  } catch (e) {
+    console.error(e);
+    yield put(deleteOrderLineByIdFailed({
+      message: 'No se pudo borrar la línea.'
+    }));
+  }
+}
+
+export function* watchdeleteOrderLineById() {
+  yield takeLatest(DELETE_ORDER_LINE_BY_ID, deleteOrderLineById);
 }
 
 

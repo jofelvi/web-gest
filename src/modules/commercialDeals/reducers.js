@@ -85,10 +85,12 @@ export default handleActions(
       ...state,
       subFamilies: payload.subFamilies
     }),
-    [loadProductsSuccess]: (state, { payload })=>({
-      ...state,
-      products: payload.products
-    }),
+    [loadProductsSuccess]: (state, { payload })=>{
+        return ({
+            ...state,
+            products: payload.products
+        })
+    },
     [loadBrandsSuccess]: (state, { payload })=>({
       ...state,
       brands: payload.brands

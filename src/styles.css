@@ -186,3 +186,13 @@ body{
     border-color: #005cb3 !important;
     color: white !important;
 }
+
+
+.ant-btn-dangerous {
+    color: #ff4d4f;
+    background: #fff;
+    border-color: #ff4d4f;
+}
+.ant-calendar-range-picker-input:placeholder-shown {
+    font-size: 10px;
+}

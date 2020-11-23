@@ -3,7 +3,11 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Descriptions, Table } from 'antd';
+import {Button, Descriptions, Popconfirm, Table} from 'antd';
+import {
+    DeleteOutlined,
+    LoadingOutlined,
+} from '@ant-design/icons';
 
 import {
   InfoContainer,
@@ -11,8 +15,9 @@ import {
   TableContainer,
 } from './styles';
 
-const { Column } = Table;
+import {deleteOrderLineSetLoading} from "../../modules/orders/actions";
 
+const { Column } = Table;
 
 const InfoCardOrder = ({
 orders,
@@ -22,7 +27,11 @@ stateOrder,
 dateModOrder,
 typeOrder,
 codDiscountOrder,
-detailOrder
+detailOrder,
+setLoading,
+loading,
+deleteOrderLineById,
+deleteOrderLineSetLoading,
 }) => (
     <div>
       <InfoContainer>
@@ -37,7 +46,7 @@ detailOrder
         </Descriptions>
         </DescriptionContainer>
         <TableContainer>
-         
+
       <Table dataSource= {detailOrder} pagination= {false}>
           {/* <Column
             title="Item"
@@ -62,9 +71,9 @@ detailOrder
             dataIndex="cantidad"
             key="cantidad"
           />
-          
-         
-        
+
+
+
           <Column
             title="Descuento"
             dataIndex="descuento"
@@ -86,12 +95,32 @@ detailOrder
           key="puntos_coste_unidad"
         />
         :''}
-         
-          
+          { detailOrder && detailOrder.length > 1 &&
+          <Column
+              title="Acciones"
+              dataIndex="delete"
+              key="delete"
+              render={ (text, row) => (
+                  <Popconfirm
+                      placement="topLeft"
+                      title={`Se va a proceder a la anulación de la línea del producto ${row.nombre}`}
+                      onConfirm={() => {
+                          deleteOrderLineSetLoading({ id: row.idproducto })
+                          deleteOrderLineById({ idproducto: row.idproducto, idpedido: row.idpedido   })
+                      }}
+                      okText="Confirmar"
+                      cancelText="Cancelar"
+                  >
+                      <Button disabled={loading!=false} className="ant-btn-dangerous" danger style={{marginTop: '10px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteOutlined /> }</Button>
+                  </Popconfirm>)
+              }
+          />
+          }
+
         </Table>
         </TableContainer>
       </InfoContainer>
-      
+
     </div>
   )
 
