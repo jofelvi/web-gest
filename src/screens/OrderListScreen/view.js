@@ -24,7 +24,6 @@ import InfoCardOrder from '../../components/InfoCardOrder/view';
 import {modifyOrderDate, filterOrderType} from './utils';
 import {countOrders, deleteOrderLineSetLoading} from "../../modules/orders/actions";
 import ButtonGroup from "antd/lib/button/button-group";
-import ModalCreateOrder from '../Forms/crear_pedido';
 import { Anchor } from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
 
@@ -49,6 +48,7 @@ class OrderListScreen extends React.Component {
     count: 0,
     buttonIsvisible: false,
     searchByOrderDate: [],
+    searchByOrderDateValue: [],
     visible: false,
     create_visible: false,
     loadingLine: false,
@@ -78,13 +78,13 @@ class OrderListScreen extends React.Component {
   showModal = (id) => { this.setState({ visible: true, order_id: id }); };
   handleOk = () => { this.setState({ visible: false }); };
   handleCancel = () => { this.setState({ visible: false }); };
-  showCreateModal = () => { this.setState({ create_visible: true }); };
   handleCreateOk = () => { this.setState({ create_visible: false }); };
   handleCreateCancel = () => { this.setState({ create_visible: false }); };
 
   clearFilters = () => {
     this.setState({
       searchByClient: '',
+      searchByOrderDateValue: [],
       searchByEntity: '',
       searchByType: '',
       searchByOrderDate: [],
@@ -111,6 +111,10 @@ class OrderListScreen extends React.Component {
           moment(dateString[0]).startOf('day').toDate().toISOString(),
           moment(dateString[1]).endOf('day').toDate().toISOString(),
         ],
+        searchByOrderDateValue: [
+          moment(dateString[0]),
+          moment(dateString[1])
+        ]
       });
     }
 
@@ -172,6 +176,7 @@ class OrderListScreen extends React.Component {
                     format={dateFormat}
                     onChange={this.searchedValueDate}
                     placeholder={['desde', 'hasta']}
+                    value={this.state.searchByOrderDateValue}
                 />
               </Col>
               <Col span={5} style={{padding: '10px'}}>
@@ -227,9 +232,6 @@ class OrderListScreen extends React.Component {
             </Row>
           </InputsContainer>
           <TableContainer>
-            <ButtonGroup className="orders-top-actions">
-              <Button onClick={this.showCreateModal}>Nuevo</Button>
-            </ButtonGroup>
             <Table
                 dataSource={modifyOrderDate(orders)}
                 className="table"
@@ -293,12 +295,6 @@ class OrderListScreen extends React.Component {
 
             </Table>
           </TableContainer>
-          <ModalCreateOrder
-              visibility={this.state.create_visible}
-              ok={this.handleCreateOk}
-              cancel={this.handleCreateCancel}
-          >
-          </ModalCreateOrder>
           <ModalDetailOrder
             visibility={this.state.visible && order}
             ok={this.handleOk}
