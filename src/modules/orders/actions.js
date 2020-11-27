@@ -19,7 +19,9 @@ import {
   DELETE_ORDER_BY_ID,
   DELETE_ORDER_BY_ID_SUCCESS,
   DELETE_ORDER_BY_ID_FAILED,
-  DELETE_ORDER_SET_LOADING
+  DELETE_ORDER_SET_LOADING,
+  CHANGE_ORDER_STATUS_BY_ID,
+  CHANGE_ORDER_STATUS_BY_ID_SUCCESS,
 
 } from './actionTypes';
 
@@ -43,7 +45,8 @@ export const {
   deleteOrderByIdSuccess,
   deleteOrderByIdFailed,
   deleteOrderSetLoading,
-  
+  changeOrderStatusById,
+  changeOrderStatusByIdSuccess,
 } = createActions(
   FETCH_ORDERS,
   FETCH_ORDERS_SUCCESS,
@@ -64,4 +67,6 @@ export const {
   DELETE_ORDER_BY_ID_SUCCESS,
   DELETE_ORDER_BY_ID_FAILED,
   DELETE_ORDER_SET_LOADING,
+  CHANGE_ORDER_STATUS_BY_ID,
+  CHANGE_ORDER_STATUS_BY_ID_SUCCESS,
 );

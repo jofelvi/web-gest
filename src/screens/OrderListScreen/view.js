@@ -26,6 +26,7 @@ import {countOrders, deleteOrderLineSetLoading} from "../../modules/orders/actio
 import ButtonGroup from "antd/lib/button/button-group";
 import { Anchor } from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
+import OrderStatusActions from './components/OrderStatusActions';
 
 import {Select } from 'antd';
 const { Link } = Anchor;
@@ -141,6 +142,65 @@ class OrderListScreen extends React.Component {
       );
   }
 
+  previewOrder = (order) => {
+    const columnsEntities = [
+      {
+        title: 'Cod. Nacional',
+        dataIndex: 'codnacional',
+        key: 'codnacional',
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a,b) => a.codnacional - b.codnacional
+      },
+      {
+        title: 'Cod. Indas',
+        dataIndex: 'codindas',
+        key: 'codindas',
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a,b) => a.codindas - b.codindas
+      },
+      {
+        title: 'Nombre',
+        dataIndex: 'nombre',
+        key: 'nombre',
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a,b) => a.nombre - b.nombre
+      },
+      {
+        title: 'Cantidad',
+        dataIndex: 'cantidad',
+        key: 'cantidad',
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a,b) => a.cantidad - b.cantidad
+      },
+      {
+        title: 'Descuento',
+        dataIndex: 'descuento',
+        key: 'descuento',
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a,b) => a.descuento - b.descuento
+      },
+      {
+        title: order.tipo == 'Pedidos' ? 'Puntos Acumulados' : 'Punto Coste',
+        dataIndex: order.tipo == 'Pedidos' ? 'puntos_acumulados_unidad' : 'puntos_coste_unidad',
+        key: order.tipo == 'Pedidos' ? 'puntos_acumulados_unidad' : 'puntos_coste_unidad',
+        sortDirections: ['descend', 'ascend'],
+      },
+
+    ]
+    return (
+        <div className="table-indas-expand">
+          <h4 className="table-indas-title">Detalles del pedido</h4>
+          <Table
+              dataSource={order.lineas}
+              columns={columnsEntities}
+              rowKey="idproducto"
+              size="small"
+              pagination={false}
+          ></Table>
+        </div>
+    );
+  }
+
   handleSubmitOrdersSearch = () => {
 
     const { searchOrder } = this.props;
@@ -235,6 +295,7 @@ class OrderListScreen extends React.Component {
             <Table
                 dataSource={modifyOrderDate(orders)}
                 className="table"
+                expandedRowRender = {order => this.previewOrder(order)}
                 pagination={{
                   position:'both',
                   pageSize: LIMIT,
@@ -247,30 +308,29 @@ class OrderListScreen extends React.Component {
             >
 
               <Column
-                title="Nº pedido"
+                title="Núm. Pedido"
                 dataIndex="codpedido_origen"
                 key="codpedido_origen"
               />
 
               <Column
-                title="Fecha"
+                title="Fecha Pedido"
                 dataIndex="fecha_pedido"
                 key="fecha_pedido" />
 
               <Column
-                title="Entidad"
+                title="Nombre Entidad"
                 dataIndex="nomentidad_cbim"
                 key="nomentidad_cbim" />
 
               <Column
-                title="Cod. Cliente"
+                title="Código Cliente"
                 dataIndex="codcli_cbim"
                 key="codcli_cbim"
-
               />
 
               <Column
-                title="Tipo"
+                title="Tipo de Pedido"
                 dataIndex="tipo"
                 key="tipo" />
 
@@ -282,10 +342,11 @@ class OrderListScreen extends React.Component {
               <Column
                 title="Estado"
                 dataIndex="nombre_estado"
-                key="nombre_estado" />
+                key="nombre_estado"
+                render={ ( txt, record, i ) => ( <OrderStatusActions order={ record } /> ) }
+              />
 
               <Column
-                title="Ver detalle"
                 key="operation"
                 render={(text, row) => <Button onClick={() => {
                   const id = row.idpedido

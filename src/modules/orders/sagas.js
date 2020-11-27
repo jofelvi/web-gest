@@ -12,6 +12,7 @@ import {
   fetchOrderByIdSuccess,
   fetchEntityByIdSuccess,
   fetchClientByIdSuccess,
+  changeOrderStatusByIdSuccess,
 } from './actions';
 
 import {
@@ -20,7 +21,8 @@ import {
   COUNT_ORDERS,
   FETCH_ORDER_BY_ID,
   DELETE_ORDER_LINE_BY_ID,
-  DELETE_ORDER_BY_ID
+  DELETE_ORDER_BY_ID,
+  CHANGE_ORDER_STATUS_BY_ID,
 } from './actionTypes';
 
 import * as api from './api';
@@ -101,10 +103,6 @@ function* deleteOrderById({ payload }) {
     //const response = yield call(api.deleteOrderLineById, payload.id);
     const response = yield call(api.deleteOrderById, payload.id);
     //const response = require('../../datamockup/dataOrderDelete.json')
-
-    yield sleep(2000)
-    //test with error
-    //
     //throw 'Unrecognized error';
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
@@ -121,6 +119,29 @@ function* deleteOrderById({ payload }) {
 
 export function* watchdeleteOrderById() {
   yield takeLatest(DELETE_ORDER_BY_ID, deleteOrderById);
+}
+
+
+
+function* changeOrderStatusById({ payload }) {
+  try {
+    alert(" trying")
+    console.log(' try hard')
+    console.log( payload )
+
+    const response = yield call(api.changeOrderStatusById, payload.id, payload.status);
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    } else {
+      yield put(changeOrderStatusByIdSuccess( { order: response.data } ) );
+    }
+  } catch (e) {
+   alert("No se ha podido cambiar el estado..")
+  }
+}
+
+export function* watchchangeOrderStatusById() {
+  yield takeLatest(CHANGE_ORDER_STATUS_BY_ID, changeOrderStatusById);
 }
 
 

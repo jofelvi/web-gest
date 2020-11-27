@@ -22,7 +22,6 @@ export const fetchOrders = async (page) => {
   offset = page;
   let queryParams = generatingOffset(page, offset)
   return get(`ntr/pedido?${queryParams}`);
-
 }
 
 
@@ -102,3 +101,4 @@ export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);
 
 export const deleteOrderLineById = (idOrder, idProduct) => del(`/ntr/linea_pedido/${idOrder}/producto/${idProduct}`);
 export const deleteOrderById = (idOrder) => post(`ntr/pedido/${idOrder}/estado`, {codestado: 'canceled' });
+export const changeOrderStatusById = (idOrder, status) => post(`ntr/pedido/${idOrder}/estado`, {codestado: status });

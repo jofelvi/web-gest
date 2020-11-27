@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { map } from 'underscore';
 
 import {
     fetchOrdersSuccess,
@@ -12,6 +13,7 @@ import {
     deleteOrderByIdSuccess,
     deleteOrderByIdFailed,
     deleteOrderSetLoading,
+    changeOrderStatusByIdSuccess,
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
@@ -23,6 +25,12 @@ const defaultState = {
 
 export default handleActions(
   {
+      [changeOrderStatusByIdSuccess]: (state, { payload }) => {
+          const updatedList = map( state.list, ( order ) => ( order.idpedido == payload.order.idpedido ? payload.order : order  ) )
+          return {
+         ...state,
+         list: updatedList
+      }},
     [fetchOrdersSuccess]: (state, { payload }) => ({
       ...state,
       list: payload.orders
