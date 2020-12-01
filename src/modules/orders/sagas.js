@@ -13,6 +13,7 @@ import {
   fetchEntityByIdSuccess,
   fetchClientByIdSuccess,
   changeOrderStatusByIdSuccess,
+  changeOrderStatusByIdFailed
 } from './actions';
 
 import {
@@ -125,18 +126,16 @@ export function* watchdeleteOrderById() {
 
 function* changeOrderStatusById({ payload }) {
   try {
-    alert(" trying")
-    console.log(' try hard')
-    console.log( payload )
-
-    const response = yield call(api.changeOrderStatusById, payload.id, payload.status);
+    const response = yield call(api.changeOrderStatusById, payload.idpedido, payload.codestado);
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
+    } else if (response.status === HttpStatus.OK ) {
+      yield put(changeOrderStatusByIdSuccess( { idpedido: payload.idpedido, codestado: payload.codestado, nombre_estado: payload.nombre_estado } ) );
     } else {
-      yield put(changeOrderStatusByIdSuccess( { order: response.data } ) );
+      yield put(changeOrderStatusByIdFailed( { idpedido: payload.idpedido, message: 'No se ha podido actualizar el estado.' } ) );
     }
   } catch (e) {
-   alert("No se ha podido cambiar el estado..")
+    yield put(changeOrderStatusByIdFailed( { idpedido: payload.idpedido, message: 'No se ha podido actualizar el estado.' } ) );
   }
 }
 

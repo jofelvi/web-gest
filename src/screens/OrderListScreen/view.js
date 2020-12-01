@@ -393,7 +393,8 @@ class OrderListScreen extends React.Component {
                   <InfoCardOrder
                     numOrder={order.codpedido_origen}
                     dateOrder={Utils.renderDate(order.fecha_alta)}
-                    stateOrder={order.estado}
+                    stateOrder={order.nombre_estado}
+                    codestadoOrder={order.codestado}
                     dateModOrder={order.fecha_modif === null ? '' : Utils.renderDate(order.fecha_modif)}
                     typeOrder={order.tipo}
                     codDiscountOrder={order.codcupon}

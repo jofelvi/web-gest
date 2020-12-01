@@ -14,23 +14,50 @@ import {
     deleteOrderByIdFailed,
     deleteOrderSetLoading,
     changeOrderStatusByIdSuccess,
+    changeOrderStatusByIdFailed,
+    changeOrderStatusSetLoading
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
 
 const defaultState = {
   list: [],
-  count: 0
+  count: 0,
+    changeOrderLoadingId: 0,
+    changeOrderErrorId: 0,
+    changeOrderErrorMessage: '',
 };
 
 export default handleActions(
   {
       [changeOrderStatusByIdSuccess]: (state, { payload }) => {
-          const updatedList = map( state.list, ( order ) => ( order.idpedido == payload.order.idpedido ? payload.order : order  ) )
+          const updatedList = map( state.list, ( order ) => {
+              if ( order.idpedido == payload.idpedido ) {
+                  const parsed_order = { ...order, codestado: payload.codestado, nombre_estado: payload.nombre_estado }
+                  return parsed_order;
+              }
+              return order;
+          } );
           return {
-         ...state,
-         list: updatedList
-      }},
+            ...state,
+              changeOrderLoadingId: -1,
+              changeOrderErrorId: 0,
+              changeOrderErrorMessage: '',
+             list: updatedList
+        }
+      },
+      [changeOrderStatusByIdFailed]: (state, { payload }) => {
+          return {
+              ...state,
+              changeOrderLoadingId: -1,
+              changeOrderErrorId: payload.idpedido,
+              changeOrderErrorMessage: payload.message,
+          }},
+
+      [changeOrderStatusSetLoading]: (state, { payload }) => ({
+              ...state,
+              changeOrderLoadingId: payload.idpedido
+          }),
     [fetchOrdersSuccess]: (state, { payload }) => ({
       ...state,
       list: payload.orders

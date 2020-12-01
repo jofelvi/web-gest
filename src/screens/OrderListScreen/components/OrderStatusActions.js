@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import {LoadingOutlined} from "@ant-design/icons";
 
 import { Menu, Dropdown } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 import {
     changeOrderStatusById,
+    changeOrderStatusSetLoading,
 } from '../../../modules/orders/actions';
 
 
@@ -17,22 +19,24 @@ class OrderStatusActions extends React.Component {
         this.changeStatus = this.changeStatus.bind( this );
     }
 
-    changeStatus( status ) {
-        const { order } = this.props;
-        alert("ho")
-        changeOrderStatusById ( { id: order.idpedido, status: status } )
+    changeStatus( status, status_name ) {
+        const { order, changeOrderStatusById, changeOrderStatusSetLoading } = this.props;
+        changeOrderStatusById ( { idpedido: order.idpedido, codestado: status, nombre_estado: status_name } )
+        changeOrderStatusSetLoading ( { idpedido: order.idpedido })
     }
 
     render() {
-        const { order } = this.props;
+        const { order, changeStateLoadingId } = this.props;
         let items = [];
 
+        const loading = changeStateLoadingId > 0;
+
         if ( order.codestado == 'retained' || order.codestado == 'completed' ) {
-            items.push( { label: 'Enviar a Mayorista', action: 'pending' } )
-            items.push( { label: 'Anular pedido', action: 'canceled' } )
+            items.push( { label: 'Enviar a Mayorista', action: 'pending', action_name: 'En envío a Mayorista' } )
+            items.push( { label: 'Anular pedido', action: 'canceled', action_name: 'Anulado' } )
         } else if ( order.codestado == 'pending' ) {
-            items.push( { label: 'Marcar como Retenido', action: 'retained' } )
-            items.push( { label: 'Marcar como Tramitado', action: 'completed' } )
+            items.push( { label: 'Marcar como Retenido', action: 'retained', action_name: 'Retenido' } )
+            items.push( { label: 'Marcar como Tramitado', action: 'completed', action_name: 'Tramitado' } )
         }
 
         const menu = (
@@ -43,18 +47,29 @@ class OrderStatusActions extends React.Component {
                             onClick={
                                 (event) => {
                                     this.changeStatus(
-                                        event.target.attributes['data-action'].value
+                                        event.target.attributes['data-action'].value,
+                                        event.target.attributes['data-action-name'].value,
                                     )
                                 }
                             }
                            data-action={ item.action }
+                            data-action-name={ item.action_name }
                         >{ item.label }</a>
                     </Menu.Item>
                 ) ) }
             </Menu>
         );
 
-        const settings = items.length > 0 ? { } : { disabled : true }
+        console.log('----')
+        console.log('CURRENT ' + changeStateLoadingId)
+        console.log('CURRENT ' + items.length)
+        console.log(order)
+
+        const settings = items.length > 0 && changeStateLoadingId < 1 ? { } : { disabled: true }
+
+        if ( loading && changeStateLoadingId == order.idpedido ) {
+            return (<LoadingOutlined />);
+        }
 
         return (
             <div>
@@ -74,4 +89,4 @@ OrderStatusActions.propTypes = {
     order: PropTypes.shape({}).isRequired,
 };
 
-export default connect( ( status ) => ({}), { changeOrderStatusById } )( OrderStatusActions );
+export default connect( ( state ) => ({ changeStateLoadingId: state.orders.changeOrderLoadingId }), { changeOrderStatusById, changeOrderStatusSetLoading } )( OrderStatusActions );

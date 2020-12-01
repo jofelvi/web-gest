@@ -24,6 +24,7 @@ orders,
 numOrder,
 dateOrder,
 stateOrder,
+codestadoOrder,
 dateModOrder,
 typeOrder,
 codDiscountOrder,
@@ -95,7 +96,7 @@ deleteOrderLineSetLoading,
           key="puntos_coste_unidad"
         />
         :''}
-          { detailOrder && detailOrder.length > 1 &&
+          { detailOrder &&
           <Column
               title="Acciones"
               dataIndex="delete"
@@ -111,7 +112,7 @@ deleteOrderLineSetLoading,
                       okText="Confirmar"
                       cancelText="Cancelar"
                   >
-                      <Button disabled={loading!=false} className="ant-btn-dangerous" danger style={{marginTop: '10px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteOutlined /> }</Button>
+                      <Button disabled={ detailOrder.length < 2 || loading || ( codestadoOrder != 'completed' && codestadoOrder != 'retained' )} className="ant-btn-dangerous" danger style={{marginTop: '10px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteOutlined /> }</Button>
                   </Popconfirm>)
               }
           />
