@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {LoadingOutlined} from "@ant-design/icons";
+import {DeleteOutlined, LoadingOutlined} from "@ant-design/icons";
 
-import { Menu, Dropdown } from 'antd';
+import {Menu, Dropdown, Button, Popconfirm} from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 import {
@@ -43,27 +43,22 @@ class OrderStatusActions extends React.Component {
             <Menu>
                 { items.map( ( item, index ) => (
                     <Menu.Item key={ index }>
-                        <a
-                            onClick={
-                                (event) => {
-                                    this.changeStatus(
-                                        event.target.attributes['data-action'].value,
-                                        event.target.attributes['data-action-name'].value,
-                                    )
-                                }
-                            }
-                           data-action={ item.action }
-                            data-action-name={ item.action_name }
-                        >{ item.label }</a>
+                        <Popconfirm
+                            placement="topLeft"
+                            title={`Se va a proceder a cambiar a '${item.action_name}'`}
+                            onConfirm={() => {
+                                this.changeStatus(item.action, item.action_name)
+                            }}
+                            okText="Confirmar"
+                            cancelText="Cancelar"
+                        >
+                            <a>{ item.label }</a>
+                        </Popconfirm>
+
                     </Menu.Item>
                 ) ) }
             </Menu>
         );
-
-        console.log('----')
-        console.log('CURRENT ' + changeStateLoadingId)
-        console.log('CURRENT ' + items.length)
-        console.log(order)
 
         const settings = items.length > 0 && changeStateLoadingId < 1 ? { } : { disabled: true }
 

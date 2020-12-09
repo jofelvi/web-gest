@@ -55,7 +55,7 @@ export const countOrders = async ({
 };
 
 export const searchOrder = async ({
-  codentidad_cbim, codpedido_origen, codcli_cbim, tipo, pages, dates
+  codentidad_cbim, codpedido_origen, codcli_cbim, tipo, pages, dates, codestado
 }) => {
     
   let offset;
@@ -79,6 +79,11 @@ let queryParams = generatingOffset(pages, offset)
   if (codcli_cbim) {
     queryParams += `&codcli_cbim=${codcli_cbim}`;
   }
+  //BY CLIENT
+  if (codestado) {
+    queryParams += `&codestado=${codestado}`;
+  }
+
   //BY ENTITY
   if (codentidad_cbim) {
     queryParams += `&codentidad_cbim=${codentidad_cbim}`;
@@ -98,7 +103,11 @@ export const fetchEntityById = (idEntity) => get(`/ntr/entidad/${idEntity}`);
 
 
 export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);
+export const fetchOrderStates = (idOrder) => get(`/ntr/pedido/estados`);
 
-export const deleteOrderLineById = (idOrder, idProduct) => del(`/ntr/linea_pedido/${idOrder}/producto/${idProduct}`);
-export const deleteOrderById = (idOrder) => post(`ntr/pedido/${idOrder}/estado`, {codestado: 'canceled' });
-export const changeOrderStatusById = (idOrder, status) => post(`ntr/pedido/${idOrder}/estado`, {codestado: status });
+//export const deleteOrderLineById = (idOrder, idProduct) => del(`/ntr/linea_pedido/${idOrder}/producto/${idProduct}`);
+export const deleteOrderLineById = (idOrder, idProduct) => post(`/procdef/cancelar_linea_pedido/launch`, [{ name: 'codpedido_origen', value: idOrder},{ name: 'idproducto', value: parseInt(idProduct)},{ name: 'origen', value: "NTR-G" }]);
+
+export const deleteOrderById = (idOrder, status) => post(`/procdef/modificar_estado_pedido/launch`, [{name: 'codpedido_origen', value: idOrder}, {name: 'codestado', value: 'canceled'}, {name: 'origen', value: 'NTR-G' }]);
+//export const changeOrderStatusById = (idOrder, status) => post(`ntr/pedido/${idOrder}/estado`, {codestado: status });
+export const changeOrderStatusById = (idOrder, status) => post(`/procdef/modificar_estado_pedido/launch`, [{name: 'codpedido_origen', value: idOrder}, {name: 'codestado', value: status}, {name: 'origen', value: 'NTR-G' }]);

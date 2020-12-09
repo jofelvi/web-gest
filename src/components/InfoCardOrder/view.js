@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import {Button, Descriptions, Popconfirm, Table} from 'antd';
 import {
-    DeleteOutlined,
+    DeleteRowOutlined,
     LoadingOutlined,
 } from '@ant-design/icons';
 
@@ -107,7 +107,7 @@ deleteOrderLineSetLoading,
                                 if ( disable ) {
                                     return (
                                         <Tooltip title="Sólo se pueden modificar pedidos en estado 'Tramitado' y 'Retenido'">
-                                            <Button disabled={ true } className="ant-btn-dangerous" danger style={{marginTop: '10px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteOutlined /> }</Button>
+                                            <Button disabled={ true } className="ant-btn-dangerous" danger style={{marginTop: '0px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteRowOutlined /> }</Button>
                                         </Tooltip>
                                         );
                                 }
@@ -122,7 +122,7 @@ deleteOrderLineSetLoading,
                                         okText="Confirmar"
                                         cancelText="Cancelar"
                                     >
-                                        <Button className="ant-btn-dangerous" danger style={{marginTop: '10px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteOutlined /> }</Button>
+                                        <Button className="ant-btn-dangerous" danger style={{marginTop: '0px'}}>{ loading == row.idproducto ? <LoadingOutlined /> : <DeleteRowOutlined /> }</Button>
                                     </Popconfirm>);
                                 }
                             }
@@ -143,11 +143,7 @@ deleteOrderLineSetLoading,
 
 
 InfoCardOrder.propTypes = {
-  status: PropTypes.string.isRequired,
-  history: PropTypes.shape({}).isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string
-  }).isRequired
+
 };
 
 export default InfoCardOrder;

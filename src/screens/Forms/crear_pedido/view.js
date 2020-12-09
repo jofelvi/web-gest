@@ -46,7 +46,6 @@ class ModalCreateOrder extends React.Component {
     onProductSearch(searchText) {
         var options = []
         if ( searchText && this.props.products && this.props.products.length > 0) {
-            console.log('--- FILTERING: '+searchText)
             const mappedProducts = _.map(this.props.products, (product) => {
                 return {value: product.codnacional }
             })
@@ -59,7 +58,6 @@ class ModalCreateOrder extends React.Component {
         }
 
 
-        console.log('--- binding options')
         console.log(options)
 
         this.setState({ productOptions: options })

@@ -7,6 +7,7 @@ import {
     countOrders,
     deleteOrderLineById,
     deleteOrderLineSetLoading,
+    fetchOrderStates
 } from '../../modules/orders/actions';
 
 import View from './view';
@@ -18,6 +19,9 @@ export default connect(
     count: state.orders.count,
     entity: state.orders.byCodEntity,
     client: state.orders.byIdClient,
+    states: state.orders.states,
+      deleteLineLoadingId: state.orders.deleteLineLoadingId,
+      deleteLoadingId: state.orders.deleteLoadingId,
   }),
-  {fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading }
+  {fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading, fetchOrderStates }
 )(View);

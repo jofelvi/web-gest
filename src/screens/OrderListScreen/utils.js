@@ -11,7 +11,8 @@ export const modifyOrderDate = (order) => {
 
         orderFilterd = {
             ...ord,
-            fecha_pedido: Utils.renderDate(date)
+            fecha_pedido: Utils.renderDate(date),
+            key: ''+ord.idpedido,
         };
         return newOderList.push(orderFilterd);
     })

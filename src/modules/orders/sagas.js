@@ -13,7 +13,9 @@ import {
   fetchEntityByIdSuccess,
   fetchClientByIdSuccess,
   changeOrderStatusByIdSuccess,
-  changeOrderStatusByIdFailed
+  changeOrderStatusByIdFailed,
+  fetchOrderStatesSuccess,
+  deleteOrderLineByIdSuccess
 } from './actions';
 
 import {
@@ -24,6 +26,7 @@ import {
   DELETE_ORDER_LINE_BY_ID,
   DELETE_ORDER_BY_ID,
   CHANGE_ORDER_STATUS_BY_ID,
+  FETCH_ORDER_STATES
 } from './actionTypes';
 
 import * as api from './api';
@@ -44,6 +47,24 @@ function* fetchOrders({ payload }) {
 }
 export function* watchfetchOrders() {
   yield takeLatest(FETCH_ORDERS, fetchOrders);
+}
+
+function* fetchOrderStates({ payload }) {
+  try {
+    const response = require('../../datamockup/dataOrderStates.json')
+    //const response = yield call(api.fetchOrderStates, payload);
+
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    }
+
+    yield put(fetchOrderStatesSuccess({ states: response.data }));
+  } catch (e) {
+    console.error(e);
+  }
+}
+export function* watchfetchOrderStates() {
+  yield takeLatest(FETCH_ORDER_STATES, fetchOrderStates);
 }
 
 
@@ -107,11 +128,14 @@ function* deleteOrderById({ payload }) {
     //throw 'Unrecognized error';
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
-    } else {
+    } else if (response.status === HttpStatus.CREATED) {
       yield put(deleteOrderByIdSuccess());
+    } else {
+      yield put(deleteOrderByIdFailed({
+        message: 'No se pudo borrar el pedido.'
+      }));
     }
   } catch (e) {
-    console.error(e);
     yield put(deleteOrderByIdFailed({
       message: 'No se pudo borrar el pedido.'
     }));
@@ -129,7 +153,7 @@ function* changeOrderStatusById({ payload }) {
     const response = yield call(api.changeOrderStatusById, payload.idpedido, payload.codestado);
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
-    } else if (response.status === HttpStatus.OK ) {
+    } else if (response.status === HttpStatus.CREATED ) {
       yield put(changeOrderStatusByIdSuccess( { idpedido: payload.idpedido, codestado: payload.codestado, nombre_estado: payload.nombre_estado } ) );
     } else {
       yield put(changeOrderStatusByIdFailed( { idpedido: payload.idpedido, message: 'No se ha podido actualizar el estado.' } ) );
@@ -148,18 +172,16 @@ function* deleteOrderLineById({ payload }) {
   try {
 
     const response = yield call(api.deleteOrderLineById, payload.idpedido, payload.idproducto);
-  console.log( 'response' )
-    console.log( response)
-    //const response = require('../../datamockup/dataOrder.json')
-
-    //test with error
-    //
-    //throw 'Unrecognized error';
 
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
+    } else if ( response.status == HttpStatus.CREATED ) {
+      const orderResponse = yield call(api.fetchOrderById, payload.id);
+      yield put(deleteOrderLineByIdSuccess({ order: orderResponse.data }));
     } else {
-      yield put(fetchOrderByIdSuccess({ order: response.data }));
+      yield put(deleteOrderLineByIdFailed({
+        message: 'No se pudo borrar la línea.'
+      }));
     }
   } catch (e) {
     console.error(e);

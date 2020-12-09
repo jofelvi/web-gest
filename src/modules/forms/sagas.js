@@ -94,7 +94,6 @@ function* continueProcess({ payload }) {
       );
       payload.history.push(`/process/${processKey}/${response.data.formKey}`);
     } else {
-      console.log('---> completed');
       yield put(setComplete(true));
     }
   } catch (e) {
@@ -174,7 +173,6 @@ function* completeTaskProcess({ payload }) {
     yield put(checkLoginFailed());
     payload.history.push('/login');
   } else {
-    console.log('--> completed');
     yield put(setComplete(true));
     yield put(cleanSelectedTask());
     payload.history.push(`/task/completed`);

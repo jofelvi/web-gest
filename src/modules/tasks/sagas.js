@@ -64,13 +64,10 @@ export function* watchFetchTasks() {
 }
 
 function* fetchTask({ payload }) {
-  console.log('------1')
   try {
     const response = yield call(api.fetchTask, payload);
-    console.log('------2')
 
     yield put(fetchTaskSuccess(response.data));
-    console.log('------3')
   } catch (e) {
     console.error(e);
 
@@ -210,7 +207,6 @@ function* fetchTaskList({ payload }) {
 
 function* fetchTaskListUser({ payload }) {
   try {
-    console.log('--- PAYLOAD');
 
     console.log(payload);
     const sortBy = yield select(state => state.tasks.sortBy);

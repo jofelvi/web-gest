@@ -58,6 +58,7 @@ import{
   watchdeleteOrderById,
   watchdeleteOrderLineById,
   watchchangeOrderStatusById,
+  watchfetchOrderStates,
 } from './orders/sagas';
 import{
   watchfetchSalesByYear,
@@ -141,5 +142,6 @@ export default function* rootSaga() {
     watchGetClientsCount(), 
     watchFetchTaskListUser(),
     watchchangeOrderStatusById(),
+    watchfetchOrderStates()
   ]);
 }

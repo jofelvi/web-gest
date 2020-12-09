@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { map } from 'underscore';
+import { message } from 'antd';
 
 import {
     fetchOrdersSuccess,
@@ -9,20 +10,25 @@ import {
     fetchClientByIdSuccess,
     fetchProductByIdSuccess,
     deleteOrderLineByIdFailed,
+    deleteOrderLineByIdSuccess,
     deleteOrderLineSetLoading,
     deleteOrderByIdSuccess,
     deleteOrderByIdFailed,
     deleteOrderSetLoading,
     changeOrderStatusByIdSuccess,
     changeOrderStatusByIdFailed,
-    changeOrderStatusSetLoading
+    changeOrderStatusSetLoading,
+    fetchOrderStatesSuccess
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
 
 const defaultState = {
-  list: [],
-  count: 0,
+    list: [],
+    states: [],
+    count: 0,
+    deleteLineLoadingId: false,
+    deleteLoadingId: false,
     changeOrderLoadingId: 0,
     changeOrderErrorId: 0,
     changeOrderErrorMessage: '',
@@ -30,6 +36,13 @@ const defaultState = {
 
 export default handleActions(
   {
+      [fetchOrderStatesSuccess]: (state, { payload }) => {
+          console.log('received states', payload)
+          return {
+            ...state,
+              states: payload.states
+          }
+      },
       [changeOrderStatusByIdSuccess]: (state, { payload }) => {
           const updatedList = map( state.list, ( order ) => {
               if ( order.idpedido == payload.idpedido ) {
@@ -47,6 +60,8 @@ export default handleActions(
         }
       },
       [changeOrderStatusByIdFailed]: (state, { payload }) => {
+          message.error(payload.message);
+
           return {
               ...state,
               changeOrderLoadingId: -1,
@@ -87,32 +102,57 @@ export default handleActions(
       byIdProduct: payload.product
     }),
 
-  [deleteOrderLineByIdFailed]: (state, { payload }) => ({
-      ...state,
-      byId: { ...state.byId, error: payload.message, loadingLine: false }
-  }),
-
-      [deleteOrderLineSetLoading]: (state, { payload }) => ({
+  [deleteOrderLineByIdFailed]: (state, { payload }) => {
+      message.error(payload.message);
+          return ({
           ...state,
-          byId: { ...state.byId, loadingLine: payload.id }
-      }),
+          deleteLineLoadingId: false,
+          byId: { ...state.byId, error: payload.message, loadingLine: false }
+      })
+  },
+
+      [deleteOrderLineByIdSuccess]: (state, { payload }) => {
+          const list = state.list.map((item) => {
+              if (item.idpedido == payload.order.idpedido) {
+                  return payload.order
+              }
+              return item
+          })
+
+          return ({
+              ...state,
+              deleteLineLoadingId: false,
+              byId: payload.order,
+              list: list
+          })
+      },
+
+      [deleteOrderLineSetLoading]: (state, { payload }) => {
+          console.log('deleteOrderLineSetLoading', payload, state)
+          return ({
+              ...state,
+              deleteLineLoadingId: payload.id,
+              byId: { ...state.byId, loadingLine: payload.id }
+          })
+      },
 
       [deleteOrderSetLoading]: (state, { payload }) => ({
           ...state,
+          deleteLoadingId: payload.id,
           byId: { ...state.byId, loadingDelete: true }
       }),
-
-
       [deleteOrderByIdSuccess]: (state, { payload }) => ({
           ...state,
           byId: null,
-          loadingDelete: false
+          deleteLoadingId: false
       }),
-
-      [deleteOrderByIdFailed]: (state, { payload }) => ({
-          ...state,
-          byId: { ...state.byId, error: payload.message, loadingDelete: false }
-      }),
+      [deleteOrderByIdFailed]: (state, { payload }) => {
+          message.error(payload.message);
+          return ({
+              ...state,
+              byId: { ...state.byId, error: payload.message, loadingDelete: false }
+          })
+      },
 
 
   },

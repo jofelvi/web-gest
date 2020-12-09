@@ -3,28 +3,28 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import {Button, Modal, Popconfirm, Tooltip} from 'antd';
 import ButtonGroup from "antd/lib/button/button-group";
-import {DeleteOutlined, LoadingOutlined} from "@ant-design/icons";
+import {LoadingOutlined} from "@ant-design/icons";
 
-const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, deleteOrderById, order, entity, client, deleteOrderSetLoading }) =>
+const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, deleteOrderById, deleteLoadingId, order, entity, client, deleteOrderSetLoading }) =>
 {
-    const disable = order && order.loadingDelete || order && ( order.codestado != "completed" || order.codestado != "retained" );
+    const disable = deleteLoadingId || !order || ( order.codestado != "completed" && order.codestado != "retained" );
 
     const actions =  order && ( disable ? (
-        <Tooltip title="Sólo se pueden modificar pedidos en estado 'Tramitado' y 'Retenido'">
-            <Button className="ant-btn-dangerous" style={{marginTop: '10px'}} disabled={ true }>{ order && order.loadingDelete ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
+        <Tooltip title={deleteLoadingId ? "" : "Sólo se pueden modificar pedidos en estado 'Tramitado' y 'Retenido'"}>
+            <Button className="ant-btn-dangerous" style={{marginTop: '10px'}} disabled={ true }>{ deleteLoadingId == order.idpedido ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
         </Tooltip>
     ) : (
         <Popconfirm
             placement="topLeft"
             title={`Se va a proceder a la anulación del pedido ${order.idpedido} de la entidad ${order.nomentidad_cbim}.`}
             onConfirm={() => {
-                deleteOrderSetLoading({});
+                deleteOrderSetLoading({ id: order.idpedido });
                 deleteOrderById({ id: order.idpedido})
             }}
             okText="Confirmar"
             cancelText="Cancelar"
         >
-            <Button className="ant-btn-dangerous" danger style={{marginTop: '10px'}} disabled={order && order.loadingDelete || order && ( order.codestado != "completed" || order.codestado != "retained" )}>{ order && order.loadingDelete ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
+            <Button className="ant-btn-dangerous" danger style={{marginTop: '10px'}} >{ order && order.loadingDelete ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
         </Popconfirm>) );
 
     return (
