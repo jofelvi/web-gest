@@ -45,11 +45,11 @@ export default handleActions(
               states: payload.states
           }
       },
-      [fetchOrderStatesSuccess]: (state, { payload }) => {
+      [fetchOrderProductsSuccess]: (state, { payload }) => {
           console.log('received product', payload)
           return {
               ...state,
-              states: payload.data
+              products: payload.states
           }
       },
       [changeOrderStatusByIdSuccess]: (state, { payload }) => {

@@ -181,7 +181,7 @@ class OrderFilters extends React.Component {
                </InputsContainer>
                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
                    <Row style={{width: '100%'}}>
-                       <Col span={8} style={{padding: '10px', paddingTop: 0}}>
+                       <Col span={12} style={{padding: '10px', paddingTop: 0}}>
                            <span style={{padding: '10px'}}>Producto</span>
                            <Select
                                value={searchByProduct}
