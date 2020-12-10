@@ -15,6 +15,7 @@ import {
   changeOrderStatusByIdSuccess,
   changeOrderStatusByIdFailed,
   fetchOrderStatesSuccess,
+  fetchOrderProductsSuccess,
   deleteOrderLineByIdSuccess
 } from './actions';
 
@@ -26,7 +27,8 @@ import {
   DELETE_ORDER_LINE_BY_ID,
   DELETE_ORDER_BY_ID,
   CHANGE_ORDER_STATUS_BY_ID,
-  FETCH_ORDER_STATES
+  FETCH_ORDER_STATES,
+  FETCH_ORDER_PRODUCTS
 } from './actionTypes';
 
 import * as api from './api';
@@ -65,6 +67,24 @@ function* fetchOrderStates({ payload }) {
 }
 export function* watchfetchOrderStates() {
   yield takeLatest(FETCH_ORDER_STATES, fetchOrderStates);
+}
+
+function* fetchOrderProducts({ payload }) {
+  try {
+    //const response = require('../../datamockup/dataOrderStates.json')
+    const response = yield call(api.fetchOrderProducts, payload);
+
+    if (response.status === HttpStatus.UNAUTHORIZED) {
+      payload.history.push('/login');
+    }
+
+    yield put(fetchOrderProductsSuccess({ states: response.data }));
+  } catch (e) {
+    console.error(e);
+  }
+}
+export function* watchfetchOrderProducts() {
+  yield takeLatest(FETCH_ORDER_PRODUCTS, fetchOrderProducts);
 }
 
 

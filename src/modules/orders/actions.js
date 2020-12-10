@@ -27,7 +27,8 @@ import {
   CHANGE_ORDER_STATUS_SET_LOADING,
   FETCH_ORDER_STATES_SUCCESS,
   FETCH_ORDER_STATES,
-
+  FETCH_ORDER_PRODUCTS,
+  FETCH_ORDER_PRODUCTS_SUCCESS,
 } from './actionTypes';
 
 export const {
@@ -57,6 +58,8 @@ export const {
   changeOrderStatusSetLoading,
   fetchOrderStates,
   fetchOrderStatesSuccess,
+  fetchOrderProducts,
+  fetchOrderProductsSuccess,
 } = createActions(
   FETCH_ORDERS,
   FETCH_ORDERS_SUCCESS,
@@ -84,4 +87,6 @@ export const {
     CHANGE_ORDER_STATUS_SET_LOADING,
     FETCH_ORDER_STATES,
     FETCH_ORDER_STATES_SUCCESS,
+    FETCH_ORDER_PRODUCTS,
+    FETCH_ORDER_PRODUCTS_SUCCESS,
 );

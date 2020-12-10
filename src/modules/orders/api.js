@@ -103,7 +103,8 @@ export const fetchEntityById = (idEntity) => get(`/ntr/entidad/${idEntity}`);
 
 
 export const fetchOrderById = (idOrder) => get(`/ntr/pedido/${idOrder}`);
-export const fetchOrderStates = (idOrder) => get(`/ntr/pedido/estados`);
+export const fetchOrderStates = () => get(`/ntr/pedido/estados`);
+export const fetchOrderProducts = () => get(`/ntr/producto`);
 
 //export const deleteOrderLineById = (idOrder, idProduct) => del(`/ntr/linea_pedido/${idOrder}/producto/${idProduct}`);
 export const deleteOrderLineById = (idOrder, idProduct) => post(`/procdef/cancelar_linea_pedido/launch`, [{ name: 'codpedido_origen', value: idOrder},{ name: 'idproducto', value: parseInt(idProduct)},{ name: 'origen', value: "NTR-G" }]);

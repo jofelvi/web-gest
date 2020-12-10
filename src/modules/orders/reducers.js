@@ -18,7 +18,8 @@ import {
     changeOrderStatusByIdSuccess,
     changeOrderStatusByIdFailed,
     changeOrderStatusSetLoading,
-    fetchOrderStatesSuccess
+    fetchOrderStatesSuccess,
+    fetchOrderProductsSuccess
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
@@ -26,6 +27,7 @@ import {STATUS} from "../auth/constants";
 const defaultState = {
     list: [],
     states: [],
+    products: [],
     count: 0,
     deleteLineLoadingId: false,
     deleteLoadingId: false,
@@ -41,6 +43,13 @@ export default handleActions(
           return {
             ...state,
               states: payload.states
+          }
+      },
+      [fetchOrderStatesSuccess]: (state, { payload }) => {
+          console.log('received product', payload)
+          return {
+              ...state,
+              states: payload.data
           }
       },
       [changeOrderStatusByIdSuccess]: (state, { payload }) => {

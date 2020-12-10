@@ -7,7 +7,8 @@ import {
     countOrders,
     deleteOrderLineById,
     deleteOrderLineSetLoading,
-    fetchOrderStates
+    fetchOrderStates,
+    fetchOrderProducts
 } from '../../modules/orders/actions';
 
 import View from './view';
@@ -23,5 +24,5 @@ export default connect(
       deleteLineLoadingId: state.orders.deleteLineLoadingId,
       deleteLoadingId: state.orders.deleteLoadingId,
   }),
-  {fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading, fetchOrderStates }
+  {fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading, fetchOrderStates, fetchOrderProducts }
 )(View);
