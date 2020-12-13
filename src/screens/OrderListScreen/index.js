@@ -16,6 +16,7 @@ import View from './view';
 export default connect(
   state => ({ 
     orders: state.orders.list,
+    loadingList: state.orders.loadingList,
     order: state.orders.byId,
     count: state.orders.count,
     entity: state.orders.byCodEntity,

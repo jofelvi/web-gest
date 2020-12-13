@@ -4,6 +4,8 @@ import { message } from 'antd';
 
 import {
     fetchOrdersSuccess,
+    fetchOrdersFailed,
+    fetchOrdersLoading,
     fetchOrdersCountSuccess,
     fetchOrderByIdSuccess,
     fetchEntityByIdSuccess,
@@ -26,6 +28,7 @@ import {STATUS} from "../auth/constants";
 
 const defaultState = {
     list: [],
+    loadingList: false,
     states: [],
     products: [],
     count: 0,
@@ -38,6 +41,19 @@ const defaultState = {
 
 export default handleActions(
   {
+      [fetchOrdersLoading]: (state, loading) => {
+        return {
+            ...state,
+            loadingList: loading
+        }
+      },
+      [fetchOrdersFailed]: (state, loading) => {
+          return {
+              ...state,
+              loadingList: false,
+              list: false
+          }
+      },
       [fetchOrderStatesSuccess]: (state, { payload }) => {
           console.log('received states', payload)
           return {
@@ -84,6 +100,7 @@ export default handleActions(
           }),
     [fetchOrdersSuccess]: (state, { payload }) => ({
       ...state,
+        loadingList: false,
       list: payload.orders
     }),
       [fetchOrdersCountSuccess]: (state, { payload }) => ({

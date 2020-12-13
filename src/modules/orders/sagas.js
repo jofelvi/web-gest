@@ -4,6 +4,7 @@ import * as HttpStatus from 'http-status-codes'
 
 import {
   fetchOrdersSuccess,
+  fetchOrdersLoading,
   fetchOrdersFailed,
   deleteOrderLineByIdFailed,
   deleteOrderByIdFailed,
@@ -35,8 +36,8 @@ import * as api from './api';
 
 function* fetchOrders({ payload }) {
   try {
+    yield put(fetchOrdersLoading(true));
     const response = yield call(api.fetchOrders, payload);
-
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     }
@@ -220,6 +221,7 @@ export function* watchdeleteOrderLineById() {
 function* searchOrder({ payload }) {
 
   try {
+    yield put(fetchOrdersLoading(true));
     const response = yield call(api.searchOrder, payload);
 
 

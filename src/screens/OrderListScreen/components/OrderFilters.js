@@ -28,17 +28,20 @@ class OrderFilters extends React.Component {
         this.setFilters = this.setFilters.bind(this)
         this.searchedValue = this.searchedValue.bind(this)
 
-    }
-    state = {
-        searchByClient: '',
-        searchByCodPedido: '',
-        searchByState: '',
-        searchByEntity: '',
-        searchByType: '',
-        searchByOrderDate: [],
-        searchByOrderDateValue: [],
-        expandFilters: false,
-        searchByProduct: '',
+        this.state = {
+            searchByClient: '',
+            searchByCodPedido: '',
+            searchByState: '',
+            searchByEntity: '',
+            searchByType: '',
+            page: props.page,
+            searchByOrderDate: [],
+            searchByOrderDateValue: [],
+            expandFilters: false,
+            searchByProduct: '',
+            isFilterChanged: false,
+        }
+
     }
 
 
@@ -54,14 +57,14 @@ class OrderFilters extends React.Component {
             searchByState: '',
             searchByOrderDate: [],
             expandedKeys: [],
+            isFilterChanged: false,
 
         }, this.setFilters)
 
     }
 
     searchedValue = (key, value) => {
-        this.setState({ [key]: value })
-        this.props.setFilters(this.state)
+        this.setState({ [key]: value, isFilterChanged: true })
     }
 
     searchedValueDate = (dateString) => {
@@ -96,6 +99,7 @@ class OrderFilters extends React.Component {
 
     setFilters = () => {
         const { page, searchByState, searchByProduct, searchByOrderDate, searchByClient, searchByCodPedido, searchByEntity, searchByType, searchByOrderId } = this.state;
+        this.setState({isFilterChanged: false})
         this.props.setFilters(this.state)
     }
 
@@ -213,7 +217,8 @@ class OrderFilters extends React.Component {
 
                                <Button
                                    icon= 'search'
-                                   variant="primary"
+                                   type="primary"
+                                   disabled={!this.isFilterActive() || (this.isFilterActive() && !this.state.isFilterChanged )}
                                    style={{alignSelf: 'flex-end', margin: '0px 10px 0px 10px'}}
                                    onClick={() => {
                                        this.setState({ page: 0 }, this.setFilters)

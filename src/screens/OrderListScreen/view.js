@@ -88,7 +88,6 @@ class OrderListScreen extends React.Component {
       tipo: filters.searchByType,
       codcli_cbim: filters.searchByClient || '',
       codpedido_origen: filters.searchByCodPedido || '',
-      pages: filters.page || 0,
       dates: filters.searchByOrderDate || '',
       codestado: filters.searchByState || '',
     })
@@ -150,7 +149,7 @@ class OrderListScreen extends React.Component {
             setFilters={this.setFilters}
           />
           <TableContainer>
-            <div class="table-actions">
+            {orders.length > 0 && (<div class="table-actions">
               <Tooltip className="table-action-button" title={ this.state.expandedKeys.length > 0 ? "Contraer todas las celdas." : "Expandir todas las celdas." }>
               { this.state.expandedKeys.length > 0 && (<Button onClick={this.onCollapseAll} type="secondary">
                 <ShrinkOutlined />
@@ -158,22 +157,23 @@ class OrderListScreen extends React.Component {
               { this.state.expandedKeys.length == 0 && (<Button onClick={this.onExpandAll} type="secondary">
                 <ArrowsAltOutlined />
               </Button>) }
-
               </Tooltip>
-            </div>
+            </div>)
+            }
             <Table
                 dataSource={modifyOrderDate(orders)}
                 className="table"
                 expandedRowRender = {order => (<OrderTableDetails order={order} />)}
                 onExpandedRowsChange={this.onExpand}
                 expandedRowKeys={this.state.expandedKeys}
-
+                loading={this.props.loadingList}
                 pagination={{
                   position:'both',
                   pageSize: LIMIT,
                   total: count,
+                  current: this.state.filters.page,
                   onChange: (page, pageSize) => {
-                    this.setState({ filters: {...this.state.filters, page: (page-1) * pageSize } }, function () { this.handleSubmitOrdersSearch() })
+                    this.setState({ filters: {...this.state.filters, page: page } }, function () { this.handleSubmitOrdersSearch() })
                   }
                 }}
                 scroll={{ x: true }}
