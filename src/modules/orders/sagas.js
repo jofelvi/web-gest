@@ -8,7 +8,7 @@ import {
   fetchOrdersFailed,
   deleteOrderLineByIdFailed,
   deleteOrderByIdFailed,
-  deleteOrderByIdSuccess,
+  deleteOrderSuccess,
   fetchOrdersCountSuccess,
   fetchOrderByIdSuccess,
   fetchEntityByIdSuccess,
@@ -17,7 +17,8 @@ import {
   changeOrderStatusByIdFailed,
   fetchOrderStatesSuccess,
   fetchOrderProductsSuccess,
-  deleteOrderLineByIdSuccess
+  deleteOrderLineByIdSuccess,
+  deleteOrderSetLoading,
 } from './actions';
 
 import {
@@ -143,15 +144,18 @@ function sleep(ms) {
 function* deleteOrderById({ payload }) {
   try {
 
+    yield put(deleteOrderSetLoading({ id: payload.idpedido }))
+
     //const response = yield call(api.deleteOrderLineById, payload.id);
     const response = yield call(api.deleteOrderById, payload.id);
     //const response = require('../../datamockup/dataOrderDelete.json')
     //throw 'Unrecognized error';
+    console.log('DELET')
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     } else if (response.status === HttpStatus.CREATED) {
-      yield put(deleteOrderByIdSuccess());
-    } else {
+      yield put(deleteOrderSuccess());
+    } else if (response.status !== HttpStatus.NO_CONTENT) {
       yield put(deleteOrderByIdFailed({
         message: 'No se pudo borrar el pedido.'
       }));

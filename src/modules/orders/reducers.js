@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { map } from 'underscore';
+import { map, filter } from 'underscore';
 import { message } from 'antd';
 
 import {
@@ -14,7 +14,7 @@ import {
     deleteOrderLineByIdFailed,
     deleteOrderLineByIdSuccess,
     deleteOrderLineSetLoading,
-    deleteOrderByIdSuccess,
+    deleteOrderSuccess,
     deleteOrderByIdFailed,
     deleteOrderSetLoading,
     changeOrderStatusByIdSuccess,
@@ -32,6 +32,7 @@ const defaultState = {
     states: [],
     products: [],
     count: 0,
+    lastDeletedId: 0,
     deleteLineLoadingId: false,
     deleteLoadingId: false,
     changeOrderLoadingId: 0,
@@ -41,9 +42,38 @@ const defaultState = {
 
 export default handleActions(
   {
+      [deleteOrderByIdFailed]: (state, { payload }) => {
+          message.error(payload.message);
+          console.log('FAILING HRE 222')
+          return {
+              ...state,
+              byId: { ...state.byId, error: payload.message, loadingDelete: false }
+          }
+      },
+
+      [deleteOrderSuccess]: (state, { payload }) => {
+          console.log('SET SUCCESS', state.byId.idpedido)
+
+          const updatedList = map( state.list, ( order ) => {
+              if ( order.idpedido == state.byId.idpedido ) {
+                  const parsed_order = { ...order, codestado: "canceled", nombre_estado: "Anulado" }
+                  return parsed_order;
+              }
+              return order;
+          } );
+
+          return {
+              ...state,
+              list: updatedList,
+              deleteLoadingId: 0,
+              lastDeletedId: state.byId.idpedido,
+              byId: { ...state.byId, codestado: "canceled", nombre_estado: "Anulado", loadingDelete: false },
+          }
+      },
       [fetchOrdersLoading]: (state, loading) => {
         return {
             ...state,
+            lastDeletedId: 0,
             loadingList: loading
         }
       },
@@ -163,24 +193,14 @@ export default handleActions(
           })
       },
 
-      [deleteOrderSetLoading]: (state, { payload }) => ({
-          ...state,
-          deleteLoadingId: payload.id,
-          byId: { ...state.byId, loadingDelete: true }
-      }),
-      [deleteOrderByIdSuccess]: (state, { payload }) => ({
-          ...state,
-          byId: null,
-          deleteLoadingId: false
-      }),
-      [deleteOrderByIdFailed]: (state, { payload }) => {
-          message.error(payload.message);
+      [deleteOrderSetLoading]: (state, { payload }) => {
           return ({
               ...state,
-              byId: { ...state.byId, error: payload.message, loadingDelete: false }
+              lastDeletedId: 0,
+              deleteLoadingId: payload.id,
+              byId: { ...state.byId, loadingDelete: true }
           })
       },
-
 
   },
   defaultState

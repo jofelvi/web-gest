@@ -5,7 +5,7 @@ import {Button, Modal, Popconfirm, Tooltip} from 'antd';
 import ButtonGroup from "antd/lib/button/button-group";
 import {LoadingOutlined} from "@ant-design/icons";
 
-const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, deleteOrderById, deleteLoadingId, order, entity, client, deleteOrderSetLoading }) =>
+const ModalDetailOrder =({ visibility,lastDeletedId, ok, cancel, customFooter, content, deleteOrderById, deleteLoadingId, order, entity, client, deleteOrderSetLoading }) =>
 {
     const disable = deleteLoadingId || !order || ( order.codestado != "completed" && order.codestado != "retained" );
 
@@ -18,8 +18,7 @@ const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, delete
             placement="topLeft"
             title={`Se va a proceder a la anulación del pedido "${order.codpedido_origen}" de la entidad ${order.nomentidad_cbim}.`}
             onConfirm={() => {
-                deleteOrderSetLoading({ id: order.idpedido });
-                deleteOrderById({ id: order.idpedido})
+                deleteOrderById({ id: order.codpedido_origen, idpedido: order.idpedido } )
             }}
             okText="Confirmar"
             cancelText="Cancelar"
@@ -27,18 +26,21 @@ const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, delete
             <Button className="ant-btn-dangerous" danger style={{marginTop: '10px'}} >{ order && order.loadingDelete ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
         </Popconfirm>) );
 
+    console.log('VISIBILITY', visibility, order, lastDeletedId)
     return (
         <div>
             <Modal
                 title="Detalles"
-                visible={visibility}
+                visible={visibility && order}
                 destroyOnClose={true}
                 onOk={ok}
                 onCancel={cancel}
                 footer={customFooter}
                 width= {900}
                 bodyStyle = {{height: '600px'}}
-            >{content}
+            >
+                {content}
+
                 {actions}
                 <span style={{color: 'red', marginLeft: '10px'}} hidden={!(order && order.error)}>{order && order.error ? order.error : ''}</span>
 

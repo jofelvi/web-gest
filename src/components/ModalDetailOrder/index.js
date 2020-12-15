@@ -6,6 +6,6 @@ import { deleteOrderById, deleteOrderSetLoading } from '../../modules/orders/act
 import View from './view';
 
 export default connect(
-  state => ({ status: state.auth.status }),
+  state => ({ status: state.auth.status, lastDeletedId: state.orders.lastDeletedId }),
   { login, deleteOrderById, deleteOrderSetLoading }
 )(View);

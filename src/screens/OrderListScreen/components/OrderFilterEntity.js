@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { takeLatest, call, put } from 'redux-saga/effects';
 
 import { Select } from 'antd';
 import jsonp from 'fetch-jsonp';

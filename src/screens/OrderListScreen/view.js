@@ -141,6 +141,7 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByCodPedido, searchByEntity, searchByType, searchByState } = this.state;
     const { orders, order, fetchOrderById, entity, client, count, deleteOrderLineById, deleteOrderLineSetLoading, deleteLineLoadingId, deleteLoadingId } = this.props;
 
+    console.log('ORDER', order)
     return (
       <Maincontainer>
         <div className="table-indas table-indas-new">
@@ -243,7 +244,7 @@ class OrderListScreen extends React.Component {
             </Table>
           </TableContainer>
           <ModalDetailOrder
-            visibility={this.state.visible && order}
+            visibility={this.state.visible && order != false}
             ok={this.handleOk}
             cancel={this.handleCancel}
             customFooter={[]}

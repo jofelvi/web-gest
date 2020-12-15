@@ -36,7 +36,7 @@ loading,
 deleteOrderLineById,
 deleteOrderLineSetLoading,
 }) => {
-    const disable = detailOrder.length < 2 || loading || ( codestadoOrder != 'completed' && codestadoOrder != 'retained' )
+    const disable = !detailOrder || detailOrder.length < 2 || loading || ( codestadoOrder != 'completed' && codestadoOrder != 'retained' )
     return (
         <div>
             <InfoContainer>
