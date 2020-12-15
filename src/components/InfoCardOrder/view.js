@@ -22,6 +22,7 @@ const { Column } = Table;
 const InfoCardOrder = ({
 orders,
 numOrder,
+    idOrder,
 dateOrder,
 stateOrder,
 codestadoOrder,
@@ -119,7 +120,7 @@ deleteOrderLineSetLoading,
                                         title={`Se va a proceder a la anulación de la línea del producto ${row.nombre}`}
                                         onConfirm={() => {
                                             deleteOrderLineSetLoading({ id: row.idproducto })
-                                            deleteOrderLineById({ idproducto: row.idproducto, idpedido: row.idpedido   })
+                                            deleteOrderLineById({ idproducto: row.idproducto,codpedido_origen: numOrder, idpedido: idOrder })
                                         }}
                                         okText="Confirmar"
                                         cancelText="Cancelar"

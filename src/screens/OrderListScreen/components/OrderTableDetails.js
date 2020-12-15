@@ -94,7 +94,7 @@ class OrderTableDetails extends React.Component {
                             onConfirm={() => {
                                 console.log('CONFIRM', row)
                                 deleteOrderLineSetLoading({ id: row.idproducto })
-                                deleteOrderLineById({ idproducto: row.idproducto, idpedido: order.idpedido   })
+                                deleteOrderLineById({ idproducto: row.idproducto, idpedido: order.idpedido, codpedido_origen: order.codpedido_origen })
                             }}
                             okText="Confirmar"
                             cancelText="Cancelar"

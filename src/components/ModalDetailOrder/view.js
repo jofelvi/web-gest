@@ -16,7 +16,7 @@ const ModalDetailOrder =({ visibility, ok, cancel, customFooter, content, delete
     ) : (
         <Popconfirm
             placement="topLeft"
-            title={`Se va a proceder a la anulación del pedido ${order.idpedido} de la entidad ${order.nomentidad_cbim}.`}
+            title={`Se va a proceder a la anulación del pedido "${order.codpedido_origen}" de la entidad ${order.nomentidad_cbim}.`}
             onConfirm={() => {
                 deleteOrderSetLoading({ id: order.idpedido });
                 deleteOrderById({ id: order.idpedido})

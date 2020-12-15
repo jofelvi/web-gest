@@ -115,7 +115,7 @@ export const fetchOrderStates = () => get(`/ntr/pedido/estados`);
 export const fetchOrderProducts = () => get(`/ntr/producto`);
 
 //export const deleteOrderLineById = (idOrder, idProduct) => del(`/ntr/linea_pedido/${idOrder}/producto/${idProduct}`);
-export const deleteOrderLineById = (idOrder, idProduct) => post(`/procdef/cancelar_linea_pedido/launch`, [{ name: 'codpedido_origen', value: idOrder},{ name: 'idproducto', value: parseInt(idProduct)},{ name: 'origen', value: "NTR-G" }]);
+export const deleteOrderLineById = (idOrder, idProduct) => post(`/procdef/cancelar_linea_pedido/launch`, [{ name: 'codpedido_origen', value: idOrder},{ name: 'idproducto', value: idProduct},{ name: 'origen', value: "NTR-G" }]);
 
 export const deleteOrderById = (idOrder, status) => post(`/procdef/modificar_estado_pedido/launch`, [{name: 'codpedido_origen', value: idOrder}, {name: 'codestado', value: 'canceled'}, {name: 'origen', value: 'NTR-G' }]);
 //export const changeOrderStatusById = (idOrder, status) => post(`ntr/pedido/${idOrder}/estado`, {codestado: status });

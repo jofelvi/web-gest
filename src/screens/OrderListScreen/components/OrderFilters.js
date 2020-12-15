@@ -15,11 +15,7 @@ import * as moment from "moment";
 import {modifyOrderDate} from "../utils";
 import {searchOrder, countOrders, fetchOrders} from "../../../modules/orders/actions";
 const dateFormat = 'YYYY/MM/DD';
-
 const { Option } = Select;
-
-
-
 
 class OrderFilters extends React.Component {
 
@@ -41,9 +37,7 @@ class OrderFilters extends React.Component {
             searchByProduct: '',
             isFilterChanged: false,
         }
-
     }
-
 
     clearFilters = () => {
         this.setState({

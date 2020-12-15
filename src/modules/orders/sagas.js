@@ -192,12 +192,12 @@ export function* watchchangeOrderStatusById() {
 function* deleteOrderLineById({ payload }) {
   try {
 
-    const response = yield call(api.deleteOrderLineById, payload.idpedido, payload.idproducto);
+    const response = yield call(api.deleteOrderLineById, payload.codpedido_origen, payload.idproducto);
 
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     } else if ( response.status == HttpStatus.CREATED ) {
-      const orderResponse = yield call(api.fetchOrderById, payload.id);
+      const orderResponse = yield call(api.fetchOrderById, payload.idpedido);
       yield put(deleteOrderLineByIdSuccess({ order: orderResponse.data }));
     } else {
       yield put(deleteOrderLineByIdFailed({

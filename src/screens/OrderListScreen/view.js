@@ -129,7 +129,7 @@ class OrderListScreen extends React.Component {
       tipo: filters.searchByType,
       codcli_cbim: filters.searchByClient || '',
       codpedido_origen: filters.searchByCodPedido || '',
-      pages: filters.page || 0,
+      pages: (filters.page-1)*LIMIT || 0,
       dates: filters.searchByOrderDate || '',
       codestado: filters.searchByState || '',
     })
@@ -279,6 +279,7 @@ class OrderListScreen extends React.Component {
                   <div>
                   <InfoCardOrder
                     numOrder={order.codpedido_origen}
+                    idOrder={order.idpedido}
                     dateOrder={Utils.renderDate(order.fecha_alta)}
                     stateOrder={order.nombre_estado}
                     nombreMayoristaOrder={order.nombre_mayorista}
