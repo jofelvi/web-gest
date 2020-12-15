@@ -100,7 +100,7 @@ function* countOrders({ payload }) {
     yield put(fetchOrdersCountSuccess({ count: response.data.count }));
   } catch (e) {
     console.error(e);
-    yield put(0);
+    yield put(fetchOrdersCountSuccess({ count: 0 }));
   }
 }
 export function* watchcountOrders() {

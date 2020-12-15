@@ -83,14 +83,15 @@ class OrderListScreen extends React.Component {
 
   refreshCount() {
     const { filters } = this.state;
-    this.props.countOrders({
-      codentidad_cbim: filters.searchByEntity || '',
-      tipo: filters.searchByType,
-      codcli_cbim: filters.searchByClient || '',
-      codpedido_origen: filters.searchByCodPedido || '',
-      dates: filters.searchByOrderDate || '',
-      codestado: filters.searchByState || '',
-    })
+    this.props.countOrders(
+        {
+          codentidad_cbim: filters.searchByEntity || '',
+          tipo: filters.searchByType,
+          codcli_cbim: filters.searchByClient || '',
+          codpedido_origen: filters.searchByCodPedido || '',
+          dates: filters.searchByOrderDate || '',
+          codestado: filters.searchByState || '',
+        })
   }
 
   onExpand = expandedKeys => {
@@ -280,6 +281,7 @@ class OrderListScreen extends React.Component {
                     numOrder={order.codpedido_origen}
                     dateOrder={Utils.renderDate(order.fecha_alta)}
                     stateOrder={order.nombre_estado}
+                    nombreMayoristaOrder={order.nombre_mayorista}
                     codestadoOrder={order.codestado}
                     dateModOrder={order.fecha_modif === null ? '' : Utils.renderDate(order.fecha_modif)}
                     typeOrder={order.tipo}

@@ -64,7 +64,12 @@ class OrderFilters extends React.Component {
     }
 
     searchedValue = (key, value) => {
-        this.setState({ [key]: value, isFilterChanged: true })
+        if (typeof (value) == 'undefined') {
+            this.setState({ [key]: '', isFilterChanged: true })
+        } else {
+            this.setState({ [key]: value, isFilterChanged: true })
+        }
+
     }
 
     searchedValueDate = (dateString) => {
@@ -79,7 +84,14 @@ class OrderFilters extends React.Component {
                 searchByOrderDateValue: [
                     moment(dateString[0]),
                     moment(dateString[1])
-                ]
+                ], isFilterChanged: true
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                searchByOrderDate: [],
+                searchByOrderDateValue: [],
+                isFilterChanged: true
             });
         }
 
@@ -191,11 +203,25 @@ class OrderFilters extends React.Component {
                                value={searchByProduct}
                                onChange={(value) => this.searchedValue('searchByProduct', value)}
                                style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
+                               showSearch
+                               allowClear
+                               filterOption={(input, option) => {
+                                   if (option.props.children.length > 0) {
+                                       var convertedChildren = [];
+                                       for(var i = 0; i < option.props.children.length; ++i)  {
+                                           convertedChildren.push(option.props.children[i]);
+                                       }
+                                       return convertedChildren.join(',').toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                   }
+
+                                   return option.props.children ? option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 : false
+                                }
+                               }
                            >
                                <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
                                { this.props.products && this.props.products.map( (stateObject) => {
                                    return (
-                                       <Option value={stateObject.codindas}>{stateObject.nombre}</Option>
+                                       <Option value={stateObject.codindas}>{stateObject.codindas} - {stateObject.nombre}</Option>
                                    );
                                } ) }
                            </Select>

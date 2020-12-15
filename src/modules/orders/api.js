@@ -26,7 +26,7 @@ export const fetchOrders = async (page) => {
 
 
 export const countOrders = async ({
-    codentidad_cbim, codcli_cbim, tipo, dates
+    codentidad_cbim, codpedido_origen, codcli_cbim, tipo, dates, codestado
 }) => {
 
   let queryParams = ''
@@ -47,9 +47,18 @@ export const countOrders = async ({
   if (codcli_cbim) {
     queryParams += `&codcli_cbim=${codcli_cbim}`;
   }
+  //BY CLIENT
+  if (codestado) {
+    queryParams += `&codestado=${codestado}`;
+  }
+
   //BY ENTITY
   if (codentidad_cbim) {
     queryParams += `&codentidad_cbim=${codentidad_cbim}`;
+  }
+  //BY COD PEDIDO
+  if (codpedido_origen) {
+    queryParams += `&codpedido_origen=${codpedido_origen}`;
   }
   return get(`ntr/pedido/count?${queryParams}`);
 };
@@ -62,7 +71,6 @@ export const searchOrder = async ({
   offset = pages;
   
 let queryParams = generatingOffset(pages, offset)
-   
   //BY DATE
   if (dates[0]) {
     queryParams += `&fecha_desde=${dates[0]}`;

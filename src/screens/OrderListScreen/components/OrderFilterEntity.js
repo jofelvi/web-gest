@@ -22,7 +22,6 @@ class OrderFilterEntity extends React.Component {
     };
 
     handleSearch = value => {
-        console.log('--- HANDLE SEARCH', value)
         if (value) {
             this.fetch(value, data => this.setState({data}));
         } else {
@@ -35,7 +34,6 @@ class OrderFilterEntity extends React.Component {
             como: value,
         });
 
-        console.log('--- FETCH NOW', value)
         const response = apiClientes.getEntitiesIndas(str).then(
             (response) => response.data
         ).then( (results) => {
@@ -63,7 +61,7 @@ class OrderFilterEntity extends React.Component {
         })
         const client=currentRow ? currentRow.codcli_cbim : '';
         this.props.onChangeClient(client);
-        this.props.onChange(value)
+        this.props.onChange(typeof(value) == 'undefined' ? '' : value)
     };
 
     constructor(props) {
@@ -87,6 +85,7 @@ class OrderFilterEntity extends React.Component {
                 onSearch={this.handleSearch}
                 onChange={this.handleChange}
                 notFoundContent={null}
+                allowClear
             >
                 {options}
             </Select>

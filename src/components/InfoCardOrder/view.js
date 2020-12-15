@@ -26,6 +26,7 @@ dateOrder,
 stateOrder,
 codestadoOrder,
 dateModOrder,
+nombreMayoristaOrder,
 typeOrder,
 codDiscountOrder,
 detailOrder,
@@ -46,6 +47,7 @@ deleteOrderLineSetLoading,
                         <Descriptions.Item label="Fecha Modificación">{dateModOrder}</Descriptions.Item>
                         <Descriptions.Item label="Tipo">{typeOrder} </Descriptions.Item>
                         <Descriptions.Item label="Cod. Campaña">{codDiscountOrder} </Descriptions.Item>
+                        <Descriptions.Item label="Mayorista">{nombreMayoristaOrder} </Descriptions.Item>
                     </Descriptions>
                 </DescriptionContainer>
                 <TableContainer>

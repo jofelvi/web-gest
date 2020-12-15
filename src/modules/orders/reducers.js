@@ -51,7 +51,8 @@ export default handleActions(
           return {
               ...state,
               loadingList: false,
-              list: false
+              list: [],
+              count: 0
           }
       },
       [fetchOrderStatesSuccess]: (state, { payload }) => {
