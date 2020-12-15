@@ -50,7 +50,7 @@ class OrderFilters extends React.Component {
             searchByClient: '',
             searchByOrderDateValue: [],
             searchByEntity: '',
-            searchByOrdrId: '',
+            searchByCodPedido: '',
             searchByType: '',
             page: 0,
             searchByProduct: '',
