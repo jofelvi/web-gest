@@ -21,7 +21,7 @@ class OrderStatusActions extends React.Component {
 
     changeStatus( status, status_name ) {
         const { order, changeOrderStatusById, changeOrderStatusSetLoading } = this.props;
-        changeOrderStatusById ( { idpedido: order.idpedido, codestado: status, nombre_estado: status_name } )
+        changeOrderStatusById ( { idpedido: order.codpedido_origen, codestado: status, nombre_estado: status_name } )
         changeOrderStatusSetLoading ( { idpedido: order.idpedido })
     }
 
@@ -45,7 +45,7 @@ class OrderStatusActions extends React.Component {
                     <Menu.Item key={ index }>
                         <Popconfirm
                             placement="topLeft"
-                            title={`Se va a proceder a cambiar a '${item.action_name}'`}
+                            title={ item.action == 'canceled' ? `Se va a proceder a la anulación del pedido "${order.codpedido_origen}" de la entidad ${order.nomentidad_cbim}.` : `Se va a proceder a cambiar a '${item.action_name}'` }
                             onConfirm={() => {
                                 this.changeStatus(item.action, item.action_name)
                             }}

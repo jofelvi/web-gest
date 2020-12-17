@@ -44,7 +44,6 @@ export default handleActions(
   {
       [deleteOrderByIdFailed]: (state, { payload }) => {
           message.error(payload.message);
-          console.log('FAILING HRE 222')
           return {
               ...state,
               byId: { ...state.byId, error: payload.message, loadingDelete: false }
@@ -52,8 +51,6 @@ export default handleActions(
       },
 
       [deleteOrderSuccess]: (state, { payload }) => {
-          console.log('SET SUCCESS', state.byId.idpedido)
-
           const updatedList = map( state.list, ( order ) => {
               if ( order.idpedido == state.byId.idpedido ) {
                   const parsed_order = { ...order, codestado: "canceled", nombre_estado: "Anulado" }
@@ -101,7 +98,7 @@ export default handleActions(
       },
       [changeOrderStatusByIdSuccess]: (state, { payload }) => {
           const updatedList = map( state.list, ( order ) => {
-              if ( order.idpedido == payload.idpedido ) {
+              if ( order.codpedido_origen == payload.idpedido ) {
                   const parsed_order = { ...order, codestado: payload.codestado, nombre_estado: payload.nombre_estado }
                   return parsed_order;
               }
