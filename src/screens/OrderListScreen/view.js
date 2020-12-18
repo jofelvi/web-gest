@@ -87,6 +87,7 @@ class OrderListScreen extends React.Component {
         {
           codentidad_cbim: filters.searchByEntity || '',
           tipo: filters.searchByType,
+          idproducto: filters.searchByProduct || '',
           codcli_cbim: filters.searchByClient || '',
           codpedido_origen: filters.searchByCodPedido || '',
           dates: filters.searchByOrderDate || '',
@@ -127,6 +128,7 @@ class OrderListScreen extends React.Component {
     searchOrder({
       codentidad_cbim: filters.searchByEntity || '',
       tipo: filters.searchByType,
+      idproducto: filters.searchByProduct || '',
       codcli_cbim: filters.searchByClient || '',
       codpedido_origen: filters.searchByCodPedido || '',
       pages: (filters.page-1)*LIMIT || 0,
