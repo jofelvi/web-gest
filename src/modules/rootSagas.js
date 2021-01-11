@@ -45,6 +45,10 @@ import {
   watchEditCommercialDeal
 } from './commercialDeals/sagas';
 
+import {
+  watchfetchPlans,
+} from './planes-compra/sagas'
+
 import{
   watchloadMenuItems,
   watchloadChildItems
@@ -144,6 +148,7 @@ export default function* rootSaga() {
     watchFetchTaskListUser(),
     watchchangeOrderStatusById(),
     watchfetchOrderStates(),
-    watchfetchOrderProducts()
+    watchfetchOrderProducts(),
+    watchfetchPlans(),
   ]);
 }

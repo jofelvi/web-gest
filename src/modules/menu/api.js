@@ -35,7 +35,28 @@ const mockMenu ={
     {
       id:5,
       label:"Condiciones Comerciales",
-      url:"/commercial-deals"
+      children:[
+        {
+          id:13,
+          label:"Promociones",
+          url:"/promociones"
+        },
+        {
+          id:14,
+          label:"Planes de Compra",
+          url:"/planes-de-compra"
+        },
+        {
+          id:15,
+          label:"Campañas",
+          url:"/campañas"
+        },
+        {
+          id:16,
+          label:"[Legacy]",
+          url:"/commercial-deals"
+        }
+      ]
     },
     {
       id:6,

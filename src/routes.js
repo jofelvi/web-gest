@@ -15,6 +15,9 @@ import SignupScreen from './screens/SignupScreen';
 import CompletedForm from './screens/Forms/completedForm';
 import TaskFormScreen from './screens/TaskFormScreen';
 import CommercialDealsScreen from './screens/CommercialDealsScreen';
+import Promociones from './screens/CommercialDealsScreen/Promociones';
+import PlanesCompra from './screens/CommercialDealsScreen/PlanesCompra';
+import Campanas from './screens/CommercialDealsScreen/Campanas';
 import ClientsIndasScreen from './screens/ClientsScreen';
 import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarEntidad from './screens/Forms/registrar_nueva_entidad/validarEntidad'
@@ -72,8 +75,11 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path={`/task/completed`} exact component={CompletedForm} />
       <Route path='/login' exact component={LoginScreen} />
       <Route path='/process/signup' exact component={SignupScreen} />
-      <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen}/> 
-      <PrivateRoute path="/clients/tr" exact component={ClientsIndasScreen}/> 
+      <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen}/>
+        <PrivateRoute path="/planes-de-compra" exact component={PlanesCompra}/>
+        <PrivateRoute path="/promociones" exact component={Promociones}/>
+        <PrivateRoute path="/campañas" exact component={Campanas}/>
+        <PrivateRoute path="/clients/tr" exact component={ClientsIndasScreen}/>
       <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
       <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
       <PrivateRoute path="/orders" exact component={OrderListScreen}/>
