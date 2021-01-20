@@ -180,7 +180,6 @@ class OrderListScreen extends React.Component {
                     this.setState({ filters: {...this.state.filters, page: page } }, function () { this.handleSubmitOrdersSearch() })
                   }
                 }}
-                scroll={{ x: true }}
                 tableLayout="auto"
                 scroll={{ x: 'calc(700px + 50%)'}}
             >
@@ -230,7 +229,6 @@ class OrderListScreen extends React.Component {
                 title="Estado"
                 dataIndex="nombre_estado"
                 key="nombre_estado"
-                style="30%"
                 render={ ( txt, record, i ) => ( <OrderStatusActions order={ record } /> ) }
               />
 

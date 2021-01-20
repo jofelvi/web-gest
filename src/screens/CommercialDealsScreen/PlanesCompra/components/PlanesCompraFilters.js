@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import {Button, Col, Row, Select} from 'antd';
+import { Checkbox, Button, Col, Row, Select} from 'antd';
 import jsonp from 'fetch-jsonp';
 import querystring from 'querystring';
 
@@ -25,6 +25,7 @@ class PlanesCompraFilters extends React.Component {
             searchByClient: '',
             searchByState: '',
             searchByEntity: '',
+            searchByPending: false,
             page: props.page,
             searchByPlanDate: [],
             searchByPlanDateValue: [],
@@ -39,6 +40,7 @@ class PlanesCompraFilters extends React.Component {
             searchByClient: '',
             searchByPlanDateValue: [],
             searchByEntity: '',
+            searchByPending: false,
             page: 0,
             searchByDelegado: '',
             searchByState: '',
@@ -91,6 +93,7 @@ class PlanesCompraFilters extends React.Component {
             this.state.searchByEntity !== '' ||
             this.state.searchByState !== '' ||
             this.state.searchByType !== '' ||
+                this.state.searchByPending === true ||
             this.state.searchByDelegado !== '' ||
             this.state.searchByCodPedido !== ''
         );
@@ -186,6 +189,18 @@ class PlanesCompraFilters extends React.Component {
                             </Select>
                         </Col>
 
+                    </Row>
+                </InputsContainer>
+                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
+                    <Row style={{width: '100%'}}>
+                        <Col span={8} style={{padding: '20px', paddingTop: 0}}>
+                            <Checkbox
+                                checked={this.state.searchByPending}
+                                onChange={(e) => this.searchedValue('searchByPending', e.target.checked) }
+                            >
+                                Ver solo planes con tareas pendientes.
+                            </Checkbox>
+                        </Col>
                     </Row>
                 </InputsContainer>
                 <InputsContainer style={{width: '100%', marginTop: 0, paddingTop: 0}}>

@@ -66,3 +66,17 @@
 .table .table-expand .ant-table-body td{
     font-size: 0.7rem;
 }
+.ant-table .react-resizable {
+    position: relative;
+    background-clip: padding-box;
+}
+
+.ant-table .react-resizable-handle {
+    position: absolute;
+    right: -5px;
+    bottom: 0;
+    z-index: 1;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+}

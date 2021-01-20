@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table, Icon, Button, Row, Col, Tooltip} from 'antd';
+import { Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip} from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../../constants';
 import '../../../lib/styles.css';
+import ResizableTable from '../../shared/ResizableTable';
+import { withRouter } from 'react-router-dom';
+
+import {
+    FileExcelOutlined
+} from '@ant-design/icons';
 
 import Utils from '../../../lib/utils';
 import {
@@ -56,8 +62,86 @@ class PlanesCompra extends React.Component {
 
     render() {
         const { selectedRowsKeys, selectedRowsAction } = this.state;
-        const { loadingList } = this.props;
+        const { loadingList, history } = this.props;
         const hasRowsSelected = selectedRowsKeys.length > 0;
+
+
+        const columns = [
+            {
+                title: 'Id',
+                dataIndex: 'id',
+                key: 'id',
+                align: 'center',
+                width: 50,
+            },
+            {
+                title: 'Plan de Compra',
+                dataIndex: 'nombre',
+                key: 'nombre',
+                width: 200,
+            },
+
+            {
+                title: 'Fecha Inicio',
+                dataIndex: 'fecha_inicio',
+                key: 'fecha_inicio',
+                width: 120,
+            },
+            {
+                title: 'Fecha Fin',
+                dataIndex: 'fecha_fin',
+                key: 'fecha_fin',
+                width: 120,
+            },
+            {
+                title: 'Uds Compromiso',
+                dataIndex: 'uds_compromiso',
+                key: 'uds_compromiso',
+                width: 110,
+            },
+            {
+                title: 'Descuento',
+                dataIndex: 'descuento',
+                key: 'descuento',
+                width: 100,
+                render: (text, record, index) => (text+" %")
+            },
+            {
+                title: 'Cod Entidad',
+                dataIndex: 'codentidad',
+                key: 'codentidad',
+                width: 80,
+            },
+            {
+                title: 'Nombre Entidad',
+                dataIndex: 'nomentidad',
+                key: 'nomentidad',
+                width: 180,
+            },
+            {
+                title: 'Delegado Comercial',
+                dataIndex: 'delegadocomercial',
+                key: 'delegadocomercial',
+                width: 180,
+            },
+            {
+                title: 'Estado',
+                dataIndex: 'estado',
+                key: 'estado',
+                width: 100,
+            },
+            {
+                title: 'Renov. Auto.',
+                dataIndex: 'autorenovar',
+                key: 'autorenovar',
+                width: 80,
+            },
+            {
+                title: '#',
+                key: 'acciones',
+                width: 30
+            }
+        ];
 
         return (
             <Maincontainer>
@@ -69,31 +153,100 @@ class PlanesCompra extends React.Component {
                     <TableContainer>
                         <div class="table-actions">
                             <div className="table-action-button" >
-                                <Select
-                                    value={selectedRowsAction}
-                                    onChange={(value) => this.setState({selectedRowsAction: value})}
-                                    disabled={!hasRowsSelected}
-                                    style={{minWidth: '80px'}}
-                                >
-                                    <Option value={false}  style={{ color: '#CCC' }}>- Acciones en masa -</Option>
-                                    <Option value="renew">Renovar</Option>
-                                    <Option value="inactive">Cambiar a Inactivo</Option>
-                                    <Option value="active">Cambiar a Activo</Option>
-                                    <Option value="activar_renovacion_automatica">Activar Renovación Automática</Option>
-                                    <Option value="cancelar_renovacion_auomatica">Cancelar Renovación Automática</Option>
-                                </Select>
-
-                                <Button style={{marginLeft: '10px'}} type="primary" onClick={() => { alert("Do something") }} disabled={!selectedRowsAction} loading={loadingList}>
-                                    Aplicar
+                                <Button style={{marginLeft: '10px', marginRight: '10px' }} type="primary" onClick={() => { history.push('/planes-de-compra/crear') }}>
+                                    Nuevo
                                 </Button>
-                                <span style={{ marginLeft: 8 }}>
-                                {hasRowsSelected ? `${selectedRowsKeys.length} planes seleccionados.` : ''}
-                            </span>
+                                {
+                                    selectedRowsKeys.length == 1 && (
+                                        <React.Fragment>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                Editar
+                                            </Button>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                Copiar
+                                            </Button>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                Avance
+                                            </Button>
+                                    </React.Fragment>
+                                    )
+                                }
+                                {
+                                    selectedRowsKeys.length >= 1 && (
+                                    <React.Fragment>
+                                        <Button style={{marginLeft: '3px', marginRight: '3px' }} onClick={() => { alert("Do something") }}>
+                                            Renovar
+                                        </Button>
+                                        <Dropdown overlay={(
+                                            <Menu onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                <Menu.Item key="1">
+                                                    Activo
+                                                </Menu.Item>
+                                                <Menu.Item key="2">
+                                                    Inactivo
+                                                </Menu.Item>
+                                            </Menu>
+                                        )}>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                                Cambiar a <DownOutlined />
+                                            </Button>
+                                        </Dropdown>
+
+                                        <Dropdown overlay={(
+                                            <Menu onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                <Menu.Item key="1">
+                                                    Activar
+                                                </Menu.Item>
+                                                <Menu.Item key="2">
+                                                    Desactivar
+                                                </Menu.Item>
+                                            </Menu>
+                                        )}>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                                Renovación Aut. <DownOutlined />
+                                            </Button>
+                                        </Dropdown>
+
+
+                                        <Dropdown overlay={(
+                                            <Menu onClick={() => {
+                                                alert("Do something")
+                                            }}>
+                                                <Menu.Item key="1">
+                                                    Activar
+                                                </Menu.Item>
+                                                <Menu.Item key="2">
+                                                    Desactivar
+                                                </Menu.Item>
+                                            </Menu>
+                                        )}>
+                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                                Regularización Aut. <DownOutlined />
+                                            </Button>
+                                        </Dropdown>
+                                    </React.Fragment>
+                                    )
+
+                                }
+                                <Button style={{marginLeft: '3px', marginRight: '0px' }} onClick={() => { alert("Do something") }}>
+                                    <FileExcelOutlined />
+                                </Button>
+
                             </div>
                         </div>
 
 
-                        <Table
+                        <ResizableTable
                             dataSource={this.props.plans}
                             className="table"
                             rowSelection={{ selectedRowsKeys, onChange: this.onSelectRowChange }}
@@ -103,78 +256,10 @@ class PlanesCompra extends React.Component {
                                 total: 999,
                                 current: 1,
                             }}
-                            scroll={{ x: true }}
                             tableLayout="auto"
-                            scroll={{ x: 'calc(700px + 50%)'}}
-                        >
-
-                            <Column
-                                title="ID"
-                                dataIndex="id"
-                                key="id"
-                                align="center"
-                            />
-
-                            <Column
-                                title="Nombre"
-                                dataIndex="nombre"
-                                key="nombre"
-
-                            />
-                            <Column
-                                title="Fecha Inicio"
-                                dataIndex="fecha_inicio"
-                                key="fecha_inicio"
-                            />
-                            <Column
-                                title="Fecha Fin"
-                                dataIndex="fecha_fin"
-                                key="fecha_fin"
-                            />
-                            <Column
-                                title="Uds Compra"
-                                dataIndex="uds_compra"
-                                key="uds_compra"
-                                align="center"
-                            />
-                            <Column
-                                title="Descuento"
-                                dataIndex="descuento"
-                                key="descuento"
-                            />
-                            <Column
-                                title="Cod Entidad"
-                                dataIndex="codentidad"
-                                key="codentidad"
-                            />
-                            <Column
-                                title="Nombre Entidad"
-                                dataIndex="nomentidad"
-                                key="nomentidad"
-                            />
-                            <Column
-                                title="Delegado Comrcial"
-                                dataIndex="delegadocomercial"
-                                key="delegadocomercial"
-                            />
-                            <Column
-                                title="Estado"
-                                dataIndex="estado"
-                                key="estado"
-                            />
-                            <Column
-                                title="Renov. Auto."
-                                dataIndex="autorenovar"
-                                key="autorenovar"
-                            />
-                            <Column
-                                title="#"
-                                dataIndex="acciones"
-                                key="acciones"
-                            />
-
-
-                        </Table>
+                            scroll={{ x: 'calc(700px + 60%)'}}
+                            columns={columns}
+                        />
                     </TableContainer>
 
                 </div>
@@ -188,4 +273,4 @@ PlanesCompra.propTypes = {
 
 };
 
-export default PlanesCompra;
+export default withRouter(PlanesCompra);
