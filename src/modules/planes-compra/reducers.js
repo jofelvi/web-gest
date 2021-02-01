@@ -10,17 +10,22 @@ import {
     createPlanSuccess,
     createPlanFailed,
     createPlanSetLoading,
+    fetchDelegadosSuccess,
+    fetchDelegadosFailed,
 } from './actions';
 import {fetchOrdersCountSuccess} from "../orders/actions";
 
 const defaultState = {
     list: [],
+    delegados: [],
     loadingList: false,
     count: 0,
     delegadosComerciales: [
         { id: 1, nombre: 'Paco Delegadillo' },
         { id: 2, nombre: 'Ramon Comercial' },
-    ]
+    ],
+    createLoading: false,
+    createError: false,
 };
 
 export default handleActions(
@@ -50,25 +55,42 @@ export default handleActions(
                 count: 0
             }
         },
-        [createPlanSetLoading]: (state, loading ) => {
+        [createPlanSetLoading]: (state, { payload } ) => {
             return {
                 ...state,
-                loadingCreate: loading,
+                createLoading: payload.loading,
+                createError: false,
             }
         },
-        [createPlanSuccess]: (state, { plan }) => {
+        [createPlanSuccess]: (state, { payload }) => {
             return {
                 ...state,
-                plan: plan,
-                loadingCreate: false,
+                plan: payload.plan,
+                createError: false,
+                createLoading: false,
             }
         },
         [createPlanFailed]: (state, {  }) => {
             return {
                 ...state,
                 plan: false,
-                loadingCreate: false,
+                createLoading: false,
+                createError: true
             }
+        },
+
+        [fetchDelegadosSuccess]: (state, { payload }) => {
+            return ({
+                ...state,
+                delegados: payload.delegados
+            })
+        },
+
+        [fetchDelegadosFailed]: (state, {  }) => {
+            return ({
+                ...state,
+                delegados: []
+            })
         },
     },
     defaultState

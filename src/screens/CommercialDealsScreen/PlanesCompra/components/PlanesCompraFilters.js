@@ -113,6 +113,7 @@ class PlanesCompraFilters extends React.Component {
                         <Col span={18} style={{padding: '10px'}}>
                             <span style={{padding: '10px'}}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                             <OrderFilterEntity
+                                column={"idcliente"}
                                 value={searchByEntity}
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
                                 onChangeClient={ (client) => this.searchedValue('idcliente', client) }
@@ -152,22 +153,13 @@ class PlanesCompraFilters extends React.Component {
                                 showSearch
                                 allowClear
                                 filterOption={(input, option) => {
-                                    if (option.props.children.length > 0) {
-                                        var convertedChildren = [];
-                                        for(var i = 0; i < option.props.children.length; ++i)  {
-                                            convertedChildren.push(option.props.children[i]);
-                                        }
-                                        return convertedChildren.join(',').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }
-
-                                    return option.props.children ? option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 : false
-                                }
-                                }
+                                    return (option.props.children.toLowerCase().indexOf(input.toLowerCase()) > -1)
+                                } }
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
-                                { this.props.delegadosComerciales && this.props.delegadosComerciales.map( (stateObject) => {
+                                { this.props.delegados && this.props.delegados.map( (delegado) => {
                                     return (
-                                        <Option value={stateObject.id}>{stateObject.nombre}</Option>
+                                        <Option value={delegado.coddelegado}>{delegado.nombre}</Option>
                                     );
                                 } ) }
                             </Select>
@@ -184,7 +176,6 @@ class PlanesCompraFilters extends React.Component {
                                 <Option value="0">Borrador</Option>
                                 <Option value="1">Activo</Option>
                                 <Option value="2">Inactivo</Option>
-                                <Option value="3">Expirado</Option>
                             </Select>
                         </Col>
 

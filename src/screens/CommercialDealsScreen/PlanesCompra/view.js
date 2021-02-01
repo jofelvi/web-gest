@@ -8,7 +8,7 @@ import ResizableTable from '../../shared/ResizableTable';
 import { withRouter } from 'react-router-dom';
 
 import {
-    FileExcelOutlined
+    ExportOutlined
 } from '@ant-design/icons';
 
 import Utils from '../../../lib/utils';
@@ -34,6 +34,7 @@ import PlanesCompraFilters from "./components/PlanesCompraFilters";
 
 import {filterOrderType, modifyOrderDate} from "../../OrderListScreen/utils";
 import * as api from './../../../modules/planes-compra/api';
+import {call} from "redux-saga/effects";
 
 
 
@@ -55,11 +56,11 @@ class PlanesCompra extends React.Component {
         page: 1,
         filters: {},
         selectedRowsAction: false,
-        exportUrl: api.exportPlansUrl( { } )
     }
 
     componentWillMount() {
         this.props.fetchPlans( { page: 1 } )
+        this.props.fetchDelegados();
     }
 
     onSelectRowChange ( selectedRowsKeys ) {
@@ -67,8 +68,7 @@ class PlanesCompra extends React.Component {
     }
 
     setFilters( filters ) {
-        const exportUrl = api.exportPlansUrl( filters );
-        this.setState({ filters: filters, exportUrl }, this.updateList )
+        this.setState({ filters: filters }, this.updateList )
     }
     updateList() {
         const { filters, page } = this.state;
@@ -77,12 +77,18 @@ class PlanesCompra extends React.Component {
 
     render() {
         const { selectedRowsKeys, selectedRowsAction } = this.state;
-        const { loadingList, history, count } = this.props;
+        const { loadingList, history, count, delegados } = this.props;
         const hasRowsSelected = selectedRowsKeys.length > 0;
 
         const columns = [
             {
-                title: 'Plan de Compra',
+                title: 'ID',
+                dataIndex: 'idcondcomercial',
+                key: 'id',
+                width: 70,
+            },
+            {
+                title: 'Nombre',
                 dataIndex: 'nombre',
                 key: 'nombre',
                 width: 200,
@@ -93,12 +99,22 @@ class PlanesCompra extends React.Component {
                 dataIndex: 'fechainicio',
                 key: 'fecha_inicio',
                 width: 120,
+                render: (dateStr, record, index) => (
+                    <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
+                        <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
+                    </Tooltip>
+                )
             },
             {
                 title: 'Fecha Fin',
                 dataIndex: 'fechafin',
                 key: 'fecha_fin',
                 width: 120,
+                render: (dateStr, record, index) => (
+                    <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:ii')}>
+                        <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
+                    </Tooltip>
+                )
             },
             {
                 title: 'Uds Compromiso',
@@ -115,13 +131,13 @@ class PlanesCompra extends React.Component {
                 render: (text, record, index) => (text+" %")
             },
             {
-                title: 'Cod Entidad',
+                title: 'Cod Cliente',
                 dataIndex: 'codcli_cbim',
                 key: 'codentidad',
                 width: 80,
             },
             {
-                title: 'Nombre Entidad',
+                title: 'Nombre Cliente',
                 dataIndex: 'nomcli_cbim',
                 key: 'nomentidad',
                 width: 180,
@@ -146,7 +162,7 @@ class PlanesCompra extends React.Component {
                 render: (text, record, index) => (text?'Si':'No')
             },
             {
-                title: 'Regularización Auto.',
+                title: 'Forzar regularización',
                 dataIndex: 'ind_regularizar',
                 key: 'autorenovar',
                 width: 80,
@@ -165,6 +181,7 @@ class PlanesCompra extends React.Component {
                     <h2 className="table-indas-title">Planes de Compra</h2>
                     <PlanesCompraFilters
                         setFilters={ this.setFilters  }
+                        delegados={ delegados }
                     />
                     <TableContainer>
                         <div class="table-actions">
@@ -256,16 +273,19 @@ class PlanesCompra extends React.Component {
                                 }
                                 <Button
                                     type="link"
-                                    style={{marginLeft: '3px', marginRight: '0px' }}
+                                    style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0 }}
                                     onClick={
-                                        () => { window.open(this.state.exportUrl, '_blank') }
+                                        () => {
+                                         api.exportPlans( this.state.filters, 'export_planes_compra.xls' )
+                                        }
                                     }
                                 >
-                                    <FileExcelOutlined />
+                                    <ExportOutlined style={{ fontSize: '20px'}} />
                                 </Button>
 
                             </div>
                         </div>
+                        { loadingList && (<div style={{ marginTop: '60px'} }></div> ) }
 
 
                         <ResizableTable

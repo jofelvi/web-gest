@@ -9,14 +9,17 @@ import { UpOutlined, DownOutlined, RightOutlined, DoubleRightOutlined, LeftOutli
 import { Tabs } from 'antd';
 import _ from 'underscore';
 import { loadProducts, loadBrands, loadSubBrands } from '../../../../modules/commercialDeals/actions';
-import { createPlan } from '../../../../modules/planes-compra/actions';
+import {createPlan, createPlanSetLoading} from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
+import { Spin, Typography, Space } from 'antd';
 
 import ExtendedDualListBox from "./ExtendedDualListBox";
 import DiscriminatorListBox from "./DiscriminatorListBox";
+import PlanesCompraCreated from "./PlanesCompraCreated";
 import View from "../../../Forms/crear_pedido/view";
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {InputBox} from "../../../OrderListScreen/styled";
+const { Text, Link } = Typography;
 
 const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
@@ -60,7 +63,7 @@ class PlanesCompraForm extends React.Component {
                     { idcliente: '' }
                 ],
                 escalados: [
-                    { udsminimas: '', descuento: '', udsmaximas: null, txtdescuento: null }
+                    { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
                 ],
             },
             rawFields: {
@@ -133,22 +136,20 @@ class PlanesCompraForm extends React.Component {
     };
 
     render() {
-        const { products, brands, subBrands, loading } = this.props;
+        const { products, brands, subBrands, loading, error } = this.props;
         const { plan } = this.state;
         const { rawFields } = this.state;
+        const createdPlan = this.props.plan
 
         console.log(' ___PLAN ', plan)
 
-        if ( loading ) {
-            return "Cargando...";
-        }
-
-        if (this.props.plan != null) {
-            return "OK";
+        if ( createdPlan != null) {
+            return (<PlanesCompraCreated plan={ createdPlan } />);
         }
 
         return (
             <React.Fragment>
+                { error && ( <Typography type="danger" style={{ color: 'red'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Datos generales
                 </h3>
@@ -157,15 +158,18 @@ class PlanesCompraForm extends React.Component {
                     <Row style={{width: '100%', marginBottom: 0}}>
                         <Col span={18} style={{padding: '0px'}}>
                             <span>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
+                            <div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
                             <OrderFilterEntity
                                 style={inputStyle }
                                 value={ rawFields.entidad }
+                                column={ "idcliente" }
                                 onChange={ (entity) => { this.setState({ rawFields: { ...rawFields, entidad: entity} })} }
                                 onChangeClient={ (client) => { this.setState({ plan: { ...plan, clientes: [{ idcliente: client }] }})} }
                             />
+                            </div>
                         </Col>
 
-                        <Col span={6}>
+                        <Col span={6} style={{padding: '0px'}}>
                             <span>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
@@ -242,7 +246,7 @@ class PlanesCompraForm extends React.Component {
                                 value={ plan.ind_regularizar }
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_regularizar: value } } ) } }
                             />
-                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Regula.</label>
+                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Regularización</label>
                         </Col>
                     </Row>
                 </div>
@@ -253,33 +257,30 @@ class PlanesCompraForm extends React.Component {
                 <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
                     <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                         <Col span={6}>
+                            <label>Unidades comprometidas</label>
+                            <Input
+                                value={ plan.escalados[0].udsmaximas }
+                                onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } })} }
+                                style={inputStyle} />
+                        </Col>
+                        <Col span={6}>
+                            <label>Descuento</label>
+                            <Input
+                                value={ plan.escalados[0].descuento }
+                                onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } })} }
+                                suffix={"%"}
+                                style={inputStyle}
+                            />
+                        </Col>
+                        <Col span={6}>
                             <label>Margen</label>
                             <Input
                                 value={ plan.margen }
+                                suffix={"%"}
                                 onChange={ ( e ) => { this.setState( { plan: { ...plan,  margen: e.target.value } })} }
                                 style={inputStyle} />
                         </Col>
                     </Row>
-                        <React.Fragment>
-                            <label>Descuentos</label>
-                            <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-                                <Col span={6}>
-                                    <Input
-                                        value={ plan.escalados[0].udsminimas }
-                                        placeholder={'Unidades comprometidas'}
-                                        onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsminimas: e.target.value }] } })} }
-                                        style={inputStyle} />
-                                </Col>
-                                <Col span={12}>
-                                    <Input
-                                        value={ plan.escalados[0].descuento }
-                                        onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } })} }
-                                        placeholder={'Descuento'}
-                                        style={{width: '100%', marginTop: '10px'}}
-                                    />
-                                </Col>
-                            </Row>
-                        </React.Fragment>
                 </div>
 
                 <h3 style={{margin: '20px 0 10px 0'}}>
@@ -292,6 +293,7 @@ class PlanesCompraForm extends React.Component {
                             onChange={(value) => this.setState( { plan:{ ...plan, ind_seleccion_conjunta: value=="1" } } ) }
                         >
                             <TabPane tab="Selección por submarca" key="1">
+                                { false && (
                                 <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
                                     <Col span={12}>
                                         <Select
@@ -303,13 +305,12 @@ class PlanesCompraForm extends React.Component {
                                             <Option value="activo">Preset 1</Option>
                                             <Option value="inactivo">Preset 2</Option>
                                         </Select>
-                                    </Col>
-                                    <Col span={12} style={{textAlign: 'right'}}>
                                         <Button disabled={this.state.seleccion_submarcas_valores.length==0}>
                                             Guardar Selección
                                         </Button>
                                     </Col>
                                 </Row>
+                                )}
 
                                 { products && subBrands && (
                                     <DiscriminatorListBox
@@ -334,7 +335,7 @@ class PlanesCompraForm extends React.Component {
                                 )}
 
                             </TabPane>
-                            <TabPane tab="Selección Individual" key="2">
+                            {/* <TabPane tab="Selección Individual" key="2">
                                 <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
                                     <Col span={8} >
                                         <Select
@@ -381,14 +382,15 @@ class PlanesCompraForm extends React.Component {
                                         }
                                     }
                                 />
-                            </TabPane>
+                            </TabPane> */}
                         </Tabs>
                     </Row>
-                    <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}}>
-                        Guardar
-                    </Button>
                 </div>
 
+                { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
+                <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
+                    { loading ? (<Spin></Spin>) : 'Crear' }
+                </Button>
 
 
             </React.Fragment>
@@ -403,6 +405,7 @@ export default  connect(
     state => ({
         plan: state.planesCompra.plan,
         loading: state.planesCompra.createLoading,
+        error: state.planesCompra.createError,
         products: state.commercialDeals.products,
         brands: state.commercialDeals.brands,
         subBrands: state.commercialDeals.subBrands,

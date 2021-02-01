@@ -48,6 +48,7 @@ import {
 import {
   watchfetchPlans,
   watchcreatePlan,
+  watchfetchDelegados,
 } from './planes-compra/sagas'
 
 import{
@@ -151,6 +152,7 @@ export default function* rootSaga() {
     watchfetchOrderStates(),
     watchfetchOrderProducts(),
     watchfetchPlans(),
-    watchcreatePlan()
+    watchcreatePlan(),
+    watchfetchDelegados(),
   ]);
 }

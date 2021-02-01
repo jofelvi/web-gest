@@ -10,6 +10,9 @@ import {
     CREATE_PLAN_SUCCESS,
     CREATE_PLAN_FAILED,
     CREATE_PLAN_SET_LOADING,
+    FETCH_DELEGADOS,
+    FETCH_DELEGADOS_SUCCESS,
+    FETCH_DELEGADOS_FAILED,
 } from './actionTypes';
 
 export const {
@@ -21,7 +24,10 @@ export const {
     createPlan,
     createPlanSuccess,
     createPlanFailed,
-    createPlanSetLoading
+    createPlanSetLoading,
+    fetchDelegados,
+    fetchDelegadosSuccess,
+    fetchDelegadosFailed,
 } = createActions(
     FETCH_PLANS,
     FETCH_PLANS_SUCCESS,
@@ -32,4 +38,7 @@ export const {
     CREATE_PLAN_SUCCESS,
     CREATE_PLAN_FAILED,
     CREATE_PLAN_SET_LOADING,
+    FETCH_DELEGADOS,
+    FETCH_DELEGADOS_SUCCESS,
+    FETCH_DELEGADOS_FAILED,
 );

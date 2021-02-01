@@ -39,7 +39,7 @@ class DiscriminatorListBox extends React.Component {
 
         return (
             <Row style={{width: '100%'}}>
-                <Col span={12} style={{ height: '300px', overflow: 'scroll', paddingRight: '10px' }}>
+                <Col span={12} style={{ height: '1150px', overflow: 'auto', paddingRight: '10px' }}>
                     <List
                         size="small"
                         header={<div>Submarcas</div>}
@@ -63,7 +63,7 @@ class DiscriminatorListBox extends React.Component {
                         }
                     />
                 </Col>
-                <Col span={12} style={{ height: '300px', overflow: 'scroll', paddingLeft: '10px' }}>
+                <Col span={12} style={{ height: '1150px', overflow: 'auto', paddingLeft: '10px' }}>
                     <List
                         size="small"
                         header={<div>Seleccionados</div>}

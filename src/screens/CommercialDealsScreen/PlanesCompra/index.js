@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import View from './view';
 import planesCompra from "../../../modules/planes-compra/reducers";
-import { fetchPlans } from "../../../modules/planes-compra/actions";
+import { fetchPlans, fetchDelegados } from "../../../modules/planes-compra/actions";
 
 
 export default connect(
@@ -10,6 +10,7 @@ export default connect(
         plans: state.planesCompra.list,
         loadingList: state.planesCompra.loadingList,
         count: state.planesCompra.count,
+        delegados: state.planesCompra.delegados
     }),
-    { fetchPlans }
+    { fetchPlans, fetchDelegados }
 )(View);

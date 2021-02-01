@@ -1,5 +1,7 @@
 import {LIMIT} from "../../constants";
-import {get, post} from "../../lib/restClient";
+import {get, post, getHeaders} from "../../lib/restClient";
+import _  from 'underscore';
+import * as download from 'downloadjs';
 
 const generatingOffset = (offset)=>{
     const limit = LIMIT;
@@ -17,6 +19,9 @@ const addFiltersQueryParams = ( queryParams, {
     }
     if (idestado) {
         queryParams += `&idestado=${idestado}`;
+    }
+    if (idcliente) {
+        queryParams += `&idcliente=${idcliente}`;
     }
     if (coddelegado) {
         queryParams += `&coddelegado=${coddelegado}`;
@@ -36,6 +41,9 @@ export const fetchPlans = async (filters) => {
     return get(`ntr/plan?${queryParams}`);
 }
 
+export const fetchDelegados = async () => {
+    return get(`ntr/delegado`);
+}
 
 
 export const countPlans = async (filters) => {
@@ -43,8 +51,17 @@ export const countPlans = async (filters) => {
     return get(`ntr/plan/count?${queryParams}`);
 };
 
-export const exportPlansUrl =(filters) => {
+export const exportPlans =(filters, filename) => {
     const queryParams = addFiltersQueryParams( '', filters )
-    return `ntr/plan?formato=excel${queryParams}`;
+    getHeaders().then( ( headers) => {
+        var x=new XMLHttpRequest();
+        x.open( "GET", `${process.env.REACT_APP_API_BASE_URL}ntr/plan?formato=excel${queryParams}` , true);
+        _.each(headers, (value, key) => {
+            x.setRequestHeader( key, value );
+        })
+        x.responseType="blob";
+        x.onload= function(e){ download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");};
+        x.send();
+    })
 };
 
