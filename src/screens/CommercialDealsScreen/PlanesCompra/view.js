@@ -102,9 +102,10 @@ class PlanesCompra extends React.Component {
             },
             {
                 title: 'Uds Compromiso',
-                dataIndex: 'uds_compromiso',
+                dataIndex: 'escalados',
                 key: 'uds_compromiso',
                 width: 110,
+                render: (value, record, index) => (value[0].udsminimas)
             },
             {
                 title: 'Descuento',
@@ -115,7 +116,7 @@ class PlanesCompra extends React.Component {
             },
             {
                 title: 'Cod Entidad',
-                dataIndex: 'codentidad',
+                dataIndex: 'codcli_cbim',
                 key: 'codentidad',
                 width: 80,
             },

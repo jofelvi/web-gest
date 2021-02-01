@@ -50,7 +50,7 @@ class PlanesCompraForm extends React.Component {
                 fechainicio: '',
                 fechafin: '',
                 margen: '',
-                ind_surtido: false,
+                ind_surtido: true,
                 ind_renovar: false,
                 ind_seleccion_conjunta: true,
                 ind_regularizar: false,
