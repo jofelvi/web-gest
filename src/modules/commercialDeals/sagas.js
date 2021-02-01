@@ -1,6 +1,6 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 
-import { 
+import {
   LOAD_COMMERCIAL_DEALS,
   CREATE_COMMERCIAL_DEAL,
   EDIT_COMMERCIAL_DEAL,
@@ -153,6 +153,7 @@ function* loadSubBrands() {
   try {
     const response = yield call(api.getSubBrands);
     yield put(loadSubBrandsSuccess({ subBrands: response.data }));
+    console.log('---- - - - ---- SUBBRANDS: OK', response.data, response)
   } catch (e) {
     console.error(e);
     yield put(loadSubBrandsFailed());

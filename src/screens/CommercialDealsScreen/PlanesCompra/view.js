@@ -33,6 +33,7 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import PlanesCompraFilters from "./components/PlanesCompraFilters";
 
 import {filterOrderType, modifyOrderDate} from "../../OrderListScreen/utils";
+import * as api from './../../../modules/planes-compra/api';
 
 
 
@@ -46,34 +47,40 @@ class PlanesCompra extends React.Component {
     constructor(props) {
         super(props)
         this.onSelectRowChange = this.onSelectRowChange.bind(this);
+        this.setFilters = this.setFilters.bind(this);
+        this.updateList = this.updateList.bind(this);
     }
     state = {
         selectedRowsKeys: [],
+        page: 1,
+        filters: {},
         selectedRowsAction: false,
+        exportUrl: api.exportPlansUrl( { } )
     }
 
-    componentDidMount() {
-        this.props.fetchPlans()
+    componentWillMount() {
+        this.props.fetchPlans( { page: 1 } )
     }
 
     onSelectRowChange ( selectedRowsKeys ) {
         this.setState({ selectedRowsKeys })
     }
 
+    setFilters( filters ) {
+        const exportUrl = api.exportPlansUrl( filters );
+        this.setState({ filters: filters, exportUrl }, this.updateList )
+    }
+    updateList() {
+        const { filters, page } = this.state;
+        this.props.fetchPlans( { ...filters, page })
+    }
+
     render() {
         const { selectedRowsKeys, selectedRowsAction } = this.state;
-        const { loadingList, history } = this.props;
+        const { loadingList, history, count } = this.props;
         const hasRowsSelected = selectedRowsKeys.length > 0;
 
-
         const columns = [
-            {
-                title: 'Id',
-                dataIndex: 'id',
-                key: 'id',
-                align: 'center',
-                width: 50,
-            },
             {
                 title: 'Plan de Compra',
                 dataIndex: 'nombre',
@@ -83,13 +90,13 @@ class PlanesCompra extends React.Component {
 
             {
                 title: 'Fecha Inicio',
-                dataIndex: 'fecha_inicio',
+                dataIndex: 'fechainicio',
                 key: 'fecha_inicio',
                 width: 120,
             },
             {
                 title: 'Fecha Fin',
-                dataIndex: 'fecha_fin',
+                dataIndex: 'fechafin',
                 key: 'fecha_fin',
                 width: 120,
             },
@@ -101,7 +108,7 @@ class PlanesCompra extends React.Component {
             },
             {
                 title: 'Descuento',
-                dataIndex: 'descuento',
+                dataIndex: 'margen',
                 key: 'descuento',
                 width: 100,
                 render: (text, record, index) => (text+" %")
@@ -114,27 +121,35 @@ class PlanesCompra extends React.Component {
             },
             {
                 title: 'Nombre Entidad',
-                dataIndex: 'nomentidad',
+                dataIndex: 'nomcli_cbim',
                 key: 'nomentidad',
                 width: 180,
             },
             {
                 title: 'Delegado Comercial',
-                dataIndex: 'delegadocomercial',
+                dataIndex: 'delegado',
                 key: 'delegadocomercial',
                 width: 180,
             },
             {
                 title: 'Estado',
-                dataIndex: 'estado',
+                dataIndex: 'estado2',
                 key: 'estado',
                 width: 100,
             },
             {
                 title: 'Renov. Auto.',
-                dataIndex: 'autorenovar',
+                dataIndex: 'ind_renovar',
                 key: 'autorenovar',
                 width: 80,
+                render: (text, record, index) => (text?'Si':'No')
+            },
+            {
+                title: 'Regularización Auto.',
+                dataIndex: 'ind_regularizar',
+                key: 'autorenovar',
+                width: 80,
+                render: (text, record, index) => (text?'Si':'No')
             },
             {
                 title: '#',
@@ -148,7 +163,7 @@ class PlanesCompra extends React.Component {
                 <div className="table-indas table-indas-new">
                     <h2 className="table-indas-title">Planes de Compra</h2>
                     <PlanesCompraFilters
-                        setFilters={() => { }}
+                        setFilters={ this.setFilters  }
                     />
                     <TableContainer>
                         <div class="table-actions">
@@ -159,17 +174,17 @@ class PlanesCompra extends React.Component {
                                 {
                                     selectedRowsKeys.length == 1 && (
                                         <React.Fragment>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
                                                 alert("Do something")
                                             }}>
                                                 Editar
                                             </Button>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
                                                 alert("Do something")
                                             }}>
                                                 Copiar
                                             </Button>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
                                                 alert("Do something")
                                             }}>
                                                 Avance
@@ -180,7 +195,7 @@ class PlanesCompra extends React.Component {
                                 {
                                     selectedRowsKeys.length >= 1 && (
                                     <React.Fragment>
-                                        <Button style={{marginLeft: '3px', marginRight: '3px' }} onClick={() => { alert("Do something") }}>
+                                        <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }} onClick={() => { alert("Do something") }}>
                                             Renovar
                                         </Button>
                                         <Dropdown overlay={(
@@ -195,7 +210,7 @@ class PlanesCompra extends React.Component {
                                                 </Menu.Item>
                                             </Menu>
                                         )}>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
                                                 Cambiar a <DownOutlined />
                                             </Button>
                                         </Dropdown>
@@ -212,7 +227,7 @@ class PlanesCompra extends React.Component {
                                                 </Menu.Item>
                                             </Menu>
                                         )}>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
                                                 Renovación Aut. <DownOutlined />
                                             </Button>
                                         </Dropdown>
@@ -230,7 +245,7 @@ class PlanesCompra extends React.Component {
                                                 </Menu.Item>
                                             </Menu>
                                         )}>
-                                            <Button style={{marginLeft: '3px', marginRight: '3px' }}>
+                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
                                                 Regularización Aut. <DownOutlined />
                                             </Button>
                                         </Dropdown>
@@ -238,7 +253,13 @@ class PlanesCompra extends React.Component {
                                     )
 
                                 }
-                                <Button style={{marginLeft: '3px', marginRight: '0px' }} onClick={() => { alert("Do something") }}>
+                                <Button
+                                    type="link"
+                                    style={{marginLeft: '3px', marginRight: '0px' }}
+                                    onClick={
+                                        () => { window.open(this.state.exportUrl, '_blank') }
+                                    }
+                                >
                                     <FileExcelOutlined />
                                 </Button>
 
@@ -250,11 +271,15 @@ class PlanesCompra extends React.Component {
                             dataSource={this.props.plans}
                             className="table"
                             rowSelection={{ selectedRowsKeys, onChange: this.onSelectRowChange }}
+                            loading={this.props.loadingList}
                             pagination={{
                                 position:'both',
                                 pageSize: LIMIT,
-                                total: 999,
-                                current: 1,
+                                total: count,
+                                current: this.state.page,
+                                onChange: (page, pageSize) => {
+                                    this.setState( { page: page }, this.updateList )
+                                }
                             }}
                             tableLayout="auto"
                             scroll={{ x: 'calc(700px + 60%)'}}

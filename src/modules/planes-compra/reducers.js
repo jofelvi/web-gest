@@ -4,9 +4,14 @@ import { message } from 'antd';
 
 import {
     fetchPlansSuccess,
+    fetchPlansCountSuccess,
     fetchPlansFailed,
     fetchPlansLoading,
+    createPlanSuccess,
+    createPlanFailed,
+    createPlanSetLoading,
 } from './actions';
+import {fetchOrdersCountSuccess} from "../orders/actions";
 
 const defaultState = {
     list: [],
@@ -27,6 +32,10 @@ export default handleActions(
                 list: payload.plans
             })
         },
+        [fetchPlansCountSuccess]: (state, { payload }) => ({
+            ...state,
+            count: payload.count
+        }),
         [fetchPlansLoading]: (state, loading) => {
             return {
                 ...state,
@@ -39,6 +48,26 @@ export default handleActions(
                 loadingList: false,
                 list: [],
                 count: 0
+            }
+        },
+        [createPlanSetLoading]: (state, loading ) => {
+            return {
+                ...state,
+                loadingCreate: loading,
+            }
+        },
+        [createPlanSuccess]: (state, { plan }) => {
+            return {
+                ...state,
+                plan: plan,
+                loadingCreate: false,
+            }
+        },
+        [createPlanFailed]: (state, {  }) => {
+            return {
+                ...state,
+                plan: false,
+                loadingCreate: false,
             }
         },
     },

@@ -22,31 +22,31 @@ class PlanesCompraFilters extends React.Component {
         this.searchedValue = this.searchedValue.bind(this)
 
         this.state = {
-            searchByClient: '',
-            searchByState: '',
+            idcliente: '',
+            idestado: '',
             searchByEntity: '',
-            searchByPending: false,
             page: props.page,
-            searchByPlanDate: [],
-            searchByPlanDateValue: [],
+            fechas: [],
+            fechasValue: [],
             expandFilters: false,
-            searchByDelegado: '',
+            coddelegado: '',
             isFilterChanged: false,
+            contareaspendientes: false,
         }
     }
 
     clearFilters = () => {
         this.setState({
-            searchByClient: '',
-            searchByPlanDateValue: [],
+            idcliente: '',
+            fechasValue: [],
             searchByEntity: '',
-            searchByPending: false,
             page: 0,
-            searchByDelegado: '',
-            searchByState: '',
-            searchByPlanDate: [],
+            coddelegado: '',
+            idestado: '',
+            fechas: [],
             expandedKeys: [],
             isFilterChanged: false,
+            contareaspendientes: false,
 
         }, this.setFilters)
 
@@ -66,11 +66,11 @@ class PlanesCompraFilters extends React.Component {
 
             this.setState({
                 ...this.state,
-                searchByPlanDate: [
+                fechas: [
                     moment(dateString[0]).startOf('day').toDate().toISOString(),
                     moment(dateString[1]).endOf('day').toDate().toISOString(),
                 ],
-                searchByPlanDateValue: [
+                fechasValue: [
                     moment(dateString[0]),
                     moment(dateString[1])
                 ], isFilterChanged: true
@@ -78,8 +78,8 @@ class PlanesCompraFilters extends React.Component {
         } else {
             this.setState({
                 ...this.state,
-                searchByPlanDate: [],
-                searchByPlanDateValue: [],
+                fechas: [],
+                fechasValue: [],
                 isFilterChanged: true
             });
         }
@@ -88,14 +88,12 @@ class PlanesCompraFilters extends React.Component {
 
     isFilterActive = () => {
         return (
-            this.state.searchByPlanDate.length !== 0 ||
-            this.state.searchByClient !== '' ||
+            this.state.fechas.length !== 0 ||
+            this.state.idcliente !== '' ||
             this.state.searchByEntity !== '' ||
-            this.state.searchByState !== '' ||
-            this.state.searchByType !== '' ||
-                this.state.searchByPending === true ||
-            this.state.searchByDelegado !== '' ||
-            this.state.searchByCodPedido !== ''
+            this.state.idestado !== '' ||
+            this.state.coddelegado !== '' ||
+            this.state.contareaspendientes !== ''
         );
     }
 
@@ -106,7 +104,7 @@ class PlanesCompraFilters extends React.Component {
 
     render() {
 
-        const { page, searchByState,searchByDelegado, searchByOrderDate, searchByClient, searchByEntity } = this.state;
+        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity } = this.state;
 
         return (
             <div className="table-filters-indas">
@@ -117,7 +115,7 @@ class PlanesCompraFilters extends React.Component {
                             <OrderFilterEntity
                                 value={searchByEntity}
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
-                                onChangeClient={ (client) => this.searchedValue('searchByClient', client) }
+                                onChangeClient={ (client) => this.searchedValue('idcliente', client) }
                             />
                         </Col>
 
@@ -125,8 +123,8 @@ class PlanesCompraFilters extends React.Component {
                             <span style={{padding: '10px'}}>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
-                                value={searchByClient}
-                                onChange={(event) => this.searchedValue('searchByClient', event.target.value)}
+                                value={idcliente}
+                                onChange={(event) => this.searchedValue('idcliente', event.target.value)}
                                 style={{width: '100%'}}
                             />
                         </Col>
@@ -148,8 +146,8 @@ class PlanesCompraFilters extends React.Component {
                         <Col span={11} style={{padding: '10px', paddingTop: 0}}>
                             <span style={{padding: '10px'}}>Delegado Comercial</span>
                             <Select
-                                value={searchByDelegado}
-                                onChange={(value) => this.searchedValue('searchByDelegado', value)}
+                                value={coddelegado}
+                                onChange={(value) => this.searchedValue('coddelegado', value)}
                                 style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
                                 showSearch
                                 allowClear
@@ -178,14 +176,15 @@ class PlanesCompraFilters extends React.Component {
                         <Col span={5} style={{padding: '10px', paddingTop: 0}}>
                             <span style={{padding: '10px'}}>Estado</span>
                             <Select
-                                value={searchByState}
-                                onChange={(value) => this.searchedValue('searchByState', value)}
+                                value={idestado}
+                                onChange={(value) => this.searchedValue('idestado', value)}
                                 style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
-                                <Option value="activo">Activo</Option>
-                                <Option value="inactivo">Inactivo</Option>
-                                <Option value="expirado">Expirado</Option>
+                                <Option value="0">Borrador</Option>
+                                <Option value="1">Activo</Option>
+                                <Option value="2">Inactivo</Option>
+                                <Option value="3">Expirado</Option>
                             </Select>
                         </Col>
 
@@ -195,8 +194,8 @@ class PlanesCompraFilters extends React.Component {
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '20px', paddingTop: 0}}>
                             <Checkbox
-                                checked={this.state.searchByPending}
-                                onChange={(e) => this.searchedValue('searchByPending', e.target.checked) }
+                                checked={this.state.contareaspendientes}
+                                onChange={(e) => this.searchedValue('contareaspendientes', e.target.checked) }
                             >
                                 Ver solo planes con tareas pendientes.
                             </Checkbox>
