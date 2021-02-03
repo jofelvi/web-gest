@@ -140,7 +140,7 @@ class PlanesCompraFilters extends React.Component {
                                 format={dateFormat}
                                 onChange={this.searchedValueDate}
                                 placeholder={['desde', 'hasta']}
-                                value={this.state.searchByPlanDateValue}
+                                value={this.state.fechasValue}
                             />
                         </Col>
 

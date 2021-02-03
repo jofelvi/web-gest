@@ -8,11 +8,11 @@ import DualListBox from 'react-dual-listbox';
 import { UpOutlined, DownOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { Tabs } from 'antd';
 import _ from 'underscore';
+import { get, keys } from 'lodash';
 import { loadProducts, loadBrands, loadSubBrands } from '../../../../modules/commercialDeals/actions';
 import {createPlan, createPlanSetLoading} from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
 import { Spin, Typography, Space } from 'antd';
-
 import ExtendedDualListBox from "./ExtendedDualListBox";
 import DiscriminatorListBox from "./DiscriminatorListBox";
 import PlanesCompraCreated from "./PlanesCompraCreated";
@@ -47,6 +47,7 @@ class PlanesCompraForm extends React.Component {
 
         this.state = {
             entidad_helper: '',
+            error: props.error,
             plan: {
                 descripcion: '',
                 nombre: '',
@@ -65,6 +66,8 @@ class PlanesCompraForm extends React.Component {
                 escalados: [
                     { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
                 ],
+            },
+            validationErrors: {
             },
             rawFields: {
                 fechainicio: null,
@@ -97,10 +100,51 @@ class PlanesCompraForm extends React.Component {
     }
 
     save() {
-        const { createPlan } = this.props;
+        const { createPlan, createPlanSetLoading } = this.props;
         const { plan } = this.state;
-        createPlan( { plan } )
+        this.validate( plan, () => {
+            createPlanSetLoading( { loading: true } )
+            createPlan( { plan } )
+        }, () => {
+
+        })
     }
+
+    validate( plan, successCallback, errorCallback ) {
+        const validations = [
+            { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
+            { field: 'nombre', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
+            { field: 'fechainicio', validator: ( value ) => ( moment( value ) > moment() ), message: 'No puede ser una fecha pasada.' },
+            { field: 'fechafin', validator: ( value, record ) => ( moment( value ) > moment( record.fechainicio ) ), message: 'Debe ser posterior a la fecha de inicio.' },
+            { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
+            { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
+            { field: 'margen', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
+            { field: 'submarcas', validator: ( value ) => ( value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
+        ];
+
+        const validationErrors = [];
+
+        for ( let i in validations ) {
+            const validation = validations[i]
+            const value = get( plan, validation.field, '')
+            if ( ! validation.validator( value, plan ) ) {
+                validationErrors[ validation.field ] = validation.message
+            }
+        }
+        const callback = keys( validationErrors ).length > 0 ? errorCallback : successCallback;
+        this.setState( { validationErrors, error: keys( validationErrors ).length > 0 }, callback );
+    }
+
+    getError( field ) {
+        console.log( 'FIELD-', this.state.validationErrors, field )
+        const hasValidationError = _.has( this.state.validationErrors, field, false);
+        if ( hasValidationError ) {
+            const validationError = get( this.state.validationErrors, field, false);
+            return (<Typography type="danger" style={{ color: 'red'}}>{ validationError }</Typography>)
+        }
+        return '';
+    }
+
 
     setPresetProductos( preset ) {
 
@@ -136,17 +180,16 @@ class PlanesCompraForm extends React.Component {
     };
 
     render() {
-        const { products, brands, subBrands, loading, error } = this.props;
-        const { plan } = this.state;
+        const { products, brands, subBrands, loading } = this.props;
+        const { plan, validationErrors, error } = this.state;
         const { rawFields } = this.state;
         const createdPlan = this.props.plan
-
-        console.log(' ___PLAN ', plan)
 
         if ( createdPlan != null) {
             return (<PlanesCompraCreated plan={ createdPlan } />);
         }
 
+    {  }
         return (
             <React.Fragment>
                 { error && ( <Typography type="danger" style={{ color: 'red'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
@@ -177,6 +220,7 @@ class PlanesCompraForm extends React.Component {
                                 onChange={ (e) => { this.setState({ rawFields: {...rawFields, entidad: ''}, plan: { ...plan, clientes: [ { idcliente: e.target.value }] }})} }
                                 style={inputStyle}
                             />
+                            { this.getError( 'clientes[0].idcliente' ) }
                         </Col>
                     </Row>
                         <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
@@ -187,6 +231,7 @@ class PlanesCompraForm extends React.Component {
                                     value={ plan.nombre }
                                     onChange={ (e) => { this.setState({ plan: { ...plan, nombre: e.target.value }})} }
                                 />
+                                { this.getError( 'nombre' ) }
                             </Col>
                             <Col span={18}>
                                 <label>Descripción del plan</label>
@@ -206,6 +251,7 @@ class PlanesCompraForm extends React.Component {
                                 style={inputStyle}
                                 placeholder={'Seleccionar fecha'}
                             />
+                            { this.getError( 'fechainicio' ) }
                         </Col>
                         <Col span={8}>
                             <label>Fecha de fin</label>
@@ -215,6 +261,7 @@ class PlanesCompraForm extends React.Component {
                                 style={inputStyle}
                                 placeholder={'Seleccionar fecha'}
                             />
+                            { this.getError( 'fechafin' ) }
                         </Col>
 
                     </Row>
@@ -262,6 +309,7 @@ class PlanesCompraForm extends React.Component {
                                 value={ plan.escalados[0].udsmaximas }
                                 onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } })} }
                                 style={inputStyle} />
+                            { this.getError( 'escalados[0].udsmaximas' ) }
                         </Col>
                         <Col span={6}>
                             <label>Descuento</label>
@@ -271,6 +319,7 @@ class PlanesCompraForm extends React.Component {
                                 suffix={"%"}
                                 style={inputStyle}
                             />
+                            { this.getError( 'escalados[0].descuento' ) }
                         </Col>
                         <Col span={6}>
                             <label>Margen</label>
@@ -279,6 +328,7 @@ class PlanesCompraForm extends React.Component {
                                 suffix={"%"}
                                 onChange={ ( e ) => { this.setState( { plan: { ...plan,  margen: e.target.value } })} }
                                 style={inputStyle} />
+                            { this.getError( 'margen' ) }
                         </Col>
                     </Row>
                 </div>
@@ -293,6 +343,7 @@ class PlanesCompraForm extends React.Component {
                             onChange={(value) => this.setState( { plan:{ ...plan, ind_seleccion_conjunta: value=="1" } } ) }
                         >
                             <TabPane tab="Selección por submarca" key="1">
+                                { this.getError( 'submarcas' ) }
                                 { false && (
                                 <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
                                     <Col span={12}>
@@ -315,14 +366,14 @@ class PlanesCompraForm extends React.Component {
                                 { products && subBrands && (
                                     <DiscriminatorListBox
                                         options={
-                                            products.map( ( product) => ({
+                                            _.sortBy( products, (product) => (product.nombre) ).map( ( product) => ({
                                                 label: product.nombre,
                                                 value: product.idproducto,
                                                 discriminator: parseInt(product.idsubmarca)
                                             } ) )
                                         }
                                         discriminator_options={
-                                            subBrands.map( ( subBrand ) => ({
+                                            _.sortBy( subBrands, (subBrand) => (subBrand.nombre) ).map( ( subBrand ) => ({
                                                 label: subBrand.nombre,
                                                 value: parseInt( subBrand.idsubmarca ),
                                             }))
@@ -410,5 +461,5 @@ export default  connect(
         brands: state.commercialDeals.brands,
         subBrands: state.commercialDeals.subBrands,
     }),
-    { loadProducts, loadSubBrands, loadBrands, createPlan }
+    { loadProducts, loadSubBrands, loadBrands, createPlan, createPlanSetLoading }
 )( PlanesCompraForm );

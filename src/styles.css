@@ -88,7 +88,7 @@ body{
     }
     .form-indas .form-indas-section{
         padding-left: 5px;
-        padding-right: 5px; 
+        padding-right: 5px;
     }
     .form-indas .ant-form-item-control{
         padding-right: 10px;
@@ -127,6 +127,12 @@ body{
     z-index: 90;
 }
 
+@media (max-width: 1600px) {
+    .table-actions {
+        height: 70px;
+    }
+}
+
 .table-filters-indas {
     background: #fbfbfb;
     border: 1px solid #d9d9d9;
@@ -139,7 +145,7 @@ body{
 .table-indas table{
    border-width: 0px 2px 0px 2px;
    border-style: solid;
-   border-color: rgba(0, 33, 64, 0.2); 
+   border-color: rgba(0, 33, 64, 0.2);
 }
 .table-indas .ant-table-thead tr th{
     background-color: rgba(0, 33, 64, 0.85);
@@ -215,3 +221,4 @@ body{
 .ant-calendar-range-picker-input:placeholder-shown {
     font-size: 10px;
 }
+

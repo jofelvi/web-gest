@@ -68,7 +68,7 @@ class PlanesCompra extends React.Component {
     }
 
     setFilters( filters ) {
-        this.setState({ filters: filters }, this.updateList )
+        this.setState({ filters: { ...filters, page: 1 } }, this.updateList )
     }
     updateList() {
         const { filters, page } = this.state;
@@ -185,107 +185,109 @@ class PlanesCompra extends React.Component {
                     />
                     <TableContainer>
                         <div class="table-actions">
-                            <div className="table-action-button" >
-                                <Button style={{marginLeft: '10px', marginRight: '10px' }} type="primary" onClick={() => { history.push('/planes-de-compra/crear') }}>
-                                    Nuevo
-                                </Button>
-                                {
-                                    selectedRowsKeys.length == 1 && (
-                                        <React.Fragment>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                Editar
-                                            </Button>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                Copiar
-                                            </Button>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px'}} onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                Avance
-                                            </Button>
-                                    </React.Fragment>
-                                    )
-                                }
-                                {
-                                    selectedRowsKeys.length >= 1 && (
-                                    <React.Fragment>
-                                        <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }} onClick={() => { alert("Do something") }}>
-                                            Renovar
-                                        </Button>
-                                        <Dropdown overlay={(
-                                            <Menu onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                <Menu.Item key="1">
-                                                    Activo
-                                                </Menu.Item>
-                                                <Menu.Item key="2">
-                                                    Inactivo
-                                                </Menu.Item>
-                                            </Menu>
-                                        )}>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
-                                                Cambiar a <DownOutlined />
-                                            </Button>
-                                        </Dropdown>
-
-                                        <Dropdown overlay={(
-                                            <Menu onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                <Menu.Item key="1">
-                                                    Activar
-                                                </Menu.Item>
-                                                <Menu.Item key="2">
-                                                    Desactivar
-                                                </Menu.Item>
-                                            </Menu>
-                                        )}>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
-                                                Renovación Aut. <DownOutlined />
-                                            </Button>
-                                        </Dropdown>
-
-
-                                        <Dropdown overlay={(
-                                            <Menu onClick={() => {
-                                                alert("Do something")
-                                            }}>
-                                                <Menu.Item key="1">
-                                                    Activar
-                                                </Menu.Item>
-                                                <Menu.Item key="2">
-                                                    Desactivar
-                                                </Menu.Item>
-                                            </Menu>
-                                        )}>
-                                            <Button type="link" style={{marginLeft: '3px', marginRight: '3px' }}>
-                                                Regularización Aut. <DownOutlined />
-                                            </Button>
-                                        </Dropdown>
-                                    </React.Fragment>
-                                    )
-
-                                }
-                                <Button
-                                    type="link"
-                                    style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0 }}
-                                    onClick={
-                                        () => {
-                                         api.exportPlans( this.state.filters, 'export_planes_compra.xls' )
+                                <div className="table-action-button" >
+                                    <Button style={{marginLeft: '10px', marginRight: '10px' }} type="primary" onClick={() => { history.push('/planes-de-compra/crear') }}>
+                                        Nuevo
+                                    </Button>
+                                    <Button
+                                        type="link"
+                                        style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0, paddingRight: 0 }}
+                                        onClick={
+                                            () => {
+                                                api.exportPlans( this.state.filters, 'export_planes_compra.xls' )
+                                            }
                                         }
+                                    >
+                                        <ExportOutlined style={{ fontSize: '20px'}} />
+                                    </Button>
+                                    {
+                                        selectedRowsKeys.length == 1 && (
+                                            <React.Fragment>
+                                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
+                                                    alert("función deshabilitada temporalmente.")
+                                                }}>
+                                                    Editar
+                                                </Button>
+                                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
+                                                    alert("función deshabilitada temporalmente.")
+                                                }}>
+                                                    Copiar
+                                                </Button>
+                                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
+                                                    alert("función deshabilitada temporalmente.")
+                                                }}>
+                                                    Avance
+                                                </Button>
+                                            </React.Fragment>
+                                        )
                                     }
-                                >
-                                    <ExportOutlined style={{ fontSize: '20px'}} />
-                                </Button>
+                                    {
+                                        selectedRowsKeys.length >= 1 && (
+                                            <React.Fragment>
+                                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px' }} onClick={() => {
+                                                    alert("función deshabilitada temporalmente")
+                                                }}>
+                                                    Renovar
+                                                </Button>
+                                                <Dropdown overlay={(
+                                                    <Menu onClick={() => {
+                                                        alert("función deshabilitada temporalmente.")
+                                                    }}>
+                                                        <Menu.Item key="1">
+                                                            Activo
+                                                        </Menu.Item>
+                                                        <Menu.Item key="2">
+                                                            Inactivo
+                                                        </Menu.Item>
+                                                    </Menu>
+                                                )}>
+                                                    <Button type="link" style={{marginLeft: '0px', marginRight: '0px' }}>
+                                                        Cambiar a <DownOutlined />
+                                                    </Button>
+                                                </Dropdown>
 
-                            </div>
+                                                <Dropdown overlay={(
+                                                    <Menu onClick={() => {
+                                                        alert("función deshabilitada temporalmente.")
+                                                    }}>
+                                                        <Menu.Item key="1">
+                                                            Activar
+                                                        </Menu.Item>
+                                                        <Menu.Item key="2">
+                                                            Desactivar
+                                                        </Menu.Item>
+                                                    </Menu>
+                                                )}>
+                                                    <Button type="link" style={{marginLeft: '0px', marginRight: '0px' }}>
+                                                        Renovación Aut. <DownOutlined />
+                                                    </Button>
+                                                </Dropdown>
+
+
+                                                <Dropdown overlay={(
+                                                    <Menu onClick={() => {
+                                                        alert("función deshabilitada temporalmente.")
+                                                    }}>
+                                                        <Menu.Item key="1">
+                                                            Activar
+                                                        </Menu.Item>
+                                                        <Menu.Item key="2">
+                                                            Desactivar
+                                                        </Menu.Item>
+                                                    </Menu>
+                                                )}>
+                                                    <Button type="link" style={{marginLeft: '0px', marginRight: '0px' }}>
+                                                        Regularización Aut. <DownOutlined />
+                                                    </Button>
+                                                </Dropdown>
+                                            </React.Fragment>
+                                        )
+
+                                    }
+
+                                </div>
                         </div>
-                        { loadingList && (<div style={{ marginTop: '60px'} }></div> ) }
+                        { ( count < 1 && this.props.loadingList ) && (<div style={{ marginTop: '60px'} }></div> ) }
 
 
                         <ResizableTable

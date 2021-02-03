@@ -9,6 +9,7 @@ export default connect(
     state => ({
         plans: state.planesCompra.list,
         loadingList: state.planesCompra.loadingList,
+        loadingPagination: state.planesCompra.loadingPagination,
         count: state.planesCompra.count,
         delegados: state.planesCompra.delegados
     }),

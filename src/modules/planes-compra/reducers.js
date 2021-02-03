@@ -18,7 +18,9 @@ import {fetchOrdersCountSuccess} from "../orders/actions";
 const defaultState = {
     list: [],
     delegados: [],
+    loadingPagination: false,
     loadingList: false,
+    loadingTable: false,
     count: 0,
     delegadosComerciales: [
         { id: 1, nombre: 'Paco Delegadillo' },
@@ -34,24 +36,33 @@ export default handleActions(
             return ({
                 ...state,
                 loadingList: false,
+                plan: null,
                 list: payload.plans
             })
         },
         [fetchPlansCountSuccess]: (state, { payload }) => ({
             ...state,
-            count: payload.count
+            count: payload.count,
+            loadingPagination: false,
+            plan: null,
+            loadingTable: state.loadingList,
         }),
         [fetchPlansLoading]: (state, loading) => {
             return {
                 ...state,
-                loadingList: loading
+                loadingList: loading,
+                loadingPagination: loading,
+                loadingTable: loading,
+                plan: null,
             }
         },
         [fetchPlansFailed]: (state, loading) => {
             return {
                 ...state,
                 loadingList: false,
+                loadingTable: state.loadingPagination,
                 list: [],
+                plan: null,
                 count: 0
             }
         },
@@ -73,7 +84,7 @@ export default handleActions(
         [createPlanFailed]: (state, {  }) => {
             return {
                 ...state,
-                plan: false,
+                plan: null,
                 createLoading: false,
                 createError: true
             }

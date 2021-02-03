@@ -59,7 +59,6 @@ export function* watchfetchPlans() {
 
 function* createPlan( { payload } ) {
     try {
-        yield put( createPlanSetLoading( true ) );
         const response = yield call( api.createPlan , payload.plan );
         const { data } = response;
         //yield put(setCurrentCommercialDeal({...data}))
@@ -67,7 +66,7 @@ function* createPlan( { payload } ) {
         yield put(createPlanSuccess({ plan: response.data }));
     } catch (e) {
         console.error(e);
-        yield put(createPlanFailed);
+        yield put(createPlanFailed());
     }
 }
 

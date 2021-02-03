@@ -27,6 +27,9 @@ class PlanesCompraCreate extends React.Component {
                     </Button>
                     <h2 className="table-indas-title">Crear plan de compra</h2>
                     <PlanesCompraForm />
+                    <Button type="link" onClick={() => { this.props.history.push('/planes-de-compra') }}>
+                        <LeftOutlined /> Atrás
+                    </Button>
                 </div>
             </Maincontainer>
         );
