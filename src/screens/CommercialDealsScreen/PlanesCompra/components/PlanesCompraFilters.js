@@ -12,7 +12,7 @@ import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEn
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import * as moment from "moment";
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'DD/MM/YYY';
 const { Option } = Select;
 
 class PlanesCompraFilters extends React.Component {
@@ -134,7 +134,7 @@ class PlanesCompraFilters extends React.Component {
                 <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
-                            <span style={{padding: '10px'}}>Intervalo de fechas</span>
+                            <span style={{padding: '10px'}}>PC vigentes en este intervalo</span>
                             <DatePickerFromTo
                                 style={{width: '100%'}}
                                 format={dateFormat}

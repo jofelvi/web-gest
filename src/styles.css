@@ -125,11 +125,11 @@ body{
 .table-actions {
     position: relative;
     z-index: 90;
+    height: 55px;
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1700px) {
     .table-actions {
-        height: 70px;
     }
 }
 

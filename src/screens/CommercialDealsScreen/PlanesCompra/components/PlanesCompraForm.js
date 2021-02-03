@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select} from 'antd';
+import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip} from 'antd';
 import {InputsContainer} from "../../../../lib/styled";
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 import DualListBox from 'react-dual-listbox';
-import { UpOutlined, DownOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { Tabs } from 'antd';
 import _ from 'underscore';
 import { get, keys } from 'lodash';
@@ -21,12 +21,33 @@ import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEn
 import {InputBox} from "../../../OrderListScreen/styled";
 const { Text, Link } = Typography;
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
 const inputStyle = {
     width: 'calc(100% - 40px)',
     margin: '10px'
 }
+const inputErrorStyle = {
+    width: 'calc(100% - 40px)',
+    margin: '10px',
+    border: '1px solid red',
+    borderRadius: '4px'
+}
+
+const errorTooltipStyle = {
+    position: 'absolute',
+    top: '35px',
+    right: '40px',
+    fontSize: '17px',
+}
+
+const spacedErrorTooltipStyle = {
+    position: 'absolute',
+    top: '35px',
+    right: '65px',
+    fontSize: '17px',
+}
+
 const { TabPane } = Tabs;
 
 const dualListIcons = {
@@ -90,6 +111,9 @@ class PlanesCompraForm extends React.Component {
         this.setPresetProductosCategoria = this.setPresetProductosCategoria.bind(this)
         this.setPresetProductosSubmarca = this.setPresetProductosSubmarca.bind(this)
         this.save = this.save.bind(this)
+        this.validate = this.validate.bind(this)
+        this.clearError = this.clearError.bind(this)
+        this.hasError = this.hasError.bind(this)
     }
 
     componentWillMount() {
@@ -106,7 +130,7 @@ class PlanesCompraForm extends React.Component {
             createPlanSetLoading( { loading: true } )
             createPlan( { plan } )
         }, () => {
-
+            document.querySelector('.ant-layout-content').scrollTo(0, 0)
         })
     }
 
@@ -135,11 +159,26 @@ class PlanesCompraForm extends React.Component {
         this.setState( { validationErrors, error: keys( validationErrors ).length > 0 }, callback );
     }
 
-    getError( field ) {
-        console.log( 'FIELD-', this.state.validationErrors, field )
-        const hasValidationError = _.has( this.state.validationErrors, field, false);
-        if ( hasValidationError ) {
+    hasError ( field ) {
+        return get( this.state.validationErrors, field, false) !== false;
+    }
+
+    clearError ( field ) {
+        const currentValidationErrors = this.state.validationErrors
+        const validationErrors = { ...currentValidationErrors, [field]: false }
+        this.setState( { validationErrors: {  ...validationErrors, [field]: false } })
+    }
+
+    getError( field, spaced = false ) {
+        if ( this.hasError( field ) ) {
             const validationError = get( this.state.validationErrors, field, false);
+            return (
+                <div style={ spaced ? spacedErrorTooltipStyle : errorTooltipStyle } >
+                <Tooltip title={ validationError } >
+                    <span><ExclamationCircleOutlined style={{ color: 'red', fontSize: '18px' }} /></span>
+                </Tooltip>
+                </div>
+            )
             return (<Typography type="danger" style={{ color: 'red'}}>{ validationError }</Typography>)
         }
         return '';
@@ -196,7 +235,7 @@ class PlanesCompraForm extends React.Component {
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Datos generales
                 </h3>
-                <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
+                <div className="table-filters-indas" style={{padding:'20px'}}>
 
                     <Row style={{width: '100%', marginBottom: 0}}>
                         <Col span={18} style={{padding: '0px'}}>
@@ -206,7 +245,9 @@ class PlanesCompraForm extends React.Component {
                                 style={inputStyle }
                                 value={ rawFields.entidad }
                                 column={ "idcliente" }
-                                onChange={ (entity) => { this.setState({ rawFields: { ...rawFields, entidad: entity} })} }
+                                onChange={ (entity) => {
+                                    this.setState({ rawFields: { ...rawFields, entidad: entity} })
+                                } }
                                 onChangeClient={ (client) => { this.setState({ plan: { ...plan, clientes: [{ idcliente: client }] }})} }
                             />
                             </div>
@@ -217,8 +258,16 @@ class PlanesCompraForm extends React.Component {
                             <InputBox
                                 placeholder="Código Cliente"
                                 value={ plan.clientes[0].idcliente }
-                                onChange={ (e) => { this.setState({ rawFields: {...rawFields, entidad: ''}, plan: { ...plan, clientes: [ { idcliente: e.target.value }] }})} }
-                                style={inputStyle}
+                                onChange={ (e) => {
+                                    this.setState(
+                                        { rawFields: {...rawFields, entidad: ''}, plan: { ...plan, clientes: [ { idcliente: e.target.value }] }},
+                                        () => {
+                                            this.clearError( 'clientes[0].idcliente' )
+                                        }
+                                    )
+
+                                } }
+                                style={ this.hasError( 'clientes[0].idcliente' ) ? inputErrorStyle : inputStyle}
                             />
                             { this.getError( 'clientes[0].idcliente' ) }
                         </Col>
@@ -229,7 +278,15 @@ class PlanesCompraForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ plan.nombre }
-                                    onChange={ (e) => { this.setState({ plan: { ...plan, nombre: e.target.value }})} }
+                                    onChange={ (e) => {
+                                        this.setState({ plan: { ...plan, nombre: e.target.value }},
+                                            () => {
+                                                this.clearError( 'nombre' )
+                                            }
+                                        )
+
+                                    } }
+                                    style={ this.hasError( 'nombre' ) ? inputErrorStyle : inputStyle}
                                 />
                                 { this.getError( 'nombre' ) }
                             </Col>
@@ -247,21 +304,35 @@ class PlanesCompraForm extends React.Component {
                             <label>Fecha de inicio</label>
                             <DatePicker
                                 value={ rawFields.fechainicio }
-                                onChange={( date, dateString ) => { this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.toISOString() } }) } }
-                                style={inputStyle}
+                                onChange={( date, dateString ) => {
+                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.toISOString() } },
+                                        () => {
+                                            this.clearError( 'fechainicio' )
+                                        }
+                                    )
+                                } }
+                                format={ dateFormat }
                                 placeholder={'Seleccionar fecha'}
+                                style={ this.hasError( 'fechainicio' ) ? inputErrorStyle : inputStyle}
                             />
-                            { this.getError( 'fechainicio' ) }
+                            { this.getError( 'fechainicio', true ) }
                         </Col>
                         <Col span={8}>
                             <label>Fecha de fin</label>
                             <DatePicker
+                                format={ dateFormat }
                                 value={ rawFields.fechafin }
-                                onChange={( date, dateString ) => { this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.toISOString() } }) } }
-                                style={inputStyle}
+                                onChange={( date, dateString ) => {
+                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.toISOString() } },
+                                        () => {
+                                            this.clearError( 'fechafin' )
+                                        }
+                                    )
+                                } }
                                 placeholder={'Seleccionar fecha'}
+                                style={ this.hasError( 'fechafin' ) ? inputErrorStyle : inputStyle}
                             />
-                            { this.getError( 'fechafin' ) }
+                            { this.getError( 'fechafin', true ) }
                         </Col>
 
                     </Row>
@@ -307,28 +378,48 @@ class PlanesCompraForm extends React.Component {
                             <label>Unidades comprometidas</label>
                             <Input
                                 value={ plan.escalados[0].udsmaximas }
-                                onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } })} }
-                                style={inputStyle} />
+                                onChange={ ( e ) => {
+                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } },
+                                        () => {
+                                            this.clearError( 'escalados[0].udsmaximas' )
+                                        }
+                                    )
+                                } }
+                                style={ this.hasError( 'escalados[0].udsmaximas' ) ? inputErrorStyle : inputStyle}
+                            />
                             { this.getError( 'escalados[0].udsmaximas' ) }
                         </Col>
                         <Col span={6}>
                             <label>Descuento</label>
                             <Input
                                 value={ plan.escalados[0].descuento }
-                                onChange={ ( e ) => { this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } })} }
+                                onChange={ ( e ) => {
+                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } },
+                                        () => {
+                                            this.clearError( 'escalados[0].descuento' )
+                                        }
+                                    )
+                                } }
                                 suffix={"%"}
-                                style={inputStyle}
+                                style={ this.hasError( 'escalados[0].descuento' ) ? inputErrorStyle : inputStyle}
                             />
-                            { this.getError( 'escalados[0].descuento' ) }
+                            { this.getError( 'escalados[0].descuento', true ) }
                         </Col>
                         <Col span={6}>
                             <label>Margen</label>
                             <Input
                                 value={ plan.margen }
                                 suffix={"%"}
-                                onChange={ ( e ) => { this.setState( { plan: { ...plan,  margen: e.target.value } })} }
-                                style={inputStyle} />
-                            { this.getError( 'margen' ) }
+                                onChange={ ( e ) => {
+                                    this.setState( { plan: { ...plan,  margen: e.target.value } },
+                                        () => {
+                                            this.clearError( 'margen' )
+                                        }
+                                    )
+                                } }
+                                style={ this.hasError( 'margen' ) ? inputErrorStyle : inputStyle}
+                            />
+                            { this.getError( 'margen', true ) }
                         </Col>
                     </Row>
                 </div>
@@ -343,7 +434,9 @@ class PlanesCompraForm extends React.Component {
                             onChange={(value) => this.setState( { plan:{ ...plan, ind_seleccion_conjunta: value=="1" } } ) }
                         >
                             <TabPane tab="Selección por submarca" key="1">
-                                { this.getError( 'submarcas' ) }
+                                <div style={{ top: '-80px', position: 'relative'}}>
+                                    { this.getError( 'submarcas' ) }
+                                </div>
                                 { false && (
                                 <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
                                     <Col span={12}>
@@ -380,7 +473,11 @@ class PlanesCompraForm extends React.Component {
                                         }
                                         onChange={ ( values ) => {
                                             const mappedValues = values.map( ( value ) => ({ idsubmarca: value }) )
-                                            this.setState({plan: {...plan, submarcas: mappedValues } } )
+                                            this.setState({plan: {...plan, submarcas: mappedValues } } ,
+                                                () => {
+                                                    this.clearError( 'submarcas' )
+                                                }
+                                            )
                                         } }
                                     />
                                 )}

@@ -23,7 +23,7 @@ import {
     MainContainerModal,
     TableContainer,
 }  from '../../../lib/styled';
-
+import { map } from 'lodash';
 import ButtonGroup from "antd/lib/button/button-group";
 import { Anchor } from 'antd';
 import {LoadingOutlined, ArrowsAltOutlined, ShrinkOutlined, DeleteOutlined} from "@ant-design/icons";
@@ -52,7 +52,7 @@ class PlanesCompra extends React.Component {
         this.updateList = this.updateList.bind(this);
     }
     state = {
-        selectedRowsKeys: [],
+        selectedRowKeys: [],
         page: 1,
         filters: {},
         selectedRowsAction: false,
@@ -63,12 +63,12 @@ class PlanesCompra extends React.Component {
         this.props.fetchDelegados();
     }
 
-    onSelectRowChange ( selectedRowsKeys ) {
-        this.setState({ selectedRowsKeys })
+    onSelectRowChange ( selectedRowKeys, row ) {
+        this.setState({ selectedRowKeys })
     }
 
     setFilters( filters ) {
-        this.setState({ filters: { ...filters, page: 1 } }, this.updateList )
+        this.setState({ filters: { ...filters }, page: 1, selectedRowKeys: [] }, this.updateList )
     }
     updateList() {
         const { filters, page } = this.state;
@@ -76,9 +76,9 @@ class PlanesCompra extends React.Component {
     }
 
     render() {
-        const { selectedRowsKeys, selectedRowsAction } = this.state;
-        const { loadingList, history, count, delegados } = this.props;
-        const hasRowsSelected = selectedRowsKeys.length > 0;
+        const { selectedRowKeys, selectedRowsAction } = this.state;
+        const { loadingList, history, count, delegados, plans } = this.props;
+        const hasRowsSelected = selectedRowKeys.length > 0;
 
         const columns = [
             {
@@ -194,14 +194,16 @@ class PlanesCompra extends React.Component {
                                         style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0, paddingRight: 0 }}
                                         onClick={
                                             () => {
-                                                api.exportPlans( this.state.filters, 'export_planes_compra.xls' )
+                                                const dateString = moment().format('YYYYMMDD');
+                                                const filename = `export_pc_${dateString}.xlsx`;
+                                                api.exportPlans( this.state.filters, filename )
                                             }
                                         }
                                     >
                                         <ExportOutlined style={{ fontSize: '20px'}} />
                                     </Button>
                                     {
-                                        selectedRowsKeys.length == 1 && (
+                                        selectedRowKeys.length == 1 && (
                                             <React.Fragment>
                                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
                                                     alert("función deshabilitada temporalmente.")
@@ -222,7 +224,7 @@ class PlanesCompra extends React.Component {
                                         )
                                     }
                                     {
-                                        selectedRowsKeys.length >= 1 && (
+                                        selectedRowKeys.length >= 1 && (
                                             <React.Fragment>
                                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px' }} onClick={() => {
                                                     alert("función deshabilitada temporalmente")
@@ -287,13 +289,19 @@ class PlanesCompra extends React.Component {
 
                                 </div>
                         </div>
-                        { ( count < 1 && this.props.loadingList ) && (<div style={{ marginTop: '60px'} }></div> ) }
 
 
                         <ResizableTable
-                            dataSource={this.props.plans}
+                            dataSource={ plans.map( (plan) => { return { ...plan, key: plan.id } } ) }
                             className="table"
-                            rowSelection={{ selectedRowsKeys, onChange: this.onSelectRowChange }}
+
+                            onRow={(record, rowIndex) => {
+                                return {
+                                    key: record.idcondcomercial
+                                };
+                            }}
+                            rowKey={'idcondcomercial'}
+                            rowSelection={{ selectedRowKeys, onChange: this.onSelectRowChange }}
                             loading={this.props.loadingList}
                             pagination={{
                                 position:'both',
