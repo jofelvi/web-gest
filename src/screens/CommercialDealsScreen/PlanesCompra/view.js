@@ -40,7 +40,7 @@ import {call} from "redux-saga/effects";
 
 const { Link } = Anchor;
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'DD/MM/YYYY';
 const { Column } = Table;
 const { Option } = Select;
 

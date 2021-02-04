@@ -12,7 +12,7 @@ import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEn
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import * as moment from "moment";
 
-const dateFormat = 'DD/MM/YYY';
+const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
 
 class PlanesCompraFilters extends React.Component {
