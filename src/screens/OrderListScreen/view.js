@@ -87,6 +87,7 @@ class OrderListScreen extends React.Component {
         {
           codentidad_cbim: filters.searchByEntity || '',
           tipo: filters.searchByType,
+          idproducto: filters.searchByProduct || '',
           codcli_cbim: filters.searchByClient || '',
           codpedido_origen: filters.searchByCodPedido || '',
           dates: filters.searchByOrderDate || '',
@@ -127,6 +128,7 @@ class OrderListScreen extends React.Component {
     searchOrder({
       codentidad_cbim: filters.searchByEntity || '',
       tipo: filters.searchByType,
+      idproducto: filters.searchByProduct || '',
       codcli_cbim: filters.searchByClient || '',
       codpedido_origen: filters.searchByCodPedido || '',
       pages: (filters.page-1)*LIMIT || 0,
@@ -178,7 +180,6 @@ class OrderListScreen extends React.Component {
                     this.setState({ filters: {...this.state.filters, page: page } }, function () { this.handleSubmitOrdersSearch() })
                   }
                 }}
-                scroll={{ x: true }}
                 tableLayout="auto"
                 scroll={{ x: 'calc(700px + 50%)'}}
             >
@@ -228,7 +229,6 @@ class OrderListScreen extends React.Component {
                 title="Estado"
                 dataIndex="nombre_estado"
                 key="nombre_estado"
-                style="30%"
                 render={ ( txt, record, i ) => ( <OrderStatusActions order={ record } /> ) }
               />
 

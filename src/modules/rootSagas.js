@@ -45,6 +45,12 @@ import {
   watchEditCommercialDeal
 } from './commercialDeals/sagas';
 
+import {
+  watchfetchPlans,
+  watchcreatePlan,
+  watchfetchDelegados,
+} from './planes-compra/sagas'
+
 import{
   watchloadMenuItems,
   watchloadChildItems
@@ -81,8 +87,8 @@ import {
 } from './clients-indas/sagas';
 
 import {
-	watchloadClientesCbim,		
-	watchloadClienteCbimEntidades,		
+	watchloadClientesCbim,
+	watchloadClienteCbimEntidades,
 } from './clientes-cbim/sagas';
 
 export default function* rootSaga() {
@@ -133,17 +139,20 @@ export default function* rootSaga() {
 		watchloadClientesCbim(),
     watchdeleteOrderLineById(),
     watchloadClienteCbimEntidades(),
-    watchEditTask(),    
+    watchEditTask(),
     watchEditCommercialDeal(),
     watchFetchTaskMessage(),
     watchEditTaskMessage(),
     watchFetchTaskAssigneeUser(),
     watchEditClientIndas(),
     // watchSearchClientBy(),
-    watchGetClientsCount(), 
+    watchGetClientsCount(),
     watchFetchTaskListUser(),
     watchchangeOrderStatusById(),
     watchfetchOrderStates(),
-    watchfetchOrderProducts()
+    watchfetchOrderProducts(),
+    watchfetchPlans(),
+    watchcreatePlan(),
+    watchfetchDelegados(),
   ]);
 }

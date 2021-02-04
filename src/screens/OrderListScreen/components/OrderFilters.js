@@ -215,7 +215,7 @@ class OrderFilters extends React.Component {
                                <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
                                { this.props.products && this.props.products.map( (stateObject) => {
                                    return (
-                                       <Option value={stateObject.codindas}>{stateObject.codindas} - {stateObject.nombre}</Option>
+                                       <Option value={stateObject.idproducto}>{stateObject.codindas} - {stateObject.nombre}</Option>
                                    );
                                } ) }
                            </Select>
