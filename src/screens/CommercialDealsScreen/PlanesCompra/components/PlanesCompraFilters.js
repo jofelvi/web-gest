@@ -67,8 +67,8 @@ class PlanesCompraFilters extends React.Component {
             this.setState({
                 ...this.state,
                 fechas: [
-                    moment(dateString[0]).startOf('day').toDate().toISOString(),
-                    moment(dateString[1]).endOf('day').toDate().toISOString(),
+                    moment(dateString[0]).startOf('day').format( 'YYYY-MM-DD' ),
+                    moment(dateString[1]).endOf('day').format( 'YYYY-MM-DD' ),
                 ],
                 fechasValue: [
                     moment(dateString[0]),

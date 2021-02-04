@@ -305,7 +305,7 @@ class PlanesCompraForm extends React.Component {
                             <DatePicker
                                 value={ rawFields.fechainicio }
                                 onChange={( date, dateString ) => {
-                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.toISOString() } },
+                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.format( 'YYYY-MM-DD' ) } },
                                         () => {
                                             this.clearError( 'fechainicio' )
                                         }
@@ -323,7 +323,7 @@ class PlanesCompraForm extends React.Component {
                                 format={ dateFormat }
                                 value={ rawFields.fechafin }
                                 onChange={( date, dateString ) => {
-                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.toISOString() } },
+                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.format( 'YYYY-MM-DD' ) } },
                                         () => {
                                             this.clearError( 'fechafin' )
                                         }
