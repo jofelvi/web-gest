@@ -58,7 +58,7 @@ class OrderFilterEntity extends React.Component {
                 currentRow = row.entity
             }
         })
-        const cod = (currentRow && this.props.column && this.props.column == 'idcliente') ? currentRow.idcliente : currentRow.codcli_cbim
+        const cod = (currentRow != '' && this.props.column && this.props.column == 'object') ? currentRow : currentRow.codcli_cbim
         //if (this.props.column )
         const client=currentRow ? cod : '';
         this.props.onChangeClient(client);

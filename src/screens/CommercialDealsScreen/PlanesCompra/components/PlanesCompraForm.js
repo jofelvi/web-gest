@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip} from 'antd';
+import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider} from 'antd';
 import {InputsContainer} from "../../../../lib/styled";
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 import DualListBox from 'react-dual-listbox';
@@ -9,8 +9,8 @@ import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, Dou
 import { Tabs } from 'antd';
 import _ from 'underscore';
 import { get, keys } from 'lodash';
-import { loadProducts, loadBrands, loadSubBrands } from '../../../../modules/commercialDeals/actions';
-import {createPlan, createPlanSetLoading} from '../../../../modules/planes-compra/actions';
+import { loadProducts, loadBrands, loadSubBrands  } from '../../../../modules/commercialDeals/actions';
+import {createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection, createSubmarcaCollectionSetLoading } from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
 import { Spin, Typography, Space } from 'antd';
 import ExtendedDualListBox from "./ExtendedDualListBox";
@@ -19,6 +19,16 @@ import PlanesCompraCreated from "./PlanesCompraCreated";
 import View from "../../../Forms/crear_pedido/view";
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {InputBox} from "../../../OrderListScreen/styled";
+//import locale from 'antd/es/date-picker/locale/es_ES';
+import locale from "antd/es/locale/es_ES";
+import "moment/locale/es";
+
+moment.locale("es", {
+    week: {
+        dow: 1
+    }
+});
+
 const { Text, Link } = Typography;
 
 const dateFormat = 'DD/MM/YYYY';
@@ -94,6 +104,10 @@ class PlanesCompraForm extends React.Component {
                 fechainicio: null,
                 fechafin: null,
                 entity: '',
+                submarcas: [],
+            },
+            rawPlan: {
+                codcli_cbim: '',
             },
             seleccion_individual_filtro_categoria: '',
             seleccion_individual_filtro_marca: '',
@@ -114,13 +128,15 @@ class PlanesCompraForm extends React.Component {
         this.validate = this.validate.bind(this)
         this.clearError = this.clearError.bind(this)
         this.hasError = this.hasError.bind(this)
+        this.savePreset = this.savePreset.bind(this)
     }
 
     componentWillMount() {
-        const { loadProducts, loadBrands, loadSubBrands } = this.props;
+        const { loadProducts, loadBrands, loadSubBrands, fetchSubmarcaCollections } = this.props;
         loadProducts();
         loadBrands();
         loadSubBrands();
+        fetchSubmarcaCollections();
     }
 
     save() {
@@ -136,10 +152,10 @@ class PlanesCompraForm extends React.Component {
 
     validate( plan, successCallback, errorCallback ) {
         const validations = [
-            { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
+            { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco. Seleccione una entidad para rellenarlo.' },
             { field: 'nombre', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
-            { field: 'fechainicio', validator: ( value ) => ( moment( value ) > moment() ), message: 'No puede ser una fecha pasada.' },
-            { field: 'fechafin', validator: ( value, record ) => ( moment( value ) > moment( record.fechainicio ) ), message: 'Debe ser posterior a la fecha de inicio.' },
+            { field: 'fechainicio', validator: ( value ) => ( moment( value ).startOf('day') >= moment().startOf('day') ), message: 'No puede ser una fecha pasada.' },
+            { field: 'fechafin', validator: ( value, record ) => ( moment( value ).startOf('day') >= moment( record.fechainicio ).startOf('day') ), message: 'Debe ser posterior a la fecha de inicio.' },
             { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
             { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
             { field: 'margen', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
@@ -184,6 +200,10 @@ class PlanesCompraForm extends React.Component {
         return '';
     }
 
+    savePreset( name, options, callback ) {
+        const { createSubmarcaCollectionSetLoading, createSubmarcaCollection } = this.props;
+        createSubmarcaCollection( { collection: { nombre: name, submarcas: options },  callback })
+    }
 
     setPresetProductos( preset ) {
 
@@ -219,17 +239,16 @@ class PlanesCompraForm extends React.Component {
     };
 
     render() {
-        const { products, brands, subBrands, loading } = this.props;
-        const { plan, validationErrors, error } = this.state;
-        const { rawFields } = this.state;
+        const { products, brands, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections } = this.props;
+        const { plan, validationErrors, error, rawFields, rawPlan } = this.state;
         const createdPlan = this.props.plan
 
         if ( createdPlan != null) {
             return (<PlanesCompraCreated plan={ createdPlan } />);
         }
 
-    {  }
         return (
+            <ConfigProvider locale={ locale }>
             <React.Fragment>
                 { error && ( <Typography type="danger" style={{ color: 'red'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
                 <h3 style={{margin: '20px 0 10px 0'}}>
@@ -244,11 +263,11 @@ class PlanesCompraForm extends React.Component {
                             <OrderFilterEntity
                                 style={inputStyle }
                                 value={ rawFields.entidad }
-                                column={ "idcliente" }
+                                column={ "object" }
                                 onChange={ (entity) => {
                                     this.setState({ rawFields: { ...rawFields, entidad: entity} })
                                 } }
-                                onChangeClient={ (client) => { this.setState({ plan: { ...plan, clientes: [{ idcliente: client }] }})} }
+                                onChangeClient={ (client) => { this.setState({ rawPlan: { ...rawPlan, codcli_cbim: client.codcli_cbim}, plan: { ...plan, clientes: [{ idcliente: client.idcliente }] }})} }
                             />
                             </div>
                         </Col>
@@ -257,16 +276,8 @@ class PlanesCompraForm extends React.Component {
                             <span>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
-                                value={ plan.clientes[0].idcliente }
-                                onChange={ (e) => {
-                                    this.setState(
-                                        { rawFields: {...rawFields, entidad: ''}, plan: { ...plan, clientes: [ { idcliente: e.target.value }] }},
-                                        () => {
-                                            this.clearError( 'clientes[0].idcliente' )
-                                        }
-                                    )
-
-                                } }
+                                value={ rawPlan.codcli_cbim }
+                                disabled
                                 style={ this.hasError( 'clientes[0].idcliente' ) ? inputErrorStyle : inputStyle}
                             />
                             { this.getError( 'clientes[0].idcliente' ) }
@@ -304,8 +315,10 @@ class PlanesCompraForm extends React.Component {
                             <label>Fecha de inicio</label>
                             <DatePicker
                                 value={ rawFields.fechainicio }
+                                locale={ locale }
                                 onChange={( date, dateString ) => {
-                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.format( 'YYYY-MM-DD' ) } },
+                                    const formatDate = date ? date.format('YYYY-MM-DD') : '';
+                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: formatDate } },
                                         () => {
                                             this.clearError( 'fechainicio' )
                                         }
@@ -323,7 +336,8 @@ class PlanesCompraForm extends React.Component {
                                 format={ dateFormat }
                                 value={ rawFields.fechafin }
                                 onChange={( date, dateString ) => {
-                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.format( 'YYYY-MM-DD' ) } },
+                                    const formatDate = date ? date.format('YYYY-MM-DD') : '';
+                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: formatDate } },
                                         () => {
                                             this.clearError( 'fechafin' )
                                         }
@@ -473,12 +487,20 @@ class PlanesCompraForm extends React.Component {
                                         }
                                         onChange={ ( values ) => {
                                             const mappedValues = values.map( ( value ) => ({ idsubmarca: value }) )
-                                            this.setState({plan: {...plan, submarcas: mappedValues } } ,
+                                            const rawFields = this.state.rawFields;
+                                            this.setState({ rawFields: { ...rawFields, submarcas: values }, plan: {...plan, submarcas: mappedValues } } ,
                                                 () => {
                                                     this.clearError( 'submarcas' )
                                                 }
                                             )
                                         } }
+                                        preset={{
+                                            values: this.state.rawFields.submarcas,
+                                            options: submarcaCollections,
+                                            loading: loadingSubmarcaCollectionList,
+                                            savePreset: this.savePreset,
+                                            reload: fetchSubmarcaCollections
+                                        }}
                                     />
                                 )}
 
@@ -542,6 +564,7 @@ class PlanesCompraForm extends React.Component {
 
 
             </React.Fragment>
+            </ConfigProvider>
         );
     };
 
@@ -557,6 +580,9 @@ export default  connect(
         products: state.commercialDeals.products,
         brands: state.commercialDeals.brands,
         subBrands: state.commercialDeals.subBrands,
+        submarcaCollections: state.planesCompra.submarcaCollections,
+        loadingSubmarcaCollectionList: state.planesCompra.loadingSubmarcaCollectionList,
+        submarcaCollection: state.planesCompra.submarcaCollection,
     }),
-    { loadProducts, loadSubBrands, loadBrands, createPlan, createPlanSetLoading }
+    { loadProducts, loadSubBrands, loadBrands, createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection }
 )( PlanesCompraForm );

@@ -13,6 +13,14 @@ import {
     FETCH_DELEGADOS,
     FETCH_DELEGADOS_SUCCESS,
     FETCH_DELEGADOS_FAILED,
+    FETCH_SUBMARCA_COLLECTIONS,
+    FETCH_SUBMARCA_COLLECTIONS_SUCCESS,
+    FETCH_SUBMARCA_COLLECTIONS_FAILED,
+    FETCH_SUBMARCA_COLLECTIONS_LOADING,
+    CREATE_SUBMARCA_COLLECTION,
+    CREATE_SUBMARCA_COLLECTION_SUCCESS,
+    CREATE_SUBMARCA_COLLECTION_FAILED,
+    CREATE_SUBMARCA_COLLECTION_SET_LOADING,
 } from './actionTypes';
 
 export const {
@@ -28,6 +36,14 @@ export const {
     fetchDelegados,
     fetchDelegadosSuccess,
     fetchDelegadosFailed,
+    fetchSubmarcaCollections,
+    fetchSubmarcaCollectionsSuccess,
+    fetchSubmarcaCollectionsFailed,
+    fetchSubmarcaCollectionsLoading,
+    createSubmarcaCollection,
+    createSubmarcaCollectionSuccess,
+    createSubmarcaCollectionFailed,
+    createSubmarcaCollectionSetLoading,
 } = createActions(
     FETCH_PLANS,
     FETCH_PLANS_SUCCESS,
@@ -41,4 +57,12 @@ export const {
     FETCH_DELEGADOS,
     FETCH_DELEGADOS_SUCCESS,
     FETCH_DELEGADOS_FAILED,
+    FETCH_SUBMARCA_COLLECTIONS,
+    FETCH_SUBMARCA_COLLECTIONS_SUCCESS,
+    FETCH_SUBMARCA_COLLECTIONS_FAILED,
+    FETCH_SUBMARCA_COLLECTIONS_LOADING,
+    CREATE_SUBMARCA_COLLECTION,
+    CREATE_SUBMARCA_COLLECTION_SUCCESS,
+    CREATE_SUBMARCA_COLLECTION_FAILED,
+    CREATE_SUBMARCA_COLLECTION_SET_LOADING,
 );

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip} from 'antd';
+import { ConfigProvider, Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip} from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../../constants';
 import '../../../lib/styles.css';
 import ResizableTable from '../../shared/ResizableTable';
 import { withRouter } from 'react-router-dom';
+import './styles.css'
 
 import {
     ExportOutlined
@@ -35,14 +36,20 @@ import PlanesCompraFilters from "./components/PlanesCompraFilters";
 import {filterOrderType, modifyOrderDate} from "../../OrderListScreen/utils";
 import * as api from './../../../modules/planes-compra/api';
 import {call} from "redux-saga/effects";
-
-
+import locale from "antd/es/locale/es_ES";
+import "moment/locale/es";
 
 const { Link } = Anchor;
 
 const dateFormat = 'DD/MM/YYYY';
 const { Column } = Table;
 const { Option } = Select;
+
+moment.locale("es", {
+    week: {
+        dow: 1
+    }
+});
 
 class PlanesCompra extends React.Component {
     constructor(props) {
@@ -176,6 +183,7 @@ class PlanesCompra extends React.Component {
         ];
 
         return (
+            <ConfigProvider locale={ locale }>
             <Maincontainer>
                 <div className="table-indas table-indas-new">
                     <h2 className="table-indas-title">Planes de Compra</h2>
@@ -183,7 +191,7 @@ class PlanesCompra extends React.Component {
                         setFilters={ this.setFilters  }
                         delegados={ delegados }
                     />
-                    <TableContainer>
+                    <TableContainer style={{ overflow: 'visible'}}>
                         <div class="table-actions">
                                 <div className="table-action-button" >
                                     <Button style={{marginLeft: '10px', marginRight: '10px' }} type="primary" onClick={() => { history.push('/planes-de-compra/crear') }}>
@@ -289,6 +297,7 @@ class PlanesCompra extends React.Component {
 
                                 </div>
                         </div>
+                        <hr />
 
 
                         <ResizableTable
@@ -320,6 +329,7 @@ class PlanesCompra extends React.Component {
 
                 </div>
             </Maincontainer>
+            </ConfigProvider>
         );
     }
 };

@@ -12,8 +12,13 @@ import {
     createPlanSetLoading,
     fetchDelegadosSuccess,
     fetchDelegadosFailed,
+    fetchSubmarcaCollectionsSuccess,
+    fetchSubmarcaCollectionsFailed,
+    fetchSubmarcaCollectionsLoading,
+    createSubmarcaCollectionSuccess,
+    createSubmarcaCollectionFailed,
+    createSubmarcaCollectionSetLoading,
 } from './actions';
-import {fetchOrdersCountSuccess} from "../orders/actions";
 
 const defaultState = {
     list: [],
@@ -28,6 +33,11 @@ const defaultState = {
     ],
     createLoading: false,
     createError: false,
+
+    loadingSubmarcaCollectionList:      false,
+    submarcaCollections:                [ ],
+    loadingSubmarcaCollectionCreate:    false,
+    submarcaCollection:                 [ ],
 };
 
 export default handleActions(
@@ -102,6 +112,51 @@ export default handleActions(
                 ...state,
                 delegados: []
             })
+        },
+
+        [fetchSubmarcaCollectionsSuccess]: (state, { payload }) => {
+            return ({
+                ...state,
+                loadingSubmarcaCollectionList: false,
+                submarcaCollection: null,
+                submarcaCollections: payload.submarcaCollections
+            })
+        },
+        [fetchSubmarcaCollectionsLoading]: (state, { payload }) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionList: payload.loading,
+                submarcaCollections: [],
+            }
+        },
+        [fetchSubmarcaCollectionsFailed]: (state, loading) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionList: false,
+                submarcaCollections: [],
+            }
+        },
+        [createSubmarcaCollectionSetLoading]: (state, { payload } ) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionCreate: payload.loading,
+            }
+        },
+        [createSubmarcaCollectionSuccess]: (state, { payload }) => {
+            return {
+                ...state,
+                submarcaCollection: payload.submarcaCollection,
+                errorSubmarcaCollectionCreate: false,
+                loadingSubmarcaCollectionCreate: false,
+            }
+        },
+        [createSubmarcaCollectionFailed]: (state, {  }) => {
+            return {
+                ...state,
+                submarcaCollection: null,
+                loadingSubmarcaCollectionCreate: false,
+                errorSubmarcaCollectionCreate: true
+            }
         },
     },
     defaultState

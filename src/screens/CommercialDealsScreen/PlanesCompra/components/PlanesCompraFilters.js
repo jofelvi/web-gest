@@ -12,9 +12,9 @@ import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEn
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import * as moment from "moment";
 
+
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-
 class PlanesCompraFilters extends React.Component {
     constructor(props) {
         super(props)
@@ -23,6 +23,7 @@ class PlanesCompraFilters extends React.Component {
 
         this.state = {
             idcliente: '',
+            codcli_cbim: '',
             idestado: '',
             searchByEntity: '',
             page: props.page,
@@ -38,6 +39,7 @@ class PlanesCompraFilters extends React.Component {
     clearFilters = () => {
         this.setState({
             idcliente: '',
+            codcli_cbim: '',
             fechasValue: [],
             searchByEntity: '',
             page: 0,
@@ -104,7 +106,7 @@ class PlanesCompraFilters extends React.Component {
 
     render() {
 
-        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity } = this.state;
+        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
 
         return (
             <div className="table-filters-indas">
@@ -113,10 +115,15 @@ class PlanesCompraFilters extends React.Component {
                         <Col span={18} style={{padding: '10px'}}>
                             <span style={{padding: '10px'}}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                             <OrderFilterEntity
-                                column={"idcliente"}
+                                column={"object"}
                                 value={searchByEntity}
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
-                                onChangeClient={ (client) => this.searchedValue('idcliente', client) }
+                                onChangeClient={ (client) => {
+                                    const idCliente = client ? client.idcliente : '';
+                                    const codcliCbim = client ? client.codcli_cbim : '';
+                                    this.searchedValue( 'idcliente', idCliente )
+                                    this.searchedValue( 'codcli_cbim', codcliCbim )
+                                } }
                             />
                         </Col>
 
@@ -124,8 +131,8 @@ class PlanesCompraFilters extends React.Component {
                             <span style={{padding: '10px'}}>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
-                                value={idcliente}
-                                onChange={(event) => this.searchedValue('idcliente', event.target.value)}
+                                value={codcli_cbim}
+                                disabled
                                 style={{width: '100%'}}
                             />
                         </Col>

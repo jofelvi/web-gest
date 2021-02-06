@@ -12,23 +12,23 @@ import {
     createPlanSuccess,
     createPlanFailed,
     createPlanSetLoading,
+    fetchSubmarcaCollectionsSuccess,
+    fetchSubmarcaCollectionsFailed,
+    fetchSubmarcaCollectionsLoading,
+    createSubmarcaCollectionSuccess,
+    createSubmarcaCollectionFailed,
+    createSubmarcaCollectionSetLoading,
 } from './actions';
 
 import {
     FETCH_PLANS,
     FETCH_DELEGADOS,
     CREATE_PLAN,
+    FETCH_SUBMARCA_COLLECTIONS,
+    CREATE_SUBMARCA_COLLECTION,
 } from './actionTypes';
 
 import * as api from './api';
-import {
-    createCommercialDealFailed,
-    createCommercialDealSuccess,
-    getCommercialDealId,
-    setCurrentCommercialDeal
-} from "../commercialDeals/actions";
-import {CREATE_COMMERCIAL_DEAL} from "../commercialDeals/actionTypes";
-import {fetchOrdersCountSuccess} from "../orders/actions";
 
 function* fetchPlans({ payload }) {
 
@@ -92,4 +92,47 @@ function* fetchDelegados({ payload }) {
 }
 export function* watchfetchDelegados() {
     yield takeLatest(FETCH_DELEGADOS, fetchDelegados);
+}
+
+
+
+function* fetchSubmarcaCollections({ payload }) {
+
+    try {
+        yield put(fetchSubmarcaCollectionsLoading({ loading: true } ));
+        const response = yield call(api.fetchSubmarcaCollections, payload);
+        //const response = require('../../datamockup/planes-compra/fetchPlans.json')
+
+        if (response.status === HttpStatus.UNAUTHORIZED) {
+            payload.history.push('/login');
+        }
+        yield put(fetchSubmarcaCollectionsSuccess({ favourite_plans: response.data }));
+
+
+
+    } catch (e) {
+        console.error(e);
+        yield put(fetchSubmarcaCollectionsFailed());
+    }
+}
+export function* watchfetchSubmarcaCollections() {
+    yield takeLatest(FETCH_SUBMARCA_COLLECTIONS, fetchSubmarcaCollections);
+}
+
+function* createSubmarcaCollection( { payload }, callback ) {
+    try {
+        const response = yield call( api.createSubmarcaCollection , payload.collection );
+        const { data } = response;
+        //yield put(setCurrentCommercialDeal({...data}))
+        //yield put (getCommercialDealId({idCommercialDeal: response.data.idcondcomercial}))
+        yield put(createSubmarcaCollectionSuccess({ submarca_collection: response.data }));
+        yield put(payload.callback( response.data ))
+    } catch (e) {
+        console.error(e);
+        yield put(createSubmarcaCollectionFailed());
+    }
+}
+
+export function* watchcreateSubmarcaCollection() {
+    yield takeLatest( CREATE_SUBMARCA_COLLECTION, createSubmarcaCollection );
 }
