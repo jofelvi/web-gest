@@ -14,7 +14,11 @@ class PlanesCompraCreated extends React.Component {
                 <div>
                     <CheckOutlined style={{ fontSize: '42px'}} />
                 </div>
-                <h3 style={{ margin: '15px'}}>El plan '{ plan.nombre }' se hacreado.</h3>
+                { this.props.isEdit ? (
+                    <h3 style={{ margin: '15px'}}>El plan '{ plan.nombre }' se ha guardado.</h3>
+                ) : (
+                    <h3 style={{ margin: '15px'}}>El plan '{ plan.nombre }' se ha creado.</h3>
+                ) }
                 <Button  type="primary" onClick={() => { this.props.history.push('/planes-de-compra/') }}>
                     Volver al listado
                 </Button>

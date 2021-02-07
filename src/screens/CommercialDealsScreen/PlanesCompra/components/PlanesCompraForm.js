@@ -9,11 +9,12 @@ import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, Dou
 import { Tabs } from 'antd';
 import _ from 'underscore';
 import { get, keys } from 'lodash';
-import { loadProducts, loadBrands, loadSubBrands  } from '../../../../modules/commercialDeals/actions';
+import { loadFamilies, loadBrands, loadSubBrands, loadProducts  } from '../../../../modules/commercialDeals/actions';
 import {createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection, createSubmarcaCollectionSetLoading } from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
 import { Spin, Typography, Space } from 'antd';
 import ExtendedDualListBox from "./ExtendedDualListBox";
+import DualListFilter from "./DualListFilter";
 import DiscriminatorListBox from "./DiscriminatorListBox";
 import PlanesCompraCreated from "./PlanesCompraCreated";
 import View from "../../../Forms/crear_pedido/view";
@@ -68,52 +69,52 @@ const dualListIcons = {
     moveDown: <DownOutlined />,
     moveUp: <UpOutlined />,
 }
-const options = [
-    { value: 'one', label: 'Option One', idgrupo: 1 },
-    { value: 'two', label: 'Option Two', idgrupo: 2 },
-];
+const defaultPlan = {
+    descripcion: '',
+    nombre: '',
+    fechainicio: '',
+    fechafin: '',
+    margen: '',
+    ind_surtido: true,
+    ind_renovar: false,
+    ind_seleccion_conjunta: true,
+    ind_regularizar: false,
+    idestado: 2,
+    submarcas: [],
+    productos: [],
+    clientes: [
+        { idcliente: '' }
+    ],
+    escalados: [
+        { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
+    ],
+};
+
 class PlanesCompraForm extends React.Component {
     constructor(props) {
         super(props)
 
+        const plan = props.editPlan ? props.editPlan : defaultPlan
+        const rawFechaInicio = props.editPlan ? moment(props.editPlan.fechainicio) : null;
+        const rawFechaFin = props.editPlan ? moment(props.editPlan.fechafin) : null;
+
         this.state = {
             entidad_helper: '',
             error: props.error,
-            plan: {
-                descripcion: '',
-                nombre: '',
-                fechainicio: '',
-                fechafin: '',
-                margen: '',
-                ind_surtido: true,
-                ind_renovar: false,
-                ind_seleccion_conjunta: true,
-                ind_regularizar: false,
-                idestado: 2,
-                submarcas: [],
-                clientes: [
-                    { idcliente: '' }
-                ],
-                escalados: [
-                    { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
-                ],
-            },
-            validationErrors: {
-            },
+            plan: plan,
+            validationErrors: {},
             rawFields: {
-                fechainicio: null,
-                fechafin: null,
+                fechainicio: rawFechaInicio,
+                fechafin: rawFechaFin,
                 entity: '',
-                submarcas: [],
             },
             rawPlan: {
-                codcli_cbim: '',
+                codcli_cbim: props.editPlan ? plan.codcli_cbim : '',
             },
             seleccion_individual_filtro_categoria: '',
             seleccion_individual_filtro_marca: '',
             seleccion_individual_filtro_submarca: '',
             seleccion_individual_valores: [],
-            seleccion_individual_opciones: options,
             seleccion_submarcas_preset: '',
             seleccion_submarcas_valores: [],
         }
@@ -132,34 +133,39 @@ class PlanesCompraForm extends React.Component {
     }
 
     componentWillMount() {
-        const { loadProducts, loadBrands, loadSubBrands, fetchSubmarcaCollections } = this.props;
+        const { loadProducts, loadBrands, loadFamilies, loadSubBrands, fetchSubmarcaCollections } = this.props;
         loadProducts();
         loadBrands();
         loadSubBrands();
+        loadFamilies();
         fetchSubmarcaCollections();
     }
 
     save() {
-        const { createPlan, createPlanSetLoading } = this.props;
+        const { createPlan, createPlanSetLoading, onSave } = this.props;
         const { plan } = this.state;
         this.validate( plan, () => {
-            createPlanSetLoading( { loading: true } )
-            createPlan( { plan } )
+            onSave(plan)
         }, () => {
             document.querySelector('.ant-layout-content').scrollTo(0, 0)
         })
     }
 
     validate( plan, successCallback, errorCallback ) {
+        const { editPlan } = this.props;
+        console.log('Validando', editPlan)
         const validations = [
             { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco. Seleccione una entidad para rellenarlo.' },
             { field: 'nombre', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
-            { field: 'fechainicio', validator: ( value ) => ( moment( value ).startOf('day') >= moment().startOf('day') ), message: 'No puede ser una fecha pasada.' },
+            {   field: 'fechainicio',
+                validator: ( value ) => (editPlan && moment(editPlan.fechainicio).isSame(value, 'day') ? true : moment( value ).startOf('day') >= moment().startOf('day') ),
+                message: 'No puede ser una fecha pasada.' },
             { field: 'fechafin', validator: ( value, record ) => ( moment( value ).startOf('day') >= moment( record.fechainicio ).startOf('day') ), message: 'Debe ser posterior a la fecha de inicio.' },
             { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
             { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
             { field: 'margen', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
-            { field: 'submarcas', validator: ( value ) => ( value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
+            { field: 'submarcas', validator: ( value, record ) => ( record.ind_seleccion_conjunta == false || value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
+            { field: 'productos', validator: ( value, record ) => ( record.ind_seleccion_conjunta == true || value.length > 0 ), message: 'Debe seleccionar por lo menos un producto.' },
         ];
 
         const validationErrors = [];
@@ -209,7 +215,7 @@ class PlanesCompraForm extends React.Component {
 
     }
     setPresetProductosCategoria ( categoria ) {
-        this.setState({ seleccion_individual_filtro_categoria: categoria } );
+        console.log('SET PRODUCTOS CATEGORIA', categoria)
 
     }
     setPresetProductosMarca ( marca ) {
@@ -239,12 +245,14 @@ class PlanesCompraForm extends React.Component {
     };
 
     render() {
-        const { products, brands, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections } = this.props;
-        const { plan, validationErrors, error, rawFields, rawPlan } = this.state;
+        const { editPlan, products, brands, error, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections, families } = this.props;
+        const { plan, validationErrors, rawFields, rawPlan } = this.state;
         const createdPlan = this.props.plan
+        const isEdit = !! editPlan;
 
+        console.log('FAMILIES', submarcaCollections)
         if ( createdPlan != null) {
-            return (<PlanesCompraCreated plan={ createdPlan } />);
+            return (<PlanesCompraCreated plan={ createdPlan } isEdit={ isEdit } />);
         }
 
         return (
@@ -386,7 +394,7 @@ class PlanesCompraForm extends React.Component {
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Lineas de descuento
                 </h3>
-                <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
+                <div className="table-filters-indas" style={{padding:'20px' }}>
                     <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                         <Col span={6}>
                             <label>Unidades comprometidas</label>
@@ -441,7 +449,7 @@ class PlanesCompraForm extends React.Component {
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Asociación de productos
                 </h3>
-                <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
+                <div className="table-filters-indas" style={{padding:'20px' }}>
                     <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                         <Tabs
                             defaultActiveKey={ plan.ind_seleccion_conjunta ? "1" : "2" }
@@ -451,24 +459,6 @@ class PlanesCompraForm extends React.Component {
                                 <div style={{ top: '-80px', position: 'relative'}}>
                                     { this.getError( 'submarcas' ) }
                                 </div>
-                                { false && (
-                                <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
-                                    <Col span={12}>
-                                        <Select
-                                            onChange={ this.setPresetSubmarcas }
-                                            style={{width:'200px'}}
-                                            value={ this.state.seleccion_submarcas_preset }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Personalizado -</Option>
-                                            <Option value="activo">Preset 1</Option>
-                                            <Option value="inactivo">Preset 2</Option>
-                                        </Select>
-                                        <Button disabled={this.state.seleccion_submarcas_valores.length==0}>
-                                            Guardar Selección
-                                        </Button>
-                                    </Col>
-                                </Row>
-                                )}
 
                                 { products && subBrands && (
                                     <DiscriminatorListBox
@@ -485,18 +475,18 @@ class PlanesCompraForm extends React.Component {
                                                 value: parseInt( subBrand.idsubmarca ),
                                             }))
                                         }
+                                        value={ this.state.plan.submarcas.map( (submarca) => submarca.idsubmarca ) }
                                         onChange={ ( values ) => {
                                             const mappedValues = values.map( ( value ) => ({ idsubmarca: value }) )
-                                            const rawFields = this.state.rawFields;
-                                            this.setState({ rawFields: { ...rawFields, submarcas: values }, plan: {...plan, submarcas: mappedValues } } ,
+                                            this.setState({ plan: {...plan, submarcas: mappedValues } } ,
                                                 () => {
                                                     this.clearError( 'submarcas' )
                                                 }
                                             )
                                         } }
                                         preset={{
-                                            values: this.state.rawFields.submarcas,
-                                            options: submarcaCollections,
+                                            values: this.state.plan.submarcas.map( (submarca) => submarca.idsubmarca ),
+                                            options: submarcaCollections.map( (submarcaCollection) => ({ label: submarcaCollection.nombre, value: submarcaCollection.nombre, options: submarcaCollection.submarcas })),
                                             loading: loadingSubmarcaCollectionList,
                                             savePreset: this.savePreset,
                                             reload: fetchSubmarcaCollections
@@ -505,61 +495,77 @@ class PlanesCompraForm extends React.Component {
                                 )}
 
                             </TabPane>
-                            {/* <TabPane tab="Selección Individual" key="2">
-                                <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
-                                    <Col span={8} >
-                                        <Select
-                                            onChange={ this.setPresetProductosCategoria }
-                                            style={{width:'200px'}}
+                            <TabPane tab="Selección Individual" key="2">
+                                <div style={{ top: '-80px', position: 'relative'}}>
+                                    { this.getError( 'productos' ) }
+                                </div>
+
+                                <Row style={{ marginBottom: '10px'}}>
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            options={ families.map( (family) => {
+                                                return {
+                                                    label: family.nombre,
+                                                    value: family.idfamilia
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_categoria }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Categoría -</Option>
-                                            <Option value="1">Categoria 1</Option>
-                                            <Option value="2">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_categoria ) => {
+                                                this.setState({ seleccion_individual_filtro_categoria })
+                                            } }
+                                        />
                                     </Col>
-                                    <Col span={8} style={{textAlign: 'center '}}>
-                                        <Select
-                                            onChange={ this.setPresetProductosMarca }
-                                            style={{width:'200px'}}
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            options={ brands.map( ( brand ) => {
+                                                return {
+                                                    label: brand.nombre,
+                                                    value: brand.idmarca
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_marca }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Marca -</Option>
-                                            <Option value="cat1">Categoria 1</Option>
-                                            <Option value="cat2">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_marca ) => {
+                                                this.setState({ seleccion_individual_filtro_marca })
+                                            } }
+                                        />
                                     </Col>
-                                    <Col span={8} style={{textAlign: 'right '}}>
-                                        <Select
-                                            onChange={ this.setPresetProductosSubmarca }
-                                            style={{width:'200px'}}
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            options={ subBrands.map( (subBrand) => {
+                                                return {
+                                                    label: subBrand.nombre,
+                                                    value: subBrand.idsubmarca
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_submarca }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Submarca -</Option>
-                                            <Option value="cat1">Categoria 1</Option>
-                                            <Option value="one">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_submarca ) => {
+                                                this.setState({ seleccion_individual_filtro_submarca })
+                                            } }
+                                        />
                                     </Col>
                                 </Row>
+
+
+
                                 <ExtendedDualListBox
-                                    icons={dualListIcons}
-                                    options={this.state.seleccion_individual_opciones}
+                                    icons={ dualListIcons }
+                                    options={ products.map( (product) => ({ ...product, value: product.idproducto, label: product.nombre } )) }
                                     filter={ this.filterSeleccionIndividual }
-                                    selected={this.state.seleccion_productos_valores}
+                                    selectedKeys={this.state.plan.productos.map( (producto) => producto.idproducto ) }
                                     onChange={
-                                        ( seleccion_productos_valores ) => {
-                                            this.setState({ seleccion_productos_valores });
+                                        ( productos ) => {
+                                            this.setState({ plan: { ...plan, productos: productos.map((idproducto) => ({ idproducto }) ) } });
                                         }
                                     }
                                 />
-                            </TabPane> */}
+                            </TabPane>
                         </Tabs>
                     </Row>
                 </div>
 
                 { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
                 <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
-                    { loading ? (<Spin></Spin>) : 'Crear' }
+                    { loading ? (<Spin></Spin>) : (isEdit ? 'Guardar' : 'Crear') }
                 </Button>
 
 
@@ -574,15 +580,14 @@ PlanesCompraForm.propTypes = {
 
 export default  connect(
     state => ({
-        plan: state.planesCompra.plan,
-        loading: state.planesCompra.createLoading,
-        error: state.planesCompra.createError,
         products: state.commercialDeals.products,
         brands: state.commercialDeals.brands,
         subBrands: state.commercialDeals.subBrands,
+        families: state.commercialDeals.families,
         submarcaCollections: state.planesCompra.submarcaCollections,
         loadingSubmarcaCollectionList: state.planesCompra.loadingSubmarcaCollectionList,
         submarcaCollection: state.planesCompra.submarcaCollection,
     }),
-    { loadProducts, loadSubBrands, loadBrands, createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection }
+    { createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection,
+        loadFamilies, loadBrands, loadSubBrands, loadProducts }
 )( PlanesCompraForm );

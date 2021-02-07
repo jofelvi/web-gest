@@ -18,6 +18,7 @@ import {
     createSubmarcaCollectionSuccess,
     createSubmarcaCollectionFailed,
     createSubmarcaCollectionSetLoading,
+    fetchPlanSuccess,
 } from './actions';
 
 import {
@@ -26,6 +27,8 @@ import {
     CREATE_PLAN,
     FETCH_SUBMARCA_COLLECTIONS,
     CREATE_SUBMARCA_COLLECTION,
+    UPDATE_PLAN,
+    FETCH_PLAN,
 } from './actionTypes';
 
 import * as api from './api';
@@ -106,7 +109,7 @@ function* fetchSubmarcaCollections({ payload }) {
         if (response.status === HttpStatus.UNAUTHORIZED) {
             payload.history.push('/login');
         }
-        yield put(fetchSubmarcaCollectionsSuccess({ favourite_plans: response.data }));
+        yield put(fetchSubmarcaCollectionsSuccess({ submarcaCollections: response.data }));
 
 
 
@@ -135,4 +138,34 @@ function* createSubmarcaCollection( { payload }, callback ) {
 
 export function* watchcreateSubmarcaCollection() {
     yield takeLatest( CREATE_SUBMARCA_COLLECTION, createSubmarcaCollection );
+}
+
+function* fetchPlan( { payload } ) {
+    try {
+        const response = yield call( api.getPlan , payload.idcondcomercial );
+        const { data } = response;
+        console.log('PLAN FETCHED', data)
+
+        yield put(fetchPlanSuccess({ plan: response.data }));
+    } catch (e) {
+        payload.error(e);
+    }
+}
+
+export function* watchfetchPlan() {
+    yield takeLatest( FETCH_PLAN, fetchPlan );
+}
+
+function* updatePlan( { payload } ) {
+    try {
+        const response = yield call( api.editPlan , payload.plan );
+        const { data } = response;
+        payload.success( data );
+    } catch (e) {
+        payload.error(e);
+    }
+}
+
+export function* watchupdatePlan() {
+    yield takeLatest( UPDATE_PLAN, updatePlan );
 }

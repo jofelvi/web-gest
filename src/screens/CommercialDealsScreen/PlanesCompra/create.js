@@ -9,6 +9,7 @@ import {
     LeftOutlined
 } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
+import { fetchPlan, createPlan, createPlanSetLoading } from "../../../modules/planes-compra/actions";
 
 class PlanesCompraCreate extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class PlanesCompraCreate extends React.Component {
         }
     }
     render() {
+        const { plan, createPlanSetLoading, createPlan, error, loading } = this.props
 
         return (
             <Maincontainer>
@@ -26,7 +28,15 @@ class PlanesCompraCreate extends React.Component {
                         <LeftOutlined /> Atrás
                     </Button>
                     <h2 className="table-indas-title">Crear plan de compra</h2>
-                    <PlanesCompraForm />
+                    <PlanesCompraForm
+                        plan={ plan }
+                        error={ error }
+                        loading={ loading }
+                        onSave={ ( plan ) => {
+                            createPlanSetLoading( { loading: true } )
+                            createPlan( { plan } )
+                        }}
+                    />
                     <Button type="link" onClick={() => { this.props.history.push('/planes-de-compra') }}>
                         <LeftOutlined /> Atrás
                     </Button>
@@ -40,5 +50,7 @@ PlanesCompraCreate.propTypes = {
 };
 
 export default connect( ( state ) => ({
-
-}), {  } )( withRouter(PlanesCompraCreate) );
+    plan: state.planesCompra.plan,
+    loading: state.planesCompra.createLoading,
+    error: state.planesCompra.createError,
+}), { fetchPlan, createPlanSetLoading, createPlan  } )( withRouter(PlanesCompraCreate) );

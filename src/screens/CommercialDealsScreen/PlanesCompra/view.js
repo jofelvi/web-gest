@@ -126,9 +126,9 @@ class PlanesCompra extends React.Component {
             {
                 title: 'Uds Compromiso',
                 dataIndex: 'escalados',
-                key: 'uds_compromiso',
+                key: 'escalados',
                 width: 110,
-                render: (value, record, index) => (value[0].udsminimas)
+                render: (value, record, index) => (record.escalados[0].udsmaximas)
             },
             {
                 title: 'Descuento',
@@ -174,11 +174,6 @@ class PlanesCompra extends React.Component {
                 key: 'autorenovar',
                 width: 80,
                 render: (text, record, index) => (text?'Si':'No')
-            },
-            {
-                title: '#',
-                key: 'acciones',
-                width: 30
             }
         ];
 
@@ -214,7 +209,7 @@ class PlanesCompra extends React.Component {
                                         selectedRowKeys.length == 1 && (
                                             <React.Fragment>
                                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
-                                                    alert("función deshabilitada temporalmente.")
+                                                    this.props.history.push(`/planes-de-compra/${selectedRowKeys[0]}/editar`)
                                                 }}>
                                                     Editar
                                                 </Button>

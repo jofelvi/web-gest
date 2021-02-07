@@ -95,7 +95,6 @@ class OrderFilterEntity extends React.Component {
 
 }
 OrderFilterEntity.propTypes = {
-    order: PropTypes.shape({}).isRequired,
 };
 
 export default connect( ( state ) => ({  }), { } )( OrderFilterEntity );

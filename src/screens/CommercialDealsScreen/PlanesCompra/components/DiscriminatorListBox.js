@@ -11,7 +11,7 @@ class DiscriminatorListBox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedOptionKeys: [],
+            selectedOptionKeys: props.value,
         }
 
         this.toggleSelectedDiscriminatorOptions = this.toggleSelectedDiscriminatorOptions.bind(this)
@@ -41,7 +41,13 @@ class DiscriminatorListBox extends React.Component {
         return (
             <React.Fragment>
                 { this.props.preset && (
-                    <ListPresetSelector {... this.props.preset } />
+                    <ListPresetSelector
+                        {... this.props.preset }
+                        onSetPreset={ (preset) => {
+                          this.setState({ selectedOptionKeys: preset.options })
+                            this.props.onChange( preset.options )
+                        }}
+                    />
                 )}
             <Row style={{width: '100%'}}>
                 <Col span={12} style={{ height: '1150px', overflow: 'auto', paddingRight: '10px' }}>

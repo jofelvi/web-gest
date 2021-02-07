@@ -1,5 +1,5 @@
 import {LIMIT} from "../../constants";
-import {get, post, getHeaders} from "../../lib/restClient";
+import {get, post, getHeaders, patch} from "../../lib/restClient";
 import _  from 'underscore';
 import * as download from 'downloadjs';
 
@@ -71,4 +71,5 @@ export const exportPlans =(filters, filename) => {
         x.send();
     })
 };
-
+export const getPlan = (idcondcomercial) => get(`/ntr/plan/${idcondcomercial}`);
+export const editPlan = (plan) => patch(`/ntr/plan/${plan.idcondcomercial}`, { ...plan, 'idtipo': 2 } );

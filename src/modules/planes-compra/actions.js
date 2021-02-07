@@ -21,6 +21,12 @@ import {
     CREATE_SUBMARCA_COLLECTION_SUCCESS,
     CREATE_SUBMARCA_COLLECTION_FAILED,
     CREATE_SUBMARCA_COLLECTION_SET_LOADING,
+    UPDATE_PLAN,
+    UPDATE_PLAN_SUCCESS,
+    UPDATE_PLAN_FAILED,
+    FETCH_PLAN,
+    FETCH_PLAN_SUCCESS,
+    FETCH_PLAN_FAILED,
 } from './actionTypes';
 
 export const {
@@ -44,6 +50,12 @@ export const {
     createSubmarcaCollectionSuccess,
     createSubmarcaCollectionFailed,
     createSubmarcaCollectionSetLoading,
+    updatePlan,
+    updatePlanSuccess,
+    updatePlanFailed,
+    fetchPlan,
+    fetchPlanSuccess,
+    fetchPlanFailed,
 } = createActions(
     FETCH_PLANS,
     FETCH_PLANS_SUCCESS,
@@ -65,4 +77,10 @@ export const {
     CREATE_SUBMARCA_COLLECTION_SUCCESS,
     CREATE_SUBMARCA_COLLECTION_FAILED,
     CREATE_SUBMARCA_COLLECTION_SET_LOADING,
+    UPDATE_PLAN,
+    UPDATE_PLAN_SUCCESS,
+    UPDATE_PLAN_FAILED,
+    FETCH_PLAN,
+    FETCH_PLAN_SUCCESS,
+    FETCH_PLAN_FAILED,
 );

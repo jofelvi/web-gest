@@ -50,7 +50,9 @@ import {
   watchcreatePlan,
   watchfetchDelegados,
   watchfetchSubmarcaCollections,
-    watchcreateSubmarcaCollection
+  watchcreateSubmarcaCollection,
+  watchupdatePlan,
+  watchfetchPlan,
 } from './planes-compra/sagas'
 
 import{
@@ -157,6 +159,8 @@ export default function* rootSaga() {
     watchcreatePlan(),
     watchfetchDelegados(),
     watchfetchSubmarcaCollections(),
-    watchcreateSubmarcaCollection()
+    watchcreateSubmarcaCollection(),
+    watchfetchPlan(),
+    watchupdatePlan(),
   ]);
 }

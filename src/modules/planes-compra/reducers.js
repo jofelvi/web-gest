@@ -18,9 +18,14 @@ import {
     createSubmarcaCollectionSuccess,
     createSubmarcaCollectionFailed,
     createSubmarcaCollectionSetLoading,
+    updatePlanSuccess,
+    updatePlanFailed,
+    fetchPlanSuccess,
+    fetchPlanFailed,
 } from './actions';
 
 const defaultState = {
+    plan: null,
     list: [],
     delegados: [],
     loadingPagination: false,
@@ -156,6 +161,12 @@ export default handleActions(
                 submarcaCollection: null,
                 loadingSubmarcaCollectionCreate: false,
                 errorSubmarcaCollectionCreate: true
+            }
+        },
+        [fetchPlanSuccess]: (state, { payload }) => {
+            return {
+                ...state,
+                plan: payload.plan,
             }
         },
     },
