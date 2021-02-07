@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfigProvider, Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip} from 'antd';
+import { ConfigProvider, Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip, Spin} from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../../constants';
 import '../../../lib/styles.css';
@@ -59,6 +59,7 @@ class PlanesCompra extends React.Component {
         this.updateList = this.updateList.bind(this);
     }
     state = {
+        exportLoading: false,
         selectedRowKeys: [],
         page: 1,
         filters: {},
@@ -83,7 +84,7 @@ class PlanesCompra extends React.Component {
     }
 
     render() {
-        const { selectedRowKeys, selectedRowsAction } = this.state;
+        const { selectedRowKeys, selectedRowsAction, exportLoading } = this.state;
         const { loadingList, history, count, delegados, plans } = this.props;
         const hasRowsSelected = selectedRowKeys.length > 0;
 
@@ -197,13 +198,16 @@ class PlanesCompra extends React.Component {
                                         style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0, paddingRight: 0 }}
                                         onClick={
                                             () => {
+                                                this.setState({ exportLoading: true })
                                                 const dateString = moment().format('YYYYMMDD');
                                                 const filename = `export_pc_${dateString}.xlsx`;
-                                                api.exportPlans( this.state.filters, filename )
+                                                api.exportPlans( this.state.filters, () => {
+                                                    this.setState({ exportLoading: false })
+                                                })
                                             }
                                         }
                                     >
-                                        <ExportOutlined style={{ fontSize: '20px'}} />
+                                        { exportLoading ? <Spin /> : <ExportOutlined style={{ fontSize: '20px'}} /> }
                                     </Button>
                                     {
                                         selectedRowKeys.length == 1 && (

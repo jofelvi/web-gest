@@ -58,7 +58,7 @@ export const countPlans = async (filters) => {
     return get(`ntr/plan/count?${queryParams}`);
 };
 
-export const exportPlans =(filters, filename) => {
+export const exportPlans =(filters, callback) => {
     const queryParams = addFiltersQueryParams( '', filters )
     getHeaders().then( ( headers) => {
         var x=new XMLHttpRequest();
@@ -67,7 +67,11 @@ export const exportPlans =(filters, filename) => {
             x.setRequestHeader( key, value );
         })
         x.responseType="blob";
-        x.onload= function(e){ download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");};
+        x.onload= function(e){
+            const filename = x.getResponseHeader('content-disposition').split('=')[1];
+            download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            callback()
+        };
         x.send();
     })
 };
