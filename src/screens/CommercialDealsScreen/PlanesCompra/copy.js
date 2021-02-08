@@ -61,6 +61,7 @@ class PlanesCompraCopy extends React.Component {
                     { plan != null ? (
                         <PlanesCompraForm
                             editPlan={ plan }
+                            isCopy={ true }
                             plan={ savedPlan }
                             savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha creado.` }
                             loading={ loading }

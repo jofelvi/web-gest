@@ -159,6 +159,9 @@ class PlanesCompraForm extends React.Component {
             {   field: 'fechainicio',
                 validator: ( value ) => (editPlan && moment(editPlan.fechainicio).isSame(value, 'day') ? true : moment( value ).startOf('day') >= moment().startOf('day') ),
                 message: 'No puede ser una fecha pasada.' },
+            {   field: 'fechafin',
+                validator: ( value ) => (editPlan && moment(editPlan.fechafin).isSame(value, 'day') ? true : moment( value ).startOf('day') >= moment().startOf('day') ),
+                message: 'No puede ser una fecha pasada.' },
             { field: 'fechafin', validator: ( value, record ) => ( moment( value ).startOf('day') >= moment( record.fechainicio ).startOf('day') ), message: 'Debe ser posterior a la fecha de inicio.' },
             { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
             { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
@@ -244,7 +247,9 @@ class PlanesCompraForm extends React.Component {
         const { editPlan, products, brands, error, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections, families } = this.props;
         const { plan, validationErrors, rawFields, rawPlan } = this.state;
         const createdPlan = this.props.plan
-        const isEdit = !! editPlan;
+        const isCopy = this.props.isCopy ? this.props.isCopy : false;
+        const isEdit = !! editPlan && ! isCopy;
+        const isEditAndExpired = isEdit && plan.estado2 == "Expirado";
 
         if ( createdPlan != null) {
             return (<PlanesCompraSaved message={this.props.savedMessage} plan={ createdPlan } isEdit={ isEdit } />);
@@ -266,6 +271,7 @@ class PlanesCompraForm extends React.Component {
                             <OrderFilterEntity
                                 style={inputStyle }
                                 value={ rawFields.entidad }
+                                disabled={ isEdit }
                                 column={ "object" }
                                 onChange={ (entity) => {
                                     this.setState({ rawFields: { ...rawFields, entidad: entity} })
@@ -292,6 +298,7 @@ class PlanesCompraForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ plan.nombre }
+                                    disabled={isEditAndExpired}
                                     onChange={ (e) => {
                                         this.setState({ plan: { ...plan, nombre: e.target.value }},
                                             () => {
@@ -319,6 +326,7 @@ class PlanesCompraForm extends React.Component {
                             <DatePicker
                                 value={ rawFields.fechainicio }
                                 locale={ locale }
+                                disabled={ isEdit }
                                 onChange={( date, dateString ) => {
                                     const formatDate = date ? date.format('YYYY-MM-DD') : '';
                                     this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: formatDate } },
@@ -338,6 +346,7 @@ class PlanesCompraForm extends React.Component {
                             <DatePicker
                                 format={ dateFormat }
                                 value={ rawFields.fechafin }
+                                disabled={isEditAndExpired}
                                 onChange={( date, dateString ) => {
                                     const formatDate = date ? date.format('YYYY-MM-DD') : '';
                                     this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: formatDate } },
@@ -361,6 +370,7 @@ class PlanesCompraForm extends React.Component {
                                 onChange={(value) => { this.setState( { plan: { ...plan, idestado: value } })} }
                                 value={plan.idestado}
                                 style={inputStyle}
+                                disabled={isEditAndExpired}
                             >
                                 <Option value={2}  style={{ color: '#CCC' }}>Borrador</Option>
                                 <Option value={1}>Activo</Option>
@@ -371,6 +381,7 @@ class PlanesCompraForm extends React.Component {
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_renovar }
+                                disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_renovar: value } } ) } }
                             />
                             <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Renovación Automática</label>
@@ -379,6 +390,7 @@ class PlanesCompraForm extends React.Component {
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_regularizar }
+                                disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_regularizar: value } } ) } }
                             />
                             <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Regularización</label>
@@ -394,6 +406,7 @@ class PlanesCompraForm extends React.Component {
                         <Col span={6}>
                             <label>Unidades comprometidas</label>
                             <Input
+                                disabled={isEditAndExpired}
                                 value={ plan.escalados[0].udsmaximas }
                                 onChange={ ( e ) => {
                                     this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } },
@@ -409,6 +422,7 @@ class PlanesCompraForm extends React.Component {
                         <Col span={6}>
                             <label>Descuento</label>
                             <Input
+                                disabled={isEditAndExpired}
                                 value={ plan.escalados[0].descuento }
                                 onChange={ ( e ) => {
                                     this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } },
@@ -425,6 +439,7 @@ class PlanesCompraForm extends React.Component {
                         <Col span={6}>
                             <label>Margen</label>
                             <Input
+                                disabled={isEditAndExpired}
                                 value={ plan.margen }
                                 suffix={"%"}
                                 onChange={ ( e ) => {
@@ -457,6 +472,7 @@ class PlanesCompraForm extends React.Component {
 
                                 { products && subBrands && (
                                     <DiscriminatorListBox
+                                        disabled={isEditAndExpired}
                                         options={
                                             _.sortBy( products, (product) => (product.nombre) ).map( ( product) => ({
                                                 label: product.nombre,
@@ -498,6 +514,7 @@ class PlanesCompraForm extends React.Component {
                                 <Row style={{ marginBottom: '10px'}}>
                                     <Col span={8}>
                                         <DualListFilter
+                                            disabled={isEditAndExpired}
                                             options={ families.map( (family) => {
                                                 return {
                                                     label: family.nombre,
@@ -559,7 +576,8 @@ class PlanesCompraForm extends React.Component {
                 </div>
 
                 { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
-                <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
+                { isEditAndExpired && (<Typography type="danger" style={{ marginTop: '10px'}}> El plan no se puede modificar porque ha expirado.</Typography>) }
+                <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading || isEditAndExpired }>
                     { loading ? (<Spin></Spin>) : (isEdit ? 'Guardar' : 'Crear') }
                 </Button>
 

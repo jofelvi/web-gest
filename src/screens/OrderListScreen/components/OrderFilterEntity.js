@@ -82,6 +82,7 @@ class OrderFilterEntity extends React.Component {
                 style={{ width: '100%', marginTop: 10, marginLeft:10 }}
                 defaultActiveFirstOption={false}
                 showArrow={false}
+                disabled={ this.props.disabled ? this.props.disabled : false }
                 filterOption={false}
                 onSearch={this.handleSearch}
                 onChange={this.handleChange}
