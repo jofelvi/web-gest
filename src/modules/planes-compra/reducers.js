@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { map, filter } from 'underscore';
 import { message } from 'antd';
-
+import _ from 'underscore';
 import {
     fetchPlansSuccess,
     fetchPlansCountSuccess,
@@ -22,6 +22,7 @@ import {
     updatePlanFailed,
     fetchPlanSuccess,
     fetchPlanFailed,
+    updatePlansSuccess,
 } from './actions';
 
 const defaultState = {
@@ -169,6 +170,16 @@ export default handleActions(
                 plan: payload.plan,
             }
         },
+        [updatePlansSuccess]: (state, { payload }) => {
+            const list = state.list.map( (plan) => {
+                const changedPlan = _.find( payload.plans, ( changedPlan ) => (changedPlan.idcondcomercial==plan.idcondcomercial))
+                return changedPlan ? changedPlan : plan
+            } )
+            return {
+                ...state,
+                list: list
+            }
+        }
     },
     defaultState
 );

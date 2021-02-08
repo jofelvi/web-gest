@@ -208,11 +208,9 @@ function* fetchTaskList({ payload }) {
 function* fetchTaskListUser({ payload }) {
   try {
 
-    console.log(payload);
     const sortBy = yield select(state => state.tasks.sortBy);
     const sortOrder = payload.sortOrder;
     const defaultResponse_ = yield call( api.fetchUserTaskList, sortBy, sortOrder );
-    console.log(defaultResponse_.data);
     const defaultResponse = require('../../datamockup/dataTaskList.json')
 
     const filteredData = defaultResponse.data;
@@ -261,7 +259,6 @@ export function* watchEditTask() {
 function* editTaskMessage({ payload }) {
   try {
     const response = yield call(api.editTaskMessage, payload.id, payload.values);
-    console.log("responseee", {response})
 
   }catch (e) {
     console.error(e);

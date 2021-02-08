@@ -16,7 +16,7 @@ import { Spin, Typography, Space } from 'antd';
 import ExtendedDualListBox from "./ExtendedDualListBox";
 import DualListFilter from "./DualListFilter";
 import DiscriminatorListBox from "./DiscriminatorListBox";
-import PlanesCompraCreated from "./PlanesCompraCreated";
+import PlanesCompraSaved from "./PlanesCompraSaved";
 import View from "../../../Forms/crear_pedido/view";
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {InputBox} from "../../../OrderListScreen/styled";
@@ -153,7 +153,6 @@ class PlanesCompraForm extends React.Component {
 
     validate( plan, successCallback, errorCallback ) {
         const { editPlan } = this.props;
-        console.log('Validando', editPlan)
         const validations = [
             { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco. Seleccione una entidad para rellenarlo.' },
             { field: 'nombre', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
@@ -215,12 +214,9 @@ class PlanesCompraForm extends React.Component {
 
     }
     setPresetProductosCategoria ( categoria ) {
-        console.log('SET PRODUCTOS CATEGORIA', categoria)
-
     }
     setPresetProductosMarca ( marca ) {
         this.setState({ seleccion_individual_filtro_marca: marca } );
-
     }
     setPresetProductosSubmarca ( marca ) {
         this.setState({ seleccion_individual_filtro_submarca: marca } );
@@ -250,9 +246,8 @@ class PlanesCompraForm extends React.Component {
         const createdPlan = this.props.plan
         const isEdit = !! editPlan;
 
-        console.log('FAMILIES', submarcaCollections)
         if ( createdPlan != null) {
-            return (<PlanesCompraCreated plan={ createdPlan } isEdit={ isEdit } />);
+            return (<PlanesCompraSaved message={this.props.savedMessage} plan={ createdPlan } isEdit={ isEdit } />);
         }
 
         return (

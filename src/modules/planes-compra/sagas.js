@@ -19,6 +19,7 @@ import {
     createSubmarcaCollectionFailed,
     createSubmarcaCollectionSetLoading,
     fetchPlanSuccess,
+    updatePlansSuccess
 } from './actions';
 
 import {
@@ -29,6 +30,7 @@ import {
     CREATE_SUBMARCA_COLLECTION,
     UPDATE_PLAN,
     FETCH_PLAN,
+    UPDATE_PLANS,
 } from './actionTypes';
 
 import * as api from './api';
@@ -64,11 +66,15 @@ function* createPlan( { payload } ) {
     try {
         const response = yield call( api.createPlan , payload.plan );
         const { data } = response;
-        //yield put(setCurrentCommercialDeal({...data}))
-        //yield put (getCommercialDealId({idCommercialDeal: response.data.idcondcomercial}))
+        if ( typeof payload.success == 'function' ) {
+            payload.success(response.data)
+        }
         yield put(createPlanSuccess({ plan: response.data }));
     } catch (e) {
         console.error(e);
+        if ( payload.error ) {
+            payload.error(e)
+        }
         yield put(createPlanFailed());
     }
 }
@@ -144,7 +150,6 @@ function* fetchPlan( { payload } ) {
     try {
         const response = yield call( api.getPlan , payload.idcondcomercial );
         const { data } = response;
-        console.log('PLAN FETCHED', data)
 
         yield put(fetchPlanSuccess({ plan: response.data }));
     } catch (e) {
@@ -168,4 +173,19 @@ function* updatePlan( { payload } ) {
 
 export function* watchupdatePlan() {
     yield takeLatest( UPDATE_PLAN, updatePlan );
+}
+
+function* updatePlans( { payload } ) {
+    try {
+        const response = yield call( api.updatePlans , payload  );
+        const { data } = response;
+        yield put(updatePlansSuccess( { plans: data} ));
+        payload.success( data );
+    } catch (e) {
+        payload.error(e);
+    }
+}
+
+export function* watchupdatePlans() {
+    yield takeLatest( UPDATE_PLANS, updatePlans );
 }

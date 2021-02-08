@@ -32,7 +32,6 @@ const addFiltersQueryParams = ( queryParams, {
 export const createPlan = (plan) => post('/ntr/plan/create', { ...plan, 'idtipo': 2 } );
 
 export const createSubmarcaCollection = ( collection ) => {
-    console.log('Colección', collection)
     return post('/ntr/fav/submarca/create', collection );
 }
 export const fetchSubmarcaCollections = async (filters) => {
@@ -77,3 +76,5 @@ export const exportPlans =(filters, callback) => {
 };
 export const getPlan = (idcondcomercial) => get(`/ntr/plan/${idcondcomercial}`);
 export const editPlan = (plan) => patch(`/ntr/plan/${plan.idcondcomercial}`, { ...plan, 'idtipo': 2 } );
+export const updatePlans = (payload) => post(`/ntr/plan/estados`, { ...payload.change, planes: payload.plansIds } );
+

@@ -18,6 +18,7 @@ import CommercialDealsScreen from './screens/CommercialDealsScreen';
 import Promociones from './screens/CommercialDealsScreen/Promociones';
 import PlanesCompra from './screens/CommercialDealsScreen/PlanesCompra';
 import PlanesCompraCreate from './screens/CommercialDealsScreen/PlanesCompra/create';
+import PlanesCompraCopy from './screens/CommercialDealsScreen/PlanesCompra/copy';
 import PlanesCompraEdit from './screens/CommercialDealsScreen/PlanesCompra/edit';
 import Campanas from './screens/CommercialDealsScreen/Campanas';
 import ClientsIndasScreen from './screens/ClientsScreen';
@@ -81,6 +82,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
         <PrivateRoute path="/planes-de-compra" exact component={PlanesCompra}/>
         <PrivateRoute path="/planes-de-compra/crear" exact component={PlanesCompraCreate}/>
         <PrivateRoute path="/planes-de-compra/:id/editar" exact component={PlanesCompraEdit}/>
+        <PrivateRoute path="/planes-de-compra/:id/copiar" exact component={PlanesCompraCopy}/>
         <PrivateRoute path="/promociones" exact component={Promociones}/>
         <PrivateRoute path="/campañas" exact component={Campanas}/>
         <PrivateRoute path="/clients/tr" exact component={ClientsIndasScreen}/>

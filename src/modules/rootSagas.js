@@ -53,6 +53,7 @@ import {
   watchcreateSubmarcaCollection,
   watchupdatePlan,
   watchfetchPlan,
+  watchupdatePlans,
 } from './planes-compra/sagas'
 
 import{
@@ -162,5 +163,6 @@ export default function* rootSaga() {
     watchcreateSubmarcaCollection(),
     watchfetchPlan(),
     watchupdatePlan(),
+    watchupdatePlans(),
   ]);
 }

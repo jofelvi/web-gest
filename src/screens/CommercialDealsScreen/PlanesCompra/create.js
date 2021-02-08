@@ -32,6 +32,7 @@ class PlanesCompraCreate extends React.Component {
                         plan={ plan }
                         error={ error }
                         loading={ loading }
+                        savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha creado.` }
                         onSave={ ( plan ) => {
                             createPlanSetLoading( { loading: true } )
                             createPlan( { plan } )

@@ -52,13 +52,10 @@ class ModalCreateOrder extends React.Component {
             const filteredProducts = _.filter(mappedProducts, (product) => {
                 return product.value.search(searchText) > -1;
             })
-            console.log(mappedProducts)
-            console.log(filteredProducts)
             options = filteredProducts;
         }
 
 
-        console.log(options)
 
         this.setState({ productOptions: options })
 

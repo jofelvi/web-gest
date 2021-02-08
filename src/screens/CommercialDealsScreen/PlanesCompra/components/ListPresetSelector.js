@@ -16,7 +16,6 @@ class ListPresetSelector extends React.Component {
             createPresetName: '',
             saveLoading: false,
         }
-        console.log('LOAD LIST PRESET', props)
 
         this.isPresetChanged = this.isPresetChanged.bind( this );
         this.savePreset = this.savePreset.bind( this );

@@ -8,9 +8,9 @@ import {
     LeftOutlined
 } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
-import { fetchPlan, updatePlan } from '../../../modules/planes-compra/actions';
+import { fetchPlan, createPlan } from '../../../modules/planes-compra/actions';
 
-class PlanesCompraEdit extends React.Component {
+class PlanesCompraCopy extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -29,13 +29,13 @@ class PlanesCompraEdit extends React.Component {
     }
 
     onSavePlan( plan ) {
-        const { updatePlan } = this.props;
+        const { createPlan } = this.props;
         this.setState({ loading: true, error: false })
-        const deleteKeys = ['nomcli_cbim', 'tipo', 'codcli_cbim', 'coddelegado', 'estado', 'estado2', 'idcliente', 'delegado']
+        const deleteKeys = ['idcondcomercial', 'nomcli_cbim', 'tipo', 'codcli_cbim', 'coddelegado', 'estado', 'estado2', 'idcliente', 'delegado']
         for( let i in deleteKeys) {
             delete plan[deleteKeys[i]];
         }
-        updatePlan( {
+        createPlan( {
             plan: plan,
             success: this.onSavePlanSuccess,
             error: this.onSavePlanError,
@@ -57,17 +57,17 @@ class PlanesCompraEdit extends React.Component {
                     <Button type="link" onClick={() => { this.props.history.push('/planes-de-compra') }}>
                         <LeftOutlined /> Atrás
                     </Button>
-                    <h2 className="table-indas-title">Editar plan de compra</h2>
+                    <h2 className="table-indas-title">Crear plan de compra</h2>
                     { plan != null ? (
                         <PlanesCompraForm
                             editPlan={ plan }
                             plan={ savedPlan }
-                            savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha guardado.` }
+                            savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha creado.` }
                             loading={ loading }
                             error={ error }
                             onSave={this.onSavePlan}
                         />
-                        ) : (<Spin style={{display:'block', marginBottom: '10px'}}/>)}
+                    ) : (<Spin style={{display:'block', marginBottom: '10px'}}/>)}
                     <Button type="link" onClick={() => { this.props.history.push('/planes-de-compra') }}>
                         <LeftOutlined /> Atrás
                     </Button>
@@ -77,9 +77,7 @@ class PlanesCompraEdit extends React.Component {
     };
 
 }
-PlanesCompraEdit.propTypes = {
-};
 
 export default connect( ( state ) => ({
     plan: state.planesCompra.plan,
-}), { fetchPlan, updatePlan } )( withRouter(PlanesCompraEdit) );
+}), { fetchPlan, createPlan } )( withRouter(PlanesCompraCopy) );
