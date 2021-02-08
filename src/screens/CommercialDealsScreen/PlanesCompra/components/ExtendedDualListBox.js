@@ -31,6 +31,9 @@ class ExtendedDualListBox extends React.Component {
     }
 
     toggleValue ( value, collection ) {
+        if ( this.props.disabled ) {
+            return;
+        }
         if ( collection.indexOf(value) > -1 ) {
             return _.filter( collection, ( key ) => ( key != value ) )
         }
@@ -49,6 +52,9 @@ class ExtendedDualListBox extends React.Component {
     }
 
     allRightButtonClick () {
+        if ( this.props.disabled ) {
+            return;
+        }
         const { options, filter } = this.props;
         const { selectedKeys } = this.state;
         const filteredOptions = _.filter( options, filter )
@@ -58,19 +64,31 @@ class ExtendedDualListBox extends React.Component {
         this.setState( { selectedLeftKeys: [], selectedKeys: newSelectedKeys }, this.updateValue)
     }
     rightButtonClick () {
+        if ( this.props.disabled ) {
+            return;
+        }
         const { selectedLeftKeys, selectedKeys } = this.state;
         const newSelectedKeys = _.union( selectedKeys, selectedLeftKeys )
         this.setState( { selectedLeftKeys: [], selectedKeys: newSelectedKeys }, this.updateValue)
     }
 
     leftButtonClick () {
+        if ( this.props.disabled ) {
+            return;
+        }
         const { selectedRightKeys, selectedKeys } = this.state;
         this.setState( { selectedRightKeys: [], selectedKeys: difference( selectedKeys, selectedRightKeys) }, this.updateValue )
     }
     allLeftButtonClick() {
+        if ( this.props.disabled ) {
+            return;
+        }
         this.setState( { selectedRightKeys: [], selectedKeys: [] }, this.updateValue)
     }
     updateValue() {
+        if ( this.props.disabled ) {
+            return;
+        }
         this.props.onChange( this.state.selectedKeys )
     }
     render() {

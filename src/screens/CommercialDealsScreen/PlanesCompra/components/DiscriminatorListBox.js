@@ -18,9 +18,13 @@ class DiscriminatorListBox extends React.Component {
     }
 
     toggleSelectedDiscriminatorOptions ( value ) {
-        const selectedOptionKeys = this.state.selectedOptionKeys;
+        if ( this.props.disabled ) {
+            return;
+        }
+        let selectedOptionKeys = this.state.selectedOptionKeys;
         if ( this.state.selectedOptionKeys.indexOf(value) > -1 ) {
-            this.setState( { selectedOptionKeys: _.filter(selectedOptionKeys, (key) => (key!=value) ) } )
+            selectedOptionKeys = _.filter(selectedOptionKeys, (key) => (key!=value) )
+            this.setState( { selectedOptionKeys: selectedOptionKeys } )
         } else {
             selectedOptionKeys.push(value)
             this.setState( { selectedOptionKeys } );

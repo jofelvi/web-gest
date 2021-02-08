@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
 import { fetchPlan, updatePlan } from '../../../modules/planes-compra/actions';
+import _ from 'underscore';
 
 class PlanesCompraEdit extends React.Component {
     constructor(props) {
@@ -60,7 +61,7 @@ class PlanesCompraEdit extends React.Component {
                     <h2 className="table-indas-title">Editar plan de compra</h2>
                     { plan != null ? (
                         <PlanesCompraForm
-                            editPlan={ plan }
+                            editPlan={ _.clone( plan ) }
                             plan={ savedPlan }
                             savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha guardado.` }
                             loading={ loading }

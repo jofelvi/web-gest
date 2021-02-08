@@ -101,7 +101,7 @@ class PlanesCompraForm extends React.Component {
         this.state = {
             entidad_helper: '',
             error: props.error,
-            plan: plan,
+            plan: _.clone( plan ),
             validationErrors: {},
             rawFields: {
                 fechainicio: rawFechaInicio,
@@ -146,6 +146,7 @@ class PlanesCompraForm extends React.Component {
         const { plan } = this.state;
         this.validate( plan, () => {
             onSave(plan)
+            console.log('THISIS THE PLAN', plan)
         }, () => {
             document.querySelector('.ant-layout-content').scrollTo(0, 0)
         })
