@@ -79,7 +79,7 @@ const defaultPlan = {
     ind_renovar: false,
     ind_seleccion_conjunta: true,
     ind_regularizar: false,
-    idestado: 2,
+    idestado: "2",
     submarcas: [],
     productos: [],
     clientes: [
@@ -373,9 +373,9 @@ class PlanesCompraForm extends React.Component {
                                 style={inputStyle}
                                 disabled={isEditAndExpired}
                             >
-                                <Option value={2}  style={{ color: '#CCC' }}>Borrador</Option>
-                                <Option value={1}>Activo</Option>
-                                <Option value={0}>Inactivo</Option>
+                                <Option value={"2"}  style={{ color: '#CCC' }}>Borrador</Option>
+                                <Option value={"1"}>Activo</Option>
+                                <Option value={"0"}>Inactivo</Option>
                             </Select>
                         </Col>
                         <Col span={8}  >

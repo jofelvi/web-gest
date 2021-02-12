@@ -16,18 +16,39 @@ class PlanesCompraActions extends React.Component {
         this.state = {
             exportLoading: false,
             loading: false,
+            filters: {},
         }
         this.updatePlans = this.updatePlans.bind(this)
+        this.renovePlans = this.renovePlans.bind(this)
         this.successUpdate = this.successUpdate.bind( this )
         this.errorUpdate = this.errorUpdate.bind( this )
         this.confirmUpdatePlans = this.confirmUpdatePlans.bind ( this )
+        this.confirmRenovePlans = this.confirmRenovePlans.bind ( this )
+    }
+
+    confirmRenovePlans( ) {
+        const {selectedRowKeys} = this.props;
+        const planes = selectedRowKeys.join(', ')
+        const messageContent = selectedRowKeys.length > 0 ? `¿Desea renovar los planes ${planes}?`
+            : `¿Desea renovar el plan ${planes}?`;
+        confirm({
+            title: `Confirmar acción`,
+            icon: <ExclamationCircleOutlined />,
+            content: messageContent,
+            onOk: () => {
+                this.renovePlans()
+            },
+            onCancel() {
+            },
+        });
+
     }
 
     confirmUpdatePlans( keyName, valueName, key, value ) {
         const {selectedRowKeys} = this.props;
         const planes = selectedRowKeys.join(', ')
-        const messageContent = selectedRowKeys.length > 0 ? `Desea cambiar \'${keyName}\' de los planes ${planes} a \'${valueName}\'`
-            : `Desea cambiar \'${keyName}\' del plan ${planes} a \'${valueName}\'`;
+        const messageContent = selectedRowKeys.length > 0 ? `¿Desea cambiar \'${keyName}\' de los planes ${planes} a \'${valueName}\'?`
+            : `¿Desea cambiar \'${keyName}\' del plan ${planes} a \'${valueName}\'?`;
         confirm({
             title: `Confirmar acción`,
             icon: <ExclamationCircleOutlined />,
@@ -40,11 +61,15 @@ class PlanesCompraActions extends React.Component {
         });
 
     }
+    renovePlans( ) {
+        const { updatePlans, selectedRowKeys } = this.props;
+        this.setState({loading: 'renovar' })
+        updatePlans ( { change: { } , action: 'renovar', plansIds: selectedRowKeys, success: this.successUpdate, error: this.errorUpdate } );
+    }
     updatePlans( key, value ) {
-
         const { updatePlans, selectedRowKeys } = this.props;
         this.setState({loading: key})
-        updatePlans ( { change: { [key]: value} , plansIds: selectedRowKeys, success: this.successUpdate, error: this.errorUpdate } );
+        updatePlans ( { change: { [key]: value}, plansIds: selectedRowKeys, success: this.successUpdate, error: this.errorUpdate } );
     }
 
     successUpdate () {
@@ -63,7 +88,7 @@ class PlanesCompraActions extends React.Component {
 
     render() {
         const { exportLoading, loading } = this.state
-        const { selectedRowKeys, history } = this.props
+        const { selectedRowKeys, history, filters } = this.props
         return (
 
             <div className="table-actions">
@@ -79,10 +104,8 @@ class PlanesCompraActions extends React.Component {
                         onClick={
                             () => {
                                 this.setState({exportLoading: true})
-                                const dateString = moment().format('YYYYMMDD');
-                                const filename = `export_pc_${dateString}.xlsx`;
-                                api.exportPlans(this.state.filters, () => {
-                                    this.setState({exportLoaexportLoadingding: false})
+                                api.exportPlans( filters , () => {
+                                    this.setState({exportLoading: false})
                                 })
                             }
                         }
@@ -114,9 +137,8 @@ class PlanesCompraActions extends React.Component {
                     {
                         selectedRowKeys.length >= 1 && (
                             <React.Fragment>
-                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
-                                    alert("función deshabilitada temporalmente")
-                                }}>
+                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}}
+                                        onClick={() => { this.confirmRenovePlans() }}>
                                     Renovar
                                 </Button>
                                 <Dropdown overlay={(

@@ -76,5 +76,8 @@ export const exportPlans =(filters, callback) => {
 };
 export const getPlan = (idcondcomercial) => get(`/ntr/plan/${idcondcomercial}`);
 export const editPlan = (plan) => patch(`/ntr/plan/${plan.idcondcomercial}`, { ...plan, 'idtipo': 2 } );
-export const updatePlans = (payload) => post(`/ntr/plan/estados`, { ...payload.change, planes: payload.plansIds } );
+export const updatePlans = (payload) => {
+    const action = payload.action ? payload.action : 'estados';
+    post(`/ntr/plan/${action}`, { ...payload.change, planes: payload.plansIds } );
+}
 

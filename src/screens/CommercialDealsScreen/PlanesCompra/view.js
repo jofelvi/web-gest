@@ -82,7 +82,7 @@ class PlanesCompra extends React.Component {
     }
 
     render() {
-        const { selectedRowKeys, selectedRowsAction } = this.state;
+        const { selectedRowKeys, selectedRowsAction, filters } = this.state;
         const { loadingList, history, count, delegados, plans } = this.props;
         const hasRowsSelected = selectedRowKeys.length > 0;
 
@@ -131,10 +131,10 @@ class PlanesCompra extends React.Component {
             },
             {
                 title: 'Descuento',
-                dataIndex: 'margen',
+                dataIndex: 'descuento',
                 key: 'descuento',
                 width: 100,
-                render: (text, record, index) => (text+" %")
+                render: (text, record, index) => (record.escalados[0].descuento+" %")
             },
             {
                 title: 'Cod Cliente',
@@ -189,6 +189,7 @@ class PlanesCompra extends React.Component {
                             <PlanesCompraActions
                                 selectedRowKeys={ selectedRowKeys }
                                 updateSelectedRowKeys={ (newSelectedRowKeys) => (this.setState({ selectedRowKeys: newSelectedRowKeys}) ) }
+                                filters={ filters }
                             />
                             <hr />
 
