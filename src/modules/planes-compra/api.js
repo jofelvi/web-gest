@@ -78,6 +78,10 @@ export const getPlan = (idcondcomercial) => get(`/ntr/plan/${idcondcomercial}`);
 export const editPlan = (plan) => patch(`/ntr/plan/${plan.idcondcomercial}`, { ...plan, 'idtipo': 2 } );
 export const updatePlans = (payload) => {
     const action = payload.action ? payload.action : 'estados';
+    // backend requiere los ids en plano para la accion renovar, en vez del objeto
+    if ( action == 'renovar' ) {
+        return post(`/ntr/plan/renovar`, payload.plansIds);
+    }
     post(`/ntr/plan/${action}`, { ...payload.change, planes: payload.plansIds } );
 }
 
