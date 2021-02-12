@@ -27,6 +27,9 @@ class PlanesCompraEdit extends React.Component {
     componentWillMount(props) {
         const { fetchPlan, match } = this.props;
         fetchPlan({ idcondcomercial: match.params.id })
+        this.setState( {
+            error: false
+        } )
     }
 
     onSavePlan( plan ) {
