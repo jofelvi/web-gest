@@ -23,6 +23,7 @@ import {InputBox} from "../../../OrderListScreen/styled";
 //import locale from 'antd/es/date-picker/locale/es_ES';
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
+import Utils from '../../../../lib/utils';
 
 moment.locale("es", {
     week: {
@@ -424,9 +425,10 @@ class PlanesCompraForm extends React.Component {
                             <label>Descuento</label>
                             <Input
                                 disabled={isEditAndExpired}
-                                value={ plan.escalados[0].descuento }
+                                value={ Utils.renderFloat( plan.escalados[0].descuento ) }
                                 onChange={ ( e ) => {
-                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } },
+                                    const value = Utils.parseFloat( e.target.value );
+                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: value } ] } },
                                         () => {
                                             this.clearError( 'escalados[0].descuento' )
                                         }
@@ -441,10 +443,11 @@ class PlanesCompraForm extends React.Component {
                             <label>Margen</label>
                             <Input
                                 disabled={isEditAndExpired}
-                                value={ plan.margen }
+                                value={ Utils.renderFloat( plan.margen ) }
                                 suffix={"%"}
                                 onChange={ ( e ) => {
-                                    this.setState( { plan: { ...plan,  margen: e.target.value } },
+                                    const value = Utils.parseFloat( e.target.value );
+                                    this.setState( { plan: { ...plan,  margen: value } },
                                         () => {
                                             this.clearError( 'margen' )
                                         }

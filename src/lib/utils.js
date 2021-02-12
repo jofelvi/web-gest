@@ -36,8 +36,11 @@ const utils = {
         return bDate-aDate
     }
   },
-  renderDate: (date) => dayjs(new Date(date)).format('DD/MM/YYYY')
-  
+  renderDate: (date) => dayjs(new Date(date)).format('DD/MM/YYYY'),
+  //Decimal handling, spanish localization, taking ',' as decimal separator,
+  renderFloat: ( rawInput ) => ( rawInput ? rawInput.toString().replace('.', ',') : '' ),
+  parseFloat: ( rawInput ) => ( rawInput ? rawInput.replace(',', '.') : null ),
+
 };
 
 export default utils;

@@ -168,6 +168,7 @@ export default handleActions(
             return {
                 ...state,
                 plan: payload.plan,
+                createError: false,
             }
         },
         [updatePlansSuccess]: (state, { payload }) => {

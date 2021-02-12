@@ -134,7 +134,14 @@ class PlanesCompra extends React.Component {
                 dataIndex: 'descuento',
                 key: 'descuento',
                 width: 100,
-                render: (text, record, index) => (record.escalados[0].descuento+" %")
+                render: (text, record, index) => ( Utils.renderFloat( record.escalados[0].descuento )+" %")
+            },
+            {
+                title: 'Margen',
+                dataIndex: 'margen',
+                key: 'margen',
+                width: 100,
+                render: (text, record, index) => ( Utils.renderFloat( record.margen )+" %")
             },
             {
                 title: 'Cod Cliente',
