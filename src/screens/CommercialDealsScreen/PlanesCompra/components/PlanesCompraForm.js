@@ -166,6 +166,7 @@ class PlanesCompraForm extends React.Component {
                 message: 'No puede ser una fecha pasada.' },
             { field: 'fechafin', validator: ( value, record ) => ( moment( value ).startOf('day') >= moment( record.fechainicio ).startOf('day') ), message: 'Debe ser posterior a la fecha de inicio.' },
             { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
+            { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ).toString() == value ), message: 'Debe ser un numero entero.' },
             { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
             { field: 'margen', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
             { field: 'submarcas', validator: ( value, record ) => ( record.ind_seleccion_conjunta == false || value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
@@ -383,6 +384,7 @@ class PlanesCompraForm extends React.Component {
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_renovar }
+                                defaultChecked={ plan.ind_renovar }
                                 disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_renovar: value } } ) } }
                             />
@@ -392,6 +394,7 @@ class PlanesCompraForm extends React.Component {
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_regularizar }
+                                defaultChecked={ plan.ind_regularizar }
                                 disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_regularizar: value } } ) } }
                             />

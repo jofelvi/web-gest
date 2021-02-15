@@ -21,11 +21,17 @@ class PlanesCompraCopy extends React.Component {
         this.onSavePlan = this.onSavePlan.bind(this)
         this.onSavePlanSuccess = this.onSavePlanSuccess.bind(this)
         this.onSavePlanError = this.onSavePlanError.bind(this)
+        this.fetchPlanFailed = this.fetchPlanFailed.bind(this)
+
     }
 
     componentWillMount(props) {
         const { fetchPlan, match } = this.props;
-        fetchPlan({ idcondcomercial: match.params.id })
+        fetchPlan({ idcondcomercial: match.params.id, error: this.fetchPlanFailed })
+    }
+
+    fetchPlanFailed( error ) {
+        alert("No se ha podido cargar el plan.")
     }
 
     onSavePlan( plan ) {

@@ -54,7 +54,7 @@ function* fetchPlans({ payload }) {
 
 
     } catch (e) {
-        console.error(e);
+        //console.log(e);
         yield put(fetchPlansFailed());
     }
 }
@@ -71,7 +71,7 @@ function* createPlan( { payload } ) {
         }
         yield put(createPlanSuccess({ plan: response.data }));
     } catch (e) {
-        console.error(e);
+        //console.error(e);
         if ( payload.error ) {
             payload.error(e)
         }
@@ -95,7 +95,7 @@ function* fetchDelegados({ payload }) {
         yield put(fetchDelegadosSuccess({ delegados: response.data }));
 
     } catch (e) {
-        console.error(e);
+        //console.error(e);
         yield put(fetchDelegadosFailed());
     }
 }
@@ -120,7 +120,7 @@ function* fetchSubmarcaCollections({ payload }) {
 
 
     } catch (e) {
-        console.error(e);
+        // console.error(e);
         yield put(fetchSubmarcaCollectionsFailed());
     }
 }

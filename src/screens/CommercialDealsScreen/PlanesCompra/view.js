@@ -117,7 +117,7 @@ class PlanesCompra extends React.Component {
                 key: 'fecha_fin',
                 width: 120,
                 render: (dateStr, record, index) => (
-                    <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:ii')}>
+                    <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
                         <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
                     </Tooltip>
                 )
@@ -209,7 +209,7 @@ class PlanesCompra extends React.Component {
                                         key: record.idcondcomercial
                                     };
                                 }}
-                                rowKey={'idcondcomercial'}
+                                rowKey={ 'idcondcomercial' }
                                 rowSelection={{ selectedRowKeys, onChange: this.onSelectRowChange }}
                                 loading={this.props.loadingList}
                                 pagination={{

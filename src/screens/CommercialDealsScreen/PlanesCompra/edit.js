@@ -22,16 +22,20 @@ class PlanesCompraEdit extends React.Component {
         this.onSavePlan = this.onSavePlan.bind(this)
         this.onSavePlanSuccess = this.onSavePlanSuccess.bind(this)
         this.onSavePlanError = this.onSavePlanError.bind(this)
+        this.fetchPlanFailed = this.fetchPlanFailed.bind(this)
     }
 
     componentWillMount(props) {
         const { fetchPlan, match } = this.props;
-        fetchPlan({ idcondcomercial: match.params.id })
+        fetchPlan({ idcondcomercial: match.params.id, error: this.fetchPlanFailed })
         this.setState( {
             error: false
         } )
     }
 
+    fetchPlanFailed( error ) {
+        alert("No se ha podido cargar el plan.")
+    }
     onSavePlan( plan ) {
         const { updatePlan } = this.props;
         this.setState({ loading: true, error: false })
