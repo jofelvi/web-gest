@@ -197,6 +197,7 @@ class PlanesCompra extends React.Component {
                                 selectedRowKeys={ selectedRowKeys }
                                 updateSelectedRowKeys={ (newSelectedRowKeys) => (this.setState({ selectedRowKeys: newSelectedRowKeys}) ) }
                                 filters={ filters }
+                                plans =  { plans }
                             />
                             <hr />
 

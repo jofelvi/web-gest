@@ -85,3 +85,16 @@ export const updatePlans = (payload) => {
     post(`/ntr/plan/${action}`, { ...payload.change, planes: payload.plansIds } );
 }
 
+//plantear si debemos moverla
+export const avanceCliente = (idcliente, successCallback) => {
+    getHeaders().then( ( headers) => {
+        var x=new XMLHttpRequest();
+        x.open( "GET", `ntr/cliente/${idcliente}/condcomerciales?formato=html` , true);
+        _.each(headers, (value, key) => {
+            x.setRequestHeader( key, value );
+        })
+        //x.responseType="blob"; ->param for abstract method
+        x.onload= successCallback;
+        x.send();
+    })
+}

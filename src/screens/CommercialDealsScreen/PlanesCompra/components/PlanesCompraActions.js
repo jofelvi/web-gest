@@ -4,9 +4,12 @@ import {Row, Col, Button, Spin, Dropdown, Menu, message, Modal, Space} from 'ant
 import * as moment from "moment";
 import {DownOutlined, ExportOutlined} from "@ant-design/icons";
 import { withRouter } from 'react-router-dom';
+import { find } from 'lodash';
 import * as api from './../../../../modules/planes-compra/api';
 import { updatePlans  } from '../../../../modules/planes-compra/actions';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import * as download from "downloadjs";
+import { IFrame } from './IFrame'
 
 const { confirm } = Modal;
 
@@ -17,6 +20,7 @@ class PlanesCompraActions extends React.Component {
             exportLoading: false,
             loading: false,
             filters: {},
+            avanceContent: null,
         }
         this.updatePlans = this.updatePlans.bind(this)
         this.renovePlans = this.renovePlans.bind(this)
@@ -24,6 +28,7 @@ class PlanesCompraActions extends React.Component {
         this.errorUpdate = this.errorUpdate.bind( this )
         this.confirmUpdatePlans = this.confirmUpdatePlans.bind ( this )
         this.confirmRenovePlans = this.confirmRenovePlans.bind ( this )
+        this.avancePlan = this.avancePlan.bind( this )
     }
 
     confirmRenovePlans( ) {
@@ -66,6 +71,7 @@ class PlanesCompraActions extends React.Component {
         this.setState({loading: 'renovar' })
         updatePlans ( { change: { } , action: 'renovar', plansIds: selectedRowKeys, success: this.successUpdate, error: this.errorUpdate } );
     }
+
     updatePlans( key, value ) {
         const { updatePlans, selectedRowKeys } = this.props;
         this.setState({loading: key})
@@ -78,6 +84,24 @@ class PlanesCompraActions extends React.Component {
         message.success(
             'Cambio aplicado correctamente.',
         )
+    }
+
+    avancePlan() {
+        const { plans, selectedRowKeys } = this.props;
+        if ( selectedRowKeys.length != 1 ) {
+            return;
+        }
+        const plan = find( plans, { idcondcomercial: selectedRowKeys[ 0 ] } );
+        console.log(' AVANZING PLAN', plan)
+        const idcliente = plan.idcliente;
+        this.setState({loading: 'avance'})
+        api.avanceCliente( idcliente, (e) => {
+            const cssHref = `<link type="text/css" rel="Stylesheet" href="/assets/avance.css" />`;
+            const avanceContent = `${cssHref}${e.target.responseText}`;
+            this.setState({loading: false, avanceContent: avanceContent }, () => {
+                console.log('STATE SET', this.state)
+            })
+        } )
     }
 
     errorUpdate (e) {
@@ -126,11 +150,26 @@ class PlanesCompraActions extends React.Component {
                                 }}>
                                     Copiar
                                 </Button>
-                                <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
-                                    alert("función deshabilitada temporalmente.")
-                                }}>
-                                    Avance
+                                <Button type="link" disabled={loading == 'avance'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.avancePlan } >
+                                    { loading == 'avance' ? <Spin /> : 'Avance' }
                                 </Button>
+                                <Modal
+                                    width={800} height={800}
+                                    title="Avance"
+                                    visible={this.state.avanceContent != null}
+                                    onClose={() => { this.setState({avanceContent: null}) }}
+                                    footer={[
+                                        <Button key="back" onClick={() => { this.setState({avanceContent: null}) }}>
+                                            Cerrar
+                                        </Button>
+                                    ]}
+                                >
+                                    <IFrame style={{width:'100%', border: 'none'}}>
+                                        <div dangerouslySetInnerHTML={{ __html: this.state.avanceContent }}>
+                                        </div>
+                                    </IFrame>
+                                </Modal>
+
                             </React.Fragment>
                         )
                     }

@@ -111,11 +111,12 @@ class PlanesCompraFilters extends React.Component {
         return (
             <div className="table-filters-indas">
                 <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-                    <Row style={{width: '100%', marginBottom: 0}}>
-                        <Col span={18} style={{padding: '10px'}}>
+                    <Row key={'filters_b'} style={{width: '100%', marginBottom: 0}}>
+                        <Col span={18} style={{padding: '10px'}}  key={'col_1'}>
                             <span style={{padding: '10px'}}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                             <OrderFilterEntity
                                 column={"object"}
+                                key={'filters_entity_search'}
                                 value={searchByEntity}
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
                                 onChangeClient={ (client) => {
@@ -127,7 +128,7 @@ class PlanesCompraFilters extends React.Component {
                             />
                         </Col>
 
-                        <Col span={6} style={{padding: '10px'}}>
+                        <Col span={6} style={{padding: '10px'}} key={'col_2'}>
                             <span style={{padding: '10px'}}>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
@@ -138,7 +139,7 @@ class PlanesCompraFilters extends React.Component {
                         </Col>
                     </Row>
                 </InputsContainer>
-                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
+                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}} key={'filters_b_2'}>
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
                             <span style={{padding: '10px'}}>PC vigentes en este intervalo</span>
