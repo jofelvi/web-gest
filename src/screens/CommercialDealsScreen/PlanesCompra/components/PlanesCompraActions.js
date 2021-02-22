@@ -164,7 +164,7 @@ class PlanesCompraActions extends React.Component {
                                         </Button>
                                     ]}
                                 >
-                                    <IFrame style={{width:'100%', border: 'none'}}>
+                                    <IFrame style={{width:'100%', minHeight: '600px', border: 'none'}}>
                                         <div dangerouslySetInnerHTML={{ __html: this.state.avanceContent }}>
                                         </div>
                                     </IFrame>

@@ -89,7 +89,7 @@ export const updatePlans = (payload) => {
 export const avanceCliente = (idcliente, successCallback) => {
     getHeaders().then( ( headers) => {
         var x=new XMLHttpRequest();
-        x.open( "GET", `ntr/cliente/${idcliente}/condcomerciales?formato=html` , true);
+        x.open( "GET", `${process.env.REACT_APP_API_BASE_URL}ntr/cliente/${idcliente}/condcomerciales?formato=html` , true);
         _.each(headers, (value, key) => {
             x.setRequestHeader( key, value );
         })
