@@ -107,7 +107,7 @@ class PlanesCompraForm extends React.Component {
             rawFields: {
                 fechainicio: rawFechaInicio,
                 fechafin: rawFechaFin,
-                entity: '',
+                entidad: '',
             },
             rawPlan: {
                 codcli_cbim: props.editPlan ? plan.codcli_cbim : '',
@@ -278,7 +278,7 @@ class PlanesCompraForm extends React.Component {
                             <div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
                             <OrderFilterEntity
                                 style={inputStyle }
-                                value={ rawFields.entidad }
+                                value={ rawFields.entidad == '' ? plan.nomcli_cbim : rawFields.entidad }
                                 disabled={ isEdit }
                                 column={ "object" }
                                 onChange={ (entity) => {
@@ -376,13 +376,13 @@ class PlanesCompraForm extends React.Component {
 
                             <Select
                                 onChange={(value) => { this.setState( { plan: { ...plan, idestado: value } })} }
-                                value={plan.idestado}
+                                value={ parseInt( plan.idestado ) }
                                 style={inputStyle}
                                 disabled={isEditAndExpired}
                             >
-                                <Option value={"2"}  style={{ color: '#CCC' }}>Borrador</Option>
-                                <Option value={"1"}>Activo</Option>
-                                <Option value={"0"}>Inactivo</Option>
+                                <Option value={2}  style={{ color: '#CCC' }}>Borrador</Option>
+                                <Option value={1}>Activo</Option>
+                                <Option value={0}>Inactivo</Option>
                             </Select>
                         </Col>
                         <Col span={8}  >

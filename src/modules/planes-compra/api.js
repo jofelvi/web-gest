@@ -82,7 +82,7 @@ export const updatePlans = (payload) => {
     if ( action == 'renovar' ) {
         return post(`/ntr/plan/renovar`, payload.plansIds);
     }
-    post(`/ntr/plan/${action}`, { ...payload.change, planes: payload.plansIds } );
+    return post(`/ntr/plan/${action}`, { ...payload.change, planes: payload.plansIds } );
 }
 
 //plantear si debemos moverla

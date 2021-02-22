@@ -12,6 +12,7 @@ class DiscriminatorListBox extends React.Component {
         super(props)
         this.state = {
             selectedOptionKeys: props.value,
+            selectedPreset: false,
         }
 
         this.toggleSelectedDiscriminatorOptions = this.toggleSelectedDiscriminatorOptions.bind(this)
@@ -24,10 +25,10 @@ class DiscriminatorListBox extends React.Component {
         let selectedOptionKeys = this.state.selectedOptionKeys;
         if ( this.state.selectedOptionKeys.indexOf(value) > -1 ) {
             selectedOptionKeys = _.filter(selectedOptionKeys, (key) => (key!=value) )
-            this.setState( { selectedOptionKeys: selectedOptionKeys } )
+            this.setState( { selectedOptionKeys: selectedOptionKeys, selectedPreset: false } )
         } else {
             selectedOptionKeys.push(value)
-            this.setState( { selectedOptionKeys } );
+            this.setState( { selectedOptionKeys, selectedPreset: false } );
         }
         this.props.onChange( selectedOptionKeys );
     }
@@ -47,8 +48,9 @@ class DiscriminatorListBox extends React.Component {
                 { this.props.preset && (
                     <ListPresetSelector
                         {... this.props.preset }
+                        selectedPreset={this.state.selectedPreset}
                         onSetPreset={ (preset) => {
-                          this.setState({ selectedOptionKeys: preset.options })
+                          this.setState({ selectedOptionKeys: preset.options, selectedPreset: preset })
                             this.props.onChange( preset.options )
                         }}
                     />

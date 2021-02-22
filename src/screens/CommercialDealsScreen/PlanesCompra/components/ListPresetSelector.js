@@ -14,6 +14,7 @@ class ListPresetSelector extends React.Component {
             showCreateModal: false,
             createPresetName: '',
             saveLoading: false,
+            hasSelectedPreset: props.selectedPreset !== false,
         }
 
         this.isPresetChanged = this.isPresetChanged.bind( this );
@@ -24,25 +25,32 @@ class ListPresetSelector extends React.Component {
         this.onSetPreset = this.onSetPreset.bind( this );
     }
 
-    onSetPreset(selected) {
+    onSetPreset( selected ) {
         const { options, onSetPreset } = this.props;
-        if (selected=='') {
-            this.setState({ preset: [] })
+        if ( selected == '' ) {
+            this.setState( { preset: [] } )
             return;
         }
-        const preset = find(options, (o) => (o.label==selected) )
+        const preset = find( options, (o) => ( o.label==selected ) )
 
         this.setState({ selected, preset:  clone( preset.options ) })
         onSetPreset( preset )
 
     }
 
-    componentWillUpdate(props) {
+    componentWillReceiveProps( props ) {
+        console.log('RECEIVED PROPS', this.state.hasSelectedPreset, props.selectedPreset)
+        if ( this.state.hasSelectedPreset != (props.selectedPreset != false) ) {
+            this.setState({hasSelectedPreset: props.selectedPreset != false })
+        }
     }
 
     isPresetChanged() {
         const { preset, selected } = this.state;
         const { values, options } = this.props;
+        if ( ! this.state.hasSelectedPreset ) {
+            //return true;
+        }
 
         if ( preset.length != values.length ) {
             return true;
@@ -53,7 +61,7 @@ class ListPresetSelector extends React.Component {
                 return true;
             }
         }
-        return false;
+        return false || ! this.state.hasSelectedPreset;
     }
 
     savePreset() {

@@ -106,7 +106,8 @@ class PlanesCompraActions extends React.Component {
 
     errorUpdate (e) {
         this.setState({loading: false})
-        alert("No se ha podido realizar la operación. "+e)
+        alert("No se ha podido realizar la operación. ")
+        console.log('Error:', e)
     }
 
 
