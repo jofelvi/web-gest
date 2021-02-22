@@ -43,6 +43,7 @@ const { Link } = Anchor;
 const dateFormat = 'DD/MM/YYYY';
 const { Column } = Table;
 const { Option } = Select;
+//SAVE REDUX
 
 moment.locale("es", {
     week: {
@@ -56,12 +57,16 @@ class PlanesCompra extends React.Component {
         this.onSelectRowChange = this.onSelectRowChange.bind(this);
         this.setFilters = this.setFilters.bind(this);
         this.updateList = this.updateList.bind(this);
-    }
-    state = {
-        selectedRowKeys: [],
-        page: 1,
-        filters: {},
-        selectedRowsAction: false,
+        this.saveState = this.saveState.bind(this);
+
+        console.log(' LOADING PROPS', props)
+
+        this.state = props.filters != null ? props.filters : {
+            selectedRowKeys: [],
+            page: 1,
+            filters: {},
+            selectedRowsAction: false,
+        };
     }
 
     componentWillMount() {
@@ -70,15 +75,24 @@ class PlanesCompra extends React.Component {
     }
 
     onSelectRowChange ( selectedRowKeys, row ) {
-        this.setState({ selectedRowKeys })
+        this.setState({ selectedRowKeys }, () => {
+            this.saveState();
+        })
+    }
+
+    saveState () {
+        this.props.setFilters( this.state )
     }
 
     setFilters( filters ) {
         this.setState({ filters: { ...filters }, page: 1, selectedRowKeys: [] }, this.updateList )
+
+        //SAVE REDUX
     }
     updateList() {
         const { filters, page } = this.state;
         this.props.fetchPlans( { ...filters, page })
+        this.saveState();
     }
 
     render() {
@@ -191,6 +205,7 @@ class PlanesCompra extends React.Component {
                         <PlanesCompraFilters
                             setFilters={ this.setFilters  }
                             delegados={ delegados }
+                            filters={ this.state.filters }
                         />
                         <TableContainer style={{ overflow: 'visible'}}>
                             <PlanesCompraActions

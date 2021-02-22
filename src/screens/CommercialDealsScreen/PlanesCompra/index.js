@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import View from './view';
 import planesCompra from "../../../modules/planes-compra/reducers";
-import { fetchPlans, fetchDelegados } from "../../../modules/planes-compra/actions";
+import { fetchPlans, fetchDelegados, setFilters } from "../../../modules/planes-compra/actions";
 
 
 export default connect(
@@ -11,7 +11,8 @@ export default connect(
         loadingList: state.planesCompra.loadingList,
         loadingPagination: state.planesCompra.loadingPagination,
         count: state.planesCompra.count,
-        delegados: state.planesCompra.delegados
+        delegados: state.planesCompra.delegados,
+        filters: state.planesCompra.filtersState,
     }),
-    { fetchPlans, fetchDelegados }
+    { fetchPlans, fetchDelegados, setFilters }
 )(View);

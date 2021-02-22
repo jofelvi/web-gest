@@ -23,11 +23,13 @@ import {
     fetchPlanSuccess,
     fetchPlanFailed,
     updatePlansSuccess,
+    setFilters,
 } from './actions';
 
 const defaultState = {
     plan: null,
     list: [],
+    filtersState: null,
     delegados: [],
     loadingPagination: false,
     loadingList: false,
@@ -180,6 +182,13 @@ export default handleActions(
                 ...state,
                 list: list
             }
+        },
+        [setFilters]: (state, { payload }) => {
+            return {
+                ...state,
+                filtersState: payload,
+            }
+
         }
     },
     defaultState

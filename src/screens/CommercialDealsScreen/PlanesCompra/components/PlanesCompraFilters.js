@@ -11,6 +11,7 @@ import {DatePickerFromTo, InputBox, InputsContainer }  from '../../../../lib/sty
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import * as moment from "moment";
+import { get } from 'lodash';
 
 
 const dateFormat = 'DD/MM/YYYY';
@@ -22,17 +23,17 @@ class PlanesCompraFilters extends React.Component {
         this.searchedValue = this.searchedValue.bind(this)
 
         this.state = {
-            idcliente: '',
-            codcli_cbim: '',
-            idestado: '',
-            searchByEntity: '',
+            idcliente: get( props, 'filters.idcliente', ''),
+            codcli_cbim: get( props, 'filters.codcli_cbim', ''),
+            idestado: get( props, 'filters.idestado', ''),
+            searchByEntity: get( props, 'filters.searchByEntity', ''),
             page: props.page,
-            fechas: [],
-            fechasValue: [],
-            expandFilters: false,
-            coddelegado: '',
-            isFilterChanged: false,
-            contareaspendientes: false,
+            fechas: get( props, 'filters.fechas', []),
+            fechasValue: get( props, 'filters.fechasValue', []),
+            expandFilters: get( props, 'filters.expandFilters', false),
+            coddelegado: get( props, 'filters.coddelegado', ''),
+            isFilterChanged: get( props, 'filters.isFilterChanged', false),
+            contareaspendientes: get( props, 'filters.contareaspendientes', false),
         }
     }
 

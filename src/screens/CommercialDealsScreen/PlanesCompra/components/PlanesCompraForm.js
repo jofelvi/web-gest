@@ -112,6 +112,7 @@ class PlanesCompraForm extends React.Component {
             rawPlan: {
                 codcli_cbim: props.editPlan ? plan.codcli_cbim : '',
             },
+            planNameFromPreset: false,
             seleccion_individual_filtro_categoria: '',
             seleccion_individual_filtro_marca: '',
             seleccion_individual_filtro_submarca: '',
@@ -131,6 +132,7 @@ class PlanesCompraForm extends React.Component {
         this.clearError = this.clearError.bind(this)
         this.hasError = this.hasError.bind(this)
         this.savePreset = this.savePreset.bind(this)
+        this.setPlanNameFromPreset = this.setPlanNameFromPreset.bind( this )
     }
 
     componentWillMount() {
@@ -238,8 +240,11 @@ class PlanesCompraForm extends React.Component {
             && ( filtro_submarca == '' || parseInt( item.idsubmarca ) == parseInt( filtro_submarca ) );
     }
 
-    setPresetSubmarcas( preset ) {
+    setPlanNameFromPreset( value ) {
+        const { plan } = this.state;
 
+        const newPlan = value == false ? plan :  { ...plan, nombre: value  }
+        this.setState({  plan: newPlan, planNameFromPreset: value })
     }
 
     onChangeProductsList = (selectedProducts) => {
@@ -248,7 +253,7 @@ class PlanesCompraForm extends React.Component {
 
     render() {
         const { editPlan, products, brands, error, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections, families } = this.props;
-        const { plan, validationErrors, rawFields, rawPlan } = this.state;
+        const { planNameFromPreset, plan, validationErrors, rawFields, rawPlan } = this.state;
         const createdPlan = this.props.plan
         const isCopy = this.props.isCopy ? this.props.isCopy : false;
         const isEdit = !! editPlan && ! isCopy;
@@ -301,7 +306,7 @@ class PlanesCompraForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ plan.nombre }
-                                    disabled={isEditAndExpired}
+                                    disabled={isEditAndExpired || planNameFromPreset != false}
                                     onChange={ (e) => {
                                         this.setState({ plan: { ...plan, nombre: e.target.value }},
                                             () => {
@@ -398,7 +403,7 @@ class PlanesCompraForm extends React.Component {
                                 disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_regularizar: value } } ) } }
                             />
-                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Regularización</label>
+                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Mercancía pendiente</label>
                         </Col>
                     </Row>
                 </div>
@@ -507,7 +512,9 @@ class PlanesCompraForm extends React.Component {
                                             options: submarcaCollections.map( (submarcaCollection) => ({ label: submarcaCollection.nombre, value: submarcaCollection.nombre, options: submarcaCollection.submarcas })),
                                             loading: loadingSubmarcaCollectionList,
                                             savePreset: this.savePreset,
-                                            reload: fetchSubmarcaCollections
+                                            reload: fetchSubmarcaCollections,
+                                            planNameFromPreset: planNameFromPreset,
+                                            setPlanNameFromPreset: this.setPlanNameFromPreset,
                                         }}
                                     />
                                 )}

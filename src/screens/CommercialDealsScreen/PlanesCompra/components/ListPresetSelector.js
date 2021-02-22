@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {List, Typography, Divider, Select, Modal, Checkbox, Button, Col, Row, Input, Spin} from 'antd';
 import { UpOutlined, DownOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
-import _ from 'underscore';
-
+import { find, clone } from 'lodash';
 const { Option } = Select;
 
 class ListPresetSelector extends React.Component {
@@ -27,9 +26,13 @@ class ListPresetSelector extends React.Component {
 
     onSetPreset(selected) {
         const { options, onSetPreset } = this.props;
-        const preset = _.find(options, (o) => (o.label==selected) )
+        if (selected=='') {
+            this.setState({ preset: [] })
+            return;
+        }
+        const preset = find(options, (o) => (o.label==selected) )
 
-        this.setState({ selected, preset:  _.clone( preset.options ) })
+        this.setState({ selected, preset:  clone( preset.options ) })
         onSetPreset( preset )
 
     }
@@ -58,7 +61,7 @@ class ListPresetSelector extends React.Component {
         this.setState({ saveLoading: true })
     }
     savePresetSuccessCallback( preset ) {
-        this.setState( { createPresetName: '', showCreateModal: false, saveLoading: false, selected: preset.nombre, preset: _.clone(preset.submarcas) })
+        this.setState( { createPresetName: '', showCreateModal: false, saveLoading: false, selected: preset.nombre, preset: clone(preset.submarcas) })
         this.props.reload()
 
     }
@@ -70,15 +73,15 @@ class ListPresetSelector extends React.Component {
     }
 
     render() {
-        const { options } = this.props;
-        const { createPresetName } = this.state;
+        const { options, setPlanNameFromPreset, planNameFromPreset } = this.props;
+        const { createPresetName, selected } = this.state;
         const { saveLoading, loading } = this.state;
 
         return (
             <React.Fragment>
                 <Select
                     style={{width:'200px', marginBottom: '10px', marginRight: '10px'}}
-                    value={ this.isPresetChanged() ? '' : this.state.selected }
+                    value={ this.isPresetChanged() ? '' : selected }
                     onChange={this.onSetPreset}
                 >
                     <Option value={''}>- Personalizado - </Option>
@@ -86,7 +89,20 @@ class ListPresetSelector extends React.Component {
                         <Option value={ option.value }>{ option.label }</Option>
                     )) }
                 </Select>
-                <Button disabled={ ! this.isPresetChanged() } onClick={() => { this.setState({ showCreateModal: true } ) }}>Guardar selección</Button>
+                { this.state.selected != '' && ! this.isPresetChanged() && (
+                    <Checkbox checked={ planNameFromPreset != false } onChange={(e) => {
+                        const { checked } = e.target;
+                        console.log('new value', checked)
+                        if ( checked ) {
+                            setPlanNameFromPreset( find( options, { value: selected} ).label )
+                        } else {
+                            setPlanNameFromPreset( false )
+                        }
+                    }}>
+                        Aplicar como nombre del plan.
+                    </Checkbox>
+                ) }
+                { this.isPresetChanged() && (<Button onClick={() => { this.setState({ showCreateModal: true } ) }}>Guardar selección</Button>) }
                 <Modal
                     title="Guardar colección de submarcas"
                     visible={this.state.showCreateModal}

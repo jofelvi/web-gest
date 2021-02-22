@@ -29,6 +29,7 @@ import {
     FETCH_PLAN_FAILED,
     UPDATE_PLANS,
     UPDATE_PLANS_SUCCESS,
+    SET_FILTERS,
 } from './actionTypes';
 
 export const {
@@ -59,7 +60,8 @@ export const {
     fetchPlanSuccess,
     fetchPlanFailed,
     updatePlans,
-    updatePlansSuccess
+    updatePlansSuccess,
+    setFilters,
 } = createActions(
     FETCH_PLANS,
     FETCH_PLANS_SUCCESS,
@@ -89,4 +91,5 @@ export const {
     FETCH_PLAN_FAILED,
     UPDATE_PLANS,
     UPDATE_PLANS_SUCCESS,
+    SET_FILTERS,
 );

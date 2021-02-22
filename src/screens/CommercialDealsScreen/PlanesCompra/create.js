@@ -14,12 +14,22 @@ import { fetchPlan, createPlan, createPlanSetLoading } from "../../../modules/pl
 class PlanesCompraCreate extends React.Component {
     constructor(props) {
         super(props)
-
         this.state = {
+            error: false,
+            loading: false,
         }
+        this.onSavePlanSuccess = this.onSavePlanSuccess.bind( this )
+        this.onSavePlanError = this.onSavePlanError.bind( this )
+    }
+    onSavePlanSuccess( plan ) {
+        this.setState({ loading: false, error: false, savedPlan: plan })
+    }
+    onSavePlanError( error ) {
+        this.setState({ loading: false, error: true, savedPlan: null })
     }
     render() {
-        const { plan, createPlanSetLoading, createPlan, error, loading } = this.props
+        const { plan, createPlan } = this.props
+        const { error, loading } = this.state;
 
         return (
             <Maincontainer>
@@ -30,12 +40,16 @@ class PlanesCompraCreate extends React.Component {
                     <h2 className="table-indas-title">Crear plan de compra</h2>
                     <PlanesCompraForm
                         plan={ plan }
-                        error={ error }
+                        error={ this.state.error }
                         loading={ loading }
                         savedMessage={ ( plan ) => `El plan \'${ plan.nombre }\' se ha creado.` }
                         onSave={ ( plan ) => {
-                            createPlanSetLoading( { loading: true } )
-                            createPlan( { plan } )
+                            this.setState({ loading: true, error: false })
+                            createPlan( {
+                                plan: plan,
+                                success: this.onSavePlanSuccess,
+                                error: this.onSavePlanError,
+                            } )
                         }}
                     />
                     <Button type="link" onClick={() => { this.props.history.push('/planes-de-compra') }}>
@@ -52,6 +66,4 @@ PlanesCompraCreate.propTypes = {
 
 export default connect( ( state ) => ({
     plan: state.planesCompra.plan,
-    loading: state.planesCompra.createLoading,
-    error: state.planesCompra.createError,
 }), { fetchPlan, createPlanSetLoading, createPlan  } )( withRouter(PlanesCompraCreate) );
