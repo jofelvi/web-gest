@@ -189,7 +189,7 @@ class PlanesCompra extends React.Component {
                 render: (text, record, index) => (text?'Si':'No')
             },
             {
-                title: 'Forzar regularización',
+                title: 'Forzar Mercancía pendiente',
                 dataIndex: 'ind_regularizar',
                 key: 'autorenovar',
                 width: 80,
@@ -234,7 +234,7 @@ class PlanesCompra extends React.Component {
                                     total: count,
                                     current: this.state.page,
                                     onChange: (page, pageSize) => {
-                                        this.setState( { page: page }, this.updateList )
+                                        this.setState( { page: page, selectedRowKeys: [] }, this.updateList )
                                     }
                                 }}
                                 tableLayout="auto"

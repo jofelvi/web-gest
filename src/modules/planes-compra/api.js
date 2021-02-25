@@ -29,6 +29,13 @@ const addFiltersQueryParams = ( queryParams, {
     return queryParams;
 }
 
+export const fetchPlans = async (filters) => {
+    const { page } = filters;
+    const offset = (page - 1) * LIMIT;
+    let queryParams = generatingOffset(offset)
+    queryParams = addFiltersQueryParams(queryParams, filters)
+    return get(`ntr/plan?${queryParams}`);
+}
 export const createPlan = (plan) => post('/ntr/plan/create', { ...plan, 'idtipo': 2 } );
 
 export const createSubmarcaCollection = ( collection ) => {
@@ -39,13 +46,6 @@ export const fetchSubmarcaCollections = async (filters) => {
 }
 
 
-export const fetchPlans = async (filters) => {
-    const { page } = filters;
-    const offset = (page - 1) * LIMIT;
-    let queryParams = generatingOffset(offset)
-    queryParams = addFiltersQueryParams(queryParams, filters)
-    return get(`ntr/plan?${queryParams}`);
-}
 
 export const fetchDelegados = async () => {
     return get(`ntr/delegado`);

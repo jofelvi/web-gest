@@ -190,18 +190,6 @@ class PlanesCompraFilters extends React.Component {
 
                     </Row>
                 </InputsContainer>
-                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
-                    <Row style={{width: '100%'}}>
-                        <Col span={8} style={{padding: '20px', paddingTop: 0}}>
-                            <Checkbox
-                                checked={this.state.contareaspendientes}
-                                onChange={(e) => this.searchedValue('contareaspendientes', e.target.checked) }
-                            >
-                                Ver solo planes con tareas pendientes.
-                            </Checkbox>
-                        </Col>
-                    </Row>
-                </InputsContainer>
                 <InputsContainer style={{width: '100%', marginTop: 0, paddingTop: 0}}>
                     <Row style={{width: '100%'}}>
                         <Col span={24} align="right">

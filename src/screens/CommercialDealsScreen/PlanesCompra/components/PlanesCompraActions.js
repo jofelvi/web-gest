@@ -20,6 +20,7 @@ class PlanesCompraActions extends React.Component {
             exportLoading: false,
             loading: false,
             filters: {},
+            avanceTitle: null,
             avanceContent: null,
         }
         this.updatePlans = this.updatePlans.bind(this)
@@ -92,15 +93,13 @@ class PlanesCompraActions extends React.Component {
             return;
         }
         const plan = find( plans, { idcondcomercial: selectedRowKeys[ 0 ] } );
-        console.log(' AVANZING PLAN', plan)
         const idcliente = plan.idcliente;
         this.setState({loading: 'avance'})
         api.avanceCliente( idcliente, (e) => {
             const cssHref = `<link type="text/css" rel="Stylesheet" href="/assets/avance.css" />`;
             const avanceContent = `${cssHref}${e.target.responseText}`;
-            this.setState({loading: false, avanceContent: avanceContent }, () => {
-                console.log('STATE SET', this.state)
-            })
+            const avanceTitle = `${ plan.codcli_cbim } - ${ plan.nomcli_cbim }`
+            this.setState({loading: false, avanceContent, avanceTitle } )
         } )
     }
 
@@ -155,10 +154,12 @@ class PlanesCompraActions extends React.Component {
                                     { loading == 'avance' ? <Spin /> : 'Avance' }
                                 </Button>
                                 <Modal
-                                    width={800} height={800}
-                                    title="Avance"
+                                    style={{ minWidth: '1200px', width: '80%',
+                                    height: '800px', padding: 0 }}
+                                    className="unpadded-modal"
+                                    title={ this.state.avanceTitle }
                                     visible={this.state.avanceContent != null}
-                                    onClose={() => { this.setState({avanceContent: null}) }}
+                                    onCancel={() => { this.setState({avanceContent: null}) }}
                                     footer={[
                                         <Button key="back" onClick={() => { this.setState({avanceContent: null}) }}>
                                             Cerrar

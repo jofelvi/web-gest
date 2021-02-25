@@ -1,3 +1,7 @@
 hr {
     border-bottom: 1px solid #eee;
 }
+
+.unpadded-modal .ant-modal-body {
+    padding: 0;
+}
