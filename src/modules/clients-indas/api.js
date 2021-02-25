@@ -5,33 +5,22 @@ import { NUM_CLIENTES_PAG } from './constants';
 export const getClientsIndas = () => get('/ntr/cliente');
 const LIMIT = 20;
 
-const generatingOffset = (page, offset)=>{
-    let queryParams = '';
-    const limit = LIMIT;
-  if(page < 0){
-    offset = 0
-queryParams = `offset=${offset}&limit=${limit}`
-}else if(page === 0){
-  offset = 0
-  queryParams = `offset=${offset}&limit=${limit}`
-}else{
-  queryParams = `offset=${offset}&limit=${limit}`
-}
-return queryParams;
+const generatingOffset = (offset)=>{
+	return `offset=${offset}&limit=${LIMIT}`
 }
 
 // export const searchClientBy = async ({
-// 	emailComo, 
-// 	codcli_cbim, 
-// 	nombreComo, 
+// 	emailComo,
+// 	codcli_cbim,
+// 	nombreComo,
 // 	pages,
 //   }) => {
-	  
+
 // 	let offset;
 // 	offset = pages;
-	
+
 //   let queryParams = generatingOffset(pages, offset)
-	
+
 // 	//BY TYPE
 // 	if (nombreComo) {
 // 	  //tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
@@ -62,9 +51,9 @@ export const getUsersCount = ({ emailComo = '', nombreComo = '', codcli_cbim = '
 	}
 	if (codcli_cbim) {
 		return queryParams = '';
-	}	
+	}
 	return get(`/ntr/cliente/count${queryParams}`);
-  }; 
+  };
 
 export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', page = 1 }) => {
 	let offsetLimit = `?offset=${(page - 1) * NUM_CLIENTES_PAG}&limit=${NUM_CLIENTES_PAG}`;
@@ -92,12 +81,35 @@ export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', pa
 
 	return get(`/ntr/cliente${queryParams}`)
 };
-
-export const getEntitiesIndas = queryParams => {
-	return !queryParams
-		? get('/ntr/entidad')
-		: get(`/ntr/entidad?${queryParams}`)
+//todo: ajustar
+const addFiltersQueryParams = ( queryParams, {
+	sort_field, sort_order
+} ) => {
+	if (sort_field) {
+		queryParams += `&sort_field=${sort_field}`;
+	}
+	if (sort_order) {
+		queryParams += `&sort_order=${sort_order}`;
+	}
+	return '';
+	return queryParams;
 }
+
+export const getEntitiesIndas = async ( payload ) => {
+	let queryParams = '';
+	if ( payload ) {
+		const { page, filters } = payload;
+		const offset = (page - 1) * LIMIT;
+		queryParams = generatingOffset(offset)
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
+	return get(`ntr/entidad?${queryParams}`);
+}
+export const countEntitiesIndas = async (filters) => {
+	const queryParams = addFiltersQueryParams( '', filters )
+	return get(`ntr/entidad/count?${queryParams}`);
+};
+
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)
 

@@ -53,13 +53,22 @@ export function* watchGetClientsCount() {
 }
 
 //entities indas
-function* loadEntitiesIndas(action) {
+function* loadEntitiesIndas({ payload }) {
 	try {
-		const response = yield call(api.getEntitiesIndas, action.payload)
-		yield put(loadEntitiesIndasSuccess({ entitiesIndas: response.data }))
+		const request_payload = payload.filters ? { filters: payload.filters, page: payload.page } : false
+		const response = yield call(api.getEntitiesIndas, request_payload )
+		const count_response = yield call(api.countEntitiesIndas, request_payload )
+
+		yield put(loadEntitiesIndasSuccess({ entitiesIndas: response.data, count: count_response.data.count }))
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data, count_response.data.count )
+		}
 	} catch (e) {
 		console.error(e)
 		yield put(loadEntitiesIndasFailed())
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
 	}
 }
 
@@ -86,13 +95,13 @@ export function* watchloadWholesalersIndas() {
 
 function* editClientIndas({ payload }) {
 	const isPayloadEmail = payload && payload.email;
-	const {id, email, idestado, ind_renovar_pass } = payload;	
+	const {id, email, idestado, ind_renovar_pass } = payload;
 	try {
 		const response = yield call(api.editClientTR, id, isPayloadEmail ? { email: email, ind_renovar_pass: ind_renovar_pass } : { idestado: idestado , ind_renovar_pass: idestado === 0 ? false : ind_renovar_pass } );
 		if(response && response.status === 204){
 			yield put(editClientIndasSuccess());
 		}
-		
+
 	} catch (e) {
 		console.error(e);
 		if (e.response.status === 500) {

@@ -19,18 +19,7 @@ const mockMenu ={
     {
       id:4,
       label:"Clientes",
-      children:[
-        {
-          id:8,
-          label:"Clientes en TR",
-          url:"/clients/tr"
-        },
-        {
-          id:9,
-          label:"Clientes en CBIM",
-          url:"/clients/cbim"
-        }
-      ]
+      url:"/clientes"
     },
     {
       id:5,
@@ -84,13 +73,13 @@ const mockMenu ={
         }
       ]
     },
-    
+
   ]
 };
 
 export const getMenuItems = () => {
   return new Promise((resolve,reject) =>{
-    resolve(mockMenu);  
+    resolve(mockMenu);
   });
 }
 

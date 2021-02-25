@@ -41,11 +41,10 @@ export const createPlan = (plan) => post('/ntr/plan/create', { ...plan, 'idtipo'
 export const createSubmarcaCollection = ( collection ) => {
     return post('/ntr/fav/submarca/create', collection );
 }
+
 export const fetchSubmarcaCollections = async (filters) => {
     return get(`ntr/fav/submarca`);
 }
-
-
 
 export const fetchDelegados = async () => {
     return get(`ntr/delegado`);

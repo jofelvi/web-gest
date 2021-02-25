@@ -19,6 +19,7 @@ import { generateKey } from '../utils';
 const defaultState = {
     list: [],
     entitiesIndas: [],
+    entitiesCount: 0,
     wholesalersIndas: [],
     currentEmail: '',
     usersMeta: {
@@ -81,7 +82,8 @@ export default handleActions({
     }),
     [loadEntitiesIndasSuccess]:(state,{ payload }) => ({
         ...state,
-        entitiesIndas: payload.entitiesIndas
+        entitiesIndas: payload.entitiesIndas,
+        entitiesCount: payload.count,
     }),
     [loadWholesalersIndasSuccess]:(state,{ payload }) => ({
         ...state,
@@ -99,10 +101,10 @@ export default handleActions({
             isEditSuccesful: false,
         })
     },
-    
+
     [setFilterValues]:  (state, { payload}) => {
         const { emailComo, nombreComo, codcli_cbim } = payload;
-        
+
         return ({
         ...state,
         filterValues: {
@@ -114,7 +116,7 @@ export default handleActions({
     },
     [setFormKey]:  (state) => ({
         ...state,
-        formKey: generateKey() 
+        formKey: generateKey()
     }),
-    
+
 },defaultState);

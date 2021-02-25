@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { 
+import {
     loadClientsIndas,
     loadEntitiesIndas,
     loadWholesalersIndas,
@@ -11,17 +11,10 @@ import View from './view';
 
 export default connect(
   state => ({
-    list: state.clientsIndas.list,
-    entitiesIndas: state.clientsIndas.entitiesIndas,
-    wholesalersIndas: state.clientsIndas.wholesalersIndas,
-    token: state.auth.token,
-    filterValues: state.clientsIndas.filterValues,
-
+      entities: state.clientsIndas.entitiesIndas,
+      entitiesCount: state.clientsIndas.entitiesCount,
   }),
-  { 
-      loadClientsIndas, 
+  {
       loadEntitiesIndas,
-      loadWholesalersIndas,
-      getClientsCount
   }
 )(View);
