@@ -233,6 +233,8 @@ class PlanesCompraActions extends React.Component {
                     }
 
                 </div>
+
+                { selectedRowKeys.length > 0 && ( <div style={ { width: '200px', paddingTop: '20px', float: 'right' } } >{ selectedRowKeys.length } fila(s) seleccionada(s).</div> ) }
             </div>
         );
     };

@@ -59,8 +59,6 @@ class PlanesCompra extends React.Component {
         this.updateList = this.updateList.bind(this);
         this.saveState = this.saveState.bind(this);
 
-        console.log(' LOADING PROPS', props)
-
         this.state = props.filters != null ? props.filters : {
             selectedRowKeys: [],
             page: 1,
@@ -70,7 +68,8 @@ class PlanesCompra extends React.Component {
     }
 
     componentWillMount() {
-        this.props.fetchPlans( { page: 1 } )
+        this.updateList();
+        //this.props.fetchPlans( { page: 1 } )
         this.props.fetchDelegados();
     }
 
@@ -189,9 +188,9 @@ class PlanesCompra extends React.Component {
                 render: (text, record, index) => (text?'Si':'No')
             },
             {
-                title: 'Forzar Mercancía pendiente',
+                title: 'Forzar Mcia. Pte.',
                 dataIndex: 'ind_regularizar',
-                key: 'autorenovar',
+                key: 'forzarmercancia',
                 width: 80,
                 render: (text, record, index) => (text?'Si':'No')
             }
@@ -234,7 +233,7 @@ class PlanesCompra extends React.Component {
                                     total: count,
                                     current: this.state.page,
                                     onChange: (page, pageSize) => {
-                                        this.setState( { page: page, selectedRowKeys: [] }, this.updateList )
+                                        this.setState( { page: page }, this.updateList )
                                     }
                                 }}
                                 tableLayout="auto"
