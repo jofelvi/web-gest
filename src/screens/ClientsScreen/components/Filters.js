@@ -102,7 +102,7 @@ class ClientsFilters extends React.Component {
 
     render() {
 
-        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
+        const { page, idcliente, especial, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
 
         return (
             <div className="table-filters-indas">
@@ -138,30 +138,31 @@ class ClientsFilters extends React.Component {
                 <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}} key={'filters_b_2'}>
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
-                            <span style={{padding: '10px'}}>Filtros especiales</span>
-                            <DatePickerFromTo
-                                style={{width: '100%'}}
-                                format={dateFormat}
-                                onChange={this.searchedValueDate}
-                                placeholder={['desde', 'hasta']}
-                                value={this.state.fechasValue}
-                            />
-                            <Radio.Group onChange={ ( { target } ) => { this.searchedValue( 'especial', target.value ) } } value={this.state.especial}>
-                                <Row>
-                                    <Col span={12}>
-                                        <Radio value="activos">Solo clientes Activos</Radio>
-                                        <Radio value="inactivos">Solo clientes Inactivos</Radio>
-                                        <Radio value="sinplan">Clientes sin Plan de compra</Radio>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Radio value="bajas">Bajas</Radio>
-                                <br />
-                                        <Radio value="altas">Altas</Radio>
-                                    </Col>
-                                </Row>
-                            </Radio.Group>
-
-
+                            <span style={{padding: '10px'}}>Filtro especial</span>
+                            <Select
+                                value={especial}
+                                onChange={ ( value ) => { this.searchedValue( 'especial', value ) } }
+                                style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
+                            >
+                                <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
+                                <Option value="activos">Solo clientes Activos</Option>
+                                <Option value="inactivos">Solo clientes Inactivos</Option>
+                                <Option value="altas">Altas</Option>
+                                <Option value="bajas">Bajas</Option>
+                                <Option value="sinplan">Clientes sin Plan de compra</Option>
+                            </Select>
+                            { ['activos', 'inactivos', 'altas', 'bajas' ].indexOf( especial ) > -1 && (
+                                <React.Fragment>
+                                    <div style={{padding: '10px', marginTop: '10px', paddingBottom: 0 }}>Rango de fechas del filtro especial:</div>
+                                    <DatePickerFromTo
+                                        style={{width: '100%'}}
+                                        format={dateFormat}
+                                        onChange={this.searchedValueDate}
+                                        placeholder={['desde', 'hasta']}
+                                        value={this.state.fechasValue}
+                                    />
+                                </React.Fragment>
+                            ) }
                         </Col>
 
                         <Col span={11} style={{padding: '10px', paddingTop: 0}}>
@@ -193,7 +194,6 @@ class ClientsFilters extends React.Component {
                                 style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
-                                <Option value="0">Borrador</Option>
                                 <Option value="1">Activo</Option>
                                 <Option value="2">Inactivo</Option>
                             </Select>

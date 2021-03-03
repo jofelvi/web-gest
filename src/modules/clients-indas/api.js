@@ -116,16 +116,23 @@ const addFiltersQueryParams = ( queryParams, {
 export const getEntitiesIndas = async ( payload ) => {
 	let queryParams = '';
 	if ( payload ) {
-		const { page, filters } = payload;
-		console.log('payload', payload)
+		const filters = payload.filters ? payload.filters : {}
+		const page = payload.page ? payload.page : 1;
 		const offset = (page - 1) * LIMIT;
 		queryParams = generatingOffset(offset)
 		queryParams = addFiltersQueryParams(queryParams, filters)
 	}
 	return get(`ntr/entidad?${queryParams}`);
 }
-export const countEntitiesIndas = async (filters) => {
-	const queryParams = addFiltersQueryParams( '', filters )
+export const countEntitiesIndas = async ( payload ) => {
+	let queryParams = '';
+	if ( payload ) {
+		const filters = payload.filters ? payload.filters : {}
+		if ( filters.sort_field ) {
+			delete filters.sort_field;
+		}
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
 	return get(`ntr/entidad/count?${queryParams}`);
 };
 export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
@@ -138,7 +145,7 @@ export const updateClientIndas = (idClient, data) =>
 export const updateEntitiyIndas = (idEntity, data) =>
 	post(`/ntr/entidad/${idEntity}`, data)
 
-export const exportEntities =(filters, callback) => {
+export const exportEntities =(filters = {}, callback) => {
 	const queryParams = addFiltersQueryParams( '', filters )
 	getHeaders().then( ( headers) => {
 		var x=new XMLHttpRequest();

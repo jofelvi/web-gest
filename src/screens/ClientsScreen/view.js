@@ -5,6 +5,9 @@ import ClientsTable from './components/Table';
 import ClientsActions from './components/Actions';
 import {setListState} from "../../modules/clients-indas/actions";
 import { get } from "lodash";
+import {ConfigProvider} from "antd";
+import locale from "antd/es/locale/es_ES";
+import {Maincontainer} from "../../lib/styled";
 
 class ClientsScreen extends React.Component {
     constructor( props ) {
@@ -80,7 +83,11 @@ class ClientsScreen extends React.Component {
         const { loading, data, page, count, filters, selectedRowKeys } = this.state;
 
         return (
-            <React.Fragment>
+            <ConfigProvider locale={ locale }>
+                <Maincontainer>
+                    <div className="table-indas table-indas-new">
+                        <h2 className="table-indas-title">Clientes</h2>
+
                 <ClientsFilters
                     setFilters={ this.setFilters }
                     filters={ filters }
@@ -101,7 +108,9 @@ class ClientsScreen extends React.Component {
                     onSelectRowChange={ this.onSelectRowChange }
                     onChangeSorter={ this.onChangeSorter }
                 />
-            </React.Fragment>
+                    </div>
+            </Maincontainer>
+            </ConfigProvider>
         )
     }
 }
