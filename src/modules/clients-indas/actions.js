@@ -20,6 +20,8 @@ import {
     GET_CLIENTS_COUNT_FAILED,
     SET_FILTER_VALUES,
     SET_FORM_KEY,
+    SET_LIST_STATE,
+    GET_CLIENT,
 } from './actionTypes';
 
 export const {
@@ -42,6 +44,8 @@ export const {
 	getClientsCountSuccess,
     setFilterValues,
     setFormKey,
+    setListState,
+    getClient,
 } = createActions(
     LOAD_CLIENTS_INDAS,
     LOAD_CLIENTS_INDAS_FAILED,
@@ -62,4 +66,6 @@ export const {
     GET_CLIENTS_COUNT_FAILED,
     SET_FILTER_VALUES,
     SET_FORM_KEY,
+    SET_LIST_STATE,
+    GET_CLIENT,
 );

@@ -2,75 +2,101 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ClientsFilters from './components/Filters';
 import ClientsTable from './components/Table';
+import ClientsActions from './components/Actions';
+import {setListState} from "../../modules/clients-indas/actions";
+import { get } from "lodash";
 
 class ClientsScreen extends React.Component {
     constructor( props ) {
         super( props )
-        this.state = {
+        this.state = props.state != null ? props.state : {
             page: 1,
             selectedRowKeys: [],
             data: [],
             loading: false,
             count: 0,
+            filters: {},
             sorter: {
                 field: 'codcli_cbim',
                 order: 'desc',
             },
-        }
+        };
+        this.onChangeSorter = this.onChangeSorter.bind( this );
         this.onChangePage = this.onChangePage.bind( this );
         this.updateList = this.updateList.bind( this );
-        this.onSelectedRowChange = this.onSelectedRowChange.bind( this );
+        this.setFilters = this.setFilters.bind( this );
+        this.saveState = this.saveState.bind( this );
+        this.onSelectRowChange = this.onSelectRowChange.bind( this );
     }
 
     componentWillMount() {
         this.updateList();
+        this.props.fetchDelegados();
     }
 
     onChangePage (page, pageSize) {
         this.setState( { page: page, selectedRowKeys: [] }, this.updateList )
     }
     onChangeSorter ( sorter ) {
-
+        this.setState({ sorter: { field: sorter.field, order: sorter.order == 'ascend' ? 'ASC' : 'DESC' }} , this.updateList );
     }
 
-    onSelectedRowChange( selectedRowKeys ) {
+    onSelectRowChange( selectedRowKeys ) {
+        console.log( 'selectedRowKeys', selectedRowKeys )
         this.setState({ selectedRowKeys }, () => {
             this.saveState();
         })
     }
+    setFilters( filters ) {
+        this.setState({ filters: { ...filters }, page: 1, selectedRowKeys: [] }, this.updateList )
+    }
 
     updateList() {
+        const { filters, page } = this.state;
+        this.setState( { loading: true } );
+
         this.props.loadEntitiesIndas( {
-            page: this.state.page,
+            page: page,
             filters: {
-                sort_field: this.state.sorter.field,
-                sort_order: this.state.sorter.order,
+                ...filters,
+                sort_field: get( this.state, 'sorter.field', ''),
+                sort_order: get( this.state, 'sorter.order', ''),
             },
             success: ( data, count ) => {
-                this.setState( { data, count, loading: false })
+                this.setState( { data, count, loading: false }, this.saveState )
             },
             error: () => {
-                this.setState( { data: [], count: 0, loading: false })
+                this.setState( { data: [], count: 0, loading: false }, this.saveState)
             }
         });
     }
 
     saveState() {
-        //todo
+        this.props.setListState( this.state );
     }
 
     render () {
-        const { entities } = this.props;
-        const { loading, data, page, count } = this.state;
+        const { entities, history } = this.props;
+        const { loading, data, page, count, filters, selectedRowKeys } = this.state;
 
         return (
             <React.Fragment>
-                <ClientsFilters />
+                <ClientsFilters
+                    setFilters={ this.setFilters }
+                    filters={ filters }
+                />
+                <ClientsActions
+                    history={ history }
+                    filters={ filters }
+                    entities={ entities }
+                    selectedRowKeys={ selectedRowKeys }
+                />
                 <ClientsTable
                     loading={ loading }
                     data={ data }
                     page={ page }
                     count={ count }
+                    selectedRowKeys={ selectedRowKeys }
                     onChangePage={ this.onChangePage }
                     onSelectRowChange={ this.onSelectRowChange }
                     onChangeSorter={ this.onChangeSorter }

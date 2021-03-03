@@ -15,15 +15,15 @@ class ClientsTable extends React.Component {
     render() {
         const columns = [
             {
-                title: 'Cod. Cliente', dataIndex: 'codcli_cbim', key: 'id',
+                title: 'Cod. Cliente', dataIndex: 'codcli_cbim', key: 'codcli_cbim',
                 width: 180, sorter: true,
             },
             {
-                title: 'Cod. Entidad', dataIndex: 'codentidad_cbim', key: 'id',
+                title: 'Cod. Entidad', dataIndex: 'codentidad_cbim', key: 'codentidad_cbim',
                 width: 180,
             },
             {
-                title: 'Tipo', dataIndex: 'ind_esfarmacia', key: 'nombre',
+                title: 'Tipo', dataIndex: 'ind_esfarmacia', key: 'tipo',
                 width: 200,
                 render: ( value ) => ( value ? 'Farmacia' : 'SL' )
             },
@@ -62,7 +62,7 @@ class ClientsTable extends React.Component {
                 render: ( value ) => ( value > 0 ? `Sí ( ${value} )` : 'No' )
             },
             {
-                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_acceso', key: 'fecha_ultimo_acceso',
+                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_fin', key: 'fecha_ultimo_fin',
                 width: 200,sorter: true,
                 render: (dateStr, record, index) => (
                     <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
@@ -82,7 +82,7 @@ class ClientsTable extends React.Component {
             {
                 title: 'Nombre Entidad',
                 dataIndex: 'nomentidad_cbim',
-                key: 'nombre',
+                key: 'nombre_entidad',
                 width: 200,
             },
         ];

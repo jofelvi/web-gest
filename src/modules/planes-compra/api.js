@@ -46,6 +46,7 @@ export const fetchSubmarcaCollections = async (filters) => {
     return get(`ntr/fav/submarca`);
 }
 
+
 export const fetchDelegados = async () => {
     return get(`ntr/delegado`);
 }

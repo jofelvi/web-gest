@@ -1,5 +1,7 @@
-import { get, post, patch } from '../../lib/restClient';
+import {get, post, patch, getHeaders} from '../../lib/restClient';
 import { NUM_CLIENTES_PAG } from './constants';
+import _ from "underscore";
+import * as download from "downloadjs";
 
 
 export const getClientsIndas = () => get('/ntr/cliente');
@@ -83,15 +85,31 @@ export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', pa
 };
 //todo: ajustar
 const addFiltersQueryParams = ( queryParams, {
-	sort_field, sort_order
+	sort_field, sort_order, idestado, coddelegado, ind_esfarmacia, orden, idcliente
 } ) => {
 	if (sort_field) {
-		queryParams += `&sort_field=${sort_field}`;
+		if (sort_order == 'DESC') {
+			queryParams += `&orden=-${sort_field}`;
+		} else {
+			queryParams += `&orden=+${sort_field}`;
+		}
 	}
-	if (sort_order) {
-		queryParams += `&sort_order=${sort_order}`;
+
+	if (idcliente && idcliente != '') {
+		queryParams += `&idcliente=${idcliente}`;
 	}
-	return '';
+
+	if (idestado && idestado != '') {
+		queryParams += `&cliente_estado=${idestado}`;
+	}
+
+	if (coddelegado && coddelegado != '') {
+		queryParams += `&coddelegado=${coddelegado}`;
+	}
+
+	if (ind_esfarmacia && ind_esfarmacia != '') {
+		queryParams += `&ind_esfarmacia=${ind_esfarmacia}`;
+	}
 	return queryParams;
 }
 
@@ -99,6 +117,7 @@ export const getEntitiesIndas = async ( payload ) => {
 	let queryParams = '';
 	if ( payload ) {
 		const { page, filters } = payload;
+		console.log('payload', payload)
 		const offset = (page - 1) * LIMIT;
 		queryParams = generatingOffset(offset)
 		queryParams = addFiltersQueryParams(queryParams, filters)
@@ -109,6 +128,7 @@ export const countEntitiesIndas = async (filters) => {
 	const queryParams = addFiltersQueryParams( '', filters )
 	return get(`ntr/entidad/count?${queryParams}`);
 };
+export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
 
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)
@@ -117,3 +137,21 @@ export const updateClientIndas = (idClient, data) =>
 	post(`/ntr/cliente/${idClient}`, data)
 export const updateEntitiyIndas = (idEntity, data) =>
 	post(`/ntr/entidad/${idEntity}`, data)
+
+export const exportEntities =(filters, callback) => {
+	const queryParams = addFiltersQueryParams( '', filters )
+	getHeaders().then( ( headers) => {
+		var x=new XMLHttpRequest();
+		x.open( "GET", `${process.env.REACT_APP_API_BASE_URL}ntr/entidad?formato=excel${queryParams}` , true);
+		_.each(headers, (value, key) => {
+			x.setRequestHeader( key, value );
+		})
+		x.responseType="blob";
+		x.onload= function(e){
+			const filename = x.getResponseHeader('content-disposition').split('=')[1];
+			download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			callback()
+		};
+		x.send();
+	})
+};

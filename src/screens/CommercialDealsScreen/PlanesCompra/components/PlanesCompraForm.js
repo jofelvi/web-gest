@@ -144,16 +144,7 @@ class PlanesCompraForm extends React.Component {
         fetchSubmarcaCollections();
     }
 
-    save() {
-        const { createPlan, createPlanSetLoading, onSave } = this.props;
-        const { plan } = this.state;
-        this.validate( plan, () => {
-            onSave(plan)
-            console.log('THISIS THE PLAN', plan)
-        }, () => {
-            document.querySelector('.ant-layout-content').scrollTo(0, 0)
-        })
-    }
+
 
     validate( plan, successCallback, errorCallback ) {
         const { editPlan } = this.props;
@@ -212,7 +203,15 @@ class PlanesCompraForm extends React.Component {
         }
         return '';
     }
-
+    save() {
+        const { createPlan, createPlanSetLoading, onSave } = this.props;
+        const { plan } = this.state;
+        this.validate( plan, () => {
+            onSave(plan)
+        }, () => {
+            document.querySelector('.ant-layout-content').scrollTo(0, 0)
+        })
+    }
     savePreset( name, options, callback ) {
         const { createSubmarcaCollectionSetLoading, createSubmarcaCollection } = this.props;
         createSubmarcaCollection( { collection: { nombre: name, submarcas: options },  callback })

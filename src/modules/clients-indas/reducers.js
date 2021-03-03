@@ -14,6 +14,7 @@ import {
     setFormKey,
     editClientIndasSuccess,
     editClientIndasFailed,
+    setListState,
 } from './actions';
 import { generateKey } from '../utils';
 const defaultState = {
@@ -36,6 +37,7 @@ const defaultState = {
     },
     formKey: generateKey(),
     isEdited: false,
+    listState: null,
     errorMessage: '',
     isEditSuccesful: false,
 };
@@ -118,5 +120,9 @@ export default handleActions({
         ...state,
         formKey: generateKey()
     }),
+    [setListState]: ( state, { payload } ) => ({
+        ...state,
+        listState: payload,
+    })
 
 },defaultState);
