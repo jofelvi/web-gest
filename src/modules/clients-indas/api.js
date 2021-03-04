@@ -115,7 +115,10 @@ const addFiltersQueryParams = ( queryParams, {
 
 export const getEntitiesIndas = async ( payload ) => {
 	let queryParams = '';
-	if ( payload ) {
+	if ( payload && typeof payload === 'string' ) {
+		queryParams = payload;
+	}
+	if ( payload && typeof payload !== 'string' ) {
 		const filters = payload.filters ? payload.filters : {}
 		const page = payload.page ? payload.page : 1;
 		const offset = (page - 1) * LIMIT;
