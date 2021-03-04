@@ -35,7 +35,7 @@ import { editClientIndas } from '../../../modules/clients-indas/actions';
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 
-class ActionEmailEdit extends React.Component {
+class ActionChangeStatus extends React.Component {
     constructor(props) {
         super(props)
 
@@ -49,31 +49,32 @@ class ActionEmailEdit extends React.Component {
         }
 
         this.onError = this.onError.bind( this );
+        this.onSuccess = this.onSuccess.bind( this );
         this.onSubmit = this.onSubmit.bind( this );
     }
 
     onError(error, email_is_used) {
-        if ( email_is_used ) {
-            this.setState( { loading:false, errorMessage: 'El email ya está en uso.' } )
-        } else {
-            this.setState( { loading:false,errorMessage: 'Error al guardar cliente.' } )
-        }
+        this.setState( { loading:false,errorMessage: 'Error al guardar cliente.' } )
+    }
+    onSuccess() {
+        this.setState( { loading:false,errorMessage: null } )
+        this.props.onClose();
     }
 
     onSubmit() {
-        const { email, ind_renovar_pass } = this.state;
-        const { onClose, editClientIndas, entidad } = this.props;
+        const { ind_renovar_pass } = this.state;
+        const { status, onClose, editClientIndas, entidad } = this.props;
         this.setState( { loading: true })
         editClientIndas({
-            id: entidad.idcliente, email, ind_renovar_pass,
-            success: onClose,
+            id: entidad.idcliente, idestado: status, ind_renovar_pass,
+            success: this.onSuccess,
             error: this.onError,
         });
     }
 
     render() {
-        const { ind_renovar_pass, email, nombre, errorMessage, loading } = this.state;
-        const { onClose, visible, entidad } = this.props;
+        const { ind_renovar_pass, errorMessage, loading } = this.state;
+        const { onClose, visible, entidad, status } = this.props;
         return (
             <ModalTaskDetail
                 visible={ visible }
@@ -81,51 +82,44 @@ class ActionEmailEdit extends React.Component {
                 titleModal={
                     <div>
                         <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
-                        Cambio de Email
+                        Confirme por favor el cambio
                     </div>}
                 footer={[
                     <Button
                         key="back"
                         onClick={ onClose }>
-                        Atrás
+                        Cancelar
                     </Button>,
                     <Button
                         key="submit"
                         type="primary"
                         onClick={ this.onSubmit }>
-                        { loading ? <Spin /> : 'Guardar' }
+                        { loading ? <Spin /> : 'Aceptar' }
                     </Button>
                 ]}
                 content={
                     <ContentContainer>
                         <TextContainer>
-                            {getMessageEditMail(entidad.nomcli_cbim)}
+                            {status == 0 ? `¿Desea dar de baja a \'${entidad.nomcli_cbim}\' con el id cliente: '${entidad.codcli_cbim}'?`
+                                : `¿Desea dar de alta a \'${entidad.nomcli_cbim}\' con el id cliente: '${entidad.codcli_cbim}'?` }
                         </TextContainer>
-                        <ConfirmationText>Confirme por favor el cambio.</ConfirmationText>
-                        <Label>Editar Email</Label>
-                        <Input
-                            id={'email'}
-                            value={ email == '' ? entidad.cliente_email : email }
-                            onChange={ ( { target } ) => { this.setState({ email: target.value })} }
-                        />
-                        {errorMessage === 'Este email ya existe' && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
-                        <CheckboxPasswordReset
+                        { status === 1 && (<CheckboxPasswordReset
                             onChange={ ({target} ) => { this.setState({ ind_renovar_pass: target.checked })} }
                             checked={ ind_renovar_pass }
                         >
-                            Enviar correo de renovación de contraseña.
-                        </CheckboxPasswordReset>
+                            Enviar correo de alta.
+                        </CheckboxPasswordReset>) }
                     </ContentContainer> }>
             </ModalTaskDetail>
         );
     };
 
 }
-ActionEmailEdit.propTypes = {
+ActionChangeStatus.propTypes = {
 };
 
 export default  connect(
     state => ({
     }),
     { editClientIndas }
-)( ActionEmailEdit );
+)( ActionChangeStatus );

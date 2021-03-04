@@ -17,6 +17,7 @@ import {
     TextContainer
 } from "../../../components/Clients-Indas/styles";
 import ActionEmailEdit from './ActionEmailEdit';
+import ActionChangeStatus from './ActionChangeStatus';
 import { editClientIndas } from '../../../modules/clients-indas/actions';
 
 const { confirm } = Modal;
@@ -66,19 +67,7 @@ class ClientsActions extends React.Component {
             return;
         }
         const entity = find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) )
-        this.setState( { update_status: status })
-        const messageContent = status == 0 ? `¿Desea dar de baja a \'${entity.nomcli_cbim}\' con el id cliente: '${entity.codcli_cbim}'?`
-            : `¿Desea dar de alta a \'${entity.nombre}\' con el id cliente: '${entity.codcli_cbim}'?`;
-        confirm({
-            title: `Confirmar acción`,
-            icon: <ExclamationCircleOutlined />,
-            content: messageContent,
-            onOk: this.onConfirmUpdateStatus,
-            onCancel() {
-
-            },
-        });
-
+        this.setState( { update_status: status, entity: entity })
     }
 
     onSuccess ( ) {
@@ -95,8 +84,8 @@ class ClientsActions extends React.Component {
 
 
     render() {
-        const { exportLoading, loading, entity } = this.state
-        const { selectedRowKeys, history, filters, onReload } = this.props
+        const { exportLoading, loading, entity, update_status } = this.state
+        const { selectedRowKeys, entities, history, filters, onReload } = this.props
         return (
 
             <div className="table-actions">
@@ -162,6 +151,15 @@ class ClientsActions extends React.Component {
                     visible={ entity && loading == 'email' && entity != false }
                     entidad={ entity }
                 />
+                <ActionChangeStatus
+                    onClose={ () => {
+                        this.setState( { loading: false, entity: false, update_status: null })
+                         onReload()
+                    }}
+                    status={ update_status }
+                    visible={ update_status !== null }
+                    entidad={ entity }
+                    />
             </div>
         );
     };

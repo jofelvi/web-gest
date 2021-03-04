@@ -7,7 +7,8 @@ import {setListState} from "../../modules/clients-indas/actions";
 import { get } from "lodash";
 import {ConfigProvider} from "antd";
 import locale from "antd/es/locale/es_ES";
-import {Maincontainer} from "../../lib/styled";
+import {Maincontainer, TableContainer} from "../../lib/styled";
+import PlanesCompraActions from "../CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
 
 class ClientsScreen extends React.Component {
     constructor( props ) {
@@ -99,6 +100,7 @@ class ClientsScreen extends React.Component {
                     onReload={ this.updateList }
                     selectedRowKeys={ selectedRowKeys }
                 />
+                <hr />
                 <ClientsTable
                     loading={ loading }
                     data={ data }
