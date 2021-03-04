@@ -1,7 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider, Radio} from 'antd';
+import {
+    Checkbox,
+    Switch,
+    DatePicker,
+    Input,
+    Button,
+    Col,
+    Row,
+    Select,
+    Tooltip,
+    ConfigProvider,
+    Radio,
+    Spin
+} from 'antd';
 import {DatePickerFromTo, InputBox, InputsContainer} from "../../../lib/styled";
 import OrderFilterEntity from "../../OrderListScreen/components/OrderFilterEntity";
 import {DownOutlined, ExclamationCircleOutlined, UpOutlined} from "@ant-design/icons";
@@ -31,6 +44,7 @@ class ActionEmailEdit extends React.Component {
             ind_renovar_pass: false,
             email: props.entidad && props.entidad.cliente_email ? props.entidad.cliente_email : '',
             errorMessage: false,
+            loading: false,
             name: props.entidad ? props.entidad.nombre : '',
         }
 
@@ -40,15 +54,16 @@ class ActionEmailEdit extends React.Component {
 
     onError(error, email_is_used) {
         if ( email_is_used ) {
-            this.setState( { errorMessage: 'El email ya está en uso.' } )
+            this.setState( { loading:false, errorMessage: 'El email ya está en uso.' } )
         } else {
-            this.setState( { errorMessage: 'Error al guardar cliente.' } )
+            this.setState( { loading:false,errorMessage: 'Error al guardar cliente.' } )
         }
     }
 
     onSubmit() {
         const { email, ind_renovar_pass } = this.state;
         const { onClose, editClientIndas, entidad } = this.props;
+        this.setState( { loading: true })
         editClientIndas({
             id: entidad.idcliente, email, ind_renovar_pass,
             success: onClose,
@@ -57,7 +72,7 @@ class ActionEmailEdit extends React.Component {
     }
 
     render() {
-        const { ind_renovar_pass, email, nombre, errorMessage } = this.state;
+        const { ind_renovar_pass, email, nombre, errorMessage, loading } = this.state;
         const { onClose, visible, entidad } = this.props;
         return (
             <ModalTaskDetail
@@ -78,7 +93,7 @@ class ActionEmailEdit extends React.Component {
                         key="submit"
                         type="primary"
                         onClick={ this.onSubmit }>
-                        Guardar
+                        { loading ? <Spin /> : 'Guardar' }
                     </Button>
                 ]}
                 content={

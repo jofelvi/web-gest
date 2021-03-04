@@ -96,6 +96,7 @@ class ClientsScreen extends React.Component {
                     history={ history }
                     filters={ filters }
                     entities={ entities }
+                    onReload={ this.updateList }
                     selectedRowKeys={ selectedRowKeys }
                 />
                 <ClientsTable

@@ -17,6 +17,7 @@ import {
     TextContainer
 } from "../../../components/Clients-Indas/styles";
 import ActionEmailEdit from './ActionEmailEdit';
+import { editClientIndas } from '../../../modules/clients-indas/actions';
 
 const { confirm } = Modal;
 
@@ -27,9 +28,14 @@ class ClientsActions extends React.Component {
             exportLoading: false,
             loading: false,
             entity: false,
+            update_status: null,
         }
 
         this.cambiarEmail = this.cambiarEmail.bind( this )
+        this.confirmUpdateStatus = this.confirmUpdateStatus.bind( this )
+        this.onError = this.onError.bind( this )
+        this.onSuccess = this.onSuccess.bind( this )
+        this.onConfirmUpdateStatus = this.onConfirmUpdateStatus.bind( this )
     }
 
     cambiarEmail() {
@@ -39,10 +45,49 @@ class ClientsActions extends React.Component {
         }
         const entity = find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) )
         this.setState( { loading: 'email', entity: entity })
-        console.log( 'Searching', selectedRowKeys[0] ,'Entity', entities, entity)
     }
 
-    errorUpdate (e) {
+    onConfirmUpdateStatus() {
+        const { entities, selectedRowKeys, editClientIndas } = this.props;
+        const { update_status } = this.state;
+
+        const entity = find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) )
+        editClientIndas({
+            id: entity.idcliente,
+            idestado: update_status,
+            success: this.onSuccess,
+            error: this.onError,
+        });
+        this.setState( {loading: 'idestado', update_status: null })
+    }
+    confirmUpdateStatus( status ) {
+        const { entities, selectedRowKeys } = this.props;
+        if ( selectedRowKeys.length != 1 ) {
+            return;
+        }
+        const entity = find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) )
+        this.setState( { update_status: status })
+        const messageContent = status == 0 ? `¿Desea dar de baja a \'${entity.nomcli_cbim}\' con el id cliente: '${entity.codcli_cbim}'?`
+            : `¿Desea dar de alta a \'${entity.nombre}\' con el id cliente: '${entity.codcli_cbim}'?`;
+        confirm({
+            title: `Confirmar acción`,
+            icon: <ExclamationCircleOutlined />,
+            content: messageContent,
+            onOk: this.onConfirmUpdateStatus,
+            onCancel() {
+
+            },
+        });
+
+    }
+
+    onSuccess ( ) {
+        const { onReload } = this.props;
+        this.setState( {loading: false})
+        onReload()
+    }
+
+    onError (e) {
         this.setState({loading: false})
         alert("No se ha podido realizar la operación. ")
         console.log('Error:', e)
@@ -51,7 +96,7 @@ class ClientsActions extends React.Component {
 
     render() {
         const { exportLoading, loading, entity } = this.state
-        const { selectedRowKeys, history, filters } = this.props
+        const { selectedRowKeys, history, filters, onReload } = this.props
         return (
 
             <div className="table-actions">
@@ -81,12 +126,6 @@ class ClientsActions extends React.Component {
                                 <Button type="link" disabled={loading == 'email'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.cambiarEmail } >
                                     { loading == 'email' ? <Spin /> : 'Cambiar Email' }
                                 </Button>
-                                <ActionEmailEdit
-                                    onClose={ () => this.setState( {loading: false, entity: false } ) }
-                                    visible={ entity && loading == 'email' && entity != false }
-                                    entidad={ entity }
-                                />
-
                             </React.Fragment>
                         )
                     }
@@ -95,16 +134,16 @@ class ClientsActions extends React.Component {
                             <React.Fragment>
                                 <Dropdown overlay={(
                                     <Menu>
-                                        <Menu.Item key="1" onClick={() => { this.confirmUpdateStatus( 'Estado', 'Activo', 'idestado', '1') }}>
-                                            Activo
+                                        <Menu.Item key="1" onClick={() => { this.confirmUpdateStatus( 1) }}>
+                                            Dar de alta
                                         </Menu.Item>
-                                        <Menu.Item key="2" onClick={() => { this.confirmUpdateStatus( 'Estado', 'Inactivo', 'idestado', '2') }}>
-                                            Inactivo
+                                        <Menu.Item key="0" onClick={() => { this.confirmUpdateStatus( 0 ) }}>
+                                            Dar de baja
                                         </Menu.Item>
                                     </Menu>
                                 )}>
                                     <Button disabled={ loading } type="link" style={{marginLeft: '0px', marginRight: '0px'}}>
-                                        { loading == 'idestado' ? <Spin /> : 'Cambiar a' } <DownOutlined/>
+                                        { loading == 'idestado' ? <Spin /> : 'Cambiar estado' } <DownOutlined/>
                                     </Button>
                                 </Dropdown>
 
@@ -115,6 +154,14 @@ class ClientsActions extends React.Component {
 
                 </div>
                 { selectedRowKeys.length > 0 && ( <div style={ { width: '200px', paddingTop: '20px', float: 'right' } } >{ selectedRowKeys.length } fila(s) seleccionada(s).</div> ) }
+                <ActionEmailEdit
+                    onClose={ () => {
+                        this.setState( {loading: false, entity: false } )
+                        onReload()
+                    } }
+                    visible={ entity && loading == 'email' && entity != false }
+                    entidad={ entity }
+                />
             </div>
         );
     };
@@ -124,5 +171,5 @@ class ClientsActions extends React.Component {
 export default  connect(
     state => ({
     }),
-    { }
+    { editClientIndas }
 )( withRouter(ClientsActions) );
