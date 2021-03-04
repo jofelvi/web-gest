@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Row, Col, Button, Spin, Dropdown, Menu, message, Modal, Space} from 'antd';
+import {Row, Col, Button, Spin, Dropdown, Menu, message, Modal, Space, Input} from 'antd';
 import * as moment from "moment";
 import {DownOutlined, ExportOutlined} from "@ant-design/icons";
 import { withRouter } from 'react-router-dom';
@@ -9,6 +9,13 @@ import * as api from './../../../modules/clients-indas/api';
 //import {  } from '../../../modules/clients-indas/actions';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import * as download from "downloadjs";
+import {
+    CheckboxPasswordReset,
+    ConfirmationText,
+    ContentContainer,
+    Label,
+    TextContainer
+} from "../../../components/Clients-Indas/styles";
 
 const { confirm } = Modal;
 
@@ -71,6 +78,8 @@ class ClientsActions extends React.Component {
                                 <Button type="link" disabled={loading == 'email'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.cambiarEmail } >
                                     { loading == 'email' ? <Spin /> : 'Cambiar Email' }
                                 </Button>
+
+
                                 <Modal
                                     style={{ minWidth: '1200px', width: '80%',
                                         height: '800px', padding: 0 }}
@@ -113,7 +122,6 @@ class ClientsActions extends React.Component {
                     }
 
                 </div>
-
                 { selectedRowKeys.length > 0 && ( <div style={ { width: '200px', paddingTop: '20px', float: 'right' } } >{ selectedRowKeys.length } fila(s) seleccionada(s).</div> ) }
             </div>
         );
