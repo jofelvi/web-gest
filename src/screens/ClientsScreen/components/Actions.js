@@ -16,6 +16,7 @@ import {
     Label,
     TextContainer
 } from "../../../components/Clients-Indas/styles";
+import ActionEmailEdit from './ActionEmailEdit';
 
 const { confirm } = Modal;
 
@@ -25,6 +26,7 @@ class ClientsActions extends React.Component {
         this.state = {
             exportLoading: false,
             loading: false,
+            entity: false,
         }
 
         this.cambiarEmail = this.cambiarEmail.bind( this )
@@ -35,8 +37,9 @@ class ClientsActions extends React.Component {
         if ( selectedRowKeys.length != 1 ) {
             return;
         }
-        const entity = find( entities, { codentidad_cbim: selectedRowKeys[ 0 ] } );
-
+        const entity = find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) )
+        this.setState( { loading: 'email', entity: entity })
+        console.log( 'Searching', selectedRowKeys[0] ,'Entity', entities, entity)
     }
 
     errorUpdate (e) {
@@ -47,7 +50,7 @@ class ClientsActions extends React.Component {
 
 
     render() {
-        const { exportLoading, loading } = this.state
+        const { exportLoading, loading, entity } = this.state
         const { selectedRowKeys, history, filters } = this.props
         return (
 
@@ -78,22 +81,11 @@ class ClientsActions extends React.Component {
                                 <Button type="link" disabled={loading == 'email'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.cambiarEmail } >
                                     { loading == 'email' ? <Spin /> : 'Cambiar Email' }
                                 </Button>
-
-
-                                <Modal
-                                    style={{ minWidth: '1200px', width: '80%',
-                                        height: '800px', padding: 0 }}
-                                    className="unpadded-modal"
-                                    title={ this.state.avanceTitle }
-                                    visible={this.state.avanceContent != null}
-                                    onCancel={() => { this.setState({avanceContent: null}) }}
-                                    footer={[
-                                        <Button key="back" onClick={() => { this.setState({avanceContent: null}) }}>
-                                            Cerrar
-                                        </Button>
-                                    ]}
-                                >
-                                </Modal>
+                                <ActionEmailEdit
+                                    onClose={ () => this.setState( {loading: false, entity: false } ) }
+                                    visible={ entity && loading == 'email' && entity != false }
+                                    entidad={ entity }
+                                />
 
                             </React.Fragment>
                         )
