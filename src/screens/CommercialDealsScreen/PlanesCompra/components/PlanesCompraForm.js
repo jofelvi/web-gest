@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip} from 'antd';
+import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider} from 'antd';
 import {InputsContainer} from "../../../../lib/styled";
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 import DualListBox from 'react-dual-listbox';
@@ -9,16 +9,28 @@ import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, Dou
 import { Tabs } from 'antd';
 import _ from 'underscore';
 import { get, keys } from 'lodash';
-import { loadProducts, loadBrands, loadSubBrands } from '../../../../modules/commercialDeals/actions';
-import {createPlan, createPlanSetLoading} from '../../../../modules/planes-compra/actions';
+import { loadFamilies, loadBrands, loadSubBrands, loadProducts  } from '../../../../modules/commercialDeals/actions';
+import {createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection, createSubmarcaCollectionSetLoading } from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
 import { Spin, Typography, Space } from 'antd';
 import ExtendedDualListBox from "./ExtendedDualListBox";
+import DualListFilter from "./DualListFilter";
 import DiscriminatorListBox from "./DiscriminatorListBox";
-import PlanesCompraCreated from "./PlanesCompraCreated";
+import PlanesCompraSaved from "./PlanesCompraSaved";
 import View from "../../../Forms/crear_pedido/view";
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {InputBox} from "../../../OrderListScreen/styled";
+//import locale from 'antd/es/date-picker/locale/es_ES';
+import locale from "antd/es/locale/es_ES";
+import "moment/locale/es";
+import Utils from '../../../../lib/utils';
+
+moment.locale("es", {
+    week: {
+        dow: 1
+    }
+});
+
 const { Text, Link } = Typography;
 
 const dateFormat = 'DD/MM/YYYY';
@@ -58,48 +70,53 @@ const dualListIcons = {
     moveDown: <DownOutlined />,
     moveUp: <UpOutlined />,
 }
-const options = [
-    { value: 'one', label: 'Option One', idgrupo: 1 },
-    { value: 'two', label: 'Option Two', idgrupo: 2 },
-];
+const defaultPlan = {
+    descripcion: '',
+    nombre: '',
+    fechainicio: '',
+    fechafin: '',
+    margen: '',
+    ind_surtido: true,
+    ind_renovar: false,
+    ind_seleccion_conjunta: true,
+    ind_regularizar: false,
+    idestado: "0",
+    submarcas: [],
+    productos: [],
+    clientes: [
+        { idcliente: '' }
+    ],
+    escalados: [
+        { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
+    ],
+};
+
 class PlanesCompraForm extends React.Component {
     constructor(props) {
         super(props)
 
+        const plan = props.editPlan ? props.editPlan : defaultPlan
+        const rawFechaInicio = props.editPlan ? moment(props.editPlan.fechainicio) : null;
+        const rawFechaFin = props.editPlan ? moment(props.editPlan.fechafin) : null;
+
         this.state = {
             entidad_helper: '',
             error: props.error,
-            plan: {
-                descripcion: '',
-                nombre: '',
-                fechainicio: '',
-                fechafin: '',
-                margen: '',
-                ind_surtido: true,
-                ind_renovar: false,
-                ind_seleccion_conjunta: true,
-                ind_regularizar: false,
-                idestado: 2,
-                submarcas: [],
-                clientes: [
-                    { idcliente: '' }
-                ],
-                escalados: [
-                    { udsminimas: 1, descuento: '', udsmaximas: '', txtdescuento: null }
-                ],
-            },
-            validationErrors: {
-            },
+            plan: _.clone( plan ),
+            validationErrors: {},
             rawFields: {
-                fechainicio: null,
-                fechafin: null,
-                entity: '',
+                fechainicio: rawFechaInicio,
+                fechafin: rawFechaFin,
+                entidad: '',
             },
+            rawPlan: {
+                codcli_cbim: props.editPlan ? plan.codcli_cbim : '',
+            },
+            planNameFromPreset: false,
             seleccion_individual_filtro_categoria: '',
             seleccion_individual_filtro_marca: '',
             seleccion_individual_filtro_submarca: '',
             seleccion_individual_valores: [],
-            seleccion_individual_opciones: options,
             seleccion_submarcas_preset: '',
             seleccion_submarcas_valores: [],
         }
@@ -114,36 +131,48 @@ class PlanesCompraForm extends React.Component {
         this.validate = this.validate.bind(this)
         this.clearError = this.clearError.bind(this)
         this.hasError = this.hasError.bind(this)
+        this.savePreset = this.savePreset.bind(this)
+        this.setPlanNameFromPreset = this.setPlanNameFromPreset.bind( this )
     }
 
     componentWillMount() {
-        const { loadProducts, loadBrands, loadSubBrands } = this.props;
+        const { loadProducts, loadBrands, loadFamilies, loadSubBrands, fetchSubmarcaCollections } = this.props;
         loadProducts();
         loadBrands();
         loadSubBrands();
+        loadFamilies();
+        fetchSubmarcaCollections();
     }
 
     save() {
-        const { createPlan, createPlanSetLoading } = this.props;
+        const { createPlan, createPlanSetLoading, onSave } = this.props;
         const { plan } = this.state;
         this.validate( plan, () => {
-            createPlanSetLoading( { loading: true } )
-            createPlan( { plan } )
+            onSave(plan)
+            console.log('THISIS THE PLAN', plan)
         }, () => {
             document.querySelector('.ant-layout-content').scrollTo(0, 0)
         })
     }
 
     validate( plan, successCallback, errorCallback ) {
+        const { editPlan } = this.props;
         const validations = [
-            { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
+            { field: 'clientes[0].idcliente', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco. Seleccione una entidad para rellenarlo.' },
             { field: 'nombre', validator: ( value ) => ( value != '' ), message: 'No se puede dejar en blanco' },
-            { field: 'fechainicio', validator: ( value ) => ( moment( value ) > moment() ), message: 'No puede ser una fecha pasada.' },
-            { field: 'fechafin', validator: ( value, record ) => ( moment( value ) > moment( record.fechainicio ) ), message: 'Debe ser posterior a la fecha de inicio.' },
+            {   field: 'fechainicio',
+                validator: ( value ) => (editPlan && moment(editPlan.fechainicio).isSame(value, 'day') ? true : moment( value ).startOf('day') >= moment().startOf('day') ),
+                message: 'No puede ser una fecha pasada.' },
+            {   field: 'fechafin',
+                validator: ( value ) => (editPlan && moment(editPlan.fechafin).isSame(value, 'day') ? true : moment( value ).startOf('day') >= moment().startOf('day') ),
+                message: 'No puede ser una fecha pasada.' },
+            { field: 'fechafin', validator: ( value, record ) => ( moment( value ).startOf('day') >= moment( record.fechainicio ).startOf('day') ), message: 'Debe ser posterior a la fecha de inicio.' },
             { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ) > 0 ), message: 'Debe ser mayor que 0.' },
+            { field: 'escalados[0].udsmaximas', validator: ( value ) => ( parseInt ( value ).toString() == value ), message: 'Debe ser un numero entero.' },
             { field: 'escalados[0].descuento', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
             { field: 'margen', validator: ( value ) => ( parseFloat( value ) > 0 &&  parseFloat( value ) < 100 ), message: 'Debe ser un porcentaje.' },
-            { field: 'submarcas', validator: ( value ) => ( value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
+            { field: 'submarcas', validator: ( value, record ) => ( record.ind_seleccion_conjunta == false || value.length > 0 ), message: 'Debe seleccionar por lo menos una submarca.' },
+            { field: 'productos', validator: ( value, record ) => ( record.ind_seleccion_conjunta == true || value.length > 0 ), message: 'Debe seleccionar por lo menos un producto.' },
         ];
 
         const validationErrors = [];
@@ -184,17 +213,18 @@ class PlanesCompraForm extends React.Component {
         return '';
     }
 
+    savePreset( name, options, callback ) {
+        const { createSubmarcaCollectionSetLoading, createSubmarcaCollection } = this.props;
+        createSubmarcaCollection( { collection: { nombre: name, submarcas: options },  callback })
+    }
 
     setPresetProductos( preset ) {
 
     }
     setPresetProductosCategoria ( categoria ) {
-        this.setState({ seleccion_individual_filtro_categoria: categoria } );
-
     }
     setPresetProductosMarca ( marca ) {
         this.setState({ seleccion_individual_filtro_marca: marca } );
-
     }
     setPresetProductosSubmarca ( marca ) {
         this.setState({ seleccion_individual_filtro_submarca: marca } );
@@ -210,8 +240,11 @@ class PlanesCompraForm extends React.Component {
             && ( filtro_submarca == '' || parseInt( item.idsubmarca ) == parseInt( filtro_submarca ) );
     }
 
-    setPresetSubmarcas( preset ) {
+    setPlanNameFromPreset( value ) {
+        const { plan } = this.state;
 
+        const newPlan = value == false ? plan :  { ...plan, nombre: value  }
+        this.setState({  plan: newPlan, planNameFromPreset: value })
     }
 
     onChangeProductsList = (selectedProducts) => {
@@ -219,17 +252,19 @@ class PlanesCompraForm extends React.Component {
     };
 
     render() {
-        const { products, brands, subBrands, loading } = this.props;
-        const { plan, validationErrors, error } = this.state;
-        const { rawFields } = this.state;
+        const { editPlan, products, brands, error, subBrands, loading, loadingSubmarcaCollectionList, submarcaCollections, submarcaCollection, fetchSubmarcaCollections, families } = this.props;
+        const { planNameFromPreset, plan, validationErrors, rawFields, rawPlan } = this.state;
         const createdPlan = this.props.plan
+        const isCopy = this.props.isCopy ? this.props.isCopy : false;
+        const isEdit = !! editPlan && ! isCopy;
+        const isEditAndExpired = isEdit && plan.estado2 == "Expirado";
 
         if ( createdPlan != null) {
-            return (<PlanesCompraCreated plan={ createdPlan } />);
+            return (<PlanesCompraSaved message={this.props.savedMessage} plan={ createdPlan } isEdit={ isEdit } />);
         }
 
-    {  }
         return (
+            <ConfigProvider locale={ locale }>
             <React.Fragment>
                 { error && ( <Typography type="danger" style={{ color: 'red'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
                 <h3 style={{margin: '20px 0 10px 0'}}>
@@ -243,12 +278,13 @@ class PlanesCompraForm extends React.Component {
                             <div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
                             <OrderFilterEntity
                                 style={inputStyle }
-                                value={ rawFields.entidad }
-                                column={ "idcliente" }
+                                value={ rawFields.entidad == '' ? plan.nomcli_cbim : rawFields.entidad }
+                                disabled={ isEdit }
+                                column={ "object" }
                                 onChange={ (entity) => {
                                     this.setState({ rawFields: { ...rawFields, entidad: entity} })
                                 } }
-                                onChangeClient={ (client) => { this.setState({ plan: { ...plan, clientes: [{ idcliente: client }] }})} }
+                                onChangeClient={ (client) => { this.setState({ rawPlan: { ...rawPlan, codcli_cbim: client.codcli_cbim}, plan: { ...plan, clientes: [{ idcliente: client.idcliente }] }})} }
                             />
                             </div>
                         </Col>
@@ -257,16 +293,8 @@ class PlanesCompraForm extends React.Component {
                             <span>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
-                                value={ plan.clientes[0].idcliente }
-                                onChange={ (e) => {
-                                    this.setState(
-                                        { rawFields: {...rawFields, entidad: ''}, plan: { ...plan, clientes: [ { idcliente: e.target.value }] }},
-                                        () => {
-                                            this.clearError( 'clientes[0].idcliente' )
-                                        }
-                                    )
-
-                                } }
+                                value={ rawPlan.codcli_cbim }
+                                disabled
                                 style={ this.hasError( 'clientes[0].idcliente' ) ? inputErrorStyle : inputStyle}
                             />
                             { this.getError( 'clientes[0].idcliente' ) }
@@ -278,6 +306,7 @@ class PlanesCompraForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ plan.nombre }
+                                    disabled={isEditAndExpired || planNameFromPreset != false}
                                     onChange={ (e) => {
                                         this.setState({ plan: { ...plan, nombre: e.target.value }},
                                             () => {
@@ -304,8 +333,11 @@ class PlanesCompraForm extends React.Component {
                             <label>Fecha de inicio</label>
                             <DatePicker
                                 value={ rawFields.fechainicio }
+                                locale={ locale }
+                                disabled={ isEdit }
                                 onChange={( date, dateString ) => {
-                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: date.toISOString() } },
+                                    const formatDate = date ? date.format('YYYY-MM-DD') : '';
+                                    this.setState({ rawFields: {...rawFields, fechainicio: date }, plan: { ...plan, fechainicio: formatDate } },
                                         () => {
                                             this.clearError( 'fechainicio' )
                                         }
@@ -322,8 +354,10 @@ class PlanesCompraForm extends React.Component {
                             <DatePicker
                                 format={ dateFormat }
                                 value={ rawFields.fechafin }
+                                disabled={isEditAndExpired}
                                 onChange={( date, dateString ) => {
-                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: date.toISOString() } },
+                                    const formatDate = date ? date.format('YYYY-MM-DD') : '';
+                                    this.setState( { rawFields: {...rawFields, fechafin: date }, plan: { ...plan, fechafin: formatDate } },
                                         () => {
                                             this.clearError( 'fechafin' )
                                         }
@@ -342,18 +376,21 @@ class PlanesCompraForm extends React.Component {
 
                             <Select
                                 onChange={(value) => { this.setState( { plan: { ...plan, idestado: value } })} }
-                                value={plan.idestado}
+                                value={ parseInt( plan.idestado ) }
                                 style={inputStyle}
+                                disabled={isEditAndExpired}
                             >
-                                <Option value={2}  style={{ color: '#CCC' }}>Borrador</Option>
+                                <Option value={0}  style={{ color: '#CCC' }}>Borrador</Option>
                                 <Option value={1}>Activo</Option>
-                                <Option value={0}>Inactivo</Option>
+                                <Option value={2}>Inactivo</Option>
                             </Select>
                         </Col>
                         <Col span={8}  >
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_renovar }
+                                defaultChecked={ plan.ind_renovar }
+                                disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_renovar: value } } ) } }
                             />
                             <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Renovación Automática</label>
@@ -362,9 +399,11 @@ class PlanesCompraForm extends React.Component {
                             <Switch
                                 checkedChildren="Si" unCheckedChildren="No"
                                 value={ plan.ind_regularizar }
+                                defaultChecked={ plan.ind_regularizar }
+                                disabled={isEditAndExpired}
                                 onChange={ ( value) => { this.setState( { plan: { ...plan, ind_regularizar: value } } ) } }
                             />
-                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Regularización</label>
+                            <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Mercancía pendiente</label>
                         </Col>
                     </Row>
                 </div>
@@ -372,11 +411,12 @@ class PlanesCompraForm extends React.Component {
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Lineas de descuento
                 </h3>
-                <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
+                <div className="table-filters-indas" style={{padding:'20px' }}>
                     <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                         <Col span={6}>
                             <label>Unidades comprometidas</label>
                             <Input
+                                disabled={isEditAndExpired}
                                 value={ plan.escalados[0].udsmaximas }
                                 onChange={ ( e ) => {
                                     this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], udsmaximas: e.target.value }] } },
@@ -392,9 +432,11 @@ class PlanesCompraForm extends React.Component {
                         <Col span={6}>
                             <label>Descuento</label>
                             <Input
-                                value={ plan.escalados[0].descuento }
+                                disabled={isEditAndExpired}
+                                value={ Utils.renderFloat( plan.escalados[0].descuento ) }
                                 onChange={ ( e ) => {
-                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: e.target.value } ] } },
+                                    const value = Utils.parseFloat( e.target.value );
+                                    this.setState( { plan: { ...plan, escalados: [{...plan.escalados[0], descuento: value } ] } },
                                         () => {
                                             this.clearError( 'escalados[0].descuento' )
                                         }
@@ -408,10 +450,12 @@ class PlanesCompraForm extends React.Component {
                         <Col span={6}>
                             <label>Margen</label>
                             <Input
-                                value={ plan.margen }
+                                disabled={isEditAndExpired}
+                                value={ Utils.renderFloat( plan.margen ) }
                                 suffix={"%"}
                                 onChange={ ( e ) => {
-                                    this.setState( { plan: { ...plan,  margen: e.target.value } },
+                                    const value = Utils.parseFloat( e.target.value );
+                                    this.setState( { plan: { ...plan,  margen: value } },
                                         () => {
                                             this.clearError( 'margen' )
                                         }
@@ -427,7 +471,7 @@ class PlanesCompraForm extends React.Component {
                 <h3 style={{margin: '20px 0 10px 0'}}>
                     Asociación de productos
                 </h3>
-                <div className="table-filters-indas" style={{padding:'20px', backgroundColor: '#EAEAEA;'}}>
+                <div className="table-filters-indas" style={{padding:'20px' }}>
                     <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                         <Tabs
                             defaultActiveKey={ plan.ind_seleccion_conjunta ? "1" : "2" }
@@ -437,27 +481,10 @@ class PlanesCompraForm extends React.Component {
                                 <div style={{ top: '-80px', position: 'relative'}}>
                                     { this.getError( 'submarcas' ) }
                                 </div>
-                                { false && (
-                                <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
-                                    <Col span={12}>
-                                        <Select
-                                            onChange={ this.setPresetSubmarcas }
-                                            style={{width:'200px'}}
-                                            value={ this.state.seleccion_submarcas_preset }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Personalizado -</Option>
-                                            <Option value="activo">Preset 1</Option>
-                                            <Option value="inactivo">Preset 2</Option>
-                                        </Select>
-                                        <Button disabled={this.state.seleccion_submarcas_valores.length==0}>
-                                            Guardar Selección
-                                        </Button>
-                                    </Col>
-                                </Row>
-                                )}
 
                                 { products && subBrands && (
                                     <DiscriminatorListBox
+                                        disabled={isEditAndExpired}
                                         options={
                                             _.sortBy( products, (product) => (product.nombre) ).map( ( product) => ({
                                                 label: product.nombre,
@@ -471,77 +498,106 @@ class PlanesCompraForm extends React.Component {
                                                 value: parseInt( subBrand.idsubmarca ),
                                             }))
                                         }
+                                        value={ this.state.plan.submarcas.map( (submarca) => submarca.idsubmarca ) }
                                         onChange={ ( values ) => {
                                             const mappedValues = values.map( ( value ) => ({ idsubmarca: value }) )
-                                            this.setState({plan: {...plan, submarcas: mappedValues } } ,
+                                            this.setState({ plan: {...plan, submarcas: mappedValues } } ,
                                                 () => {
                                                     this.clearError( 'submarcas' )
                                                 }
                                             )
                                         } }
+                                        preset={{
+                                            values: this.state.plan.submarcas.map( (submarca) => submarca.idsubmarca ),
+                                            options: submarcaCollections.map( (submarcaCollection) => ({ label: submarcaCollection.nombre, value: submarcaCollection.nombre, options: submarcaCollection.submarcas })),
+                                            loading: loadingSubmarcaCollectionList,
+                                            savePreset: this.savePreset,
+                                            reload: fetchSubmarcaCollections,
+                                            planNameFromPreset: planNameFromPreset,
+                                            setPlanNameFromPreset: this.setPlanNameFromPreset,
+                                        }}
                                     />
                                 )}
 
                             </TabPane>
-                            {/* <TabPane tab="Selección Individual" key="2">
-                                <Row style={{width: '100%', marginBottom: 0, paddingBottom: 10}}>
-                                    <Col span={8} >
-                                        <Select
-                                            onChange={ this.setPresetProductosCategoria }
-                                            style={{width:'200px'}}
+                            <TabPane tab="Selección Individual" key="2">
+                                <div style={{ top: '-80px', position: 'relative'}}>
+                                    { this.getError( 'productos' ) }
+                                </div>
+
+                                <Row style={{ marginBottom: '10px'}}>
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            disabled={isEditAndExpired}
+                                            options={ families.map( (family) => {
+                                                return {
+                                                    label: family.nombre,
+                                                    value: family.idfamilia
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_categoria }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Categoría -</Option>
-                                            <Option value="1">Categoria 1</Option>
-                                            <Option value="2">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_categoria ) => {
+                                                this.setState({ seleccion_individual_filtro_categoria })
+                                            } }
+                                        />
                                     </Col>
-                                    <Col span={8} style={{textAlign: 'center '}}>
-                                        <Select
-                                            onChange={ this.setPresetProductosMarca }
-                                            style={{width:'200px'}}
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            options={ brands.map( ( brand ) => {
+                                                return {
+                                                    label: brand.nombre,
+                                                    value: brand.idmarca
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_marca }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Marca -</Option>
-                                            <Option value="cat1">Categoria 1</Option>
-                                            <Option value="cat2">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_marca ) => {
+                                                this.setState({ seleccion_individual_filtro_marca })
+                                            } }
+                                        />
                                     </Col>
-                                    <Col span={8} style={{textAlign: 'right '}}>
-                                        <Select
-                                            onChange={ this.setPresetProductosSubmarca }
-                                            style={{width:'200px'}}
+                                    <Col span={8}>
+                                        <DualListFilter
+                                            options={ subBrands.map( (subBrand) => {
+                                                return {
+                                                    label: subBrand.nombre,
+                                                    value: subBrand.idsubmarca
+                                                }
+                                            }) }
                                             value={ this.state.seleccion_individual_filtro_submarca }
-                                        >
-                                            <Option value=""  style={{ color: '#CCC' }}>- Submarca -</Option>
-                                            <Option value="cat1">Categoria 1</Option>
-                                            <Option value="one">Categoria 2</Option>
-                                        </Select>
+                                            onChange={( seleccion_individual_filtro_submarca ) => {
+                                                this.setState({ seleccion_individual_filtro_submarca })
+                                            } }
+                                        />
                                     </Col>
                                 </Row>
+
+
+
                                 <ExtendedDualListBox
-                                    icons={dualListIcons}
-                                    options={this.state.seleccion_individual_opciones}
+                                    icons={ dualListIcons }
+                                    options={ products.map( (product) => ({ ...product, value: product.idproducto, label: product.nombre } )) }
                                     filter={ this.filterSeleccionIndividual }
-                                    selected={this.state.seleccion_productos_valores}
+                                    selectedKeys={this.state.plan.productos.map( (producto) => producto.idproducto ) }
                                     onChange={
-                                        ( seleccion_productos_valores ) => {
-                                            this.setState({ seleccion_productos_valores });
+                                        ( productos ) => {
+                                            this.setState({ plan: { ...plan, productos: productos.map((idproducto) => ({ idproducto }) ) } });
                                         }
                                     }
                                 />
-                            </TabPane> */}
+                            </TabPane>
                         </Tabs>
                     </Row>
                 </div>
 
                 { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
-                <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
-                    { loading ? (<Spin></Spin>) : 'Crear' }
+                { isEditAndExpired && (<Typography type="danger" style={{ marginTop: '10px'}}> El plan no se puede modificar porque ha expirado.</Typography>) }
+                <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading || isEditAndExpired }>
+                    { loading ? (<Spin></Spin>) : (isEdit ? 'Guardar' : 'Crear') }
                 </Button>
 
 
             </React.Fragment>
+            </ConfigProvider>
         );
     };
 
@@ -551,12 +607,14 @@ PlanesCompraForm.propTypes = {
 
 export default  connect(
     state => ({
-        plan: state.planesCompra.plan,
-        loading: state.planesCompra.createLoading,
-        error: state.planesCompra.createError,
         products: state.commercialDeals.products,
         brands: state.commercialDeals.brands,
         subBrands: state.commercialDeals.subBrands,
+        families: state.commercialDeals.families,
+        submarcaCollections: state.planesCompra.submarcaCollections,
+        loadingSubmarcaCollectionList: state.planesCompra.loadingSubmarcaCollectionList,
+        submarcaCollection: state.planesCompra.submarcaCollection,
     }),
-    { loadProducts, loadSubBrands, loadBrands, createPlan, createPlanSetLoading }
+    { createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection,
+        loadFamilies, loadBrands, loadSubBrands, loadProducts }
 )( PlanesCompraForm );

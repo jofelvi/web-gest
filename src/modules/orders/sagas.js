@@ -115,7 +115,7 @@ function* fetchOrderById({ payload }) {
     const response = yield call(api.fetchOrderById, payload.id);
     const responseEntity = yield call(api.fetchEntityById, response.data.codentidad_cbim);
     const responseClient = yield call(api.fetchClientById, responseEntity.data.idcliente);
-    
+
     yield put(fetchClientByIdSuccess({ client: responseClient.data }));
     yield put(fetchOrderByIdSuccess({ order: response.data }));
     yield put(fetchEntityByIdSuccess({ entity: responseEntity.data }));
@@ -150,7 +150,6 @@ function* deleteOrderById({ payload }) {
     const response = yield call(api.deleteOrderById, payload.id);
     //const response = require('../../datamockup/dataOrderDelete.json')
     //throw 'Unrecognized error';
-    console.log('DELET')
     if (response.status === HttpStatus.UNAUTHORIZED) {
       payload.history.push('/login');
     } else if (response.status === HttpStatus.CREATED) {

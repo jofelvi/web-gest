@@ -5,7 +5,7 @@ import {Button} from "antd";
 import { withRouter } from 'react-router-dom';
 
 
-class PlanesCompraCreated extends React.Component {
+class PlanesCompraSaved extends React.Component {
     render() {
         const { plan } = this.props;
 
@@ -14,7 +14,7 @@ class PlanesCompraCreated extends React.Component {
                 <div>
                     <CheckOutlined style={{ fontSize: '42px'}} />
                 </div>
-                <h3 style={{ margin: '15px'}}>El plan '{ plan.nombre }' se hacreado.</h3>
+                <h3 style={{ margin: '15px'}}>{ this.props.message( plan ) }</h3>
                 <Button  type="primary" onClick={() => { this.props.history.push('/planes-de-compra/') }}>
                     Volver al listado
                 </Button>
@@ -23,7 +23,5 @@ class PlanesCompraCreated extends React.Component {
     };
 
 }
-PlanesCompraCreated.propTypes = {
-};
 
-export default withRouter( PlanesCompraCreated );
+export default withRouter( PlanesCompraSaved );

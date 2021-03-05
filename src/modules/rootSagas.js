@@ -49,6 +49,11 @@ import {
   watchfetchPlans,
   watchcreatePlan,
   watchfetchDelegados,
+  watchfetchSubmarcaCollections,
+  watchcreateSubmarcaCollection,
+  watchupdatePlan,
+  watchfetchPlan,
+  watchupdatePlans,
 } from './planes-compra/sagas'
 
 import{
@@ -136,7 +141,7 @@ export default function* rootSaga() {
     watchfetchSalesByHour(),
     watchfetchClientsData(),
     watchfetchPendingTasks(),
-		watchloadClientesCbim(),
+    watchloadClientesCbim(),
     watchdeleteOrderLineById(),
     watchloadClienteCbimEntidades(),
     watchEditTask(),
@@ -154,5 +159,10 @@ export default function* rootSaga() {
     watchfetchPlans(),
     watchcreatePlan(),
     watchfetchDelegados(),
+    watchfetchSubmarcaCollections(),
+    watchcreateSubmarcaCollection(),
+    watchfetchPlan(),
+    watchupdatePlan(),
+    watchupdatePlans(),
   ]);
 }

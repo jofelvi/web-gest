@@ -92,7 +92,6 @@ class OrderTableDetails extends React.Component {
                             placement="topLeft"
                             title={`Se va a proceder a la anulación de la línea del producto ${row.nombre}`}
                             onConfirm={() => {
-                                console.log('CONFIRM', row)
                                 deleteOrderLineSetLoading({ id: row.idproducto })
                                 deleteOrderLineById({ idproducto: row.idproducto, idpedido: order.idpedido, codpedido_origen: order.codpedido_origen })
                             }}

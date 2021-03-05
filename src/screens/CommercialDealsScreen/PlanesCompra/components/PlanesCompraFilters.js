@@ -11,10 +11,11 @@ import {DatePickerFromTo, InputBox, InputsContainer }  from '../../../../lib/sty
 import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import * as moment from "moment";
+import { get } from 'lodash';
+
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-
 class PlanesCompraFilters extends React.Component {
     constructor(props) {
         super(props)
@@ -22,22 +23,24 @@ class PlanesCompraFilters extends React.Component {
         this.searchedValue = this.searchedValue.bind(this)
 
         this.state = {
-            idcliente: '',
-            idestado: '',
-            searchByEntity: '',
+            idcliente: get( props, 'filters.idcliente', ''),
+            codcli_cbim: get( props, 'filters.codcli_cbim', ''),
+            idestado: get( props, 'filters.idestado', ''),
+            searchByEntity: get( props, 'filters.searchByEntity', ''),
             page: props.page,
-            fechas: [],
-            fechasValue: [],
-            expandFilters: false,
-            coddelegado: '',
-            isFilterChanged: false,
-            contareaspendientes: false,
+            fechas: get( props, 'filters.fechas', []),
+            fechasValue: get( props, 'filters.fechasValue', []),
+            expandFilters: get( props, 'filters.expandFilters', false),
+            coddelegado: get( props, 'filters.coddelegado', ''),
+            isFilterChanged: get( props, 'filters.isFilterChanged', false),
+            contareaspendientes: get( props, 'filters.contareaspendientes', false),
         }
     }
 
     clearFilters = () => {
         this.setState({
             idcliente: '',
+            codcli_cbim: '',
             fechasValue: [],
             searchByEntity: '',
             page: 0,
@@ -67,8 +70,8 @@ class PlanesCompraFilters extends React.Component {
             this.setState({
                 ...this.state,
                 fechas: [
-                    moment(dateString[0]).startOf('day').toDate().toISOString(),
-                    moment(dateString[1]).endOf('day').toDate().toISOString(),
+                    moment(dateString[0]).startOf('day').format( 'YYYY-MM-DD' ),
+                    moment(dateString[1]).endOf('day').format( 'YYYY-MM-DD' ),
                 ],
                 fechasValue: [
                     moment(dateString[0]),
@@ -104,34 +107,40 @@ class PlanesCompraFilters extends React.Component {
 
     render() {
 
-        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity } = this.state;
+        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
 
         return (
             <div className="table-filters-indas">
                 <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-                    <Row style={{width: '100%', marginBottom: 0}}>
-                        <Col span={18} style={{padding: '10px'}}>
+                    <Row key={'filters_b'} style={{width: '100%', marginBottom: 0}}>
+                        <Col span={18} style={{padding: '10px'}}  key={'col_1'}>
                             <span style={{padding: '10px'}}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                             <OrderFilterEntity
-                                column={"idcliente"}
+                                column={"object"}
+                                key={'filters_entity_search'}
                                 value={searchByEntity}
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
-                                onChangeClient={ (client) => this.searchedValue('idcliente', client) }
+                                onChangeClient={ (client) => {
+                                    const idCliente = client ? client.idcliente : '';
+                                    const codcliCbim = client ? client.codcli_cbim : '';
+                                    this.searchedValue( 'idcliente', idCliente )
+                                    this.searchedValue( 'codcli_cbim', codcliCbim )
+                                } }
                             />
                         </Col>
 
-                        <Col span={6} style={{padding: '10px'}}>
+                        <Col span={6} style={{padding: '10px'}} key={'col_2'}>
                             <span style={{padding: '10px'}}>Código Cliente</span>
                             <InputBox
                                 placeholder="Código Cliente"
-                                value={idcliente}
-                                onChange={(event) => this.searchedValue('idcliente', event.target.value)}
+                                value={codcli_cbim}
+                                disabled
                                 style={{width: '100%'}}
                             />
                         </Col>
                     </Row>
                 </InputsContainer>
-                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
+                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}} key={'filters_b_2'}>
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
                             <span style={{padding: '10px'}}>PC vigentes en este intervalo</span>
@@ -179,18 +188,6 @@ class PlanesCompraFilters extends React.Component {
                             </Select>
                         </Col>
 
-                    </Row>
-                </InputsContainer>
-                <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}}>
-                    <Row style={{width: '100%'}}>
-                        <Col span={8} style={{padding: '20px', paddingTop: 0}}>
-                            <Checkbox
-                                checked={this.state.contareaspendientes}
-                                onChange={(e) => this.searchedValue('contareaspendientes', e.target.checked) }
-                            >
-                                Ver solo planes con tareas pendientes.
-                            </Checkbox>
-                        </Col>
                     </Row>
                 </InputsContainer>
                 <InputsContainer style={{width: '100%', marginTop: 0, paddingTop: 0}}>

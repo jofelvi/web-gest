@@ -58,7 +58,7 @@ class OrderFilterEntity extends React.Component {
                 currentRow = row.entity
             }
         })
-        const cod = (currentRow && this.props.column && this.props.column == 'idcliente') ? currentRow.idcliente : currentRow.codcli_cbim
+        const cod = (currentRow != '' && this.props.column && this.props.column == 'object') ? currentRow : currentRow.codcli_cbim
         //if (this.props.column )
         const client=currentRow ? cod : '';
         this.props.onChangeClient(client);
@@ -82,6 +82,7 @@ class OrderFilterEntity extends React.Component {
                 style={{ width: '100%', marginTop: 10, marginLeft:10 }}
                 defaultActiveFirstOption={false}
                 showArrow={false}
+                disabled={ this.props.disabled ? this.props.disabled : false }
                 filterOption={false}
                 onSearch={this.handleSearch}
                 onChange={this.handleChange}
@@ -95,7 +96,6 @@ class OrderFilterEntity extends React.Component {
 
 }
 OrderFilterEntity.propTypes = {
-    order: PropTypes.shape({}).isRequired,
 };
 
 export default connect( ( state ) => ({  }), { } )( OrderFilterEntity );

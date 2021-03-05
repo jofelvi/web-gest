@@ -96,7 +96,6 @@ class OrderListScreen extends React.Component {
   }
 
   onExpand = expandedKeys => {
-    console.log("onExpand", expandedKeys);
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
     // or, you can remove all expanded children keys.
     this.setState({
@@ -143,7 +142,6 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByCodPedido, searchByEntity, searchByType, searchByState } = this.state;
     const { orders, order, fetchOrderById, entity, client, count, deleteOrderLineById, deleteOrderLineSetLoading, deleteLineLoadingId, deleteLoadingId } = this.props;
 
-    console.log('ORDER', order)
     return (
       <Maincontainer>
         <div className="table-indas table-indas-new">

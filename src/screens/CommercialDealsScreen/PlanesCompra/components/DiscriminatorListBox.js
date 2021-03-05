@@ -5,24 +5,30 @@ import { List, Typography, Divider } from 'antd';
 import { Checkbox, Button, Col, Row, Select} from 'antd';
 import { UpOutlined, DownOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import _ from 'underscore';
+import ListPresetSelector from "./ListPresetSelector";
 
 class DiscriminatorListBox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedOptionKeys: [],
+            selectedOptionKeys: props.value,
+            selectedPreset: false,
         }
 
         this.toggleSelectedDiscriminatorOptions = this.toggleSelectedDiscriminatorOptions.bind(this)
     }
 
     toggleSelectedDiscriminatorOptions ( value ) {
-        const selectedOptionKeys = this.state.selectedOptionKeys;
+        if ( this.props.disabled ) {
+            return;
+        }
+        let selectedOptionKeys = this.state.selectedOptionKeys;
         if ( this.state.selectedOptionKeys.indexOf(value) > -1 ) {
-            this.setState( { selectedOptionKeys: _.filter(selectedOptionKeys, (key) => (key!=value) ) } )
+            selectedOptionKeys = _.filter(selectedOptionKeys, (key) => (key!=value) )
+            this.setState( { selectedOptionKeys: selectedOptionKeys, selectedPreset: false } )
         } else {
             selectedOptionKeys.push(value)
-            this.setState( { selectedOptionKeys } );
+            this.setState( { selectedOptionKeys, selectedPreset: false } );
         }
         this.props.onChange( selectedOptionKeys );
     }
@@ -38,6 +44,17 @@ class DiscriminatorListBox extends React.Component {
         const { options, discriminator_options } = this.props;
 
         return (
+            <React.Fragment>
+                { this.props.preset && (
+                    <ListPresetSelector
+                        {... this.props.preset }
+                        selectedPreset={this.state.selectedPreset}
+                        onSetPreset={ (preset) => {
+                          this.setState({ selectedOptionKeys: preset.options, selectedPreset: preset })
+                            this.props.onChange( preset.options )
+                        }}
+                    />
+                )}
             <Row style={{width: '100%'}}>
                 <Col span={12} style={{ height: '1150px', overflow: 'auto', paddingRight: '10px' }}>
                     <List
@@ -48,13 +65,12 @@ class DiscriminatorListBox extends React.Component {
                         renderItem={
                             item => (
                                 <List.Item
-                                    onClick={ ( event ) => ( this.toggleSelectedDiscriminatorOptions( item.value ) ) }
                                     style={{ cursor: 'pointer' }}
                                 >
                                     <Checkbox
                                         value={ item.value }
                                         checked={ this.state.selectedOptionKeys.indexOf(item.value) > -1 }
-                                        onClick={ ( event ) => ( this.toggleSelectedDiscriminatorOptions( item.value ) ) }
+                                        onChange={ ( value ) => ( this.toggleSelectedDiscriminatorOptions( item.value ) ) }
                                     >
                                         {item.label}
                                     </Checkbox>
@@ -78,6 +94,7 @@ class DiscriminatorListBox extends React.Component {
                     />
                 </Col>
             </Row>
+            </React.Fragment>
         );
     };
 

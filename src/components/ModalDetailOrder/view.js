@@ -26,7 +26,6 @@ const ModalDetailOrder =({ visibility,lastDeletedId, ok, cancel, customFooter, c
             <Button className="ant-btn-dangerous" danger style={{marginTop: '10px'}} >{ order && order.loadingDelete ? (<LoadingOutlined />) : 'Anular Pedido' }</Button>
         </Popconfirm>) );
 
-    console.log('VISIBILITY', visibility, order, lastDeletedId)
     return (
         <div>
             <Modal
@@ -50,11 +49,10 @@ const ModalDetailOrder =({ visibility,lastDeletedId, ok, cancel, customFooter, c
 
 }
 
-  
+
 
 ModalDetailOrder.propTypes = {
- 
+
 };
 export default ModalDetailOrder;
 
-          

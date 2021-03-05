@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { map, filter } from 'underscore';
 import { message } from 'antd';
-
+import _ from 'underscore';
 import {
     fetchPlansSuccess,
     fetchPlansCountSuccess,
@@ -12,11 +12,24 @@ import {
     createPlanSetLoading,
     fetchDelegadosSuccess,
     fetchDelegadosFailed,
+    fetchSubmarcaCollectionsSuccess,
+    fetchSubmarcaCollectionsFailed,
+    fetchSubmarcaCollectionsLoading,
+    createSubmarcaCollectionSuccess,
+    createSubmarcaCollectionFailed,
+    createSubmarcaCollectionSetLoading,
+    updatePlanSuccess,
+    updatePlanFailed,
+    fetchPlanSuccess,
+    fetchPlanFailed,
+    updatePlansSuccess,
+    setFilters,
 } from './actions';
-import {fetchOrdersCountSuccess} from "../orders/actions";
 
 const defaultState = {
+    plan: null,
     list: [],
+    filtersState: null,
     delegados: [],
     loadingPagination: false,
     loadingList: false,
@@ -28,6 +41,11 @@ const defaultState = {
     ],
     createLoading: false,
     createError: false,
+
+    loadingSubmarcaCollectionList:      false,
+    submarcaCollections:                [ ],
+    loadingSubmarcaCollectionCreate:    false,
+    submarcaCollection:                 [ ],
 };
 
 export default handleActions(
@@ -103,6 +121,75 @@ export default handleActions(
                 delegados: []
             })
         },
+
+        [fetchSubmarcaCollectionsSuccess]: (state, { payload }) => {
+            return ({
+                ...state,
+                loadingSubmarcaCollectionList: false,
+                submarcaCollection: null,
+                submarcaCollections: payload.submarcaCollections
+            })
+        },
+        [fetchSubmarcaCollectionsLoading]: (state, { payload }) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionList: payload.loading,
+                submarcaCollections: [],
+            }
+        },
+        [fetchSubmarcaCollectionsFailed]: (state, loading) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionList: false,
+                submarcaCollections: [],
+            }
+        },
+        [createSubmarcaCollectionSetLoading]: (state, { payload } ) => {
+            return {
+                ...state,
+                loadingSubmarcaCollectionCreate: payload.loading,
+            }
+        },
+        [createSubmarcaCollectionSuccess]: (state, { payload }) => {
+            return {
+                ...state,
+                submarcaCollection: payload.submarcaCollection,
+                errorSubmarcaCollectionCreate: false,
+                loadingSubmarcaCollectionCreate: false,
+            }
+        },
+        [createSubmarcaCollectionFailed]: (state, {  }) => {
+            return {
+                ...state,
+                submarcaCollection: null,
+                loadingSubmarcaCollectionCreate: false,
+                errorSubmarcaCollectionCreate: true
+            }
+        },
+        [fetchPlanSuccess]: (state, { payload }) => {
+            return {
+                ...state,
+                plan: payload.plan,
+                createError: false,
+            }
+        },
+        [updatePlansSuccess]: (state, { payload }) => {
+            const list = state.list.map( (plan) => {
+                const changedPlan = _.find( payload.plans, ( changedPlan ) => (changedPlan.idcondcomercial==plan.idcondcomercial))
+                return changedPlan ? changedPlan : plan
+            } )
+            return {
+                ...state,
+                list: list
+            }
+        },
+        [setFilters]: (state, { payload }) => {
+            return {
+                ...state,
+                filtersState: payload,
+            }
+
+        }
     },
     defaultState
 );
