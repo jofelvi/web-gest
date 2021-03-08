@@ -13,7 +13,7 @@ import {
     Tooltip,
     ConfigProvider,
     Radio,
-    Spin
+    Spin, Modal
 } from 'antd';
 import {DatePickerFromTo, InputBox, InputsContainer} from "../../../lib/styled";
 import OrderFilterEntity from "../../OrderListScreen/components/OrderFilterEntity";
@@ -27,7 +27,7 @@ import {
     Label,
     TextContainer
 } from "../../../components/Clients-Indas/styles";
-import {getMessageEditMail} from "../../../components/Clients-Indas/constants";
+import {getMessageActivationAndName, getMessageEditMail} from "../../../components/Clients-Indas/constants";
 import {handleInput, handleInputChecked} from "../../../lib/forms";
 import ModalTaskDetail from "../../../components/ModalTaskDetail";
 import { editClientIndas } from '../../../modules/clients-indas/actions';
@@ -97,19 +97,16 @@ class ActionChangeStatus extends React.Component {
                         { loading ? <Spin /> : 'Aceptar' }
                     </Button>
                 ]}
-                content={
+                content={ (
                     <ContentContainer>
-                        <TextContainer>
-                            {status == 0 ? `¿Desea dar de baja a \'${entidad.nomcli_cbim}\' con el id cliente: '${entidad.codcli_cbim}'?`
-                                : `¿Desea dar de alta a \'${entidad.nomcli_cbim}\' con el id cliente: '${entidad.codcli_cbim}'?` }
-                        </TextContainer>
-                        { status === 1 && (<CheckboxPasswordReset
-                            onChange={ ({target} ) => { this.setState({ ind_renovar_pass: target.checked })} }
-                            checked={ ind_renovar_pass }
-                        >
-                            Enviar correo de alta.
-                        </CheckboxPasswordReset>) }
-                    </ContentContainer> }>
+                    <TextContainer>
+                        <div dangerouslySetInnerHTML={{ __html: getMessageActivationAndName(entidad.nomcli_cbim, status == 0 ? 1 : 0)} }/>
+                        <ConfirmationText>Confirme por favor el cambio.</ConfirmationText>
+                    </TextContainer>
+                {status == 1 && (<CheckboxPasswordReset onChange={ ({target} ) => { this.setState({ ind_renovar_pass: target.checked })} } checked={ind_renovar_pass}>
+                    Enviar correo de renovación de contraseña.
+                    </CheckboxPasswordReset> ) }
+                    </ContentContainer> ) }>
             </ModalTaskDetail>
         );
     };

@@ -2,10 +2,10 @@ import {get, post, patch, getHeaders} from '../../lib/restClient';
 import { NUM_CLIENTES_PAG } from './constants';
 import _ from "underscore";
 import * as download from "downloadjs";
+import {LIMIT} from "../../constants";
 
 
 export const getClientsIndas = () => get('/ntr/cliente');
-const LIMIT = 20;
 
 const generatingOffset = (offset)=>{
 	return `offset=${offset}&limit=${LIMIT}`

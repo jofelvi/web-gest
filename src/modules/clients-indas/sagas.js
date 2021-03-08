@@ -128,8 +128,8 @@ function* editClientIndas({ payload }) {
 
 	} catch (e) {
 		console.error(e);
-		if (e.response.status === 500) {
-			console.log("entra error 500")
+		if (e.response.status === 522) {
+			console.log("entra error 522")
 			yield put(editClientIndasFailed("Este email ya existe"));
 			if ( typeof payload.success == 'function' ) {
 				payload.error(e, true)

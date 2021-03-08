@@ -49,6 +49,7 @@ class ActionEmailEdit extends React.Component {
         }
 
         this.onError = this.onError.bind( this );
+        this.onSuccess = this.onSuccess.bind( this );
         this.onSubmit = this.onSubmit.bind( this );
     }
 
@@ -60,13 +61,19 @@ class ActionEmailEdit extends React.Component {
         }
     }
 
+    onSuccess() {
+        const { onClose } = this.props;
+        onClose();
+        this.setState( { loading: false } )
+    }
+
     onSubmit() {
         const { email, ind_renovar_pass } = this.state;
-        const { onClose, editClientIndas, entidad } = this.props;
+        const { editClientIndas, entidad } = this.props;
         this.setState( { loading: true })
         editClientIndas({
             id: entidad.idcliente, email, ind_renovar_pass,
-            success: onClose,
+            success: this.onSuccess,
             error: this.onError,
         });
     }
@@ -87,7 +94,7 @@ class ActionEmailEdit extends React.Component {
                     <Button
                         key="back"
                         onClick={ onClose }>
-                        Atrás
+                        Cancelar
                     </Button>,
                     <Button
                         key="submit"
@@ -108,7 +115,7 @@ class ActionEmailEdit extends React.Component {
                             value={ email == '' ? entidad.cliente_email : email }
                             onChange={ ( { target } ) => { this.setState({ email: target.value })} }
                         />
-                        {errorMessage === 'Este email ya existe' && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
+                        {errorMessage && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
                         <CheckboxPasswordReset
                             onChange={ ({target} ) => { this.setState({ ind_renovar_pass: target.checked })} }
                             checked={ ind_renovar_pass }

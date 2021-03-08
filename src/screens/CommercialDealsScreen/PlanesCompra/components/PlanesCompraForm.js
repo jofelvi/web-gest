@@ -379,9 +379,9 @@ class PlanesCompraForm extends React.Component {
                                 style={inputStyle}
                                 disabled={isEditAndExpired}
                             >
-                                <Option value={2}  style={{ color: '#CCC' }}>Borrador</Option>
+                                <Option value={0}  style={{ color: '#CCC' }}>Borrador</Option>
                                 <Option value={1}>Activo</Option>
-                                <Option value={0}>Inactivo</Option>
+                                <Option value={2}>Inactivo</Option>
                             </Select>
                         </Col>
                         <Col span={8}  >

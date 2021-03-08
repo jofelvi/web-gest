@@ -39,6 +39,9 @@ class ClientsTable extends React.Component {
                 sorter: true,
             },
             {
+                title: 'Puntos', dataIndex: 'puntos', key: 'puntos', width: 150,
+            },
+            {
                 title: 'Email', dataIndex: 'cliente_email', key: 'cliente_email', width: 200,
             },
             {
@@ -47,6 +50,10 @@ class ClientsTable extends React.Component {
             {
                 title: 'Delegado', dataIndex: 'delegado_nombre', key: 'delegado_nombre', width: 200,
                 sorter: true,
+            },
+            {
+                title: 'Fecha Alta', dataIndex: 'fecha_alta', key: 'fecha_alta', width: 200,
+                render: renderDate,
             },
             {
                 title: 'Fecha últ. acceso', dataIndex: 'fecha_ultimo_acceso', key: 'fecha_ultimo_acceso', width: 200,
