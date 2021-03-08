@@ -2,29 +2,29 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../lib/utils';
 import { ExclamationCircleOutlined, ClearOutlined } from '@ant-design/icons';
-import { 
+import {
     Table,
-    Row, 
-    Col, 
-    Tooltip, 
-    Button, 
-    Switch, 
+    Row,
+    Col,
+    Tooltip,
+    Button,
+    Switch,
     Input,
     Modal,
 } from 'antd';
 import ModalTaskDetail from '../ModalTaskDetail';
 import { returnTheLabelForData } from './utils';
-import { 
-    mapperInputData, 
-    validationSchema, 
-    listInputFilter, 
+import {
+    mapperInputData,
+    validationSchema,
+    listInputFilter,
     messageAlertEmail,
     getMessageEditMail,
     getMessageActivationAndName,
     //info,
 } from './constants';
-import { 
-    ContentContainer,  
+import {
+    ContentContainer,
     Label,
     InputsContainer,
     ContentContainerFilters,
@@ -102,7 +102,7 @@ const ClientsIndas = ({
     wholesalersIndas,
     token,
     loadClientsIndas,
-    usersMeta, 
+    usersMeta,
     getClientsCount,
     loadEntitiesIndas,
     setFormKey,
@@ -128,7 +128,7 @@ const ClientsIndas = ({
     const showModal = () => {
       setIsVisible(true)
       };
-   
+
     const handleOk = e => {
       setIsVisible(false)
     };
@@ -216,8 +216,8 @@ const ClientsIndas = ({
                     <Col>
                         <Tooltip title="Editar">
                             {/* {esté boton llama a el modal} */}
-                            <Button 
-                                icon="edit" 
+                            <Button
+                                icon="edit"
                                 onClick={() => {
                                     setId(idcliente);
                                     setNameClient(record.nomcli_cbim);
@@ -228,45 +228,45 @@ const ClientsIndas = ({
                     </Col>
                     <Col>
                             <div>
-                                {/* <Popconfirm 
-                                  okText="Confirmar" 
-                                  cancelText="Cancelar" 
+                                {/* <Popconfirm
+                                  okText="Confirmar"
+                                  cancelText="Cancelar"
                                   onConfirm={(e) => {
                                     if (record.idestado === 0){
                                         editClientIndas({ id: idcliente, idestado: 1 });
                                     }
                                     else {
                                         editClientIndas({ id: idcliente, idestado: 0 });
-                                    }              
+                                    }
                                     setIsDataChange(true);
                                     handleOkEditStateActive(e);
                                     setFormKey();
-                                  }} 
+                                  }}
                                   onCancel={(e) => {
                                     setFormKey();
                                     handleOkEditStateActive(e)}}
-                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)} 
+                                  overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}}
+                                  title={getMessageActivationAndName(record.nomcli_cbim, record.idestado)}
                                   autoAdjustOverflow={true}
                                   icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> */}
-                                    <Switch 
-                                      name='nonActive' 
-                                      checked={record.idestado === 0 ? false : true} 
+                                    <Switch
+                                      name='nonActive'
+                                      checked={record.idestado === 0 ? false : true}
                                       onChange={() =>{
                                         showModalEditStateActive();
                                         setId(idcliente);
                                         setNameClient(record.nomcli_cbim);
                                         setClientState(record.idestado);
                                       }}
-                                    ></Switch> 
+                                    ></Switch>
                                     {/* <Button onClick={(e) => {handleSubmit()}}>Aceptar</Button> */}
                                 {/* </Popconfirm> */}
                                 <Tooltip title={record.idestado=== 0 ? "Activar": "Dar de Baja"}>
-                                
+
                                 </Tooltip>
                             </div>
                     </Col>
-                    
+
                 </Row>
             ),
             width:200
@@ -282,7 +282,7 @@ const ClientsIndas = ({
         if(!isFiltered){
             loadClientsIndas();
             loadEntitiesIndas();
-        }  
+        }
         if(isEditSuccesful){
             editClientIndasFailed("");
             handleOk();
@@ -295,26 +295,26 @@ const ClientsIndas = ({
             getClientsCount({ emailComo: '', nombreComo: '', codcli_cbim: '' });
         }
         if (isDataChange) {
-            loadClientsIndas({ 
-                page: usersMeta.page, 
+            loadClientsIndas({
+                page: usersMeta.page,
             });
         }
         setIsDataChange(false);
     },[isEdited]);
     useEffect(() => {
         if (isFiltered && isDataChange) {
-            loadClientsIndas({ 
-              page: usersMeta.page, 
-              emailComo: filterValues ? filterValues.emailComo : "", 
-              nombreComo: filterValues ? filterValues.nombreComo : "", 
+            loadClientsIndas({
+              page: usersMeta.page,
+              emailComo: filterValues ? filterValues.emailComo : "",
+              nombreComo: filterValues ? filterValues.nombreComo : "",
               codcli_cbim: filterValues ? filterValues.codcli_cbim : "",
             });
         }
         if (isFiltered && !isDataChange){
-            loadClientsIndas({ 
-                page: usersMeta.page, 
-                emailComo: filterValues ? filterValues.emailComo : "", 
-                nombreComo: filterValues ? filterValues.nombreComo : "", 
+            loadClientsIndas({
+                page: usersMeta.page,
+                emailComo: filterValues ? filterValues.emailComo : "",
+                nombreComo: filterValues ? filterValues.nombreComo : "",
                 codcli_cbim: filterValues ? filterValues.codcli_cbim : "",
               });
         }
@@ -332,8 +332,8 @@ const ClientsIndas = ({
         return (
             <div className="table-indas-expand">
                 <h4 className="table-indas-title">Entidades</h4>
-                <Table 
-                    dataSource={entities} 
+                <Table
+                    dataSource={entities}
                     columns={columnsEntities}
                     rowKey="codentidad_cbim"
                     size="small"
@@ -344,11 +344,11 @@ const ClientsIndas = ({
     }
     const paginationOptions =(filterValues) => ({
         onChange: (page, pageSize, current) => {
-            loadClientsIndas({ 
-                page: page, 
-                emailComo: filterValues.emailComo, 
+            loadClientsIndas({
+                page: page,
+                emailComo: filterValues.emailComo,
                 nombreComo: filterValues.nombreComo,
-                codcli_cbim: filterValues.codcli_cbim 
+                codcli_cbim: filterValues.codcli_cbim
             });
         },
         total: usersMeta.total,
@@ -359,11 +359,11 @@ const ClientsIndas = ({
     const paginationFilteredClientsOptions =(filterValues) => {
         return ({
             onChange: (page, pageSize, current) => {
-                loadClientsIndas({ 
-                    page: page, 
-                    emailComo: filterValues.emailComo, 
+                loadClientsIndas({
+                    page: page,
+                    emailComo: filterValues.emailComo,
                     nombreComo: filterValues.nombreComo,
-                    codcli_cbim: filterValues.codcli_cbim 
+                    codcli_cbim: filterValues.codcli_cbim
                 });
             },
             total: usersMeta.total >= 30 ? usersMeta.total : list.length ,
@@ -372,7 +372,7 @@ const ClientsIndas = ({
             pageSize: usersMeta.pageSize,
         })
     }
-    
+
     return (
         <div className="table-indas">
             <h2 className="table-indas-title">Clientes Transferindas</h2>
@@ -381,29 +381,28 @@ const ClientsIndas = ({
                     initialValues={formikInitialValue}
                     validationSchema={validationSchema}
                     enableReinitialize
-                    onSubmit={(values) => { 
+                    onSubmit={(values) => {
                       if (values && values.email) {
                         setIsDataChange(true);
-                        editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass}); 
+                        editClientIndas({id, email: values.email, ind_renovar_pass: values.ind_renovar_pass});
                         setCurrentClientEmail({ currentEmail: '' });
-                         
                       }
                       if (values && (values.emailComo || values.nombreComo || values.codcli_cbim)) {
-                        setFilterValues({ 
-                            emailComo: values ? values.emailComo : "", 
-                            nombreComo: values ? values.nombreComo : "", 
-                            codcli_cbim: values ? values.codcli_cbim : "" 
+                        setFilterValues({
+                            emailComo: values ? values.emailComo : "",
+                            nombreComo: values ? values.nombreComo : "",
+                            codcli_cbim: values ? values.codcli_cbim : ""
                         });
                         getClientsCount({
-                            emailComo: values.emailComo, 
-                            nombreComo: values.nombreComo, 
-                            codcli_cbim: values.codcli_cbim 
+                            emailComo: values.emailComo,
+                            nombreComo: values.nombreComo,
+                            codcli_cbim: values.codcli_cbim
                         });
-                        loadClientsIndas({ 
-                            page: 1, 
-                            emailComo: values.emailComo, 
-                            nombreComo: values.nombreComo, 
-                            codcli_cbim: values.codcli_cbim 
+                        loadClientsIndas({
+                            page: 1,
+                            emailComo: values.emailComo,
+                            nombreComo: values.nombreComo,
+                            codcli_cbim: values.codcli_cbim
                         });
                         setIsFiltered(true);
 
@@ -447,20 +446,20 @@ const ClientsIndas = ({
                         setIsFiltered(false);
                         setFormKey();
                         setFilterValues({
-                          emailComo: '', 
-                          nombreComo: '', 
+                          emailComo: '',
+                          nombreComo: '',
                           codcli_cbim: '',
                         });
-                        getClientsCount({ 
-                            emailComo: '', 
-                            nombreComo: '', 
-                            codcli_cbim: '' 
+                        getClientsCount({
+                            emailComo: '',
+                            nombreComo: '',
+                            codcli_cbim: ''
                         });
-                        loadClientsIndas({ 
-                          page: 1, 
-                          emailComo: '', 
-                          nombreComo: '', 
-                          codcli_cbim: '', 
+                        loadClientsIndas({
+                          page: 1,
+                          emailComo: '',
+                          nombreComo: '',
+                          codcli_cbim: '',
                         });
                       }}
                     >
@@ -468,9 +467,9 @@ const ClientsIndas = ({
                     </Button>
                     </div>
                 </ContentContainerFilters>
-                
-                <Table 
-                  dataSource={list} 
+
+                <Table
+                  dataSource={list}
                   columns={columnsClients}
                   rowKey="idcliente"
                   expandedRowRender = {client => showEntities(client)}
@@ -498,26 +497,26 @@ const ClientsIndas = ({
                       }}>
                       Atrás
                     </Button>,
-                    // <Popconfirm 
-                    //     okText="Confirmar" 
-                    //     cancelText="Cancelar" 
+                    // <Popconfirm
+                    //     okText="Confirmar"
+                    //     cancelText="Cancelar"
                     //     onConfirm={(e) => {
                     //       handleSubmit();
                     //       handleOk(e);
-                    //     }} 
-                    //     onCancel={(e) => {
-                           
                     //     }}
-                    //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                    //     title={} 
+                    //     onCancel={(e) => {
+
+                    //     }}
+                    //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}}
+                    //     title={}
                     //     autoAdjustOverflow={true}
-                    //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}> 
+                    //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                     <Button
                       key="submit"
                       type="primary"
                       onClick={(e) => {
                         handleSubmit();
-                        
+
                         // sale el popover de la doble confirmación
                         // handleSubmit(e);
                         //handleOk(e);
@@ -541,7 +540,7 @@ const ClientsIndas = ({
                           value={values.email}
                           onChange={handleInput(setFieldValue, 'email')}
                           onBlur={handleBlur}
-                        />  
+                        />
                         {errorMessage === 'Este email ya existe' && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
                         <CheckboxPasswordReset onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} checked={values.ind_renovar_pass}>
                         Enviar correo de renovación de contraseña.
@@ -550,11 +549,11 @@ const ClientsIndas = ({
                 </ModalTaskDetail>
                 <Modal
                     visible={isVisibleEditStateActive}
-                    title={clientState === 0 ? 
+                    title={clientState === 0 ?
                     <div>
                         <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
                             Activar Cliente
-                    </div> : 
+                    </div> :
                     <div>
                         <ExclamationCircleOutlined style={{ color: 'orange', padding: '0px 10px 0px 0px' }}/>
                             Baja de Cliente
@@ -563,16 +562,16 @@ const ClientsIndas = ({
                         handleCancelEditStateActive()
                     }}
                     footer={[
-                        // <Popconfirm 
-                        //     okText="Confirmar" 
-                        //     cancelText="Cancelar" 
+                        // <Popconfirm
+                        //     okText="Confirmar"
+                        //     cancelText="Cancelar"
                         //     onConfirm={(e) => {
-                               
-                        //     }} 
+
+                        //     }}
                         //     onCancel={(e) => {
                         //         handleOkEditStateActive(e)}}
-                        //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}} 
-                        //     title={getMessageActivationAndName(nameClient, clientState)} 
+                        //     overlayStyle={{width: 'fit-content', whiteSpace: 'pre'}}
+                        //     title={getMessageActivationAndName(nameClient, clientState)}
                         //     autoAdjustOverflow={true}
                         //     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
 
@@ -583,7 +582,7 @@ const ClientsIndas = ({
                             else {
                                 editClientIndas({ id: id, idestado: 0, ind_renovar_pass: false });
                             }
-                            setLoading(true);              
+                            setLoading(true);
                             setIsDataChange(true);
                             handleOkEditStateActive(e);
                             setFormKey();
@@ -598,7 +597,7 @@ const ClientsIndas = ({
                             Cancelar
                         </Button>
                         // </Popconfirm>
-                    ]}    
+                    ]}
                 >   <TextContainer>
                       <div dangerouslySetInnerHTML={{ __html: getMessageActivationAndName(nameClient, clientState)} }/>
                       <ConfirmationText>Confirme por favor el cambio.</ConfirmationText>
@@ -606,9 +605,9 @@ const ClientsIndas = ({
                     {clientState === 0 && (
                     <CheckboxPasswordReset onChange={handleInputChecked(setFieldValue, 'ind_renovar_pass')} value={values.ind_renovar_pass}>
                         Enviar correo de renovación de contraseña.
-                    </CheckboxPasswordReset> 
+                    </CheckboxPasswordReset>
                     )}
-                </Modal> 
+                </Modal>
                 </div>
                 )}
                 {/* { para cambio de email Modal en los buttons de guardar se llama a un aviso de la doble confirmación para cambiar el email y en este aviso ya se llama a las dos funciones de update} */}
@@ -616,7 +615,7 @@ const ClientsIndas = ({
                 {/* {elemento 1 Modal para cambio de email} */}
                 {/* {elemento 2 Aviso para doble confirmación de email y estado} */}
             </Formik>
-            
+
         </div>
     );
 

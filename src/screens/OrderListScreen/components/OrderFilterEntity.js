@@ -15,10 +15,31 @@ const { Option } = Select;
 
 
 class OrderFilterEntity extends React.Component {
-    state = {
-        data: [],
-        value: this.props.value,
-    };
+
+    constructor( props ) {
+        super( props )
+        this.state = {
+            data: [],
+            value: props.value,
+        };
+
+        this.fetch = this.fetch.bind(this)
+        this.handleSearch = this.handleSearch.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleInitialValue = this.handleInitialValue.bind(this)
+    }
+
+    componentDidMount( ) {
+        const { data, value } = this.state;
+        //if we have no data, but we have a value, then query and select
+        if ( data.length == 0 && parseInt(value) > 0 ) {
+            this.fetch( value, this.handleInitialValue )
+        }
+    }
+
+    handleInitialValue( data ) {
+        this.setState({ data })
+    }
 
     handleSearch = value => {
         if (value) {
@@ -51,26 +72,19 @@ class OrderFilterEntity extends React.Component {
     }
 
     handleChange = value => {
-        this.setState({value: null});
         let currentRow = null
         this.state.data.forEach((row) => {
             if ( row.entity.codentidad_cbim == value ) {
                 currentRow = row.entity
             }
         })
+        this.setState({value: null, data: currentRow == null ? [] : this.state.data });
         const cod = (currentRow != '' && this.props.column && this.props.column == 'object') ? currentRow : currentRow.codcli_cbim
         //if (this.props.column )
         const client=currentRow ? cod : '';
         this.props.onChangeClient(client);
         this.props.onChange(typeof(value) == 'undefined' ? '' : value)
     };
-
-    constructor(props) {
-        super(props)
-        this.fetch = this.fetch.bind(this)
-        this.handleSearch = this.handleSearch.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-    }
 
     render() {
         const options = this.state.data.map(d => (<Option key={d.value}>{d.text}</Option>) );

@@ -1,22 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { takeLatest, call, put } from 'redux-saga/effects';
-
-import { Checkbox, Button, Col, Row, Select} from 'antd';
-import jsonp from 'fetch-jsonp';
-import querystring from 'querystring';
-
-import {DatePickerFromTo, InputBox, InputsContainer }  from '../../../../lib/styled';
-import OrderFilterEntity from "../../../OrderListScreen/components/OrderFilterEntity";
+import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider, Radio} from 'antd';
+import {DatePickerFromTo, InputBox, InputsContainer} from "../../../lib/styled";
+import OrderFilterEntity from "../../OrderListScreen/components/OrderFilterEntity";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
+import {get} from "lodash";
 import * as moment from "moment";
-import { get } from 'lodash';
-
-
-const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-class PlanesCompraFilters extends React.Component {
+const dateFormat = 'DD/MM/YYYY';
+
+class ClientsFilters extends React.Component {
     constructor(props) {
         super(props)
         this.setFilters = this.setFilters.bind(this)
@@ -28,12 +22,12 @@ class PlanesCompraFilters extends React.Component {
             idestado: get( props, 'filters.idestado', ''),
             searchByEntity: get( props, 'filters.searchByEntity', ''),
             page: props.page,
+            especial: get( props, 'filters.especial', ''),
             fechas: get( props, 'filters.fechas', []),
             fechasValue: get( props, 'filters.fechasValue', []),
             expandFilters: get( props, 'filters.expandFilters', false),
             coddelegado: get( props, 'filters.coddelegado', ''),
             isFilterChanged: get( props, 'filters.isFilterChanged', false),
-            contareaspendientes: get( props, 'filters.contareaspendientes', false),
         }
     }
 
@@ -44,6 +38,7 @@ class PlanesCompraFilters extends React.Component {
             fechasValue: [],
             searchByEntity: '',
             page: 0,
+            especial: '',
             coddelegado: '',
             idestado: '',
             fechas: [],
@@ -107,9 +102,8 @@ class PlanesCompraFilters extends React.Component {
 
     render() {
 
-        const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
+        const { page, idcliente, especial, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
 
-        console.log( 'searchByEntity', searchByEntity );
         return (
             <div className="table-filters-indas">
                 <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
@@ -144,14 +138,31 @@ class PlanesCompraFilters extends React.Component {
                 <InputsContainer hidden={!this.state.expandFilters} style={{width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0}} key={'filters_b_2'}>
                     <Row style={{width: '100%'}}>
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
-                            <span style={{padding: '10px'}}>PC vigentes en este intervalo</span>
-                            <DatePickerFromTo
-                                style={{width: '100%'}}
-                                format={dateFormat}
-                                onChange={this.searchedValueDate}
-                                placeholder={['desde', 'hasta']}
-                                value={this.state.fechasValue}
-                            />
+                            <span style={{padding: '10px'}}>Filtro especial</span>
+                            <Select
+                                value={especial}
+                                onChange={ ( value ) => { this.searchedValue( 'especial', value ) } }
+                                style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
+                            >
+                                <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
+                                <Option value="activos">Solo clientes Activos</Option>
+                                <Option value="inactivos">Solo clientes Inactivos</Option>
+                                <Option value="altas">Altas</Option>
+                                <Option value="bajas">Bajas</Option>
+                                <Option value="sinplan">Clientes sin Plan de compra</Option>
+                            </Select>
+                            { ['activos', 'inactivos', 'altas', 'bajas' ].indexOf( especial ) > -1 && (
+                                <React.Fragment>
+                                    <div style={{padding: '10px', marginTop: '10px', paddingBottom: 0 }}>Rango de fechas del filtro especial:</div>
+                                    <DatePickerFromTo
+                                        style={{width: '100%'}}
+                                        format={dateFormat}
+                                        onChange={this.searchedValueDate}
+                                        placeholder={['desde', 'hasta']}
+                                        value={this.state.fechasValue}
+                                    />
+                                </React.Fragment>
+                            ) }
                         </Col>
 
                         <Col span={11} style={{padding: '10px', paddingTop: 0}}>
@@ -176,14 +187,13 @@ class PlanesCompraFilters extends React.Component {
                         </Col>
 
                         <Col span={5} style={{padding: '10px', paddingTop: 0}}>
-                            <span style={{padding: '10px'}}>Estado</span>
+                            <span style={{padding: '10px'}}>Estado cliente</span>
                             <Select
                                 value={idestado}
                                 onChange={(value) => this.searchedValue('idestado', value)}
                                 style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
-                                <Option value="0">Borrador</Option>
                                 <Option value="1">Activo</Option>
                                 <Option value="2">Inactivo</Option>
                             </Select>
@@ -229,9 +239,12 @@ class PlanesCompraFilters extends React.Component {
     };
 
 }
-PlanesCompraFilters.propTypes = {
+ClientsFilters.propTypes = {
 };
 
-export default connect( ( state ) => ({
-    delegadosComerciales: state.planesCompra.delegadosComerciales
-}), {  } )( PlanesCompraFilters );
+export default  connect(
+    state => ({
+        delegados: state.planesCompra.delegados,
+    }),
+    {  }
+)( ClientsFilters );

@@ -1,37 +1,28 @@
-import { get, post, patch } from '../../lib/restClient';
+import {get, post, patch, getHeaders} from '../../lib/restClient';
 import { NUM_CLIENTES_PAG } from './constants';
+import _ from "underscore";
+import * as download from "downloadjs";
+import {LIMIT} from "../../constants";
 
 
 export const getClientsIndas = () => get('/ntr/cliente');
-const LIMIT = 20;
 
-const generatingOffset = (page, offset)=>{
-    let queryParams = '';
-    const limit = LIMIT;
-  if(page < 0){
-    offset = 0
-queryParams = `offset=${offset}&limit=${limit}`
-}else if(page === 0){
-  offset = 0
-  queryParams = `offset=${offset}&limit=${limit}`
-}else{
-  queryParams = `offset=${offset}&limit=${limit}`
-}
-return queryParams;
+const generatingOffset = (offset)=>{
+	return `offset=${offset}&limit=${LIMIT}`
 }
 
 // export const searchClientBy = async ({
-// 	emailComo, 
-// 	codcli_cbim, 
-// 	nombreComo, 
+// 	emailComo,
+// 	codcli_cbim,
+// 	nombreComo,
 // 	pages,
 //   }) => {
-	  
+
 // 	let offset;
 // 	offset = pages;
-	
+
 //   let queryParams = generatingOffset(pages, offset)
-	
+
 // 	//BY TYPE
 // 	if (nombreComo) {
 // 	  //tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
@@ -62,9 +53,9 @@ export const getUsersCount = ({ emailComo = '', nombreComo = '', codcli_cbim = '
 	}
 	if (codcli_cbim) {
 		return queryParams = '';
-	}	
+	}
 	return get(`/ntr/cliente/count${queryParams}`);
-  }; 
+  };
 
 export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', page = 1 }) => {
 	let offsetLimit = `?offset=${(page - 1) * NUM_CLIENTES_PAG}&limit=${NUM_CLIENTES_PAG}`;
@@ -92,12 +83,63 @@ export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', pa
 
 	return get(`/ntr/cliente${queryParams}`)
 };
+//todo: ajustar
+const addFiltersQueryParams = ( queryParams, {
+	sort_field, sort_order, idestado, coddelegado, ind_esfarmacia, orden, idcliente
+} ) => {
+	if (sort_field) {
+		if (sort_order == 'DESC') {
+			queryParams += `&orden=-${sort_field}`;
+		} else {
+			queryParams += `&orden=+${sort_field}`;
+		}
+	}
 
-export const getEntitiesIndas = queryParams => {
-	return !queryParams
-		? get('/ntr/entidad')
-		: get(`/ntr/entidad?${queryParams}`)
+	if (idcliente && idcliente != '') {
+		queryParams += `&idcliente=${idcliente}`;
+	}
+
+	if (idestado && idestado != '') {
+		queryParams += `&cliente_estado=${idestado}`;
+	}
+
+	if (coddelegado && coddelegado != '') {
+		queryParams += `&coddelegado=${coddelegado}`;
+	}
+
+	if (ind_esfarmacia && ind_esfarmacia != '') {
+		queryParams += `&ind_esfarmacia=${ind_esfarmacia}`;
+	}
+	return queryParams;
 }
+
+export const getEntitiesIndas = async ( payload ) => {
+	let queryParams = '';
+	if ( payload && typeof payload === 'string' ) {
+		queryParams = payload;
+	}
+	if ( payload && typeof payload !== 'string' ) {
+		const filters = payload.filters ? payload.filters : {}
+		const page = payload.page ? payload.page : 1;
+		const offset = (page - 1) * LIMIT;
+		queryParams = generatingOffset(offset)
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
+	return get(`ntr/entidad?${queryParams}`);
+}
+export const countEntitiesIndas = async ( payload ) => {
+	let queryParams = '';
+	if ( payload ) {
+		const filters = payload.filters ? payload.filters : {}
+		if ( filters.sort_field ) {
+			delete filters.sort_field;
+		}
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
+	return get(`ntr/entidad/count?${queryParams}`);
+};
+export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
+
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)
 
@@ -105,3 +147,21 @@ export const updateClientIndas = (idClient, data) =>
 	post(`/ntr/cliente/${idClient}`, data)
 export const updateEntitiyIndas = (idEntity, data) =>
 	post(`/ntr/entidad/${idEntity}`, data)
+
+export const exportEntities =(filters = {}, callback) => {
+	const queryParams = addFiltersQueryParams( '', filters )
+	getHeaders().then( ( headers) => {
+		var x=new XMLHttpRequest();
+		x.open( "GET", `${process.env.REACT_APP_API_BASE_URL}ntr/entidad?formato=excel${queryParams}` , true);
+		_.each(headers, (value, key) => {
+			x.setRequestHeader( key, value );
+		})
+		x.responseType="blob";
+		x.onload= function(e){
+			const filename = x.getResponseHeader('content-disposition').split('=')[1];
+			download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			callback()
+		};
+		x.send();
+	})
+};
