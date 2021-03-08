@@ -61,6 +61,11 @@ import{
   watchfetchOrderStates,
   watchfetchOrderProducts,
 } from './orders/sagas';
+
+import{
+  watchfetchProducts,
+} from './products/sagas';
+
 import{
   watchfetchSalesByYear,
   watchfetchSalesByMonth,

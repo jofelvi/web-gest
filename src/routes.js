@@ -2,11 +2,8 @@ import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { connect } from 'react-redux';
-
 import PrivateRoute from './components/PrivateRoute';
-
 import utils from './lib/utils';
-
 import HomeScreen from './screens/HomeScreen';
 import UsersListScreen from './screens/UsersListScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -20,6 +17,7 @@ import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarEntidad from './screens/Forms/registrar_nueva_entidad/validarEntidad'
 import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
 import OrderListScreen from './screens/OrderListScreen'
+import CatalogListScreen from './screens/CatalogListScreen'
 
 const { capitalizeWord } = utils;
 
@@ -77,6 +75,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
       <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
       <PrivateRoute path="/orders" exact component={OrderListScreen}/>
+      <PrivateRoute path="/catalog-list" exact component={CatalogListScreen}/>
       <PrivateRoute path="/pruebaform3" exact component={ValidarEntidad}/>
     </Switch>
   );
