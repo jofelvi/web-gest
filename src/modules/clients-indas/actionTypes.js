@@ -22,3 +22,4 @@ export const SET_FILTER_VALUES = "SET_FILTER_VALUES";
 export const SET_FORM_KEY = "SET_FORM_KEY";
 export const SET_LIST_STATE = "SET_LIST_STATE";
 export const GET_CLIENT = "GET_CLIENT";
+export const GET_CLIENT_ENTITIES = "GET_CLIENT_ENTITIES";

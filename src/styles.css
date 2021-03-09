@@ -147,6 +147,18 @@ body{
    border-style: solid;
    border-color: rgba(0, 33, 64, 0.2);
 }
+.table-indas .ant-descriptions-view table {
+    border: none;
+}
+.list.sublist.ant-list-split .ant-list-header {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    border-color: #555;
+
+}
+.list.sublist.ant-list-split .ant-list-item {
+    padding: 4px 0;
+}
 .table-indas .ant-table-thead tr th{
     background-color: rgba(0, 33, 64, 0.85);
     color:rgba(255,255,255,1);

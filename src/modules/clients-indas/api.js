@@ -139,6 +139,7 @@ export const countEntitiesIndas = async ( payload ) => {
 	return get(`ntr/entidad/count?${queryParams}`);
 };
 export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
+export const getClientEntities = (idcliente) => get(`/ntr/cliente/${idcliente}/entidades`);
 
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)

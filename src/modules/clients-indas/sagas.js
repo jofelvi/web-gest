@@ -8,6 +8,7 @@ import {
 	SEARCH_CLIENT_BY,
 	GET_CLIENTS_COUNT,
 	GET_CLIENT,
+	GET_CLIENT_ENTITIES,
 } from './actionTypes';
 import {
 	loadClientsIndasFailed,
@@ -95,6 +96,24 @@ function* getClient({ payload }) {
 
 export function* watchgetClient() {
 	yield takeLatest(GET_CLIENT, getClient )
+}
+
+function* getClientEntities( { payload } ) {
+	try {
+		const response = yield call( api.getClientEntities, payload.idcliente )
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data)
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+
+export function* watchgetClientEntities() {
+	yield takeLatest(GET_CLIENT_ENTITIES, getClientEntities );
 }
 
 //wholesalers indas

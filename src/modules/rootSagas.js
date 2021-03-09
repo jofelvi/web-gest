@@ -90,6 +90,7 @@ import {
   // watchSearchClientBy,
   watchGetClientsCount,
   watchgetClient,
+  watchgetClientEntities,
 } from './clients-indas/sagas';
 
 import {
@@ -166,5 +167,6 @@ export default function* rootSaga() {
     watchupdatePlan(),
     watchupdatePlans(),
     watchgetClient(),
+    watchgetClientEntities(),
   ]);
 }
