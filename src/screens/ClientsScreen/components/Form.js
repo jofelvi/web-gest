@@ -183,7 +183,7 @@ class ClientsForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ client.email }
-                                    disabled={ true }
+                                    onChange={ ( { target }) => { this.setState( { client: { ...client, email: target.value } } ) } }
                                 />
                             </Col>
 
@@ -324,13 +324,15 @@ class ClientsForm extends React.Component {
                             </div>
                             )
                         }
+
+                        { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
+                        <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
+                            { loading ? (<Spin></Spin>) : 'Guardar' }
+                        </Button>
+
                     </div>
 
 
-                    { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
-                    <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
-                        { loading ? (<Spin></Spin>) : 'Guardar' }
-                    </Button>
 
 
                 </React.Fragment>

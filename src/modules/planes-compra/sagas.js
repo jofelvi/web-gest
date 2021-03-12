@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, takeEvery } from 'redux-saga/effects';
 
 import * as HttpStatus from 'http-status-codes'
 
@@ -151,14 +151,20 @@ function* fetchPlan( { payload } ) {
         const response = yield call( api.getPlan , payload.idcondcomercial );
         const { data } = response;
 
+        if ( typeof payload.success == 'function' ) {
+            payload.success(response.data)
+        }
         yield put(fetchPlanSuccess({ plan: response.data }));
     } catch (e) {
         payload.error(e);
+        if ( typeof payload.error == 'function' ) {
+            payload.error(e)
+        }
     }
 }
 
 export function* watchfetchPlan() {
-    yield takeLatest( FETCH_PLAN, fetchPlan );
+    yield takeEvery( FETCH_PLAN, fetchPlan );
 }
 
 function* updatePlan( { payload } ) {

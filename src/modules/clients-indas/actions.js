@@ -23,6 +23,9 @@ import {
     SET_LIST_STATE,
     GET_CLIENT,
     GET_CLIENT_ENTITIES,
+    GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_PLANS,
+    UPDATE_CLIENT,
 } from './actionTypes';
 
 export const {
@@ -48,6 +51,9 @@ export const {
     setListState,
     getClient,
     getClientEntities,
+    getClientStatisticsPurchase,
+    getClientPlans,
+    updateClient,
 } = createActions(
     LOAD_CLIENTS_INDAS,
     LOAD_CLIENTS_INDAS_FAILED,
@@ -71,4 +77,7 @@ export const {
     SET_LIST_STATE,
     GET_CLIENT,
     GET_CLIENT_ENTITIES,
+    GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_PLANS,
+    UPDATE_CLIENT,
 );
