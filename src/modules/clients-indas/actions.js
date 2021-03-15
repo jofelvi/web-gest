@@ -22,6 +22,10 @@ import {
     SET_FORM_KEY,
     SET_LIST_STATE,
     GET_CLIENT,
+    GET_CLIENT_ENTITIES,
+    GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_PLANS,
+    UPDATE_CLIENT,
 } from './actionTypes';
 
 export const {
@@ -46,6 +50,10 @@ export const {
     setFormKey,
     setListState,
     getClient,
+    getClientEntities,
+    getClientStatisticsPurchase,
+    getClientPlans,
+    updateClient,
 } = createActions(
     LOAD_CLIENTS_INDAS,
     LOAD_CLIENTS_INDAS_FAILED,
@@ -68,4 +76,8 @@ export const {
     SET_FORM_KEY,
     SET_LIST_STATE,
     GET_CLIENT,
+    GET_CLIENT_ENTITIES,
+    GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_PLANS,
+    UPDATE_CLIENT,
 );

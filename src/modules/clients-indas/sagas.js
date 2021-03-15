@@ -8,6 +8,10 @@ import {
 	SEARCH_CLIENT_BY,
 	GET_CLIENTS_COUNT,
 	GET_CLIENT,
+	GET_CLIENT_ENTITIES,
+	GET_CLIENT_STATISTICS_PURCHASE,
+	GET_CLIENT_PLANS,
+	UPDATE_CLIENT,
 } from './actionTypes';
 import {
 	loadClientsIndasFailed,
@@ -24,6 +28,7 @@ import {
 } from './actions';
 import * as api from './api';
 import * as HttpStatus from 'http-status-codes';
+import {UPDATE_PLAN} from "../planes-compra/actionTypes";
 
 //clients indas
 function* loadClientsIndas({payload = { page: 1, emailComo: '', nombreComo: '', codcli_cbim: ''}}) {
@@ -77,6 +82,41 @@ export function* watchloadEntitiesInda() {
 	yield takeLatest(LOAD_ENTITIES_INDAS, loadEntitiesIndas)
 }
 
+function* getClientStatisticsPurchase( { payload } ) {
+	try {
+		const response = yield call( api.getClientStatisticsPurchase, payload.idcliente )
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data)
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+
+export function* watchgetClientStatisticsPurchase() {
+	yield takeLatest(GET_CLIENT_STATISTICS_PURCHASE, getClientStatisticsPurchase)
+}
+
+function* getClientPlans( { payload } ) {
+	try {
+		const response = yield call( api.getClientPlans, payload.idcliente )
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data)
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+
+export function* watchgetClientPlans() {
+	yield takeLatest(GET_CLIENT_PLANS, getClientPlans)
+}
 
 function* getClient({ payload }) {
 	try {
@@ -95,6 +135,24 @@ function* getClient({ payload }) {
 
 export function* watchgetClient() {
 	yield takeLatest(GET_CLIENT, getClient )
+}
+
+function* getClientEntities( { payload } ) {
+	try {
+		const response = yield call( api.getClientEntities, payload.idcliente )
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data)
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+
+export function* watchgetClientEntities() {
+	yield takeLatest(GET_CLIENT_ENTITIES, getClientEntities );
 }
 
 //wholesalers indas
@@ -145,3 +203,15 @@ export function* watchEditClientIndas() {
 	yield takeLatest(EDIT_CLIENT_INDAS, editClientIndas)
 }
 
+function* updateClient( { payload } ) {
+	try {
+		const response = yield call( api.updateClient , payload.client );
+		const { data } = response;
+		payload.success( data );
+	} catch (e) {
+		payload.error(e);
+	}
+}
+export function* watchupdateClient() {
+	yield takeLatest( UPDATE_CLIENT, updateClient );
+}

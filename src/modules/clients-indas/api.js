@@ -39,6 +39,14 @@ const generatingOffset = (offset)=>{
 // 	return get(`ntr/cliente?${queryParams}`);
 //   };
 export const editClientTR = (id,data) => patch(`/multi/cliente/${id}`, data);
+export const updateClient = ( rClient ) => {
+	const client = _.clone( rClient )
+	const idcliente = client.idcliente;
+	delete client.idcliente;
+	delete client.estado;
+	return patch(`/ntr/cliente/${idcliente }`, client );
+}
+
 
 export const getUsersCount = ({ emailComo = '', nombreComo = '', codcli_cbim = '' }) => {
 	let queryParams = '';
@@ -88,14 +96,14 @@ const addFiltersQueryParams = ( queryParams, {
 	sort_field, sort_order, idestado, coddelegado, ind_esfarmacia, orden, idcliente
 } ) => {
 	if (sort_field) {
-		if (sort_order == 'DESC') {
+		if (sort_order === 'DESC') {
 			queryParams += `&orden=-${sort_field}`;
 		} else {
 			queryParams += `&orden=+${sort_field}`;
 		}
 	}
 
-	if (idcliente && idcliente != '') {
+	if (idcliente && idcliente !== '') {
 		queryParams += `&idcliente=${idcliente}`;
 	}
 
@@ -103,11 +111,11 @@ const addFiltersQueryParams = ( queryParams, {
 		queryParams += `&cliente_estado=${idestado}`;
 	}
 
-	if (coddelegado && coddelegado != '') {
+	if (coddelegado && coddelegado !== '') {
 		queryParams += `&coddelegado=${coddelegado}`;
 	}
 
-	if (ind_esfarmacia && ind_esfarmacia != '') {
+	if (ind_esfarmacia && ind_esfarmacia !== '') {
 		queryParams += `&ind_esfarmacia=${ind_esfarmacia}`;
 	}
 	return queryParams;
@@ -139,7 +147,9 @@ export const countEntitiesIndas = async ( payload ) => {
 	return get(`ntr/entidad/count?${queryParams}`);
 };
 export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
-
+export const getClientEntities = (idcliente) => get(`/ntr/cliente/${idcliente}/entidades`);
+export const getClientStatisticsPurchase = (idcliente) => get(`/ntr/cliente/${idcliente}/stats/compras`);
+export const getClientPlans = (idcliente) => get(`/ntr/cliente/${idcliente}/planes`);
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)
 

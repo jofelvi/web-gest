@@ -39,7 +39,7 @@ class ClientsTable extends React.Component {
                 sorter: true,
             },
             {
-                title: 'Puntos', dataIndex: 'puntos', key: 'puntos', width: 150,
+                title: 'Puntos', dataIndex: 'puntosacumulados', key: 'puntosacumulados', width: 150,
             },
             {
                 title: 'Email', dataIndex: 'cliente_email', key: 'cliente_email', width: 200,

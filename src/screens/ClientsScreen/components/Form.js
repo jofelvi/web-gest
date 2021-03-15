@@ -61,6 +61,7 @@ class ClientsForm extends React.Component {
             error: props.error,
             client: props.client,
             loading: props.loading,
+            showDetails: false,
         }
         this.save = this.save.bind( this )
         this.validate = this.validate.bind( this )
@@ -124,15 +125,16 @@ class ClientsForm extends React.Component {
 
 
     render() {
-        const { error, client, loading } = this.state;
+        const { error, client, loading, showDetails } = this.state;
 
         return (
             <ConfigProvider locale={ locale }>
                 <React.Fragment>
                     { error && ( <Typography type="danger" style={{ color: 'red'}}> Se ha producido un error al guardar el cliente, por favor, revisa los datos.</Typography>) }
-                    <h3 style={{margin: '20px 0 10px 0'}}>
+                    <a style={{ float: 'right' }} onClick={ () => this.setState( { showDetails: !showDetails })}>{ showDetails ? 'Mostrar menos' : 'Mostrar más' }</a>
+                    <h2 style={{margin: '20px 0 10px 0'}}>
                         Datos generales
-                    </h3>
+                    </h2>
                     <div className="table-filters-indas" style={{padding:'20px'}}>
                         <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                             <Col span={12} >
@@ -181,7 +183,7 @@ class ClientsForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ client.email }
-                                    disabled={ true }
+                                    onChange={ ( { target }) => { this.setState( { client: { ...client, email: target.value } } ) } }
                                 />
                             </Col>
 
@@ -217,114 +219,120 @@ class ClientsForm extends React.Component {
                             </Col>
 
                         </Row>
+
+                        { showDetails && (
+                            <div>
+                            <h3 style={{margin: '20px 0 10px 0'}}>
+                                Datos del usuario transferidas asociado al cliente CBIM.
+                            </h3>
+                            <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
+                            <Col span={12} >
+                            <label>Nombre</label>
+                            <Input  style={inputStyle}
+                            value={ client.nombre }
+                            disabled={ loading }
+                            onChange={ (e) => {
+                            this.setState({ client: { ...client, nombre: e.target.value }},
+                                () => {
+                                    this.clearError( 'nombre' )
+                                }
+                            )
+
+                        } }
+                            style={ this.hasError( 'nombre' ) ? inputErrorStyle : inputStyle}
+                            />
+                            { this.getError( 'nombre' ) }
+                            </Col>
+                            <Col span={12} >
+                            <label>NIF</label>
+                            <Input
+                            style={inputStyle}
+                            value={ client.nif }
+                            disabled={ loading }
+                            onChange={ (e) => {
+                            this.setState({ client: { ...client, nif: e.target.value }},
+                                () => {
+                                    this.clearError( 'nif' )
+                                }
+                            )
+                        } }
+                            />
+                            { this.getError( 'nif' ) }
+                            </Col>
+
+                            </Row>
+                            <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
+                            <Col span={12} >
+                            <label>Apellido 1</label>
+                            <Input
+                            style={inputStyle}
+                            value={ client.apellido1 }
+                            disabled={ loading }
+                            onChange={ (e) => {
+                            this.setState({ client: { ...client, apellido1: e.target.value }},
+                                () => {
+                                    this.clearError( 'apellido1' )
+                                }
+                            )
+                        } }
+                            style={ this.hasError( 'apellido1' ) ? inputErrorStyle : inputStyle}
+                            />
+                            { this.getError( 'apellido1' ) }
+                            </Col>
+                            <Col span={12} >
+                            <label>Teléfono</label>
+                            <Input
+                            style={inputStyle}
+                            value={ client.telefono }
+                            disabled={ loading }
+                            onChange={ (e) => {
+                            this.setState({ client: { ...client, telefono: e.target.value }},
+                                () => {
+                                    this.clearError( 'telefono' )
+                                }
+                            )
+
+                        } }
+                            style={ this.hasError( 'telefono' ) ? inputErrorStyle : inputStyle}
+                            />
+                            { this.getError( 'telefono' ) }
+                            </Col>
+
+                            </Row>
+                            <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
+
+                            <Col span={12} >
+                            <label>Apellido 2</label>
+                            <Input
+                            style={inputStyle}
+                            value={ client.apellido2 }
+                            disabled={ loading }
+                            onChange={ (e) => {
+                            this.setState({ client: { ...client, telefono: e.target.value }},
+                                () => {
+                                    this.clearError( 'apellido2' )
+                                }
+                            )
+
+                        } }
+                            style={ this.hasError( 'apellido2' ) ? inputErrorStyle : inputStyle}
+                            />
+                            { this.getError( 'apellido2' ) }
+                            </Col>
+
+                            </Row>
+                            </div>
+                            )
+                        }
+
+                        { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
+                        <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
+                            { loading ? (<Spin></Spin>) : 'Guardar' }
+                        </Button>
+
                     </div>
-                    <h3 style={{margin: '20px 0 10px 0'}}>
-                        Datos del usuario transferidas asociado al cliente CBIM.
-                    </h3>
-                    <div className="table-filters-indas" style={{padding:'20px'}}>
-                        <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-                            <Col span={12} >
-                                <label>Nombre</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.nombre }
-                                    disabled={ loading }
-                                    onChange={ (e) => {
-                                        this.setState({ client: { ...client, nombre: e.target.value }},
-                                            () => {
-                                                this.clearError( 'nombre' )
-                                            }
-                                        )
 
-                                    } }
-                                    style={ this.hasError( 'nombre' ) ? inputErrorStyle : inputStyle}
-                                />
-                                { this.getError( 'nombre' ) }
-                            </Col>
-                            <Col span={12} >
-                                <label>NIF</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.nif }
-                                    disabled={ loading }
-                                    onChange={ (e) => {
-                                        this.setState({ client: { ...client, nif: e.target.value }},
-                                            () => {
-                                                this.clearError( 'nif' )
-                                            }
-                                        )
-                                    } }
-                                />
-                                { this.getError( 'nif' ) }
-                            </Col>
 
-                        </Row>
-                        <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-                            <Col span={12} >
-                                <label>Apellido 1</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.apellido1 }
-                                    disabled={ loading }
-                                    onChange={ (e) => {
-                                        this.setState({ client: { ...client, apellido1: e.target.value }},
-                                            () => {
-                                                this.clearError( 'apellido1' )
-                                            }
-                                        )
-                                    } }
-                                    style={ this.hasError( 'apellido1' ) ? inputErrorStyle : inputStyle}
-                                />
-                                { this.getError( 'apellido1' ) }
-                            </Col>
-                            <Col span={12} >
-                                <label>Teléfono</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.telefono }
-                                    disabled={ loading }
-                                    onChange={ (e) => {
-                                        this.setState({ client: { ...client, telefono: e.target.value }},
-                                            () => {
-                                                this.clearError( 'telefono' )
-                                            }
-                                        )
-
-                                    } }
-                                    style={ this.hasError( 'telefono' ) ? inputErrorStyle : inputStyle}
-                                />
-                                { this.getError( 'telefono' ) }
-                            </Col>
-
-                        </Row>
-                        <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
-
-                            <Col span={12} >
-                                <label>Apellido 2</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.apellido2 }
-                                    disabled={ loading }
-                                    onChange={ (e) => {
-                                        this.setState({ client: { ...client, telefono: e.target.value }},
-                                            () => {
-                                                this.clearError( 'apellido2' )
-                                            }
-                                        )
-
-                                    } }
-                                    style={ this.hasError( 'apellido2' ) ? inputErrorStyle : inputStyle}
-                                />
-                                { this.getError( 'apellido2' ) }
-                            </Col>
-
-                        </Row>
-                    </div>
-
-                    { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
-                    <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
-                        { loading ? (<Spin></Spin>) : 'Guardar' }
-                    </Button>
 
 
                 </React.Fragment>

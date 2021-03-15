@@ -84,8 +84,9 @@ class ClientsActions extends React.Component {
 
 
     render() {
-        const { exportLoading, loading, entity, update_status } = this.state
+        const { exportLoading, loading, update_status } = this.state
         const { selectedRowKeys, entities, history, filters, onReload } = this.props
+        const entity = selectedRowKeys.length == 1 ? find( entities, ( entity ) => parseInt(  entity.codentidad_cbim ) == parseInt( selectedRowKeys[ 0 ] ) ) : false;
         return (
 
             <div className="table-actions">
@@ -108,7 +109,7 @@ class ClientsActions extends React.Component {
                         selectedRowKeys.length == 1 && (
                             <React.Fragment>
                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
-                                    this.props.history.push(`/clientes/${selectedRowKeys[0]}/expediente`)
+                                    this.props.history.push(`/clientes/${ entity.idcliente }/expediente`)
                                 }}>
                                     Ver expediente digital
                                 </Button>
@@ -124,15 +125,15 @@ class ClientsActions extends React.Component {
                                 <Dropdown overlay={(
                                     <Menu>
                                         <Menu.Item key="1" onClick={() => { this.confirmUpdateStatus( 1) }}>
-                                            Dar de alta
+                                            Alta
                                         </Menu.Item>
                                         <Menu.Item key="0" onClick={() => { this.confirmUpdateStatus( 0 ) }}>
-                                            Dar de baja
+                                            Baja
                                         </Menu.Item>
                                     </Menu>
                                 )}>
                                     <Button disabled={ loading } type="link" style={{marginLeft: '0px', marginRight: '0px'}}>
-                                        { loading == 'idestado' ? <Spin /> : 'Cambiar estado' } <DownOutlined/>
+                                        { loading == 'idestado' ? <Spin /> : 'Cambiar estado a' } <DownOutlined/>
                                     </Button>
                                 </Dropdown>
 
