@@ -93,6 +93,7 @@ import {
   watchgetClient,
   watchgetClientEntities,
   watchgetClientStatisticsPurchase,
+  watchgetClientStatisticsPurchaseGroups,
     watchgetClientPlans,
 } from './clients-indas/sagas';
 
@@ -172,6 +173,7 @@ export default function* rootSaga() {
     watchgetClient(),
     watchgetClientEntities(),
     watchgetClientStatisticsPurchase(),
+    watchgetClientStatisticsPurchaseGroups(),
     watchgetClientPlans(),
     watchupdateClient(),
   ]);

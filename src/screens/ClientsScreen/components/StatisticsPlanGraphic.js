@@ -35,23 +35,24 @@ class StatisticsPlanGraphic extends React.Component {
         const diasRestantes = moment(plan.fechafin).diff(moment(), 'days') > 0 ? moment(plan.fechafin).diff(moment(), 'days') : 0;
         const diasCuenta = diasTotales-diasRestantes
         const periodPercent = parseFloat(diasCuenta) / parseFloat( diasTotales )
+        const udspermitidas = plan.udspermitidas > plan.udscompradas ? plan.udspermitidas : plan.udscompradas;
         const data = [
             {
                 question: "Compras",
-                percent: plan.udspermitidas > 0 ? parseFloat(plan.udscompradas)/parseFloat(plan.udspermitidas) : 0,
+                percent: udspermitidas > 0 ? parseFloat(plan.udscompradas)/parseFloat(udspermitidas) : 0,
                 value: plan.udscompradas,
             },
             {
                 question: "Periodo",
                 percent: periodPercent,
-                value: '(dias) '+diasCuenta,
+                value: diasCuenta,
             },
         ];
 
         const cols = {
             percent: {
                 min: 0,
-                max: 0.4
+                max: 1
             }
         };
         return (

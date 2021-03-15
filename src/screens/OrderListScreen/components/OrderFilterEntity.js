@@ -36,6 +36,11 @@ class OrderFilterEntity extends React.Component {
             this.fetch( value, this.handleInitialValue )
         }
     }
+    componentDidUpdate( oldProps ) {
+        if ( '' === this.props.value && '' !== oldProps.value ) {
+            this.setState( { value: '', data: [] } )
+        }
+    }
 
     handleInitialValue( data ) {
         this.setState({ data })

@@ -24,6 +24,7 @@ import {
     GET_CLIENT,
     GET_CLIENT_ENTITIES,
     GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_STATISTICS_PURCHASE_GROUPS,
     GET_CLIENT_PLANS,
     UPDATE_CLIENT,
 } from './actionTypes';
@@ -52,6 +53,7 @@ export const {
     getClient,
     getClientEntities,
     getClientStatisticsPurchase,
+    getClientStatisticsPurchaseGroups,
     getClientPlans,
     updateClient,
 } = createActions(
@@ -78,6 +80,7 @@ export const {
     GET_CLIENT,
     GET_CLIENT_ENTITIES,
     GET_CLIENT_STATISTICS_PURCHASE,
+    GET_CLIENT_STATISTICS_PURCHASE_GROUPS,
     GET_CLIENT_PLANS,
     UPDATE_CLIENT,
 );

@@ -10,6 +10,7 @@ import {
 	GET_CLIENT,
 	GET_CLIENT_ENTITIES,
 	GET_CLIENT_STATISTICS_PURCHASE,
+	GET_CLIENT_STATISTICS_PURCHASE_GROUPS,
 	GET_CLIENT_PLANS,
 	UPDATE_CLIENT,
 } from './actionTypes';
@@ -214,4 +215,22 @@ function* updateClient( { payload } ) {
 }
 export function* watchupdateClient() {
 	yield takeLatest( UPDATE_CLIENT, updateClient );
+}
+
+
+function* getClientStatisticsPurchaseGroups( { payload } ) {
+	try {
+		const response = yield call( api.getClientStatisticsPurchaseGroups, payload.idcliente )
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data)
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+export function* watchgetClientStatisticsPurchaseGroups() {
+	yield takeLatest( GET_CLIENT_STATISTICS_PURCHASE_GROUPS, getClientStatisticsPurchaseGroups );
 }

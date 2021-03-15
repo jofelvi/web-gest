@@ -11,7 +11,6 @@ class Entidades extends React.Component {
         const { entities } = this.props;
 
         return (<List
-            header={ (<h2 style={{margin: '20px 0 10px 0'}}>Entidades</h2>) }
             itemLayout="horizontal"
             dataSource={ entities ? entities : [] }
             loading={ false }
