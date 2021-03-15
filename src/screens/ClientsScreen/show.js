@@ -9,7 +9,7 @@ import {
 import {withRouter} from "react-router-dom";
 import ClientsForm from './components/Form';
 import { getClient } from '../../modules/clients-indas/actions';
-import { getClientEntities, getClientStatisticsPurchase, getClientPlans, updateClient } from '../../modules/clients-indas/actions';
+import { getClientEntities, getClientStatisticsPurchase, getClientPlans, updateClient, getClientStatisticsPurchaseGroups } from '../../modules/clients-indas/actions';
 import _ from 'underscore';
 import { Line, Pie, RadialBar } from '@ant-design/charts';
 import { reduce, find, filter } from 'lodash';
@@ -40,14 +40,17 @@ class ClientsShowScreen extends React.Component {
             loadingPlans: true,
             loadingEntities: true,
             loadingStatisticsPurchase: true,
+            loadingStatisticsPurchaseGroup: true,
             savedPlan: null,
             client: null,
             entities: null,
             plans: null,
             statisticsPurchaseData: null,
+            statisticsPurchaseGroupsData: null,
             statisticsPurchase: null,
             statisticsPurchasePeriod: '1year',
             statisticsPurchaseColumn: 'unidades',
+            statisticsPurchaseGroupsColumn: 'unidades',
         }
         this.fetchClientFailed = this.fetchClientFailed.bind(this)
         this.fetchClientSuccess = this.fetchClientSuccess.bind(this)
@@ -57,19 +60,19 @@ class ClientsShowScreen extends React.Component {
         this.fetchClientPlansSuccess = this.fetchClientPlansSuccess.bind(this)
         this.fetchStatisticsPurchaseFailed = this.fetchStatisticsPurchaseFailed.bind(this)
         this.fetchStatisticsPurchaseSuccess = this.fetchStatisticsPurchaseSuccess.bind(this)
+        this.fetchStatisticsPurchaseGroupsFailed = this.fetchStatisticsPurchaseGroupsFailed.bind(this)
+        this.fetchStatisticsPurchaseGroupsSuccess = this.fetchStatisticsPurchaseGroupsSuccess.bind(this)
         this.editPlan = this.editPlan.bind(this)
         this.onSaveClient = this.onSaveClient.bind(this)
     }
 
     componentWillMount(props) {
-        const { getClient, getClientEntities, getClientStatisticsPurchase, getClientPlans, match } = this.props;
+        const { getClient, getClientEntities, getClientStatisticsPurchase, getClientStatisticsPurchaseGroups, getClientPlans, match } = this.props;
         getClient({ idcliente: match.params.id, success: this.fetchClientSuccess, error: this.fetchClientFailed })
         getClientEntities( { idcliente: match.params.id, success: this.fetchClientEntitiesSuccess, error: this.fetchClientEntitiesFailed } )
         getClientPlans( { idcliente: match.params.id, success: this.fetchClientPlansSuccess, error: this.fetchClientPlansFailed } )
         getClientStatisticsPurchase( { idcliente: match.params.id, success: this.fetchStatisticsPurchaseSuccess, error: this.fetchStatisticsPurchaseFailed } )
-        this.setState( {
-            error: false
-        } )
+        getClientStatisticsPurchaseGroups( { idcliente: match.params.id, success: this.fetchStatisticsPurchaseGroupsSuccess, error: this.fetchStatisticsPurchaseGroupsFailed } )
     }
     onSaveClient( client ) {
         const {match } = this.props;
@@ -89,8 +92,16 @@ class ClientsShowScreen extends React.Component {
     }
 
     fetchStatisticsPurchaseFailed( error ) {
-        alert("No se ha podido cargar las estadísticas de compra.")
+        this.setState( { statisticsPurchaseData: null, loadingStatisticsPurchase: false } )
     }
+    fetchStatisticsPurchaseGroupsSuccess ( statisticsPurchaseGroupsData ) {
+        this.setState( { statisticsPurchaseGroupsData, loadingStatisticsPurchaseGroup: false } )
+    }
+
+    fetchStatisticsPurchaseGroupsFailed( error ) {
+        this.setState( { statisticsPurchaseGroupsData: null, loadingStatisticsPurchaseGroup: false } )
+    }
+
 
     fetchClientFailed( error ) {
         this.setState( { clientError: 'No se ha podido cargar el cliente.', loadingClient: false } )
@@ -116,9 +127,10 @@ class ClientsShowScreen extends React.Component {
         alert( 'editing '+field+' setting '+value )
     }
     render() {
-        const { savedPlan, clientError, error, plans, loadingPlans, loadingClient, loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn } = this.state;
+        const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase, loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient, loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn } = this.state;
 
-        const data = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
+        console.log( 'plans', plans );
+        const statisticsPurchaseGraphicData = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
             let key = '';
             if ( statisticsPurchasePeriod == '1year' && monthsAgo < 13 ) {
@@ -137,10 +149,21 @@ class ClientsShowScreen extends React.Component {
             return result;
         }, [] );
 
-        console.log('data', data )
+        const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData , (result, statisticsRow) => {
+            const currentResult = find( result, ( resultRow ) => ( resultRow.idgrupo == statisticsRow.idgrupo )  )
+            const accumulatedValue = currentResult ? currentResult.[statisticsPurchaseGroupsColumn] : 0;
+            const incrementedValue = parseInt( statisticsRow.[statisticsPurchaseGroupsColumn] )
+            result = filter( result, ( resultRow ) => ( resultRow.idgrupo != statisticsRow.idgrupo ) )
+            result.push({
+                ...statisticsRow,
+                [statisticsPurchaseGroupsColumn]: accumulatedValue+incrementedValue
+            });
+            return result;
+        }, [])
+
 
         const statisticsPurchaseConfig = {
-            data: data,
+            data: statisticsPurchaseGraphicData,
             padding: 'auto',
             xField: statisticsPurchasePeriod,
             yField: statisticsPurchaseColumn,
@@ -151,14 +174,9 @@ class ClientsShowScreen extends React.Component {
         }
         const statisticsGroupsConfig = {
             appendPadding: 10,
-            data: [
-                { value: 12134, label: 'Grave Pants' },
-                { value: 14031, label: 'Grave' },
-                { value: 129, label: 'L. Blanca' },
-                { value: 350, label: 'L. Higiene y Proteccion' },
-            ],
-            angleField: 'value',
-            colorField: 'label',
+            data: statisticsPurchaseGroupsGraphicData,
+            angleField: statisticsPurchaseGroupsColumn,
+            colorField: 'nombre',
             radius: 0.9,
             label: {
                 type: 'inner',
@@ -186,7 +204,6 @@ class ClientsShowScreen extends React.Component {
             innerRadius: 0.2,
             tooltip: {
                 formatter: function formatter(datum) {
-                    console.log('datum',datum)
                     return {
                         name: 'Valor',
                         value: datum.value,
@@ -211,14 +228,17 @@ class ClientsShowScreen extends React.Component {
                        />
                     ) : (<Skeleton style={{marginBottom: '10px'}}/>)}
                     { clientError && (<p style={{ color: 'red'}}>Error guardando el cliente.</p>) }
+                    <h2 style={{margin: '20px 0 10px 0'}}>Entidades</h2>
                     { loadingEntities ? (<Skeleton />) : (<Entidades entities={ entities }/>) }
 
                 </div>
                 <div className="table-indas table-indas-new">
-                    <h2 className="table-indas-title">Estadísticas</h2>
                     <Row>
                         <Col span={12} style={{ padding: '0 20px' }}>
-                            <Card  title="Ventas" bordered={ true } style={{ textAlign: 'center'}}>
+                            <h2 style={{margin: '20px 0 10px 0'}}>Ventas</h2>
+                            <hr />
+                            <h4 style={{margin: '20px 0 10px 0'}}>Ventas por periodo</h4>
+                            <Card bordered={ true } style={{ textAlign: 'center'}}>
                                 <Select
                                     style={{ marginRight: '30px'}}
                                     key={'select_period'}
@@ -237,21 +257,53 @@ class ClientsShowScreen extends React.Component {
                                     <Select.Option value={'pedidos'}>Pedidos</Select.Option>
                                     <Select.Option value={'totalpvm'}>PVM</Select.Option>
                                 </Select>
-                                { statisticsPurchaseData === null || statisticsPurchaseData.length === 0? (<Skeleton />) : (
-                                    <Line {...statisticsPurchaseConfig} />
-                                )}
+                                { loadingStatisticsPurchase && (<Skeleton />) }
+                                { ! loadingStatisticsPurchase && ( statisticsPurchaseData === null || statisticsPurchaseData.length === 0 ) && (
+                                    (
+                                        <p>No hay resultados</p>
+                                    )
+                                ) }
+                                { ! loadingStatisticsPurchase && ( statisticsPurchaseData !== null && statisticsPurchaseData.length !== 0 ) && (
+                                    (
+                                        <Line {...statisticsPurchaseConfig} />
+                                    )
+                                ) }
+                                <hr/>
                             </Card>
                             <br />
-                            <Card  title="Ventas por categoría" bordered={ true }>
-                                <Pie {...statisticsGroupsConfig} />
+                            <Card  title="Ventas por Grupo" bordered={ false } style={{ textAlign: 'center' }}>
+                                <Select
+                                    key={'select_data'}
+                                    value={statisticsPurchaseGroupsColumn}
+                                    onChange={(statisticsPurchaseGroupsColumn) => this.setState({ statisticsPurchaseGroupsColumn } ) }
+                                >
+                                    <Select.Option value={'unidades'}>Unidades vendidas</Select.Option>
+                                    <Select.Option value={'pedidos'}>Pedidos</Select.Option>
+                                    <Select.Option value={'totalpvm'}>PVM</Select.Option>
+                                </Select>
+                                { loadingStatisticsPurchaseGroup && (<Skeleton />) }
+                                { ! loadingStatisticsPurchaseGroup && ( statisticsPurchaseGroupsData === null || statisticsPurchaseGroupsData.length === 0 ) && (
+                                    (
+                                        <p>No hay resultados</p>
+                                    )
+                                ) }
+                                { ! loadingStatisticsPurchaseGroup && ( statisticsPurchaseGroupsData !== null && statisticsPurchaseGroupsData.length !== 0 ) && (
+                                    (
+                                        <Pie {...statisticsGroupsConfig} />
+                                    )
+                                ) }
+                                <hr/>
                             </Card>
                         </Col>
                         <Col span={12} style={{ padding: '0 20px' }}>
-                            <Card  title="Planes de compra" bordered={ true }>
+                            <h2 style={{margin: '20px 0 10px 0'}}>Planes de compra</h2>
+                            <hr />
                                 { plans ? plans.map( ( plan ) => (
-                                    <Plan plan={ plan } />
+                                    <Card bordered={ false } style={{ marginTop: '20px'}}>
+                                        <Plan plan={ plan } />
+                                        <hr/>
+                                    </Card>
                                 )) : (<Skeleton />) }
-                            </Card>
                         </Col>
                     </Row>
                 </div>
@@ -265,4 +317,4 @@ ClientsShowScreen.propTypes = {
 };
 
 export default connect( ( state ) => ({
-}), { getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );
+}), { getClientStatisticsPurchaseGroups, getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );

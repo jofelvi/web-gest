@@ -93,7 +93,7 @@ export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', pa
 };
 //todo: ajustar
 const addFiltersQueryParams = ( queryParams, {
-	sort_field, sort_order, idestado, coddelegado, ind_esfarmacia, orden, idcliente
+	sort_field, sort_order, idestado, fechas, coddelegado, ind_esfarmacia, orden, idcliente, filtro
 } ) => {
 	if (sort_field) {
 		if (sort_order === 'DESC') {
@@ -102,6 +102,12 @@ const addFiltersQueryParams = ( queryParams, {
 			queryParams += `&orden=+${sort_field}`;
 		}
 	}
+	if (fechas && fechas[0]) {
+		queryParams += `&fecha_desde=${fechas[0]}`;
+	}
+	if (fechas && fechas[1]) {
+		queryParams += `&fecha_hasta=${fechas[1]}`;
+	}
 
 	if (idcliente && idcliente !== '') {
 		queryParams += `&idcliente=${idcliente}`;
@@ -109,6 +115,10 @@ const addFiltersQueryParams = ( queryParams, {
 
 	if (idestado && idestado != '') {
 		queryParams += `&cliente_estado=${idestado}`;
+	}
+
+	if (filtro && filtro != '') {
+		queryParams += `&filtro=${filtro}`;
 	}
 
 	if (coddelegado && coddelegado !== '') {
@@ -149,6 +159,7 @@ export const countEntitiesIndas = async ( payload ) => {
 export const getClient = (idcliente) => get(`/ntr/cliente/${idcliente}`);
 export const getClientEntities = (idcliente) => get(`/ntr/cliente/${idcliente}/entidades`);
 export const getClientStatisticsPurchase = (idcliente) => get(`/ntr/cliente/${idcliente}/stats/compras`);
+export const getClientStatisticsPurchaseGroups = (idcliente) => get(`/ntr/cliente/${idcliente}/stats/compras_grupo`);
 export const getClientPlans = (idcliente) => get(`/ntr/cliente/${idcliente}/planes`);
 export const getWholesalersIndas = idEntity =>
 	get(`/ntr/entidad/${idEntity}/mayorista`)

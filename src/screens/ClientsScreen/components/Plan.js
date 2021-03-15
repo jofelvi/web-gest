@@ -137,6 +137,8 @@ class Plan extends React.Component {
                             <div style={{ textAlign:'right', paddingRight: '20px'}}>
                                 { editField == 'ind_regularizacion' ? (<Spin />) : (
                                     <React.Fragment>
+                                        <label style={{display: 'inline-block', marginTop:'35px', marginRight: '10px'}}>Forzar Mercancía Pendiente</label>
+
                                         <Switch
                                             checkedChildren="Si" unCheckedChildren="No"
                                             value={ plan.ind_regularizar }
@@ -150,12 +152,12 @@ class Plan extends React.Component {
                                                     onOk: () => ( this.editPlan( 'ind_regularizar', value ) )
                                                 }) } }
                                         />
-                                        <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Forzar Mercancía Pendiente</label>
                                     </React.Fragment>
                                 )}
                                 <br />
                                 { editField == 'ind_renovar' ? (<Spin />) : (
                                     <React.Fragment>
+                                        <label style={{display: 'inline-block', marginTop:'35px', marginRight: '10px'}}>Renovación Automática</label>
                                         <Switch
                                             checkedChildren="Si" unCheckedChildren="No"
                                             value={ plan.ind_renovar }
@@ -169,7 +171,6 @@ class Plan extends React.Component {
                                                     onOk: () => ( this.editPlan( 'ind_renovar', value ) )
                                                 }) } }
                                         />
-                                        <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Renovación Automática</label>
                                     </React.Fragment>
                                 )}
                             </div>
@@ -178,7 +179,6 @@ class Plan extends React.Component {
                 </Col>
                 <Col span={24} style={{marginBottom: '32px'}}>
                     { error && (<p style={{ color: 'red' } }>Ha ocurrido un error al cargar el plan.</p>)}
-                    <hr />
                 </Col>
             </Row>
         );

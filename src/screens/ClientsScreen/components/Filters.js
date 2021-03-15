@@ -22,7 +22,7 @@ class ClientsFilters extends React.Component {
             idestado: get( props, 'filters.idestado', ''),
             searchByEntity: get( props, 'filters.searchByEntity', ''),
             page: props.page,
-            especial: get( props, 'filters.especial', ''),
+            filtro: get( props, 'filters.filtro', ''),
             fechas: get( props, 'filters.fechas', []),
             fechasValue: get( props, 'filters.fechasValue', []),
             expandFilters: get( props, 'filters.expandFilters', false),
@@ -38,7 +38,7 @@ class ClientsFilters extends React.Component {
             fechasValue: [],
             searchByEntity: '',
             page: 0,
-            especial: '',
+            filtro: '',
             coddelegado: '',
             idestado: '',
             fechas: [],
@@ -102,7 +102,7 @@ class ClientsFilters extends React.Component {
 
     render() {
 
-        const { page, idcliente, especial, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
+        const { page, idcliente, filtro, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
 
         return (
             <div className="table-filters-indas">
@@ -140,18 +140,19 @@ class ClientsFilters extends React.Component {
                         <Col span={8} style={{padding: '10px', paddingTop: 0}}>
                             <span style={{padding: '10px'}}>Filtro especial</span>
                             <Select
-                                value={especial}
-                                onChange={ ( value ) => { this.searchedValue( 'especial', value ) } }
+                                value={filtro}
+                                onChange={ ( value ) => { this.searchedValue( 'filtro', value ) } }
                                 style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
-                                <Option value="activos">Solo clientes Activos</Option>
-                                <Option value="inactivos">Solo clientes Inactivos</Option>
-                                <Option value="altas">Altas</Option>
-                                <Option value="bajas">Bajas</Option>
-                                <Option value="sinplan">Clientes sin Plan de compra</Option>
+                                <Option value="activo">Solo clientes Activos</Option>
+                                <Option value="inactivo">Solo clientes Inactivos</Option>
+                                <Option value="alta">Altas</Option>
+                                <Option value="baja">Bajas</Option>
+                                <Option value="no_plan">Clientes sin Plan de compra</Option>
+                                <Option value="no_acceso">Clientes que no han accedido a NTR</Option>
                             </Select>
-                            { ['activos', 'inactivos', 'altas', 'bajas' ].indexOf( especial ) > -1 && (
+                            { [ 'activo', 'inactivo', 'alta', 'baja' ].indexOf( filtro ) > -1 && (
                                 <React.Fragment>
                                     <div style={{padding: '10px', marginTop: '10px', paddingBottom: 0 }}>Rango de fechas del filtro especial:</div>
                                     <DatePickerFromTo
