@@ -29,13 +29,15 @@ class Entidades extends React.Component {
                                         <Descriptions.Item><small style={{fontWeight: 'bold'}}>Código: { entity.codentidad_cbim }</small></Descriptions.Item>
                                         <Descriptions.Item label=""> { entity.direccion }, { entity.codigo_postal }, { entity.poblacion }</Descriptions.Item>
                                         <Descriptions.Item label="">{ entity.provincia }</Descriptions.Item>
-                                        <Descriptions.Item label="Tlf">{ entity.telefono }</Descriptions.Item>
-                                        <Descriptions.Item label="Delegado Comercial">{ entity.delegado[ 0 ].nombre }</Descriptions.Item>
+                                        <Descriptions.Item label=""><span style={{ color: '#1890ff'}}><b>Tlf.:</b></span> { entity.telefono }</Descriptions.Item>
+                                        <Descriptions.Item label=""><span style={{ color: '#1890ff'}}><b>Delegado Comercial:</b></span> { entity.delegado[ 0 ].nombre }</Descriptions.Item>
                                     </Descriptions>
                                 </Col>
                                 <Col span={ 6 }>
-                                    <Card style={{ marginRight: '20px', width: '100%', float: 'right', textAlign: 'center' }}>
+                                    <div style={{ textAlign: 'right', paddingBottom:'5px', paddingRight:'12px'}}>
                                         { entity.idestado == '1' ? (<Tag color="green">Activo</Tag>) : (<Tag color="red">Inactivo</Tag>) }
+                                    </div>
+                                    <Card style={{ marginRight: '20px', width: '100%', float: 'right', textAlign: 'center' }}>
                                         <br />
                                         <span style={{ fontSize: '38px'}}> { entity.puntosacumulados } </span>
                                         <br />

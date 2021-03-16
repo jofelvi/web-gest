@@ -45,6 +45,7 @@ class ClientsShowScreen extends React.Component {
             client: null,
             entities: null,
             plans: null,
+            clientSaved: false,
             statisticsPurchaseData: null,
             statisticsPurchaseGroupsData: null,
             statisticsPurchase: null,
@@ -76,7 +77,7 @@ class ClientsShowScreen extends React.Component {
     }
     onSaveClient( client ) {
         const {match } = this.props;
-        this.setState( { loadingClient: true, clientError: false, savingClient: client } )
+        this.setState( { loadingClient: true, clientSaved: true, clientError: false, savingClient: client } )
         this.props.updateClient( {
             client: client,
             success: ( data ) => {
@@ -129,7 +130,6 @@ class ClientsShowScreen extends React.Component {
     render() {
         const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase, loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient, loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn } = this.state;
 
-        console.log( 'plans', plans );
         const statisticsPurchaseGraphicData = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
             let key = '';
@@ -224,6 +224,7 @@ class ClientsShowScreen extends React.Component {
                            client={ client }
                            loading={ false }
                            error={ false }
+                           show={ this.state.clientSaved }
                            onSave={ this.onSaveClient }
                        />
                     ) : (<Skeleton style={{marginBottom: '10px'}}/>)}
@@ -238,7 +239,7 @@ class ClientsShowScreen extends React.Component {
                             <h2 style={{margin: '20px 0 10px 0'}}>Ventas</h2>
                             <hr />
                             <h4 style={{margin: '20px 0 10px 0'}}>Ventas por periodo</h4>
-                            <Card bordered={ true } style={{ textAlign: 'center'}}>
+                            <Card bordered={ false } style={{ textAlign: 'center'}}>
                                 <Select
                                     style={{ marginRight: '30px'}}
                                     key={'select_period'}
@@ -271,7 +272,9 @@ class ClientsShowScreen extends React.Component {
                                 <hr/>
                             </Card>
                             <br />
-                            <Card  title="Ventas por Grupo" bordered={ false } style={{ textAlign: 'center' }}>
+                            <hr/>
+                            <h4 style={{margin: '20px 0 10px 0'}}>Ventas por periodo</h4>
+                            <Card bordered={ false } style={{ textAlign: 'center' }}>
                                 <Select
                                     key={'select_data'}
                                     value={statisticsPurchaseGroupsColumn}

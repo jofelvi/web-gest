@@ -56,7 +56,7 @@ class StatisticsPlanGraphic extends React.Component {
             }
         };
         return (
-            <div>
+            <div style={{ marginLeft: '-47%', position: 'relative', width: '140%'}}>
                 { mounted && (
                     <Chart data={data} scale={cols} height={360} forceFit>
                         <Coord type="polar" innerRadius={0.6} transpose />
@@ -86,7 +86,7 @@ class StatisticsPlanGraphic extends React.Component {
                         <Guide>
                             <Html
                                 position={["50%", "50%"]}
-                                html={`<div style="color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em"><span style="color:#262626;font-size:2.5em">${ plan.avance }%</span><br/>AVANCE</div>`}
+                                html={`<div style="color:#8c8c8c;font-size:1.0em;text-align: center;width: 10em"><span style="color:#262626;font-size:1.3em">${ plan.avance }%</span><br/>AVANCE</div>`}
                                 alignX="middle"
                                 alignY="middle"
                             />

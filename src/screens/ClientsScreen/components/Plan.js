@@ -96,6 +96,12 @@ class Plan extends React.Component {
                     <span style={{ fontSize:'18px', color: '#1890ff'}}>{ plan.nombre }</span>
                     <br />
                     <StatisticsPlanGraphic plan={propsPlan}/>
+
+                    <Card style={{ margin: '0', padding: '0px', width: '100%', float: 'right', marginTop:'-50px', textAlign: 'left' }} bordered={false}>
+                        <span style={{ fontSize: '38px', color: '#1890FF'}}> { propsPlan.udscompradas } </span>
+                        <br />
+                        <b style={{ fontSize: '16px', color: '#1890FF' }}>Uds. Compradas</b><br /><br />
+                    </Card>
                 </Col>
                 <Col span={ 14 } style={{ textAlign: 'right' }}>
                     <span style={{ fontSize:'14px', color: '#1890ff', marginRight: '10px' }}>{ renderDate(propsPlan.fechainicio) } - { renderDate(propsPlan.fechafin) }</span>
@@ -117,16 +123,9 @@ class Plan extends React.Component {
                             </Card>
                         </Col>
 
-                        <Col span={12}>
-                            <Card style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
-                                <span style={{ fontSize: '38px', color: '#1890FF'}}> { propsPlan.udscompradas } </span>
-                                <br />
-                                <b style={{ fontSize: '16px', color: '#1890FF' }}>Uds. Compradas</b><br /><br />
-                            </Card>
-                        </Col>
 
-                        <Col span={12}>
-                            <Card style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
+                        <Col span={12} offset={12}>
+                            <Card border={false} style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
                                 <span style={{ fontSize: '38px'}}> { propsPlan.margen } % </span>
                                 <br />
                                 <b>Margen</b><br /><br />

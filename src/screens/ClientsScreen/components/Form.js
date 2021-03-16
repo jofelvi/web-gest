@@ -61,7 +61,7 @@ class ClientsForm extends React.Component {
             error: props.error,
             client: props.client,
             loading: props.loading,
-            showDetails: false,
+            showDetails: props.show,
         }
         this.save = this.save.bind( this )
         this.validate = this.validate.bind( this )
@@ -163,6 +163,7 @@ class ClientsForm extends React.Component {
                                     style={inputStyle}
                                     value={ client.nomcli_cbim }
                                     disabled={ true }
+
                                 />
                             </Col>
 
@@ -308,7 +309,7 @@ class ClientsForm extends React.Component {
                             value={ client.apellido2 }
                             disabled={ loading }
                             onChange={ (e) => {
-                            this.setState({ client: { ...client, telefono: e.target.value }},
+                            this.setState({ client: { ...client, apellido2: e.target.value }},
                                 () => {
                                     this.clearError( 'apellido2' )
                                 }
