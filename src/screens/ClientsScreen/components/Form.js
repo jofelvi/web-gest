@@ -184,6 +184,7 @@ class ClientsForm extends React.Component {
                                 <Input
                                     style={inputStyle}
                                     value={ client.email }
+                                    disabled={ true }
                                     onChange={ ( { target }) => { this.setState( { client: { ...client, email: target.value } } ) } }
                                 />
                             </Col>
@@ -205,6 +206,7 @@ class ClientsForm extends React.Component {
                                     checkedChildren="Si" unCheckedChildren="No"
                                     value={ client.ind_acepta_emailcomercial }
                                     defaultChecked={ client.ind_acepta_emailcomercial }
+                                    disabled={ true }
                                     onChange={ ( value) => { this.setState( { client: { ...client, ind_acepta_emailcomercial: value } } ) } }
                                 />
                                 <label style={{display: 'inline-block', marginTop:'35px', marginLeft: '10px'}}>Acepta email comercial.</label>
@@ -231,7 +233,7 @@ class ClientsForm extends React.Component {
                             <label>Nombre</label>
                             <Input  style={inputStyle}
                             value={ client.nombre }
-                            disabled={ loading }
+                            disabled={ true || loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, nombre: e.target.value }},
                                 () => {
@@ -249,7 +251,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.nif }
-                            disabled={ loading }
+                            disabled={ true || loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, nif: e.target.value }},
                                 () => {
@@ -268,7 +270,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.apellido1 }
-                            disabled={ loading }
+                            disabled={ true || loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, apellido1: e.target.value }},
                                 () => {
@@ -285,7 +287,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.telefono }
-                            disabled={ loading }
+                            disabled={ true || loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, telefono: e.target.value }},
                                 () => {
@@ -307,7 +309,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.apellido2 }
-                            disabled={ loading }
+                            disabled={ true || loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, apellido2: e.target.value }},
                                 () => {
@@ -325,11 +327,13 @@ class ClientsForm extends React.Component {
                             </div>
                             )
                         }
-
                         { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
-                        <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
-                            { loading ? (<Spin></Spin>) : 'Guardar' }
-                        </Button>
+
+                        { false && (
+                            <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
+                                { loading ? (<Spin></Spin>) : 'Guardar' }
+                            </Button>
+                        )}
 
                     </div>
 

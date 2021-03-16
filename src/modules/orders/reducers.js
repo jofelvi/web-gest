@@ -21,7 +21,8 @@ import {
     changeOrderStatusByIdFailed,
     changeOrderStatusSetLoading,
     fetchOrderStatesSuccess,
-    fetchOrderProductsSuccess
+    fetchOrderProductsSuccess,
+    setOrderListState,
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
@@ -29,6 +30,7 @@ import {STATUS} from "../auth/constants";
 const defaultState = {
     list: [],
     loadingList: false,
+    listState: false,
     states: [],
     products: [],
     count: 0,
@@ -42,6 +44,12 @@ const defaultState = {
 
 export default handleActions(
   {
+      [setOrderListState] : ( state, { payload } ) => {
+        return {
+            ...state,
+            listState: payload,
+        }
+      },
       [deleteOrderByIdFailed]: (state, { payload }) => {
           message.error(payload.message);
           return {

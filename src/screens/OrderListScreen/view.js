@@ -43,17 +43,17 @@ const { Option } = Select;
 class OrderListScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.state = props.savedState ? props.savedState : {
+      filters: { page: 0},
+      count: 0,
+      buttonIsvisible: false,
+      visible: false,
+      loadingLine: false,
+      order_id: 0,
+      expandedKeys: [],
+    };
     this.setLoadingLine = this.setLoadingLine.bind(this)
     this.setFilters = this.setFilters.bind(this)
-  }
-  state = {
-    filters: { page: 0},
-    count: 0,
-    buttonIsvisible: false,
-    visible: false,
-    loadingLine: false,
-    order_id: 0,
-    expandedKeys: [],
   }
 
   setLoadingLine(status) {
