@@ -46,7 +46,6 @@ class ClientsScreen extends React.Component {
     }
 
     onSelectRowChange( selectedRowKeys ) {
-        console.log( 'selectedRowKeys', selectedRowKeys )
         this.setState({ selectedRowKeys }, () => {
             this.saveState();
         })

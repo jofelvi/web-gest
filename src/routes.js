@@ -80,7 +80,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <Route path='/login' exact component={LoginScreen} />
       <Route path='/process/signup' exact component={SignupScreen} />
       <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen}/>
-        <PrivateRoute path="/planes-de-compra" exact component={PlanesCompra}/>
+        <PrivateRoute path="/planes-de-compra/:codcli_cbim?" component={PlanesCompra}/>
         <PrivateRoute path="/planes-de-compra/crear" exact component={PlanesCompraCreate}/>
         <PrivateRoute path="/planes-de-compra/:id/editar" exact component={PlanesCompraEdit}/>
         <PrivateRoute path="/planes-de-compra/:id/copiar" exact component={PlanesCompraCopy}/>

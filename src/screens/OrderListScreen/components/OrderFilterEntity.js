@@ -42,6 +42,25 @@ class OrderFilterEntity extends React.Component {
         }
     }
 
+    handleInitialClient( codcli_cbim ) {
+        this.fetch( codcli_cbim, ( data ) => {
+            let currentRow = null;
+            let currentRowEntity = '';
+            data.forEach((row) => {
+                if ( row.entity.codcli_cbim == codcli_cbim ) {
+                    currentRow = row.entity;
+                    currentRowEntity = row.text;
+                }
+            })
+            this.setState({value: currentRowEntity, data: currentRow == null ? [] : this.state.data });
+            const cod = (currentRow != '' && this.props.column && this.props.column == 'object') ? currentRow : currentRow.codcli_cbim
+            //if (this.props.column )
+            const client=currentRow ? cod : '';
+            this.props.onChangeClient(client);
+            this.props.onChange(currentRowEntity)
+        })
+    }
+
     handleInitialValue( data ) {
         this.setState({ data })
     }
@@ -96,7 +115,7 @@ class OrderFilterEntity extends React.Component {
         return (
             <Select
                 showSearch
-                value={this.state.value || this.props.value }
+                value={ this.state.value || this.props.value || this.props.textValue }
                 placeholder={this.props.placeholder}
                 style={{ width: '100%', marginTop: 10, marginLeft:10 }}
                 defaultActiveFirstOption={false}

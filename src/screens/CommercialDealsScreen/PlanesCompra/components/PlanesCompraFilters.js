@@ -108,8 +108,6 @@ class PlanesCompraFilters extends React.Component {
     render() {
 
         const { page, idcliente, searchByPlanDate, idestado, coddelegado, searchByEntity, codcli_cbim } = this.state;
-
-        console.log( 'searchByEntity', searchByEntity );
         return (
             <div className="table-filters-indas">
                 <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
@@ -120,6 +118,7 @@ class PlanesCompraFilters extends React.Component {
                                 column={"object"}
                                 key={'filters_entity_search'}
                                 value={searchByEntity}
+                                defaultClient={ idcliente }
                                 onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
                                 onChangeClient={ (client) => {
                                     const idCliente = client ? client.idcliente : '';

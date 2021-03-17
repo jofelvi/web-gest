@@ -8,13 +8,15 @@ import {
     deleteOrderLineById,
     deleteOrderLineSetLoading,
     fetchOrderStates,
-    fetchOrderProducts
+    fetchOrderProducts,
+    setOrderListState,
 } from '../../modules/orders/actions';
 
 import View from './view';
+import {fetchDelegados, fetchPlans, setFilters} from "../../modules/planes-compra/actions";
 
 export default connect(
-  state => ({ 
+  state => ({
     orders: state.orders.list,
     loadingList: state.orders.loadingList,
     order: state.orders.byId,
@@ -24,6 +26,7 @@ export default connect(
     states: state.orders.states,
       deleteLineLoadingId: state.orders.deleteLineLoadingId,
       deleteLoadingId: state.orders.deleteLoadingId,
+      savedState: state.orders.listState,
   }),
-  {fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading, fetchOrderStates, fetchOrderProducts }
+  { setOrderListState, fetchOrders, searchOrder, fetchOrderById, countOrders, deleteOrderLineById, deleteOrderLineSetLoading, fetchOrderStates, fetchOrderProducts }
 )(View);

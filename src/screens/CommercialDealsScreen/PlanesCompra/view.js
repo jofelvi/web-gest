@@ -62,9 +62,10 @@ class PlanesCompra extends React.Component {
         this.state = props.filters != null ? props.filters : {
             selectedRowKeys: [],
             page: 1,
-            filters: {},
+            filters: { },
             selectedRowsAction: false,
         };
+
     }
 
     componentWillMount() {

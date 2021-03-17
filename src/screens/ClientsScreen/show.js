@@ -10,6 +10,7 @@ import {withRouter} from "react-router-dom";
 import ClientsForm from './components/Form';
 import { getClient } from '../../modules/clients-indas/actions';
 import { getClientEntities, getClientStatisticsPurchase, getClientPlans, updateClient, getClientStatisticsPurchaseGroups } from '../../modules/clients-indas/actions';
+import { setOrderListState } from '../../modules/orders/actions';
 import _ from 'underscore';
 import { Line, Pie, RadialBar } from '@ant-design/charts';
 import { reduce, find, filter } from 'lodash';
@@ -17,6 +18,7 @@ import * as moment from "moment";
 import StatisticsPlanGraphic from './components/StatisticsPlanGraphic';
 import Plan from './components/Plan';
 import Entidades from './components/Entidades';
+import { setFilters as setPCFilters } from "../../modules/planes-compra/actions";
 const { confirm } = Modal;
 
 const renderDate = (dateStr, record, index) => {
@@ -128,7 +130,10 @@ class ClientsShowScreen extends React.Component {
         alert( 'editing '+field+' setting '+value )
     }
     render() {
-        const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase, loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient, loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn } = this.state;
+        const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase,
+            loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient,
+            loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn
+        } = this.state;
 
         const statisticsPurchaseGraphicData = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
@@ -236,9 +241,26 @@ class ClientsShowScreen extends React.Component {
                 <div className="table-indas table-indas-new">
                     <Row>
                         <Col span={12} style={{ padding: '0 20px' }}>
-                            <h2 style={{margin: '20px 0 10px 0'}}>Ventas</h2>
+                            <h2 style={{margin: '20px 0 10px 0'}}>Ventas
+                                <span style={{ fontSize:'12px', float: 'right' }}><a onClick={( ) => {
+                                    const { client } = this.state;
+                                    if ( client )  {
+                                        this.props.setOrderListState({
+                                            filters: { page: 0},
+                                            count: 0,
+                                            buttonIsvisible: false,
+                                            visible: false,
+                                            loadingLine: false,
+                                            order_id: 0,
+                                            expandedKeys: [],
+                                            filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: '', searchByEntityName: client.nomcli_cbim},
+                                        } )
+                                        this.props.history.push('/orders')
+                                    }
+                                } }>Ver Listado</a></span>
+                            </h2>
                             <hr />
-                            <h4 style={{margin: '20px 0 10px 0'}}>Ventas por periodo</h4>
+                            <h4 style={{margin: '20px 0 10px 0'}}>Volumen de ventas</h4>
                             <Card bordered={ false } style={{ textAlign: 'center'}}>
                                 <Select
                                     style={{ marginRight: '30px'}}
@@ -273,7 +295,7 @@ class ClientsShowScreen extends React.Component {
                             </Card>
                             <br />
                             <hr/>
-                            <h4 style={{margin: '20px 0 10px 0'}}>Ventas por periodo</h4>
+                            <h4 style={{margin: '20px 0 10px 0'}}>Ventas agrupadas por Grupo</h4>
                             <Card bordered={ false } style={{ textAlign: 'center' }}>
                                 <Select
                                     key={'select_data'}
@@ -299,7 +321,20 @@ class ClientsShowScreen extends React.Component {
                             </Card>
                         </Col>
                         <Col span={12} style={{ padding: '0 20px' }}>
-                            <h2 style={{margin: '20px 0 10px 0'}}>Planes de compra</h2>
+                            <h2 style={{margin: '20px 0 10px 0'}}>Planes de compra
+                                <span style={{ fontSize:'12px', float: 'right' }}><a onClick={( ) => {
+                                    const { client } = this.state;
+                                    if ( client )  {
+                                        this.props.setPCFilters({
+                                            selectedRowKeys: [],
+                                            page: 1,
+                                            filters: {codcli_cbim: client.codcli_cbim, idcliente: client.idcliente, searchByEntity: client.nomcli_cbim},
+                                            selectedRowsAction: false,
+                                        } )
+                                        this.props.history.push('/planes-de-compra')
+                                    }
+                                } }>Ver Listado</a></span>
+                            </h2>
                             <hr />
                                 { plans ? plans.map( ( plan ) => (
                                     <Card bordered={ false } style={{ marginTop: '20px'}}>
@@ -320,4 +355,4 @@ ClientsShowScreen.propTypes = {
 };
 
 export default connect( ( state ) => ({
-}), { getClientStatisticsPurchaseGroups, getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );
+}), { setOrderListState, setPCFilters, getClientStatisticsPurchaseGroups, getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );
