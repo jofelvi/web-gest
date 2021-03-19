@@ -18,6 +18,7 @@ import * as moment from "moment";
 import StatisticsPlanGraphic from './components/StatisticsPlanGraphic';
 import Plan from './components/Plan';
 import Entidades from './components/Entidades';
+import { decimalAdjust } from '../../utils';
 import { setFilters as setPCFilters } from "../../modules/planes-compra/actions";
 const { confirm } = Modal;
 
@@ -143,10 +144,10 @@ class ClientsShowScreen extends React.Component {
             } else if ( statisticsPurchasePeriod == '5year' && monthsAgo >= (new Date()).getMonth() ) {
                 key = statisticsRow.año+'-12';
             }
-            const currentResult = find( result, ( resultRow ) => ( resultRow.[ statisticsPurchasePeriod] == key )  )
-            const accumulatedValue = currentResult ? currentResult.[statisticsPurchaseColumn] : 0;
-            const incrementedValue = parseInt( statisticsRow.[statisticsPurchaseColumn] )
-            result = filter( result, ( resultRow ) => ( resultRow.[ statisticsPurchasePeriod ] != key ) )
+            const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchasePeriod] == key )  )
+            const accumulatedValue = currentResult ? currentResult[statisticsPurchaseColumn] : 0;
+            const incrementedValue = parseInt( statisticsRow[statisticsPurchaseColumn] )
+            result = filter( result, ( resultRow ) => ( resultRow[ statisticsPurchasePeriod ] != key ) )
             result.push({
                 [statisticsPurchasePeriod]: key,
                 [statisticsPurchaseColumn]: accumulatedValue+incrementedValue
@@ -156,8 +157,8 @@ class ClientsShowScreen extends React.Component {
 
         const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData , (result, statisticsRow) => {
             const currentResult = find( result, ( resultRow ) => ( resultRow.idgrupo == statisticsRow.idgrupo )  )
-            const accumulatedValue = currentResult ? currentResult.[statisticsPurchaseGroupsColumn] : 0;
-            const incrementedValue = parseInt( statisticsRow.[statisticsPurchaseGroupsColumn] )
+            const accumulatedValue = currentResult ? currentResult[statisticsPurchaseGroupsColumn] : 0;
+            const incrementedValue = parseInt( statisticsRow[statisticsPurchaseGroupsColumn] )
             result = filter( result, ( resultRow ) => ( resultRow.idgrupo != statisticsRow.idgrupo ) )
             result.push({
                 ...statisticsRow,
@@ -187,8 +188,8 @@ class ClientsShowScreen extends React.Component {
                 type: 'inner',
                 offset: '-30%',
                 content: function content(_ref) {
-                    var percent = _ref.percent;
-                    return ''.concat(percent * 100, '%');
+                    var percent = decimalAdjust( 'round', _ref.percent * 100, -2 );
+                    return ''.concat(percent, '%');
                 },
                 style: {
                     fontSize: 14,
@@ -196,25 +197,6 @@ class ClientsShowScreen extends React.Component {
                 },
             },
 
-        }
-        const statisticsPlanConfig = {
-            appendPadding: 10,
-            data: [
-                { normalizedValue: 19, value: 10, label: 'Pedidos' },
-                { normalizedValue: 21, value: 80, label: 'Compras' },
-            ],
-            yField: 'normalizedValue',
-            xField: 'label',
-            radius: 0.8,
-            innerRadius: 0.2,
-            tooltip: {
-                formatter: function formatter(datum) {
-                    return {
-                        name: 'Valor',
-                        value: datum.value,
-                    };
-                },
-            },
         }
         return (
         <div>
@@ -235,7 +217,7 @@ class ClientsShowScreen extends React.Component {
                     ) : (<Skeleton style={{marginBottom: '10px'}}/>)}
                     { clientError && (<p style={{ color: 'red'}}>Error guardando el cliente.</p>) }
                     <h2 style={{margin: '20px 0 10px 0'}}>Entidades</h2>
-                    { loadingEntities ? (<Skeleton />) : (<Entidades entities={ entities }/>) }
+                    { loadingEntities ? (<Skeleton />) : (<Entidades history={this.props.history} entities={ entities }/>) }
 
                 </div>
                 <div className="table-indas table-indas-new">

@@ -42,7 +42,9 @@ class Entidades extends React.Component {
                                         <span style={{ fontSize: '38px'}}> { entity.puntosacumulados } </span>
                                         <br />
                                         <b>PUNTOS</b><br /><br />
-                                        <a href={'#'}>Movs.</a>
+                                        <a onClick={() => {
+                                            this.props.history.push('/clientes/'+entity.idcliente+'/entidades/'+entity.codentidad_cbim+'/puntos');
+                                        }}>Movs.</a>
                                     </Card>
                                 </Col>
                             </Row>
