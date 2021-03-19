@@ -93,7 +93,7 @@ export const getUsers = ({ emailComo = '', nombreComo = '', codcli_cbim = '', pa
 };
 //todo: ajustar
 const addFiltersQueryParams = ( queryParams, {
-	sort_field, sort_order, idestado, fechas, coddelegado, ind_esfarmacia, orden, idcliente, filtro
+	sort_field, sort_order, idestado, fechas, coddelegado, ind_esfarmacia, orden, idcliente, filtro, codpedido_origen
 } ) => {
 	if (sort_field) {
 		if (sort_order === 'DESC') {
@@ -111,6 +111,10 @@ const addFiltersQueryParams = ( queryParams, {
 
 	if (idcliente && idcliente !== '') {
 		queryParams += `&idcliente=${idcliente}`;
+	}
+
+	if(codpedido_origen && codpedido_origen !== '') {
+		queryParams += `&codpedido_origen=${codpedido_origen}`
 	}
 
 	if (idestado && idestado != '') {
@@ -185,4 +189,51 @@ export const exportEntities =(filters = {}, callback) => {
 		};
 		x.send();
 	})
+};
+
+export const exportEntityPuntos =(codentidad_cbim, filters = {}, callback) => {
+	const queryParams = addFiltersQueryParams( '', filters )
+	getHeaders().then( ( headers) => {
+		var x=new XMLHttpRequest();
+		x.open( "GET", `${process.env.REACT_APP_API_BASE_URL}ntr/entidad/${codentidad_cbim}/puntos/historial?formato=excel${queryParams}` , true);
+		_.each(headers, (value, key) => {
+			x.setRequestHeader( key, value );
+		})
+		x.responseType="blob";
+		x.onload= function(e){
+			const filename = x.getResponseHeader('content-disposition').split('=')[1];
+			download(e.target.response, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			callback()
+		};
+		x.send();
+	})
+};
+
+
+
+
+export const getEntityPuntos = async ( payload ) => {
+	let queryParams = '';
+	if ( payload && typeof payload === 'string' ) {
+		queryParams = payload;
+	}
+	if ( payload && typeof payload !== 'string' ) {
+		const filters = payload.filters ? payload.filters : {}
+		const page = payload.page ? payload.page : 1;
+		const offset = (page - 1) * LIMIT;
+		queryParams = generatingOffset(offset)
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
+	return get(`ntr/entidad/${payload.codentidad_cbim}/puntos/historial?${queryParams}`);
+}
+export const countEntityPuntos = async ( payload ) => {
+	let queryParams = '';
+	if ( payload ) {
+		const filters = payload.filters ? payload.filters : {}
+		if ( filters.sort_field ) {
+			delete filters.sort_field;
+		}
+		queryParams = addFiltersQueryParams(queryParams, filters)
+	}
+	return get(`ntr/entidad/${payload.codentidad_cbim}/puntos/historial/count?${queryParams}`);
 };
