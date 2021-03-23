@@ -58,7 +58,7 @@ class Entidades extends React.Component {
                                     ( mayorista ) => (
                                         <List.Item key={mayorista.codmayorista}>
                                             <List.Item.Meta
-                                                title={( <span><b>{mayorista.codmayorista}</b> - { mayorista.nombre}</span> ) }
+                                                title={( <span><b>{mayorista.codmayorista}</b> - { mayorista.nombre} [ { mayorista.cooperador } ]</span> ) }
                                             />
                                         </List.Item>
                                     )

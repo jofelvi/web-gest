@@ -4,7 +4,13 @@ import _ from "underscore";
 import * as download from "downloadjs";
 import {LIMIT} from "../../constants";
 
-
+export const estados = {
+	0: "Baja",
+	1: "Alta",
+	2: "Registro en proceso",
+	3: "Alta en proceso",
+	4: "Pendiente de validación"
+}
 export const getClientsIndas = () => get('/ntr/cliente');
 
 const generatingOffset = (offset)=>{

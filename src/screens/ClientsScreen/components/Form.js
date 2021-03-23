@@ -5,6 +5,7 @@ import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, 
 import {InputsContainer} from "../../../lib/styled";
 import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { Tabs } from 'antd';
+import {estados} from './../../../modules/clients-indas/api';
 import _ from 'underscore';
 import { get, keys } from 'lodash';
 import * as moment from "moment";
@@ -149,7 +150,7 @@ class ClientsForm extends React.Component {
                                 <label>Estado</label>
                                 <Input
                                     style={inputStyle}
-                                    value={ client.estado }
+                                    value={ estados[ client.idestado ] }
                                     disabled={ true }
                                 />
                             </Col>
@@ -226,7 +227,7 @@ class ClientsForm extends React.Component {
                         { showDetails && (
                             <div>
                             <h3 style={{margin: '20px 0 10px 0'}}>
-                                Datos del usuario transferidas asociado al cliente CBIM.
+                                Datos de Registro en la Web
                             </h3>
                             <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                             <Col span={12} >

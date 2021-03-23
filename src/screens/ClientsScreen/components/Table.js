@@ -10,6 +10,7 @@ import PlanesCompraFilters from "../../CommercialDealsScreen/PlanesCompra/compon
 import PlanesCompraActions from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
 import ResizableTable from "../../shared/ResizableTable";
 import {LIMIT} from "../../../constants";
+import {estados} from './../../../modules/clients-indas/api';
 
 const renderDate = (dateStr, record, index) => {
     if ( ! dateStr ) {
@@ -63,6 +64,9 @@ class ClientsTable extends React.Component {
             {
                 title: 'Estado Cliente', dataIndex: 'cliente_estado', key: 'cliente_estado', width: 200,
                 sorter: true,
+                render: function( str, record, index) {
+                    return estados[ record.idestado ];
+                }
             },
             {
                 title: 'PC Activos', dataIndex: 'planes_activos', key: 'planes_activos', width: 200,
