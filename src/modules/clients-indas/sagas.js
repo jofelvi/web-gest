@@ -14,6 +14,7 @@ import {
 	GET_CLIENT_PLANS,
 	UPDATE_CLIENT,
 	GET_ENTITY_PUNTOS,
+	CREATE_ENTITY_PUNTOS,
 } from './actionTypes';
 import {
 	loadClientsIndasFailed,
@@ -255,4 +256,25 @@ function* getEntityPuntos( { payload } ) {
 }
 export function* watchgetEntityPuntos() {
 	yield takeLatest( GET_ENTITY_PUNTOS, getEntityPuntos );
+}
+
+function* createEntityPuntos({ payload }) {
+	const isPayloadEmail = payload && payload.email;
+	const { codentidad_cbim, movimiento } = payload;
+	try {
+		const response = yield call(api.createEntityPuntos, codentidad_cbim, movimiento );
+		if( response && response.status === 201){
+			if ( typeof payload.success == 'function' ) {
+				payload.success(response.data)
+			}
+		}
+
+	} catch (e) {
+		console.error(e);
+		payload.error(e)
+	}
+}
+
+export function* watchcreateEntityPuntos() {
+	yield takeLatest(CREATE_ENTITY_PUNTOS, createEntityPuntos)
 }

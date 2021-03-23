@@ -96,6 +96,7 @@ import {
   watchgetClientStatisticsPurchaseGroups,
     watchgetClientPlans,
   watchgetEntityPuntos,
+  watchcreateEntityPuntos,
 } from './clients-indas/sagas';
 
 import {
@@ -178,5 +179,6 @@ export default function* rootSaga() {
     watchgetClientPlans(),
     watchupdateClient(),
     watchgetEntityPuntos(),
+    watchcreateEntityPuntos(),
   ]);
 }

@@ -237,3 +237,4 @@ export const countEntityPuntos = async ( payload ) => {
 	}
 	return get(`ntr/entidad/${payload.codentidad_cbim}/puntos/historial/count?${queryParams}`);
 };
+export const createEntityPuntos = (codentidad_cbim,data) => post(`/ntr/entidad/${codentidad_cbim}/puntos/create`, data);

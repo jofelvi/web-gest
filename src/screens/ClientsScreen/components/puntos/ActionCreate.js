@@ -15,7 +15,7 @@ import {
     Radio,
     Spin
 } from 'antd';
-import {DatePickerFromTo, InputBox, InputsContainer} from "../../../../lib/styled";
+import { InputBox, InputsContainer} from "../../../../lib/styled";
 import {DownOutlined, ExclamationCircleOutlined, UpOutlined} from "@ant-design/icons";
 import {get} from "lodash";
 import * as moment from "moment";
@@ -27,6 +27,7 @@ import {
     TextContainer
 } from "../../../../components/Clients-Indas/styles";
 import ModalTaskDetail from "../../../../components/ModalTaskDetail";
+import { createEntityPuntos } from '../../../../modules/clients-indas/actions';
 
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
@@ -38,8 +39,10 @@ class PuntosActionCreate extends React.Component {
         this.state = {
             puntos: '',
             descripcion: '',
-            fecha: '',
-            fechaValue: '',
+            fecha: moment().startOf('day').format( 'YYYY-MM-DD' ),
+            fechaCaducidad: '',
+            fechaValue: moment(),
+            fechaCaducidadValue: '',
             idpedido: '',
             errorMessage: false,
             loading: false,
@@ -48,20 +51,50 @@ class PuntosActionCreate extends React.Component {
         this.onError = this.onError.bind( this );
         this.onSuccess = this.onSuccess.bind( this );
         this.onSubmit = this.onSubmit.bind( this );
+        this.clearState = this.clearState.bind( this );
+        this.onChangeDate = this.onChangeDate.bind( this );
     }
 
+    clearState() {
+        this.setState( {
+            puntos: '',
+            descripcion: '',
+            fecha: moment().startOf('day').format( 'YYYY-MM-DD' ),
+            fechaCaducidad: '',
+            fechaValue: moment(),
+            fechaCaducidadValue: '',
+            idpedido: '',
+            errorMessage: false,
+            loading: false,
+        } )
+    }
     onError(error) {
         this.setState( { loading:false,errorMessage: 'Error al guardar movimiento.' } )
     }
 
     onSuccess() {
         const { onClose } = this.props;
+        this.clearState()
         onClose();
-        this.setState( { loading: false } )
+    }
+
+    onChangeDate( field, value ) {
+        this.setState( { [field+'Value']: moment(value), [field]:   moment(value).startOf('day').format( 'YYYY-MM-DD' ) })
     }
 
     onSubmit() {
-
+        this.setState( { loading: true } )
+        this.props.createEntityPuntos( {
+            codentidad_cbim: this.props.codentidad_cbim,
+            movimiento: {
+                puntos: this.state.puntos,
+                descripcion: this.state.descripcion,
+                fecha: this.state.fecha,
+                idpedido: '' === this.state.idpedido ? null : this.state.idpedido,
+            },
+            success: this.onSuccess,
+            error: this.onError,
+        })
     }
 
     render() {
@@ -79,45 +112,64 @@ class PuntosActionCreate extends React.Component {
                 footer={[
                     <Button
                         key="back"
+                        disabled={loading}
                         onClick={ onClose }>
                         Cancelar
                     </Button>,
                     <Button
                         key="submit"
                         type="primary"
+                        disabled={loading}
                         onClick={ this.onSubmit }>
                         { loading ? <Spin /> : 'Guardar' }
                     </Button>
                 ]}
                 content={
                     <ContentContainer>
-                        <Label>Puntos</Label>
-                        <Input
-                            id={'puntos'}
-                            value={ puntos }
-                            onChange={ ( { target } ) => { this.setState({ puntos: target.value })} }
-                        />
+                        <Row>
+                            <Col span={8} style={{padding: '10px'}}>
+                                <Label>Puntos</Label>
+                                <Input
+                                    id={'puntos'}
+                                    value={ puntos }
+                                    onChange={ ( { target } ) => { this.setState({ puntos: target.value })} }
+                                />
+                            </Col>
+                        </Row>
 
+                        <Row>
+                            <Col span={24} style={{padding: '10px'}}>
                         <Label>Descripcion</Label>
                         <Input
                             id={'descripcion'}
                             value={ descripcion }
                             onChange={ ( { target } ) => { this.setState({ descripcion: target.value })} }
                         />
-
-                        <Label>Puntos</Label>
-                        <Input
-                            id={'fecha'}
-                            value={ fecha }
-                            onChange={ ( { target } ) => { this.setState({ fecha: target.value })} }
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={12} style={{padding: '10px'}}>
+                        <Label>Fecha Movimiento</Label>
+                        <DatePicker
+                            style={{width: '100%'}}
+                            format={dateFormat}
+                            disabled={true}
+                            onChange={( value ) => ( this.onChangeDate('fecha', value ) ) }
+                            value={this.state.fechaValue}
                         />
+                            </Col>
+                            <Col span={12} style={{padding: '10px'}}>
 
-                        <Label>Puntos</Label>
+                        <Label>ID Pedido</Label>
                         <Input
                             id={'idpedido'}
                             value={ idpedido }
                             onChange={ ( { target } ) => { this.setState({ idpedido: target.value })} }
                         />
+                            </Col>
+                        </Row>
+                        <br />
+
                         {errorMessage && (<div style={{ color: 'red' }}>{errorMessage}</div>)}
                     </ContentContainer> }>
             </ModalTaskDetail>
@@ -131,5 +183,5 @@ PuntosActionCreate.propTypes = {
 export default  connect(
     state => ({
     }),
-    {  }
+    { createEntityPuntos }
 )( PuntosActionCreate );
