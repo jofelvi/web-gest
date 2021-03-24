@@ -53,6 +53,7 @@ class ClientsShowScreen extends React.Component {
             statisticsPurchaseGroupsData: null,
             statisticsPurchase: null,
             statisticsPurchasePeriod: '1year',
+            statisticsPurchaseGroupsPeriod: '1year',
             statisticsPurchaseColumn: 'unidades',
             statisticsPurchaseGroupsColumn: 'unidades',
         }
@@ -131,18 +132,19 @@ class ClientsShowScreen extends React.Component {
         alert( 'editing '+field+' setting '+value )
     }
     render() {
-        const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase,
-            loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient,
-            loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn
+        const {
+            loadingEntities, entities, client, savedPlan, clientError, error, plans, loadingPlans, loadingClient,
+            loadingStatisticsPurchaseGroup, statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, statisticsPurchaseGroupsPeriod,
+            loadingStatisticsPurchase, statisticsPurchaseData, statisticsPurchaseColumn, statisticsPurchasePeriod
         } = this.state;
 
         const statisticsPurchaseGraphicData = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
             let key = '';
             if ( statisticsPurchasePeriod == '1year' && monthsAgo < 13 ) {
-                key = statisticsRow.año+'-'+statisticsRow.mes;
-            } else if ( statisticsPurchasePeriod == '5year' && monthsAgo >= (new Date()).getMonth() ) {
-                key = statisticsRow.año+'-12';
+                key = statisticsRow.año+'-'+moment(statisticsRow.año+'-'+statisticsRow.mes).startOf('day').format( 'MMM' );
+            } else if ( statisticsPurchasePeriod == '5year' ) {
+                key = statisticsRow.año;
             }
             const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchasePeriod] == key )  )
             const accumulatedValue = currentResult ? currentResult[statisticsPurchaseColumn] : 0;
@@ -155,17 +157,25 @@ class ClientsShowScreen extends React.Component {
             return result;
         }, [] );
 
-        const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData , (result, statisticsRow) => {
-            const currentResult = find( result, ( resultRow ) => ( resultRow.idgrupo == statisticsRow.idgrupo )  )
+        const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData, ( result, statisticsRow ) => {
+            const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
+            let key = '';
+            if ( statisticsPurchaseGroupsPeriod == '1year' && monthsAgo < 13 ) {
+                key = statisticsRow.nombre
+            } else if ( statisticsPurchaseGroupsPeriod == '5year' && monthsAgo < ( 24*12+1 ) ) {
+                key = statisticsRow.nombre;
+            }
+            const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchaseGroupsPeriod] == key )  )
             const accumulatedValue = currentResult ? currentResult[statisticsPurchaseGroupsColumn] : 0;
             const incrementedValue = parseInt( statisticsRow[statisticsPurchaseGroupsColumn] )
-            result = filter( result, ( resultRow ) => ( resultRow.idgrupo != statisticsRow.idgrupo ) )
+            result = filter( result, ( resultRow ) => ( resultRow[ statisticsPurchaseGroupsPeriod ] != key ) )
             result.push({
                 ...statisticsRow,
+                [statisticsPurchaseGroupsPeriod]: key,
                 [statisticsPurchaseGroupsColumn]: accumulatedValue+incrementedValue
             });
             return result;
-        }, [])
+        }, [] );
 
 
         const statisticsPurchaseConfig = {
@@ -173,10 +183,6 @@ class ClientsShowScreen extends React.Component {
             padding: 'auto',
             xField: statisticsPurchasePeriod,
             yField: statisticsPurchaseColumn,
-            xAxis: {
-                type: 'timeCat',
-                tickCount: 5,
-            },
         }
         const statisticsGroupsConfig = {
             appendPadding: 10,
@@ -235,7 +241,7 @@ class ClientsShowScreen extends React.Component {
                                             loadingLine: false,
                                             order_id: 0,
                                             expandedKeys: [],
-                                            filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: '', searchByEntityName: client.nomcli_cbim},
+                                            filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: client.nomcli_cbim, searchByEntityName: client.nomcli_cbim},
                                         } )
                                         this.props.history.push('/orders')
                                     }
@@ -279,6 +285,15 @@ class ClientsShowScreen extends React.Component {
                             <hr/>
                             <h4 style={{margin: '20px 0 10px 0'}}>Ventas agrupadas por Grupo</h4>
                             <Card bordered={ false } style={{ textAlign: 'center' }}>
+                                <Select
+                                    style={{ marginRight: '30px'}}
+                                    key={'select_period'}
+                                    value={statisticsPurchaseGroupsPeriod}
+                                    onChange={(statisticsPurchaseGroupsPeriod) => this.setState({ statisticsPurchaseGroupsPeriod } ) }
+                                >
+                                    <Select.Option value={'1year'}>Últimos 12 meses</Select.Option>
+                                    <Select.Option value={'5year'}>Últimos 5 años</Select.Option>
+                                </Select>
                                 <Select
                                     key={'select_data'}
                                     value={statisticsPurchaseGroupsColumn}

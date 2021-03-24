@@ -71,7 +71,7 @@ class OrderListScreen extends React.Component {
   componentDidMount() {
     const { searchByOrderDate, searchByClient, searchByEntity, searchByType, searchByState } = this.state;
 
-    this.props.fetchOrders(this.state.filters.page || 0 )
+    this.handleSubmitOrdersSearch()
     this.props.fetchOrderStates( { } )
     this.props.fetchOrderProducts( { } )
     this.refreshCount()
@@ -85,7 +85,7 @@ class OrderListScreen extends React.Component {
     const { filters } = this.state;
     this.props.countOrders(
         {
-          codentidad_cbim: filters.searchByEntity || '',
+          codentidad_cbim: parseInt( filters.searchByEntity ) > 0 ? parseInt( filters.searchByEntity ) : '',
           tipo: filters.searchByType,
           idproducto: filters.searchByProduct || '',
           codcli_cbim: filters.searchByClient || '',
@@ -125,7 +125,7 @@ class OrderListScreen extends React.Component {
     const { filters } = this.state;
 
     searchOrder({
-      codentidad_cbim: filters.searchByEntity || '',
+      codentidad_cbim: parseInt( filters.searchByEntity ) > 0 ? parseInt( filters.searchByEntity ) : '',
       tipo: filters.searchByType,
       idproducto: filters.searchByProduct || '',
       codcli_cbim: filters.searchByClient || '',
