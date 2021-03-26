@@ -108,25 +108,25 @@ class Plan extends React.Component {
                     { propsPlan.idestado == 1 ? (<Tag color="green">Activo</Tag>) : (<Tag color="red">Inactivo</Tag>) }
                     <br />
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col span={14}>
                             <Card style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
-                                <span style={{ fontSize: '38px'}}> { propsPlan.descuento } % </span>
+                                <span style={{ fontSize: '34px'}}> { propsPlan.descuento } % </span>
                                 <br />
                                 <b>Descuento</b><br /><br />
                             </Card>
                         </Col>
-                        <Col span={12}>
+                        <Col span={10}>
                             <Card style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
-                                <span style={{ fontSize: '38px'}}> { propsPlan.udsmaximas } </span>
+                                <span style={{ fontSize: '34px'}}> { propsPlan.udsmaximas } </span>
                                 <br />
                                 <b>Compromiso</b><br /><br />
                             </Card>
                         </Col>
 
 
-                        <Col span={12} offset={12}>
+                        <Col span={10} offset={14}>
                             <Card border={false} style={{ margin: '8px', padding: '0px', width: '100%', float: 'right', textAlign: 'center' }}>
-                                <span style={{ fontSize: '38px'}}> { propsPlan.margen } % </span>
+                                <span style={{ fontSize: '34px'}}> { propsPlan.margen } % </span>
                                 <br />
                                 <b>Margen</b><br /><br />
                             </Card>

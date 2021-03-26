@@ -65,7 +65,7 @@ class ClientsTable extends React.Component {
                 title: 'Estado Cliente', dataIndex: 'cliente_estado', key: 'cliente_estado', width: 200,
                 sorter: true,
                 render: function( str, record, index) {
-                    return estados[ record.idestado ];
+                    return estados[ parseInt(record.cliente_idestado) ];
                 }
             },
             {
@@ -73,7 +73,7 @@ class ClientsTable extends React.Component {
                 render: ( value ) => ( value > 0 ? `Sí ( ${value} )` : 'No' )
             },
             {
-                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_fin', key: 'fecha_ultimo_fin', width: 200,
+                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_plan', key: 'fecha_ultimo_plan', width: 200,
                 sorter: true,
                 render: renderDate,
             },
