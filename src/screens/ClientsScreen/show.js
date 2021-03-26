@@ -53,7 +53,7 @@ class ClientsShowScreen extends React.Component {
             statisticsPurchaseGroupsData: null,
             statisticsPurchase: null,
             statisticsPurchasePeriod: '1year',
-            statisticsPurchaseGroupsPeriod: '1year',
+            statisticsPurchaseGroupsPeriod: 'mes',
             statisticsPurchaseColumn: 'unidades',
             statisticsPurchaseGroupsColumn: 'unidades',
         }
@@ -160,10 +160,12 @@ class ClientsShowScreen extends React.Component {
         const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
             let key = '';
-            if ( statisticsPurchaseGroupsPeriod == '1year' && monthsAgo < 13 ) {
+            if ( statisticsPurchaseGroupsPeriod == 'mes' && statisticsRow.año === (new Date()).getFullYear() && statisticsRow.mes == (new Date()).getMonth() ) {
                 key = statisticsRow.nombre
-            } else if ( statisticsPurchaseGroupsPeriod == '5year' && monthsAgo < ( 24*12+1 ) ) {
+            } else if ( statisticsPurchaseGroupsPeriod == 'año' && statisticsRow.año == (new Date()).getFullYear() ) {
                 key = statisticsRow.nombre;
+            } else {
+                return result;
             }
             const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchaseGroupsPeriod] == key )  )
             const accumulatedValue = currentResult ? currentResult[statisticsPurchaseGroupsColumn] : 0;
@@ -291,8 +293,8 @@ class ClientsShowScreen extends React.Component {
                                     value={statisticsPurchaseGroupsPeriod}
                                     onChange={(statisticsPurchaseGroupsPeriod) => this.setState({ statisticsPurchaseGroupsPeriod } ) }
                                 >
-                                    <Select.Option value={'1year'}>Últimos 12 meses</Select.Option>
-                                    <Select.Option value={'5year'}>Últimos 5 años</Select.Option>
+                                    <Select.Option value={'mes'}>Este mes</Select.Option>
+                                    <Select.Option value={'año'}>Este año</Select.Option>
                                 </Select>
                                 <Select
                                     key={'select_data'}

@@ -39,7 +39,7 @@ class ClientsScreen extends React.Component {
     }
 
     onChangePage (page, pageSize) {
-        this.setState( { page: page, selectedRowKeys: [] }, this.updateList )
+        this.setState( { page: page, selectedRowKeys: [] } )
     }
     onChangeSorter ( sorter ) {
         this.setState({ sorter: { field: sorter.field, order: sorter.order == 'ascend' ? 'ASC' : 'DESC' }} , this.updateList );
@@ -55,23 +55,24 @@ class ClientsScreen extends React.Component {
     }
 
     updateList() {
-        const { filters, page } = this.state;
-        this.setState( { loading: true } );
-
-        this.props.loadEntitiesIndas( {
-            page: page,
-            filters: {
-                ...filters,
-                sort_field: get( this.state, 'sorter.field', ''),
-                sort_order: get( this.state, 'sorter.order', ''),
-            },
-            success: ( data, count ) => {
-                this.setState( { data, count, loading: false }, this.saveState )
-            },
-            error: () => {
-                this.setState( { data: [], count: 0, loading: false }, this.saveState)
-            }
-        });
+        const { filters, page, loading } = this.state;
+        if ( false === loading ) {
+            this.setState( { loading: true } );
+            this.props.loadEntitiesIndas( {
+                page: page,
+                filters: {
+                    ...filters,
+                    sort_field: get( this.state, 'sorter.field', ''),
+                    sort_order: get( this.state, 'sorter.order', ''),
+                },
+                success: ( data, count ) => {
+                    this.setState( { data, count, loading: false }, this.saveState )
+                },
+                error: () => {
+                    this.setState( { data: [], count: 0, loading: false }, this.saveState)
+                }
+            });
+        }
     }
 
     saveState() {
