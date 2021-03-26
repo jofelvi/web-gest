@@ -26,11 +26,10 @@ import {
 	esModificado,
 } from './lib'
 import { EditableTable } from './editableTable'
-import './styles.css'
-
 const { Option } = Select
 const { TextArea } = Input
 const validationSchema = Yup.object().shape(obtenerValidacionSchema())
+
 const Regularizar = ({
 	getTaskVariables,
 	taskVariables,
@@ -57,7 +56,7 @@ const Regularizar = ({
 		if (taskVariables) {
 			const codcli_cbim = selectTaskVariable(taskVariables, 'codcli_cbim')
 			if (codcli_cbim) {
-				loadEntitiesIndas('idcliente=' + codcli_cbim.value)
+				loadEntitiesIndas({ filters: { idcliente: codcli_cbim.value } })
 			}
 		}
 	}, [token, taskVariables])
@@ -68,107 +67,116 @@ const Regularizar = ({
 			enableReinitialize>
 			{({ values, errors, handleChange, setFieldValue }) => (
 				<Form className="form-indas">
-					<h2 className="form-indas-main-title">
-						Regularización de Planes de Compra
-					</h2>
-					<h3 className="form-grupo-indas">
-						Datos generales
-					</h3>
-					<Row>
-						<Col span={12}/>
-						<Col span={6}>
-							<span class="label-title-indas">Estado</span>
-							<Badge status="processing" text={values.estado}/>
-						</Col>
-						<Col span={4}>
-							<span class="label-title-indas">Reno. Automáti.</span>
-						</Col>
-						<Col span={2}>
-							<Switch checked={values.ind_renovar}/>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={18}/>
-						<Col span={4}>
-							<span class="label-title-indas">Forzar Regula.</span>
-						</Col>
-						<Col span={2}>
-							<Switch checked={values.ind_regularizar}/>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={24}>
-							<span class="label-title-indas">Cliente</span>
-							{values.codcli_cbim} - {values.nomcli_cbim}
-						</Col>
-					</Row>
-					<Row>
-						<Col span={9}>
-							<span class="label-title-indas">Nombre PC</span>
-							{values.plan_nombre}
-						</Col>
-						<Col span={15}>
-							<span class="label-title-indas">Descripción PC</span>
-							{values.plan_descripcion}
-						</Col>
-					</Row>
-					<Row>
-						<Col span={12}>
-							<span class="label-title-indas">Fecha inicio</span>
-							{fechaView(values.fecha_inicio)}
-						</Col>
-						<Col span={12}>
-							<span class="label-title-indas">Fecha Fin</span>
-							{fechaView(values.fecha_fin)}
-						</Col>
-					</Row>
-					<h3 className="form-grupo-indas">
-						Líneas de descuento
-					</h3>
-					<Row>
-						<Col span={18}/>
-						<Col span={6}>
-							<span class="label-title-indas">Margen</span>
-							{values.margen}
-						</Col>
-					</Row>
-					<Row>
-						<Col span={24}>
-							<Row gutter={8}>
-								<Col span={4} className="label-title-indas">
-									Escalado
-								</Col>
-								<Col span={10} className="label-title-indas">
-									Unidades Comprometidas
-								</Col>
-								<Col span={10} className="label-title-indas">
-									Descuento
-								</Col>
-							</Row>
-							<Row gutter={8}>
-								<Col span={4} className="label-title-indas">
-									1
-								</Col>
-								<Col span={10} className="label-title-indas">
-									{values.e1_udsmaximas}
-								</Col>
-								<Col span={10} className="label-title-indas">
-									{values.e1_descuento}
-								</Col>
-							</Row>
-							<Row gutter={8}>
-								<Col span={4} className="label-title-indas">
-									2
-								</Col>
-								<Col span={10} className="label-title-indas">
-									{values.e2_udsmaximas}
-								</Col>
-								<Col span={10} className="label-title-indas">
-									{values.e2_descuento}
-								</Col>
-							</Row>
-						</Col>
-					</Row>
+					<h2>Vencimiento Plan de Compra</h2>
+
+					<h3 style={{margin: '20px 0 10px 0'}}>Datos generales</h3>
+
+          <div className="table-filters-indas" style={{padding:'20px'}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+							<Col span={18}>
+                <span>Entidad <small>(Código, Nombre, Código Postal, Población,
+									Provincia, Dirección)</small></span>
+                <div style={{ padding: '0px', paddingTop: '0',
+									paddingRight: '20px' }}>
+									<Input disabled
+										value={values.nomcli_cbim}/>
+                </div>
+							</Col>
+							<Col span={6}>
+              	<span>Código Cliente</span>
+                <div style={{ padding: '0px', paddingTop: '0', paddingRight:
+									'20px' }}>
+									<Input disabled
+										value={values.codcli_cbim}/>
+                </div>
+							</Col>
+						</Row>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+							<Col span={12}>
+								<span>Nombre del plan</span>
+                <div style={{ padding: '0px', paddingTop: '0', paddingRight:
+									'20px' }}>
+									<Input disabled value={values.plan_nombre}/>
+                </div>
+							</Col>
+							<Col span={12}>
+								<span>Descripción del plan</span>
+                <div style={{ padding: '0px', paddingTop: '0', paddingRight:
+									'20px' }}>
+									<Input disabled value={values.plan_descripcion}/>
+                </div>
+							</Col>
+						</Row>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+							<Col span={12}>
+								<span>Fecha de inicio</span>
+                <div style={{ padding: '0px', paddingTop: '0', paddingRight:
+									'20px' }}>
+									<Input disabled value={fechaView(values.fecha_inicio)}/>
+                </div>
+							</Col>
+							<Col span={12}>
+								<span>Fecha de fin</span>
+                <div style={{ padding: '0px', paddingTop: '0', paddingRight:
+									'20px' }}>
+									<Input disabled value={fechaView(values.fecha_fin)}/>
+                </div>
+							</Col>
+						</Row>
+						<Row style={{width: '100%', marginBottom: 0, marginTop: 10}}>
+							<Col span={24}>
+								<span>Estado</span>
+							</Col>
+						</Row>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}}>
+							<Col span={4}>
+								<Select disabled value={values.estado}/>
+							</Col>
+							<Col span={10} style={{ marginTop: 5 }}>
+								<span style={{ paddingRight: '50px' }}/>
+								<Switch checkedChildren="Sí" checked={values.ind_renovar}/>
+								<span style={{ paddingRight: '20px' }}/>
+								<span>Renovación Automática</span>
+							</Col>
+							<Col span={10} style={{ marginTop: 5 }}>
+								<span style={{ paddingRight: '50px' }}/>
+								<Switch checkedChildren="Sí" checked={values.ind_regularizar}/>
+								<span style={{ paddingRight: '20px' }}/>
+								<span>Forzar Mercancía pendiente</span>
+							</Col>
+						</Row>
+					</div>
+
+					<h3 style={{margin: '20px 0 10px 0'}}>Líneas de descuento</h3>
+
+          <div className="table-filters-indas" style={{padding:'20px'}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}}>
+							<Col span={8}>
+								<span>Unidades Comprometidas</span>
+								<Input style={{ marginBottom: 5}} disabled
+									value={values.e1_udsmaximas}/>
+								{values.d2_udsmaximas && <Input style={{ marginBottom: 5}}
+									disabled suffix='%' value={values.e2_udsmaximas}/>}
+							</Col>
+							<Col span={1}/>
+							<Col span={8}>
+								<span>Descuento</span>
+								<Input style={{ marginBottom: 5}} disabled
+									suffix='%' value={values.e1_descuento}/>
+								{values.d2_udsmaximas && <Input style={{ marginBottom: 5}}
+									disabled suffix='%' value={values.e2_descuento}/>}
+							</Col>
+							<Col span={1}/>
+							<Col span={6}>
+								<span>Margen</span>
+								<Input style={{ marginBottom: 5}} disabled
+									suffix='%' value={values.margen}/>
+								{values.d2_udsmaximas && <Input style={{ marginBottom: 5}}
+									disabled suffix='%' value={values.margen}/>}
+							</Col>
+						</Row>
+					</div>
+
 					<Row>
 						<EditableTable
 							dataSource={values.items}
@@ -211,7 +219,9 @@ const Regularizar = ({
 										loadWholesalersIndas(v)
 									}}>
 									{entitiesIndas.map(item => (
-										<Option value={item.codentidad_cbim}>{item.nomentidad_cbim}</Option>
+										<Option value={item.codentidad_cbim}>
+											{item.nomentidad_cbim}
+										</Option>
 									))}
 								</Select>
 							</Form.Item>
