@@ -51,6 +51,22 @@ class ActionEmailEdit extends React.Component {
         this.onError = this.onError.bind( this );
         this.onSuccess = this.onSuccess.bind( this );
         this.onSubmit = this.onSubmit.bind( this );
+        this.onClose = this.onClose.bind( this );
+    }
+
+    componentDidUpdate() {
+        const { entidad } = this.props;
+
+        if ( entidad && entidad.codcli_cbim !== this.state.id ) {
+            this.setState( {
+                id: entidad ? entidad.codcli_cbim : 0,
+                ind_renovar_pass: false,
+                email: entidad && entidad.cliente_email ? entidad.cliente_email : '',
+                errorMessage: false,
+                loading: false,
+                name: entidad ? entidad.nombre : '',
+            })
+        }
     }
 
     onError(error, email_is_used) {
@@ -77,10 +93,23 @@ class ActionEmailEdit extends React.Component {
             error: this.onError,
         });
     }
+    onClose() {
+        const { onClose, entidad } = this.props;
+        this.setState( {
+            id: entidad ? entidad.codcli_cbim : 0,
+            ind_renovar_pass: false,
+            email: entidad && entidad.cliente_email ? entidad.cliente_email : '',
+            errorMessage: false,
+            loading: false,
+            name: entidad ? entidad.nombre : '',
+        })
+        onClose();
+    }
 
     render() {
         const { ind_renovar_pass, email, nombre, errorMessage, loading } = this.state;
-        const { onClose, visible, entidad } = this.props;
+        const { visible, entidad } = this.props;
+        const { onClose } = this;
         return (
             <ModalTaskDetail
                 visible={ visible }

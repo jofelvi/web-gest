@@ -18,6 +18,7 @@ import * as moment from "moment";
 import StatisticsPlanGraphic from './components/StatisticsPlanGraphic';
 import Plan from './components/Plan';
 import Entidades from './components/Entidades';
+import { decimalAdjust } from '../../utils';
 import { setFilters as setPCFilters } from "../../modules/planes-compra/actions";
 const { confirm } = Modal;
 
@@ -52,6 +53,7 @@ class ClientsShowScreen extends React.Component {
             statisticsPurchaseGroupsData: null,
             statisticsPurchase: null,
             statisticsPurchasePeriod: '1year',
+            statisticsPurchaseGroupsPeriod: 'mes',
             statisticsPurchaseColumn: 'unidades',
             statisticsPurchaseGroupsColumn: 'unidades',
         }
@@ -130,23 +132,24 @@ class ClientsShowScreen extends React.Component {
         alert( 'editing '+field+' setting '+value )
     }
     render() {
-        const { statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, loadingStatisticsPurchase,
-            loadingStatisticsPurchaseGroup, savedPlan, clientError, error, plans, loadingPlans, loadingClient,
-            loadingEntities, entities, client, statisticsPurchaseData, statisticsPurchasePeriod, statisticsPurchaseColumn
+        const {
+            loadingEntities, entities, client, savedPlan, clientError, error, plans, loadingPlans, loadingClient,
+            loadingStatisticsPurchaseGroup, statisticsPurchaseGroupsData, statisticsPurchaseGroupsColumn, statisticsPurchaseGroupsPeriod,
+            loadingStatisticsPurchase, statisticsPurchaseData, statisticsPurchaseColumn, statisticsPurchasePeriod
         } = this.state;
 
         const statisticsPurchaseGraphicData = reduce( statisticsPurchaseData, ( result, statisticsRow ) => {
             const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
             let key = '';
             if ( statisticsPurchasePeriod == '1year' && monthsAgo < 13 ) {
-                key = statisticsRow.año+'-'+statisticsRow.mes;
-            } else if ( statisticsPurchasePeriod == '5year' && monthsAgo >= (new Date()).getMonth() ) {
-                key = statisticsRow.año+'-12';
+                key = statisticsRow.año+'-'+moment(statisticsRow.año+'-'+statisticsRow.mes).startOf('day').format( 'MMM' );
+            } else if ( statisticsPurchasePeriod == '5year' ) {
+                key = statisticsRow.año;
             }
-            const currentResult = find( result, ( resultRow ) => ( resultRow.[ statisticsPurchasePeriod] == key )  )
-            const accumulatedValue = currentResult ? currentResult.[statisticsPurchaseColumn] : 0;
-            const incrementedValue = parseInt( statisticsRow.[statisticsPurchaseColumn] )
-            result = filter( result, ( resultRow ) => ( resultRow.[ statisticsPurchasePeriod ] != key ) )
+            const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchasePeriod] == key )  )
+            const accumulatedValue = currentResult ? currentResult[statisticsPurchaseColumn] : 0;
+            const incrementedValue = parseInt( statisticsRow[statisticsPurchaseColumn] )
+            result = filter( result, ( resultRow ) => ( resultRow[ statisticsPurchasePeriod ] != key ) )
             result.push({
                 [statisticsPurchasePeriod]: key,
                 [statisticsPurchaseColumn]: accumulatedValue+incrementedValue
@@ -154,17 +157,27 @@ class ClientsShowScreen extends React.Component {
             return result;
         }, [] );
 
-        const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData , (result, statisticsRow) => {
-            const currentResult = find( result, ( resultRow ) => ( resultRow.idgrupo == statisticsRow.idgrupo )  )
-            const accumulatedValue = currentResult ? currentResult.[statisticsPurchaseGroupsColumn] : 0;
-            const incrementedValue = parseInt( statisticsRow.[statisticsPurchaseGroupsColumn] )
-            result = filter( result, ( resultRow ) => ( resultRow.idgrupo != statisticsRow.idgrupo ) )
+        const statisticsPurchaseGroupsGraphicData = reduce( statisticsPurchaseGroupsData, ( result, statisticsRow ) => {
+            const monthsAgo = ((new Date()).getFullYear()-statisticsRow.año)*12+((new Date()).getMonth()-statisticsRow.mes)
+            let key = '';
+            if ( statisticsPurchaseGroupsPeriod == 'mes' && statisticsRow.año === (new Date()).getFullYear() && statisticsRow.mes == (new Date()).getMonth() ) {
+                key = statisticsRow.nombre
+            } else if ( statisticsPurchaseGroupsPeriod == 'año' && statisticsRow.año == (new Date()).getFullYear() ) {
+                key = statisticsRow.nombre;
+            } else {
+                return result;
+            }
+            const currentResult = find( result, ( resultRow ) => ( resultRow[ statisticsPurchaseGroupsPeriod] == key )  )
+            const accumulatedValue = currentResult ? currentResult[statisticsPurchaseGroupsColumn] : 0;
+            const incrementedValue = parseInt( statisticsRow[statisticsPurchaseGroupsColumn] )
+            result = filter( result, ( resultRow ) => ( resultRow[ statisticsPurchaseGroupsPeriod ] != key ) )
             result.push({
                 ...statisticsRow,
+                [statisticsPurchaseGroupsPeriod]: key,
                 [statisticsPurchaseGroupsColumn]: accumulatedValue+incrementedValue
             });
             return result;
-        }, [])
+        }, [] );
 
 
         const statisticsPurchaseConfig = {
@@ -172,10 +185,6 @@ class ClientsShowScreen extends React.Component {
             padding: 'auto',
             xField: statisticsPurchasePeriod,
             yField: statisticsPurchaseColumn,
-            xAxis: {
-                type: 'timeCat',
-                tickCount: 5,
-            },
         }
         const statisticsGroupsConfig = {
             appendPadding: 10,
@@ -187,8 +196,8 @@ class ClientsShowScreen extends React.Component {
                 type: 'inner',
                 offset: '-30%',
                 content: function content(_ref) {
-                    var percent = _ref.percent;
-                    return ''.concat(percent * 100, '%');
+                    var percent = decimalAdjust( 'round', _ref.percent * 100, -2 );
+                    return ''.concat(percent, '%');
                 },
                 style: {
                     fontSize: 14,
@@ -196,25 +205,6 @@ class ClientsShowScreen extends React.Component {
                 },
             },
 
-        }
-        const statisticsPlanConfig = {
-            appendPadding: 10,
-            data: [
-                { normalizedValue: 19, value: 10, label: 'Pedidos' },
-                { normalizedValue: 21, value: 80, label: 'Compras' },
-            ],
-            yField: 'normalizedValue',
-            xField: 'label',
-            radius: 0.8,
-            innerRadius: 0.2,
-            tooltip: {
-                formatter: function formatter(datum) {
-                    return {
-                        name: 'Valor',
-                        value: datum.value,
-                    };
-                },
-            },
         }
         return (
         <div>
@@ -235,7 +225,7 @@ class ClientsShowScreen extends React.Component {
                     ) : (<Skeleton style={{marginBottom: '10px'}}/>)}
                     { clientError && (<p style={{ color: 'red'}}>Error guardando el cliente.</p>) }
                     <h2 style={{margin: '20px 0 10px 0'}}>Entidades</h2>
-                    { loadingEntities ? (<Skeleton />) : (<Entidades entities={ entities }/>) }
+                    { loadingEntities ? (<Skeleton />) : (<Entidades history={this.props.history} entities={ entities }/>) }
 
                 </div>
                 <div className="table-indas table-indas-new">
@@ -253,7 +243,7 @@ class ClientsShowScreen extends React.Component {
                                             loadingLine: false,
                                             order_id: 0,
                                             expandedKeys: [],
-                                            filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: '', searchByEntityName: client.nomcli_cbim},
+                                            filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: client.nomcli_cbim, searchByEntityName: client.nomcli_cbim},
                                         } )
                                         this.props.history.push('/orders')
                                     }
@@ -297,6 +287,15 @@ class ClientsShowScreen extends React.Component {
                             <hr/>
                             <h4 style={{margin: '20px 0 10px 0'}}>Ventas agrupadas por Grupo</h4>
                             <Card bordered={ false } style={{ textAlign: 'center' }}>
+                                <Select
+                                    style={{ marginRight: '30px'}}
+                                    key={'select_period'}
+                                    value={statisticsPurchaseGroupsPeriod}
+                                    onChange={(statisticsPurchaseGroupsPeriod) => this.setState({ statisticsPurchaseGroupsPeriod } ) }
+                                >
+                                    <Select.Option value={'mes'}>Este mes</Select.Option>
+                                    <Select.Option value={'año'}>Este año</Select.Option>
+                                </Select>
                                 <Select
                                     key={'select_data'}
                                     value={statisticsPurchaseGroupsColumn}

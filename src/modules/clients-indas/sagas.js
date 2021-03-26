@@ -13,6 +13,8 @@ import {
 	GET_CLIENT_STATISTICS_PURCHASE_GROUPS,
 	GET_CLIENT_PLANS,
 	UPDATE_CLIENT,
+	GET_ENTITY_PUNTOS,
+	CREATE_ENTITY_PUNTOS,
 } from './actionTypes';
 import {
 	loadClientsIndasFailed,
@@ -233,4 +235,46 @@ function* getClientStatisticsPurchaseGroups( { payload } ) {
 }
 export function* watchgetClientStatisticsPurchaseGroups() {
 	yield takeLatest( GET_CLIENT_STATISTICS_PURCHASE_GROUPS, getClientStatisticsPurchaseGroups );
+}
+
+
+function* getEntityPuntos( { payload } ) {
+	try {
+		const request_payload = payload.filters ? { codentidad_cbim: payload.codentidad_cbim, filters: payload.filters, page: payload.page } : {};
+		const response = yield call(api.getEntityPuntos, request_payload )
+		const count_response = yield call(api.countEntityPuntos, request_payload )
+
+		if ( typeof payload.success == 'function' ) {
+			payload.success(response.data, count_response.data.count )
+		}
+	} catch (e) {
+		console.error(e)
+		if ( typeof payload.error == 'function' ) {
+			payload.error(e)
+		}
+	}
+}
+export function* watchgetEntityPuntos() {
+	yield takeLatest( GET_ENTITY_PUNTOS, getEntityPuntos );
+}
+
+function* createEntityPuntos({ payload }) {
+	const isPayloadEmail = payload && payload.email;
+	const { codentidad_cbim, movimiento } = payload;
+	try {
+		const response = yield call(api.createEntityPuntos, codentidad_cbim, movimiento );
+		if( response && response.status === 201){
+			if ( typeof payload.success == 'function' ) {
+				payload.success(response.data)
+			}
+		}
+
+	} catch (e) {
+		console.error(e);
+		payload.error(e)
+	}
+}
+
+export function* watchcreateEntityPuntos() {
+	yield takeLatest(CREATE_ENTITY_PUNTOS, createEntityPuntos)
 }

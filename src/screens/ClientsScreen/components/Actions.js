@@ -106,7 +106,7 @@ class ClientsActions extends React.Component {
                         {exportLoading ? <Spin/> : <ExportOutlined style={{fontSize: '20px'}}/> }
                     </Button>
                     {
-                        selectedRowKeys.length == 1 && (
+                        selectedRowKeys.length == 1 && entity && (
                             <React.Fragment>
                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}} onClick={() => {
                                     this.props.history.push(`/clientes/${ entity.idcliente }/expediente`)
@@ -116,12 +116,6 @@ class ClientsActions extends React.Component {
                                 <Button type="link" disabled={loading == 'email'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.cambiarEmail } >
                                     { loading == 'email' ? <Spin /> : 'Cambiar Email' }
                                 </Button>
-                            </React.Fragment>
-                        )
-                    }
-                    {
-                        selectedRowKeys.length >= 1 && (
-                            <React.Fragment>
                                 <Dropdown overlay={(
                                     <Menu>
                                         <Menu.Item key="1" onClick={() => { this.confirmUpdateStatus( 1) }}>
@@ -144,7 +138,8 @@ class ClientsActions extends React.Component {
 
                 </div>
                 { selectedRowKeys.length > 0 && ( <div style={ { width: '200px', paddingTop: '20px', float: 'right' } } >{ selectedRowKeys.length } fila(s) seleccionada(s).</div> ) }
-                <ActionEmailEdit
+                { entity && (
+                    <ActionEmailEdit
                     onClose={ () => {
                         this.setState( {loading: false, entity: false } )
                         onReload()
@@ -152,15 +147,19 @@ class ClientsActions extends React.Component {
                     visible={ entity && loading == 'email' && entity != false }
                     entidad={ entity }
                 />
-                <ActionChangeStatus
-                    onClose={ () => {
-                        this.setState( { loading: false, entity: false, update_status: null })
-                         onReload()
-                    }}
-                    status={ update_status }
-                    visible={ update_status !== null }
-                    entidad={ entity }
+                ) }
+                { entity && (
+                    <ActionChangeStatus
+                        onClose={ () => {
+                            this.setState( { loading: false, entity: false, update_status: null })
+                            onReload()
+                        }}
+                        status={ update_status }
+                        visible={ update_status !== null }
+                        entidad={ entity }
                     />
+                )}
+
             </div>
         );
     };

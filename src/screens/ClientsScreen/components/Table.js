@@ -10,6 +10,7 @@ import PlanesCompraFilters from "../../CommercialDealsScreen/PlanesCompra/compon
 import PlanesCompraActions from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
 import ResizableTable from "../../shared/ResizableTable";
 import {LIMIT} from "../../../constants";
+import {estados} from './../../../modules/clients-indas/api';
 
 const renderDate = (dateStr, record, index) => {
     if ( ! dateStr ) {
@@ -63,13 +64,16 @@ class ClientsTable extends React.Component {
             {
                 title: 'Estado Cliente', dataIndex: 'cliente_estado', key: 'cliente_estado', width: 200,
                 sorter: true,
+                render: function( str, record, index) {
+                    return estados[ parseInt(record.cliente_idestado) ];
+                }
             },
             {
                 title: 'PC Activos', dataIndex: 'planes_activos', key: 'planes_activos', width: 200,
                 render: ( value ) => ( value > 0 ? `Sí ( ${value} )` : 'No' )
             },
             {
-                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_fin', key: 'fecha_ultimo_fin', width: 200,
+                title: 'Fecha fin último PC', dataIndex: 'fecha_ultimo_plan', key: 'fecha_ultimo_plan', width: 200,
                 sorter: true,
                 render: renderDate,
             },

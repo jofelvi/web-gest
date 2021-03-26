@@ -42,7 +42,9 @@ class Entidades extends React.Component {
                                         <span style={{ fontSize: '38px'}}> { entity.puntosacumulados } </span>
                                         <br />
                                         <b>PUNTOS</b><br /><br />
-                                        <a href={'#'}>Movs.</a>
+                                        <a onClick={() => {
+                                            this.props.history.push('/clientes/'+entity.idcliente+'/entidades/'+entity.codentidad_cbim+'/puntos');
+                                        }}>Movs.</a>
                                     </Card>
                                 </Col>
                             </Row>
@@ -56,7 +58,7 @@ class Entidades extends React.Component {
                                     ( mayorista ) => (
                                         <List.Item key={mayorista.codmayorista}>
                                             <List.Item.Meta
-                                                title={( <span><b>{mayorista.codmayorista}</b> - { mayorista.nombre}</span> ) }
+                                                title={( <span><b>{mayorista.codmayorista}</b> - { mayorista.nombre} [ { mayorista.cooperador } ]</span> ) }
                                             />
                                         </List.Item>
                                     )

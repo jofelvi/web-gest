@@ -126,6 +126,7 @@ class OrderFilterEntity extends React.Component {
                 onChange={this.handleChange}
                 notFoundContent={null}
                 allowClear
+                onClear={() => this.setState({ data: []})}
             >
                 {options}
             </Select>

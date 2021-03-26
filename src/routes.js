@@ -23,6 +23,7 @@ import PlanesCompraEdit from './screens/CommercialDealsScreen/PlanesCompra/edit'
 import Campanas from './screens/CommercialDealsScreen/Campanas';
 import ClientsScreen from './screens/ClientsScreen';
 import ClientsShowScreen from './screens/ClientsScreen/show';
+import ClientsPuntosScreen from './screens/ClientsScreen/puntos';
 import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarEntidad from './screens/Forms/registrar_nueva_entidad/validarEntidad'
 import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
@@ -88,6 +89,7 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
         <PrivateRoute path="/campañas" exact component={Campanas}/>
         <PrivateRoute path="/clientes" exact component={ClientsScreen}/>
         <PrivateRoute path="/clientes/:id/expediente" exact component={ClientsShowScreen}/>
+        <PrivateRoute path="/clientes/:idcliente/entidades/:codentidad_cbim/puntos" exact component={ClientsPuntosScreen}/>
       <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
       <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
       <PrivateRoute path="/orders" exact component={OrderListScreen}/>
