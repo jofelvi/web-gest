@@ -196,7 +196,7 @@ class ClientsFilters extends React.Component {
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
                                 <Option value="1">Alta</Option>
-                                <Option value="2">Baja</Option>
+                                <Option value="0">Baja</Option>
                             </Select>
                         </Col>
 
