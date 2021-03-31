@@ -21,8 +21,8 @@ class ClientsScreen extends React.Component {
             count: 0,
             filters: {},
             sorter: {
-                field: 'codcli_cbim',
-                order: 'desc',
+                field: '',
+                order: '',
             },
         };
         this.onChangeSorter = this.onChangeSorter.bind( this );
