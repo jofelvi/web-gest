@@ -50,7 +50,7 @@ export const updateClient = ( rClient ) => {
 	const idcliente = client.idcliente;
 	delete client.idcliente;
 	delete client.estado;
-	return patch(`/ntr/cliente/${idcliente }`, client );
+	return patch(`/multi/cliente/${idcliente }`, client );
 }
 
 
@@ -243,4 +243,4 @@ export const countEntityPuntos = async ( payload ) => {
 	}
 	return get(`ntr/entidad/${payload.codentidad_cbim}/puntos/historial/count?${queryParams}`);
 };
-export const createEntityPuntos = (codentidad_cbim,data) => post(`/ntr/entidad/${codentidad_cbim}/puntos/create`, data);
+export const createEntityPuntos = (codentidad_cbim,data) => post(`/multi/entidad/${codentidad_cbim}/puntos/create`, data);

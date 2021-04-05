@@ -7,7 +7,7 @@ import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, Dou
 import { Tabs } from 'antd';
 import {estados} from './../../../modules/clients-indas/api';
 import _ from 'underscore';
-import { get, keys } from 'lodash';
+import { get, keys, map } from 'lodash';
 import * as moment from "moment";
 import { Spin, Typography, Space } from 'antd';
 import {InputBox} from "../../OrderListScreen/styled";
@@ -53,7 +53,15 @@ const spacedErrorTooltipStyle = {
 
 const { TabPane } = Tabs;
 
-
+const renderDate = (dateStr, record, index) => {
+    if ( ! dateStr ) {
+        return ( '-' );
+    }
+    return (
+        <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
+            <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
+        </Tooltip>);
+}
 class ClientsForm extends React.Component {
     constructor(props) {
         super(props)
@@ -148,11 +156,20 @@ class ClientsForm extends React.Component {
                             </Col>
                             <Col span={12} >
                                 <label>Estado</label>
-                                <Input
+                                <Select
                                     style={inputStyle}
-                                    value={ estados[ client.idestado ] }
-                                    disabled={ true }
-                                />
+                                    value={estados[ client.idestado ]}
+                                    onChange={ ( { target }) => { this.setState( { client: { ...client, idestado: target.value } } ) } }
+                                    style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
+                                    disable={ loading }
+                                >
+                                    <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
+                                    { map(estados, ( estado, value ) => {
+                                        return (
+                                            <Option value={value}>{estado}</Option>
+                                        )
+                                    } ) }
+                                </Select>
                             </Col>
 
                         </Row>
@@ -169,19 +186,17 @@ class ClientsForm extends React.Component {
                             </Col>
 
                             <Col span={12} >
-                                <label>Fecha Alta</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.fecha_alta }
-                                    disabled={ true }
-                                />
+                                <label style={{ display: 'block'}}>Fecha Alta</label>
+                                <p style={{ margin: '15px', display: 'inline-block' }}>
+                                { renderDate( client.fecha_alta ) }
+                                </p>
                             </Col>
 
                         </Row>
                         <Row style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
 
                             <Col span={12} >
-                                <label>Email</label>
+                                <label style={{ display: 'block'}}>Email</label>
                                 <Input
                                     style={inputStyle}
                                     value={ client.email }
@@ -191,12 +206,10 @@ class ClientsForm extends React.Component {
                             </Col>
 
                             <Col span={12} >
-                                <label>Fecha Último Acceso</label>
-                                <Input
-                                    style={inputStyle}
-                                    value={ client.fecha_ultimo_acceso }
-                                    disabled={ true }
-                                />
+                                <label style={{ display: 'block'}}>Fecha Último Acceso</label>
+                                <p style={{ margin: '15px', display: 'inline-block' }}>
+                                    { renderDate( client.fecha_ultimo_acceso ) }
+                                </p>
                             </Col>
 
                         </Row>
@@ -234,7 +247,7 @@ class ClientsForm extends React.Component {
                             <label>Nombre</label>
                             <Input  style={inputStyle}
                             value={ client.nombre }
-                            disabled={ true || loading }
+                            disabled={ loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, nombre: e.target.value }},
                                 () => {
@@ -252,7 +265,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.nif }
-                            disabled={ true || loading }
+                            disabled={ loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, nif: e.target.value }},
                                 () => {
@@ -271,7 +284,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.apellido1 }
-                            disabled={ true || loading }
+                            disabled={ loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, apellido1: e.target.value }},
                                 () => {
@@ -288,7 +301,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.telefono }
-                            disabled={ true || loading }
+                            disabled={ loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, telefono: e.target.value }},
                                 () => {
@@ -310,7 +323,7 @@ class ClientsForm extends React.Component {
                             <Input
                             style={inputStyle}
                             value={ client.apellido2 }
-                            disabled={ true || loading }
+                            disabled={ loading }
                             onChange={ (e) => {
                             this.setState({ client: { ...client, apellido2: e.target.value }},
                                 () => {
@@ -330,7 +343,7 @@ class ClientsForm extends React.Component {
                         }
                         { error && (<Typography type="danger" style={{ color: 'red', marginTop: '10px'}}> Se ha producido un error al guardar el plan, por favor, revisa los datos.</Typography>) }
 
-                        { false && (
+                        { true && (
                             <Button size="large" type="primary" onClick={ this.save } style={{marginTop: '10px'}} disabled={ loading }>
                                 { loading ? (<Spin></Spin>) : 'Guardar' }
                             </Button>

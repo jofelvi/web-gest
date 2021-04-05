@@ -4,11 +4,15 @@ import {
   loadMenuItemsSuccess,
   selectParentItem,
   loadChildItemsMenuSuccess,
-  setCollapse
+  setCollapse,
+    setSelectedKeys,
+    setOpenKeys,
 } from './actions';
 
 const defaultState = {
   itemsMenu:[],
+  selectedKeys: [],
+    openKeys: [],
   childItemsMenu:[],
   parentItem: {},
   collapsed: false,
@@ -18,6 +22,19 @@ const defaultState = {
 
 export default handleActions(
   {
+      [setSelectedKeys]: ( state, { payload } ) => {
+          console.log( 'setSelectedKeys', payload.selectedKeys );
+          return ({
+          ...state,
+          selectedKeys: payload.selectedKeys
+      }) } ,
+
+      [setOpenKeys]: ( state, { payload } ) => {
+          console.log( 'setOpenKeys', payload );
+          return ({
+              ...state,
+              openKeys: payload
+          }) } ,
     [loadMenuItemsSuccess]: (state, { payload })=>({
       ...state,
       itemsMenu: payload.MenuItems

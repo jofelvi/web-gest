@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import './styles.css';
 import { Menu, Icon, } from 'antd';
 import { withRouter } from 'react-router-dom';
+import {setSelectedKeys} from "../../../modules/menu/actions";
 
 const { SubMenu } = Menu;
 
@@ -11,19 +12,28 @@ const LeftMenu = ({
     loadMenuItems,
     collapsed,
     history,
+    setSelectedKeys,
+    selectedKeys,
+    setOpenKeys,
+    openKeys
 }) => {
     useEffect(()=>{
         loadMenuItems();
-    },[loadMenuItems,itemsMenu, collapsed])
+    },[loadMenuItems,itemsMenu, collapsed, selectedKeys, openKeys])
     return  (
             <Menu
                 mode="inline"
                 theme="dark"
                 inlineCollapsed={collapsed}
+                onSelect={ setSelectedKeys }
+                onDeselect={ setSelectedKeys }
+                onOpenChange={ setOpenKeys }
+                selectedKeys={ selectedKeys }
+                openKeys={ openKeys }
                 >
-                {itemsMenu.map(item => 
+                {itemsMenu.map(item =>
                 {
-                    if(item.children){
+                    if(item.children) {
                         return  <SubMenu
                                     key={item.id}
                                     title={
