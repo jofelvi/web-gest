@@ -11,6 +11,7 @@ import ClientsForm from './components/Form';
 import { getClient } from '../../modules/clients-indas/actions';
 import { getClientEntities, getClientStatisticsPurchase, getClientPlans, updateClient, getClientStatisticsPurchaseGroups } from '../../modules/clients-indas/actions';
 import { setOrderListState } from '../../modules/orders/actions';
+import { setSelectedKeys, setOpenKeys } from '../../modules/menu/actions';
 import _ from 'underscore';
 import { Line, Pie, RadialBar } from '@ant-design/charts';
 import { reduce, find, filter } from 'lodash';
@@ -246,6 +247,7 @@ class ClientsShowScreen extends React.Component {
                                             filters: {page: 0, searchByClient: client.codcli_cbim, searchByEntity: client.nomcli_cbim, searchByEntityName: client.nomcli_cbim},
                                         } )
                                         this.props.history.push('/orders')
+                                        this.props.setSelectedKeys( { selectedKeys: ["6"] })
                                     }
                                 } }>Ver Listado</a></span>
                             </h2>
@@ -331,6 +333,8 @@ class ClientsShowScreen extends React.Component {
                                             selectedRowsAction: false,
                                         } )
                                         this.props.history.push('/planes-de-compra')
+                                        this.props.setSelectedKeys( { selectedKeys: ["14"] })
+                                        this.props.setOpenKeys( ["5"] )
                                     }
                                 } }>Ver Listado</a></span>
                             </h2>
@@ -354,4 +358,4 @@ ClientsShowScreen.propTypes = {
 };
 
 export default connect( ( state ) => ({
-}), { setOrderListState, setPCFilters, getClientStatisticsPurchaseGroups, getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );
+}), { setOpenKeys, setSelectedKeys, setOrderListState, setPCFilters, getClientStatisticsPurchaseGroups, getClient, updateClient, getClientEntities, getClientPlans, getClientStatisticsPurchase } )( withRouter(ClientsShowScreen) );

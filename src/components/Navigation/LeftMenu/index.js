@@ -5,17 +5,24 @@ import {
     loadChildItemsMenu,
     selectParentItem,
     loadMenuItems,
+    setSelectedKeys,
+    setOpenKeys,
     setCollapse} from '../../../modules/menu/actions';
 
 export default connect(
 state => ({
     itemsMenu: state.menu.itemsMenu,
     collapsed: state.menu.collapsed,
+    selectedKeys: state.menu.selectedKeys,
+    openKeys: state.menu.openKeys,
     wMenu: state.menu.wMenu
     }),
-    { 
-        loadChildItemsMenu, 
+    {
+        loadChildItemsMenu,
         selectParentItem,
         loadMenuItems,
-        setCollapse }
+        setCollapse,
+        setSelectedKeys,
+        setOpenKeys,
+    }
 )(View);

@@ -9,7 +9,7 @@ export const formData = [
 	{name:"fecha_inicio", type:"String", validation:undefined,
 		defaultValue:'', label:'Fecha Inicio', visible:true},
 	{name:"ind_regularizar", type:"Boolean", validation:undefined,
-		defaultValue:true, label:'Forzar Regula.', visible:true},
+		defaultValue:true, label:'Forzar Mcía. Pte.', visible:true},
 	{name:"ind_renovar", type:"Boolean", validation:undefined,
 		defaultValue:true, label:'Reno. Atomáti.', visible:true},
 	{name:"margen", type:"Double", validation:undefined,
@@ -51,7 +51,8 @@ export const tableCols = (tipo) => {
 		render: (text) => { return !text || text === ''? 'N.D.': text; }});
 	cols.push({ title: "Uds. Compradas", dataIndex: "udscompradas",
 		key: "udscompradas", align: "center", editable: false, width: 100});
-	cols.push({ title: "Uds. regulari.", dataIndex: "udsregularizar",
-		key: "udsregularizar", align: "center", editable: true, width: 100});
+	cols.push({ title: "Mcía. Pte.", dataIndex: "udsregularizar",
+		key: "udsregularizar", align: "center", editable: true, width: 100,
+		sortOrder: 'descend', sorter: (a, b) => a.udsregularizar - b.udsregularizar });
 	return cols;
 }

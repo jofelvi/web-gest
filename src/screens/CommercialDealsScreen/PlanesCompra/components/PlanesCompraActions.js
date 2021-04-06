@@ -215,16 +215,16 @@ class PlanesCompraActions extends React.Component {
 
                                 <Dropdown overlay={(
                                     <Menu>
-                                        <Menu.Item key="1" onClick={() => { this.confirmUpdatePlans( 'Regularización Aut.', 'Activo', 'ind_regularizar', true) }}>
+                                        <Menu.Item key="1" onClick={() => { this.confirmUpdatePlans( 'Forzar Mcía. Pdte. Auto.', 'Activo', 'ind_regularizar', true) }}>
                                             Activar
                                         </Menu.Item>
-                                        <Menu.Item key="2" onClick={() => { this.confirmUpdatePlans( 'Regularización Aut.', 'Inactivo', 'ind_regularizar', false) }}>
+                                        <Menu.Item key="2" onClick={() => { this.confirmUpdatePlans( 'Forzar Mcía. Pdte. Auto.', 'Inactivo', 'ind_regularizar', false) }}>
                                             Desactivar
                                         </Menu.Item>
                                     </Menu>
                                 )}>
                                     <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}}>
-                                        { loading == 'ind_regularizar' ? <Spin /> : 'Regularización Aut.' } <DownOutlined/>
+                                        { loading == 'ind_regularizar' ? <Spin /> : 'Forzar Mcía. Pdte. Auto.' } <DownOutlined/>
                                     </Button>
                                 </Dropdown>
                             </React.Fragment>
