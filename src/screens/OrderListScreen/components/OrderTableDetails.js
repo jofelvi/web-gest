@@ -82,7 +82,7 @@ class OrderTableDetails extends React.Component {
                 render: (text, row) => {
                     if ( disable ) {
                         return (
-                            <Tooltip title="Sólo se pueden modificar pedidos en estado 'Tramitado' y 'Retenido'">
+                            <Tooltip title="Sólo se pueden eliminar líneas de pedidos en estado 'Tramitado' y 'Retenido'">
                                 <Button disabled={ true } className="ant-btn-dangerous" danger style={{marginTop: '0px'}}>{ deleteLineLoadingId == row.idproducto ? <LoadingOutlined /> : <DeleteRowOutlined /> }</Button>
                             </Tooltip>
                         );

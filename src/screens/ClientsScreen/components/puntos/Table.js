@@ -36,7 +36,7 @@ class PuntosTable extends React.Component {
                 render: renderDate,
             },
             {
-                title: 'Pedido', dataIndex: 'idpedido', key: 'idpedido', width: 200,
+                title: 'Pedido', dataIndex: 'codpedido_origen', key: 'codpedido_origen', width: 200,
             },
             {
                 title: 'Consumidos', dataIndex: 'consumidos', key: 'consumidos', width: 200,
