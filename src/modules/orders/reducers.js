@@ -21,7 +21,8 @@ import {
     changeOrderStatusByIdFailed,
     changeOrderStatusSetLoading,
     fetchOrderStatesSuccess,
-    fetchOrderProductsSuccess
+    fetchOrderProductsSuccess,
+    setOrderListState,
 } from './actions';
 import {checkLoginFailed} from "../auth/actions";
 import {STATUS} from "../auth/constants";
@@ -29,6 +30,7 @@ import {STATUS} from "../auth/constants";
 const defaultState = {
     list: [],
     loadingList: false,
+    listState: false,
     states: [],
     products: [],
     count: 0,
@@ -42,6 +44,12 @@ const defaultState = {
 
 export default handleActions(
   {
+      [setOrderListState] : ( state, { payload } ) => {
+        return {
+            ...state,
+            listState: payload,
+        }
+      },
       [deleteOrderByIdFailed]: (state, { payload }) => {
           message.error(payload.message);
           return {
@@ -83,14 +91,12 @@ export default handleActions(
           }
       },
       [fetchOrderStatesSuccess]: (state, { payload }) => {
-          console.log('received states', payload)
           return {
             ...state,
               states: payload.states
           }
       },
       [fetchOrderProductsSuccess]: (state, { payload }) => {
-          console.log('received product', payload)
           return {
               ...state,
               products: payload.states
@@ -140,7 +146,7 @@ export default handleActions(
       ...state,
       byId: payload.order
     }),
-    
+
     [fetchEntityByIdSuccess]: (state, { payload }) => ({
       ...state,
       byCodEntity: payload.entity
@@ -182,7 +188,6 @@ export default handleActions(
       },
 
       [deleteOrderLineSetLoading]: (state, { payload }) => {
-          console.log('deleteOrderLineSetLoading', payload, state)
           return ({
               ...state,
               deleteLineLoadingId: payload.id,

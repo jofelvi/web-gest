@@ -4,20 +4,20 @@ import {LIMIT} from '../../constants'
 const generatingOffset = (page, offset)=>{
     let queryParams = '';
     const limit = LIMIT;
-  if(page < 0){
-    offset = 0
-queryParams = `offset=${offset}&limit=${limit}`
-}else if(page === 0){
-  offset = 0
-  queryParams = `offset=${offset}&limit=${limit}`
-}else{
-  queryParams = `offset=${offset}&limit=${limit}`
-}
-return queryParams;
+    if(page < 0){
+      offset = 0
+      queryParams = `offset=${offset}&limit=${limit}`
+    }else if(page === 0){
+      offset = 0
+      queryParams = `offset=${offset}&limit=${limit}`
+    }else{
+      queryParams = `offset=${offset}&limit=${limit}`
+    }
+  return queryParams;
 }
 
 
-export const fetchOrders = async (page) => { 
+export const fetchOrders = async (page) => {
   let offset;
   offset = page;
   let queryParams = generatingOffset(page, offset)
@@ -26,7 +26,7 @@ export const fetchOrders = async (page) => {
 
 
 export const countOrders = async ({
-    codentidad_cbim, codpedido_origen, codcli_cbim, tipo, dates, codestado
+    codentidad_cbim, codpedido_origen, codcli_cbim, tipo, dates, codestado, idproducto
 }) => {
 
   let queryParams = ''
@@ -37,6 +37,10 @@ export const countOrders = async ({
   }
   if (dates[1]) {
     queryParams += `&fecha_hasta=${dates[1]}`;
+  }
+  //BY idproducto
+  if (idproducto) {
+    queryParams += `&idproducto=${idproducto}`;
   }
   //BY TYPE
   if (tipo) {
@@ -64,12 +68,12 @@ export const countOrders = async ({
 };
 
 export const searchOrder = async ({
-  codentidad_cbim, codpedido_origen, codcli_cbim, tipo, pages, dates, codestado
+  codentidad_cbim, codpedido_origen, codcli_cbim, tipo, pages, dates, codestado, idproducto
 }) => {
-    
+
   let offset;
   offset = pages;
-  
+
 let queryParams = generatingOffset(pages, offset)
   //BY DATE
   if (dates[0]) {
@@ -82,6 +86,10 @@ let queryParams = generatingOffset(pages, offset)
   if (tipo) {
     tipo = tipo.charAt(0).toUpperCase() + tipo.slice(1)
     queryParams += `&tipo=${tipo}`;
+  }
+  //BY idproducto
+  if (idproducto) {
+    queryParams += `&idproducto=${idproducto}`;
   }
   //BY CLIENT
   if (codcli_cbim) {

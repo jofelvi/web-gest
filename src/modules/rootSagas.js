@@ -45,6 +45,17 @@ import {
   watchEditCommercialDeal
 } from './commercialDeals/sagas';
 
+import {
+  watchfetchPlans,
+  watchcreatePlan,
+  watchfetchDelegados,
+  watchfetchSubmarcaCollections,
+  watchcreateSubmarcaCollection,
+  watchupdatePlan,
+  watchfetchPlan,
+  watchupdatePlans,
+} from './planes-compra/sagas'
+
 import{
   watchloadMenuItems,
   watchloadChildItems
@@ -83,11 +94,19 @@ import {
   watchEditClientIndas,
   // watchSearchClientBy,
   watchGetClientsCount,
+  watchupdateClient,
+  watchgetClient,
+  watchgetClientEntities,
+  watchgetClientStatisticsPurchase,
+  watchgetClientStatisticsPurchaseGroups,
+    watchgetClientPlans,
+  watchgetEntityPuntos,
+  watchcreateEntityPuntos,
 } from './clients-indas/sagas';
 
 import {
-	watchloadClientesCbim,		
-	watchloadClienteCbimEntidades,		
+	watchloadClientesCbim,
+	watchloadClienteCbimEntidades,
 } from './clientes-cbim/sagas';
 
 export default function* rootSaga() {
@@ -135,20 +154,36 @@ export default function* rootSaga() {
     watchfetchSalesByHour(),
     watchfetchClientsData(),
     watchfetchPendingTasks(),
-		watchloadClientesCbim(),
+    watchloadClientesCbim(),
     watchdeleteOrderLineById(),
     watchloadClienteCbimEntidades(),
-    watchEditTask(),    
+    watchEditTask(),
     watchEditCommercialDeal(),
     watchFetchTaskMessage(),
     watchEditTaskMessage(),
     watchFetchTaskAssigneeUser(),
     watchEditClientIndas(),
     // watchSearchClientBy(),
-    watchGetClientsCount(), 
+    watchGetClientsCount(),
     watchFetchTaskListUser(),
     watchchangeOrderStatusById(),
     watchfetchOrderStates(),
-    watchfetchOrderProducts()
+    watchfetchOrderProducts(),
+    watchfetchPlans(),
+    watchcreatePlan(),
+    watchfetchDelegados(),
+    watchfetchSubmarcaCollections(),
+    watchcreateSubmarcaCollection(),
+    watchfetchPlan(),
+    watchupdatePlan(),
+    watchupdatePlans(),
+    watchgetClient(),
+    watchgetClientEntities(),
+    watchgetClientStatisticsPurchase(),
+    watchgetClientStatisticsPurchaseGroups(),
+    watchgetClientPlans(),
+    watchupdateClient(),
+    watchgetEntityPuntos(),
+    watchcreateEntityPuntos(),
   ]);
 }

@@ -8,6 +8,7 @@ import charts from './charts/reducers';
 import tasks from './tasks/reducers';
 import forms from './forms/reducers';
 import commercialDeals from './commercialDeals/reducers';
+import planesCompra from './planes-compra/reducers';
 import menu from './menu/reducers'
 import clientsIndas from './clients-indas/reducers';
 import clientesCbim from './clientes-cbim/reducers';
@@ -23,5 +24,6 @@ export default combineReducers({
   orders,
   products,
   charts,
-	clientesCbim
+	clientesCbim,
+  planesCompra
 });

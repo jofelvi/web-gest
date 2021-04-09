@@ -82,7 +82,7 @@ class OrderTableDetails extends React.Component {
                 render: (text, row) => {
                     if ( disable ) {
                         return (
-                            <Tooltip title="Sólo se pueden modificar pedidos en estado 'Tramitado' y 'Retenido'">
+                            <Tooltip title="Sólo se pueden eliminar líneas de pedidos en estado 'Tramitado' y 'Retenido'">
                                 <Button disabled={ true } className="ant-btn-dangerous" danger style={{marginTop: '0px'}}>{ deleteLineLoadingId == row.idproducto ? <LoadingOutlined /> : <DeleteRowOutlined /> }</Button>
                             </Tooltip>
                         );
@@ -92,7 +92,6 @@ class OrderTableDetails extends React.Component {
                             placement="topLeft"
                             title={`Se va a proceder a la anulación de la línea del producto ${row.nombre}`}
                             onConfirm={() => {
-                                console.log('CONFIRM', row)
                                 deleteOrderLineSetLoading({ id: row.idproducto })
                                 deleteOrderLineById({ idproducto: row.idproducto, idpedido: order.idpedido, codpedido_origen: order.codpedido_origen })
                             }}

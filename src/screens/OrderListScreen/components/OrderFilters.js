@@ -25,11 +25,12 @@ class OrderFilters extends React.Component {
         this.searchedValue = this.searchedValue.bind(this)
 
         this.state = {
-            searchByClient: '',
+            searchByClient: props.filters.searchByClient ? props.filters.searchByClient : '',
             searchByCodPedido: '',
             searchByState: '',
-            searchByEntity: '',
+            searchByEntity: props.filters.searchByEntity ? props.filters.searchByEntity : '',
             searchByType: '',
+            searchByEntityName: '',
             page: props.page,
             searchByOrderDate: [],
             searchByOrderDateValue: [],
@@ -44,6 +45,7 @@ class OrderFilters extends React.Component {
             searchByClient: '',
             searchByOrderDateValue: [],
             searchByEntity: '',
+            searchByEntityName: '',
             searchByCodPedido: '',
             searchByType: '',
             page: 0,
@@ -110,7 +112,7 @@ class OrderFilters extends React.Component {
     }
 
     render() {
-        const { page, searchByState,searchByProduct, searchByOrderDate, searchByClient, searchByCodPedido, searchByEntity, searchByType, searchByOrderId } = this.state;
+        const { page, searchByState,searchByProduct, searchByOrderDate, searchByClient, searchByCodPedido, searchByEntity, searchByEntityName, searchByType, searchByOrderId } = this.state;
        return (
            <div className="table-filters-indas">
                <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
@@ -119,6 +121,7 @@ class OrderFilters extends React.Component {
                            <span style={{padding: '10px'}}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                            <OrderFilterEntity
                                value={searchByEntity}
+                               textValue={searchByEntityName}
                                onChange={ (entity) => this.searchedValue('searchByEntity', entity) }
                                onChangeClient={ (client) => this.searchedValue('searchByClient', client) }
                            />
@@ -215,7 +218,7 @@ class OrderFilters extends React.Component {
                                <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
                                { this.props.products && this.props.products.map( (stateObject) => {
                                    return (
-                                       <Option value={stateObject.codindas}>{stateObject.codindas} - {stateObject.nombre}</Option>
+                                       <Option value={stateObject.idproducto}>{stateObject.codindas} - {stateObject.nombre}</Option>
                                    );
                                } ) }
                            </Select>

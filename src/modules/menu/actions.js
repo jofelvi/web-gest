@@ -8,7 +8,9 @@ import {
   LOAD_CHILD_ITEMS_MENU,
   LOAD_CHILD_ITEMS_MENU_SUCCESS,
   LOAD_CHILD_ITEMS_MENU_FAILED,
-  SET_COLLAPSE
+  SET_COLLAPSE,
+  SET_SELECTED_KEYS,
+  SET_OPEN_KEYS,
 } from './actionTypes';
 
 export const {
@@ -19,7 +21,9 @@ export const {
   loadChildItemsMenu,
   loadChildItemsMenuSuccess,
   loadChildItemsMenuFailed,
-  setCollapse
+  setCollapse,
+  setSelectedKeys,
+  setOpenKeys
 } = createActions(
   LOAD_MENU_ITEMS,
   LOAD_MENU_ITEMS_SUCCESS,
@@ -28,5 +32,7 @@ export const {
   LOAD_CHILD_ITEMS_MENU,
   LOAD_CHILD_ITEMS_MENU_SUCCESS,
   LOAD_CHILD_ITEMS_MENU_FAILED,
-  SET_COLLAPSE
+  SET_COLLAPSE,
+  SET_SELECTED_KEYS,
+  SET_OPEN_KEYS
 );

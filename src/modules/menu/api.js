@@ -19,23 +19,33 @@ const mockMenu ={
     {
       id:4,
       label:"Clientes",
-      children:[
-        {
-          id:8,
-          label:"Clientes en TR",
-          url:"/clients/tr"
-        },
-        {
-          id:9,
-          label:"Clientes en CBIM",
-          url:"/clients/cbim"
-        }
-      ]
+      url:"/clientes"
     },
     {
       id:5,
       label:"Condiciones Comerciales",
-      url:"/commercial-deals"
+      children:[
+        {
+          id:13,
+          label:"Promociones",
+          url:"/promociones"
+        },
+        {
+          id:14,
+          label:"Planes de Compra",
+          url:"/planes-de-compra"
+        },
+        {
+          id:15,
+          label:"Campañas",
+          url:"/campañas"
+        },
+        {
+          id:16,
+          label:"[Legacy]",
+          url:"/commercial-deals"
+        }
+      ]
     },
     {
       id:6,
@@ -63,13 +73,13 @@ const mockMenu ={
         }
       ]
     },
-    
+
   ]
 };
 
 export const getMenuItems = () => {
   return new Promise((resolve,reject) =>{
-    resolve(mockMenu);  
+    resolve(mockMenu);
   });
 }
 

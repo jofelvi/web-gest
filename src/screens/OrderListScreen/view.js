@@ -43,17 +43,17 @@ const { Option } = Select;
 class OrderListScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.state = props.savedState ? props.savedState : {
+      filters: { page: 0},
+      count: 0,
+      buttonIsvisible: false,
+      visible: false,
+      loadingLine: false,
+      order_id: 0,
+      expandedKeys: [],
+    };
     this.setLoadingLine = this.setLoadingLine.bind(this)
     this.setFilters = this.setFilters.bind(this)
-  }
-  state = {
-    filters: { page: 0},
-    count: 0,
-    buttonIsvisible: false,
-    visible: false,
-    loadingLine: false,
-    order_id: 0,
-    expandedKeys: [],
   }
 
   setLoadingLine(status) {
@@ -71,7 +71,7 @@ class OrderListScreen extends React.Component {
   componentDidMount() {
     const { searchByOrderDate, searchByClient, searchByEntity, searchByType, searchByState } = this.state;
 
-    this.props.fetchOrders(this.state.filters.page || 0 )
+    this.handleSubmitOrdersSearch()
     this.props.fetchOrderStates( { } )
     this.props.fetchOrderProducts( { } )
     this.refreshCount()
@@ -85,8 +85,9 @@ class OrderListScreen extends React.Component {
     const { filters } = this.state;
     this.props.countOrders(
         {
-          codentidad_cbim: filters.searchByEntity || '',
+          codentidad_cbim: parseInt( filters.searchByEntity ) > 0 ? parseInt( filters.searchByEntity ) : '',
           tipo: filters.searchByType,
+          idproducto: filters.searchByProduct || '',
           codcli_cbim: filters.searchByClient || '',
           codpedido_origen: filters.searchByCodPedido || '',
           dates: filters.searchByOrderDate || '',
@@ -95,7 +96,6 @@ class OrderListScreen extends React.Component {
   }
 
   onExpand = expandedKeys => {
-    console.log("onExpand", expandedKeys);
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
     // or, you can remove all expanded children keys.
     this.setState({
@@ -125,8 +125,9 @@ class OrderListScreen extends React.Component {
     const { filters } = this.state;
 
     searchOrder({
-      codentidad_cbim: filters.searchByEntity || '',
+      codentidad_cbim: parseInt( filters.searchByEntity ) > 0 ? parseInt( filters.searchByEntity ) : '',
       tipo: filters.searchByType,
+      idproducto: filters.searchByProduct || '',
       codcli_cbim: filters.searchByClient || '',
       codpedido_origen: filters.searchByCodPedido || '',
       pages: (filters.page-1)*LIMIT || 0,
@@ -141,7 +142,6 @@ class OrderListScreen extends React.Component {
     const { searchByClient, searchByCodPedido, searchByEntity, searchByType, searchByState } = this.state;
     const { orders, order, fetchOrderById, entity, client, count, deleteOrderLineById, deleteOrderLineSetLoading, deleteLineLoadingId, deleteLoadingId } = this.props;
 
-    console.log('ORDER', order)
     return (
       <Maincontainer>
         <div className="table-indas table-indas-new">
@@ -178,7 +178,6 @@ class OrderListScreen extends React.Component {
                     this.setState({ filters: {...this.state.filters, page: page } }, function () { this.handleSubmitOrdersSearch() })
                   }
                 }}
-                scroll={{ x: true }}
                 tableLayout="auto"
                 scroll={{ x: 'calc(700px + 50%)'}}
             >
@@ -228,7 +227,6 @@ class OrderListScreen extends React.Component {
                 title="Estado"
                 dataIndex="nombre_estado"
                 key="nombre_estado"
-                style="30%"
                 render={ ( txt, record, i ) => ( <OrderStatusActions order={ record } /> ) }
               />
 

@@ -1,27 +1,25 @@
 import { connect } from 'react-redux';
 
-import { 
+import {
     loadClientsIndas,
     loadEntitiesIndas,
     loadWholesalersIndas,
     getClientsCount,
+    setListState,
  } from '../../modules/clients-indas/actions';
+import { fetchDelegados } from "../../modules/planes-compra/actions";
 
 import View from './view';
 
 export default connect(
   state => ({
-    list: state.clientsIndas.list,
-    entitiesIndas: state.clientsIndas.entitiesIndas,
-    wholesalersIndas: state.clientsIndas.wholesalersIndas,
-    token: state.auth.token,
-    filterValues: state.clientsIndas.filterValues,
-
+      entities: state.clientsIndas.entitiesIndas,
+      entitiesCount: state.clientsIndas.entitiesCount,
+      state: state.clientsIndas.listState,
   }),
-  { 
-      loadClientsIndas, 
+  {
       loadEntitiesIndas,
-      loadWholesalersIndas,
-      getClientsCount
+      setListState,
+      fetchDelegados,
   }
 )(View);
