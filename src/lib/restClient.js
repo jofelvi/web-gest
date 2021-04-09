@@ -19,7 +19,7 @@ export const tokenMiddleware = () => next => action => {
   return next(action);
 };
 
-const getHeaders = async () => {
+ export const getHeaders = async () => {
   const token = storedToken || utils.getAuthToken();
   const headers = {
     'Content-Type': 'application/json',

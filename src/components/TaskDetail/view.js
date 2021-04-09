@@ -27,6 +27,7 @@ import EditButtons from './components/EditButtons';
 import { transformData } from './utils_data';
 import { handleInput } from '../../lib/forms';
 import locale from 'antd/lib/date-picker/locale/es_ES';
+import Select_MP from '../ModalEditProducto/Select_MP';
 
 
 // import { processData } from '../../screens/Forms/registrar_cliente/validarRegistro/data';
@@ -267,7 +268,7 @@ const TaskDetail = ({
                           }
                         </Select>
                       )}
-                      
+                        <Select_MP></Select_MP>
                       {inputKey === 'due' && (
                         <DatePicker
                           id={inputKey}

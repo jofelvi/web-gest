@@ -17,7 +17,7 @@ import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarEntidad from './screens/Forms/registrar_nueva_entidad/validarEntidad'
 import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
 import OrderListScreen from './screens/OrderListScreen'
-import CatalogListScreen from './screens/CatalogListScreen'
+import CatalogListScreen from './screens/CatalogListScreenv1/CatalogListScreen'
 
 const { capitalizeWord } = utils;
 
@@ -75,8 +75,9 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
       <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
       <PrivateRoute path="/orders" exact component={OrderListScreen}/>
-      <PrivateRoute path="/catalog-list" exact component={CatalogListScreen}/>
       <PrivateRoute path="/pruebaform3" exact component={ValidarEntidad}/>
+      <PrivateRoute path="/catalog-list" exact component={CatalogListScreen}/>
+
     </Switch>
   );
 };

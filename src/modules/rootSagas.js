@@ -149,6 +149,7 @@ export default function* rootSaga() {
     watchFetchTaskListUser(),
     watchchangeOrderStatusById(),
     watchfetchOrderStates(),
-    watchfetchOrderProducts()
+    watchfetchOrderProducts(),
+    watchfetchProducts()
   ]);
 }
