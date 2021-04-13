@@ -41,6 +41,7 @@ export const obtenerValoresIniciales = function(taskVariables) {
 				if(result[item.name] === '') {
 					result[item.name] = item.defaultValue;
 				}
+				result['key'] = result.idproducto;
 				return result;
 			}, {});
 			initValue.items.push(linea);
