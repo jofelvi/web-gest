@@ -180,6 +180,7 @@ const Regularizar = ({
 					<Row key="productos">
 						<EditableTable
 							dataSource={values.items}
+							rowKey={row => row.idproducto}
 							getColumns={() => {
 								return tableCols(values.tipo)
 							}}
