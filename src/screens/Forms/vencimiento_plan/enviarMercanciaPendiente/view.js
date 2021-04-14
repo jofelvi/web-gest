@@ -54,9 +54,9 @@ const Regularizar = ({
 	}, [token, task])
 	useEffect(() => {
 		if (taskVariables) {
-			const codcli_cbim = selectTaskVariable(taskVariables, 'codcli_cbim')
-			if (codcli_cbim) {
-				loadEntitiesIndas({ filters: { idcliente: codcli_cbim.value } })
+			const idcliente = selectTaskVariable(taskVariables, 'idcliente')
+			if (idcliente) {
+				loadEntitiesIndas({ filters: { idcliente: idcliente.value } })
 			}
 		}
 	}, [token, taskVariables])
