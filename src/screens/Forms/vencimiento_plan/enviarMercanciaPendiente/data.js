@@ -29,7 +29,10 @@ export const formData = [
 	{name:"e2_descuento",type:"Double",  validation:undefined,
 		defaultValue: '', label:'Descuento', visible:true},
 	{name:"lineas",type:"Integer",  validation:undefined,
-		defaultValue: '', label:'', visible:false}
+		defaultValue: '', label:'', visible:false},
+	{name:"codentidad_cbim", type:"Integer", validation:undefined, defaultValue: '', label:'Cod. Entidad', visible:true},
+	{name:"codmayorista", type:"Integer", validation:undefined, defaultValue: '', label:'Cod. Mayorista', visible:true},
+	
 ];
 // Describe cada uno de los campos que forman un plan de compra
 export const formDataItem = [

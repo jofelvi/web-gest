@@ -54,9 +54,9 @@ const Regularizar = ({
 	}, [token, task])
 	useEffect(() => {
 		if (taskVariables) {
-			const codcli_cbim = selectTaskVariable(taskVariables, 'codcli_cbim')
-			if (codcli_cbim) {
-				loadEntitiesIndas({ filters: { idcliente: codcli_cbim.value } })
+			const idcliente = selectTaskVariable(taskVariables, 'idcliente')
+			if (idcliente) {
+				loadEntitiesIndas({ filters: { idcliente: idcliente.value } })
 			}
 		}
 	}, [token, taskVariables])
@@ -72,7 +72,7 @@ const Regularizar = ({
 					<h3 style={{margin: '20px 0 10px 0'}}>Datos generales</h3>
 
           <div className="table-filters-indas" style={{padding:'20px'}}>
-						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}} key="cliente">
 							<Col span={18}>
                 <span>Entidad <small>(Código, Nombre, Código Postal, Población,
 									Provincia, Dirección)</small></span>
@@ -91,7 +91,7 @@ const Regularizar = ({
                 </div>
 							</Col>
 						</Row>
-						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}} key="plan">
 							<Col span={12}>
 								<span>Nombre del plan</span>
                 <div style={{ padding: '0px', paddingTop: '0', paddingRight:
@@ -107,7 +107,7 @@ const Regularizar = ({
                 </div>
 							</Col>
 						</Row>
-						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 10}} key="fechas">
 							<Col span={12}>
 								<span>Fecha de inicio</span>
                 <div style={{ padding: '0px', paddingTop: '0', paddingRight:
@@ -123,12 +123,12 @@ const Regularizar = ({
                 </div>
 							</Col>
 						</Row>
-						<Row style={{width: '100%', marginBottom: 0, marginTop: 10}}>
+						<Row style={{width: '100%', marginBottom: 0, marginTop: 10}} key="estado">
 							<Col span={24}>
 								<span>Estado</span>
 							</Col>
 						</Row>
-						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}} key="switches">
 							<Col span={4}>
 								<Select disabled value={values.estado}/>
 							</Col>
@@ -150,7 +150,7 @@ const Regularizar = ({
 					<h3 style={{margin: '20px 0 10px 0'}}>Líneas de descuento</h3>
 
           <div className="table-filters-indas" style={{padding:'20px'}}>
-						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}}>
+						<Row style={{width: '100%', marginBottom: 10, marginTop: 0}} key="lineas-descuento">
 							<Col span={8}>
 								<span>Unidades Comprometidas</span>
 								<Input style={{ marginBottom: 5}} disabled
@@ -177,30 +177,22 @@ const Regularizar = ({
 						</Row>
 					</div>
 
-					<Row>
+					<Row key="productos">
 						<EditableTable
 							dataSource={values.items}
+							rowKey={row => row.idproducto}
 							getColumns={() => {
 								return tableCols(values.tipo)
 							}}
 							handleSave={row => {
+								console.log(row)
+								if (row.udsregularizar < 0)
+									return
 								const newData = values.items
 								const index = newData.findIndex(
-									item => row.codindas === item.codindas,
+									item => row.idproducto === item.idproducto,
 								)
 								const item = newData[index]
-								if (item.cantidad !== row.row) {
-									const esPedido =
-										typeof values.tipo === 'string' &&
-										values.tipo.search(/pedidos/i) !== -1
-									// Re-calculamos el total de puntos
-									if (esPedido)
-										row.puntos_acumulados_total =
-											row.puntos_acumulados_unidad * row.cantidad
-									else
-										row.puntos_coste_total =
-											row.puntos_coste_unidad * row.cantidad
-								}
 								newData.splice(index, 1, {
 									...item,
 									...row,
@@ -209,7 +201,7 @@ const Regularizar = ({
 							}}
 						/>
 					</Row>
-					<Row>
+					<Row key="combos">
 						<Col xs={{ span: 24 }} md={{ span: 11 }}>
 							<Form.Item name="codentidad_cbim" label="Entidad">
 								<Select
@@ -241,7 +233,7 @@ const Regularizar = ({
 						</Col>
 					</Row>
 					<Divider />
-					<Row type="flex" justify="left" gutter={16}>
+					<Row key="botones" type="flex" justify="start" gutter={16}>
 						<Col>
 							<Button
 								type="primary"
