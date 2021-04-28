@@ -1,13 +1,12 @@
+/*
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import utils from "../../lib/utils"
-import {getHeaders} from "../../lib/restClient"
 import { Table, Tag, Button, Space, Pagination,Switch, Select } from 'antd';
 import {Maincontainer} from './styled';
 import ModalCatalogo from '../../components/ModalCatalogo/ModalCatalogo';
 import ModalEditProducto from '../../components/ModalEditProducto/ModalEditProducto';
-import Select_MP from '../../components/ModalEditProducto/Select_MP';
 
 
 const { Option,OptGroup } = Select;
@@ -139,16 +138,6 @@ let token = utils.getAuthToken()
         
     ]
 
- 
-
-
-
-
-
-    
-
-
-
 
         return(
             <Maincontainer>
@@ -176,4 +165,4 @@ let token = utils.getAuthToken()
 
 
 
-export default CatalogListScreen;
+export default CatalogListScreen;*/

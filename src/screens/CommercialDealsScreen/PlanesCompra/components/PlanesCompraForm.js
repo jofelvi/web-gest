@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider} from 'antd';
+import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, ConfigProvider, Spin, Typography, Tabs} from 'antd';
 import {InputsContainer} from "../../../../lib/styled";
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 import DualListBox from 'react-dual-listbox';
-import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
-import { Tabs } from 'antd';
+import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined} from "@ant-design/icons";
 import _ from 'underscore';
 import { get, keys } from 'lodash';
 import { loadFamilies, loadBrands, loadSubBrands, loadProducts  } from '../../../../modules/commercialDeals/actions';
 import {createPlan, createPlanSetLoading, fetchSubmarcaCollections, createSubmarcaCollection, createSubmarcaCollectionSetLoading } from '../../../../modules/planes-compra/actions';
 import * as moment from "moment";
-import { Spin, Typography, Space } from 'antd';
 import ExtendedDualListBox from "./ExtendedDualListBox";
 import DualListFilter from "./DualListFilter";
 import DiscriminatorListBox from "./DiscriminatorListBox";
@@ -33,8 +31,10 @@ moment.locale("es", {
 
 const { Text, Link } = Typography;
 
-const dateFormat = 'DD/MM/YYYY';
+
 const { Option } = Select;
+
+const dateFormat = 'DD/MM/YYYY';
 const inputStyle = {
     width: 'calc(100% - 40px)',
     margin: '10px'

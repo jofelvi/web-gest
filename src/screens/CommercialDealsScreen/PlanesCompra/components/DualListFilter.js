@@ -24,6 +24,7 @@ class DualListFilter extends React.Component {
         const { options, value } = this.props;
         return (
             <React.Fragment>
+
               <Select value={ value || '' } style={{ width: '96%', marginLeft: '2%'}} onChange={this.changeValue} disabled={ options.length == 0 }>
                   <Option value={''}>- Seleccionar -</Option>
                   { options.map( ( option ) => {

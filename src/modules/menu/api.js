@@ -36,15 +36,21 @@ const mockMenu ={
           url:"/planes-de-compra"
         },
         {
+          id:16,
+          label:"Acuerdos Comerciales",
+          url:"/acuerdos-comerciales"
+        },
+        {
           id:15,
           label:"Campañas",
           url:"/campañas"
         },
-        {
+/*         {
           id:16,
           label:"[Legacy]",
           url:"/commercial-deals"
-        }
+        } 
+*/
       ]
     },
     {

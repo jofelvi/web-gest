@@ -13,8 +13,6 @@ const { Content, Header, Sider } = Layout;
 
 const App = ({
   location: { pathname },
-  wContent,
-  wMenu,
   history,
   completed,
   processKey,

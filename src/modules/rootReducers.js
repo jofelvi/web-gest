@@ -12,6 +12,7 @@ import planesCompra from './planes-compra/reducers';
 import menu from './menu/reducers'
 import clientsIndas from './clients-indas/reducers';
 import clientesCbim from './clientes-cbim/reducers';
+import AcuerdosComReducer from "./acuerdosComer/reducer";
 
 export default combineReducers({
   auth,
@@ -25,5 +26,6 @@ export default combineReducers({
   products,
   charts,
 	clientesCbim,
-  planesCompra
+  planesCompra,
+  acuerdosComer: AcuerdosComReducer
 });

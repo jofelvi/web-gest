@@ -220,6 +220,7 @@ const ViewCommercialDeals = ({
                     setAsociatedClients({isAsociatedClient: false})
                     setCcNotEditable({isNotEditable: false});
                 }} hidden={loading}>Nuevo</Button>
+
             </ButtonGroup>
             
                     <Table 

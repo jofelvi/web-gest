@@ -25,7 +25,11 @@ import ValidarRegistro from './screens/Forms/registrar_cliente/validarRegistro'
 import ValidarEntidad from './screens/Forms/registrar_nueva_entidad/validarEntidad'
 import ValidarPedido from './screens/Forms/tramitar_pedido/validarPedido'
 import OrderListScreen from './screens/OrderListScreen'
+
 import CatalogListScreen from './screens/CatalogListScreenv1/CatalogListScreen'
+import CommercialDealNew from "./screens/CommercialDealsScreenNew/CommercialDealNew";
+import CreateCommercialDealNew from "./screens/CommercialDealsScreenNew/createCommercialDeal/CreateCommercialDeal";
+
 
 const { capitalizeWord } = utils;
 
@@ -83,6 +87,13 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
         <PrivateRoute path="/planes-de-compra/crear" exact component={PlanesCompraCreate}/>
         <PrivateRoute path="/planes-de-compra/:id/editar" exact component={PlanesCompraEdit}/>
         <PrivateRoute path="/planes-de-compra/:id/copiar" exact component={PlanesCompraCopy}/>
+        {
+          // nuevas rutas
+        }
+        <PrivateRoute path="/acuerdos-comerciales/" exact component={CommercialDealNew}/>
+        <PrivateRoute path="/acuerdos-comerciales/crear" exact component={CreateCommercialDealNew}/>
+        <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={PlanesCompraEdit}/>
+        <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={PlanesCompraCopy}/>
         <PrivateRoute path="/promociones" exact component={Promociones}/>
         <PrivateRoute path="/campañas" exact component={Campanas}/>
         <PrivateRoute path="/clientes" exact component={ClientsScreen}/>

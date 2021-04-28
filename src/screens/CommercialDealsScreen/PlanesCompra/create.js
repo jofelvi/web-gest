@@ -11,7 +11,7 @@ import {
 import {withRouter} from "react-router-dom";
 import { fetchPlan, createPlan, createPlanSetLoading } from "../../../modules/planes-compra/actions";
 
-class PlanesCompraCreate extends React.Component {
+class PlanesCompraCreateNew extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -61,9 +61,9 @@ class PlanesCompraCreate extends React.Component {
     };
 
 }
-PlanesCompraCreate.propTypes = {
+PlanesCompraCreateNew.propTypes = {
 };
 
 export default connect( ( state ) => ({
     plan: state.planesCompra.plan,
-}), { fetchPlan, createPlanSetLoading, createPlan  } )( withRouter(PlanesCompraCreate) );
+}), { fetchPlan, createPlanSetLoading, createPlan  } )( withRouter(PlanesCompraCreateNew) );

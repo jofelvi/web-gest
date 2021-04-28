@@ -88,7 +88,7 @@ class ModalCreateOrder extends React.Component {
                                             onSearch={this.onProductSearch}
                                             placeholder={"Cod Indas"}
                                         >
-                                            {productOptions.map((obj: string) => (
+                                            {productOptions.map((obj) => (
                                                 <Option key={obj.value} value={obj.value}>
                                                     {obj.value}
                                                 </Option>

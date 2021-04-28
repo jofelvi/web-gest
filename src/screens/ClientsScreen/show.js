@@ -237,7 +237,7 @@ class ClientsShowScreen extends React.Component {
                                     const { client } = this.state;
                                     if ( client )  {
                                         this.props.setOrderListState({
-                                            filters: { page: 0},
+                                            //cdfilters: { page: 0},
                                             count: 0,
                                             buttonIsvisible: false,
                                             visible: false,

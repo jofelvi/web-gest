@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfigProvider, Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip, Spin} from 'antd';
+import { ConfigProvider, Menu, Dropdown, Table, Icon, Button, Row, Col, Tooltip, Spin } from 'antd';
 import * as moment from 'moment';
 import { LIMIT } from '../../../constants';
 import '../../../lib/styles.css';
@@ -23,18 +23,18 @@ import {
     SerachOrdersButton,
     MainContainerModal,
     TableContainer,
-}  from '../../../lib/styled';
+} from '../../../lib/styled';
 import { map } from 'lodash';
 import ButtonGroup from "antd/lib/button/button-group";
 import { Anchor } from 'antd';
-import {LoadingOutlined, ArrowsAltOutlined, ShrinkOutlined, DeleteOutlined} from "@ant-design/icons";
-import {Select } from 'antd';
+import { LoadingOutlined, ArrowsAltOutlined, ShrinkOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Select } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 
 import PlanesCompraFilters from "./components/PlanesCompraFilters";
 import PlanesCompraActions from "./components/PlanesCompraActions";
 
-import {filterOrderType, modifyOrderDate} from "../../OrderListScreen/utils";
+import { filterOrderType, modifyOrderDate } from "../../OrderListScreen/utils";
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
 
@@ -51,7 +51,7 @@ moment.locale("es", {
     }
 });
 
-class PlanesCompra extends React.Component {
+class PlanesCompraNew extends React.Component {
     constructor(props) {
         super(props)
         this.onSelectRowChange = this.onSelectRowChange.bind(this);
@@ -62,7 +62,7 @@ class PlanesCompra extends React.Component {
         this.state = props.filters != null ? props.filters : {
             selectedRowKeys: [],
             page: 1,
-            filters: { },
+            filters: {},
             selectedRowsAction: false,
         };
 
@@ -74,24 +74,24 @@ class PlanesCompra extends React.Component {
         this.props.fetchDelegados();
     }
 
-    onSelectRowChange ( selectedRowKeys, row ) {
+    onSelectRowChange(selectedRowKeys, row) {
         this.setState({ selectedRowKeys }, () => {
             this.saveState();
         })
     }
 
-    saveState () {
-        this.props.setFilters( this.state )
+    saveState() {
+        this.props.setFilters(this.state)
     }
 
-    setFilters( filters ) {
-        this.setState({ filters: { ...filters }, page: 1, selectedRowKeys: [] }, this.updateList )
+    setFilters(filters) {
+        this.setState({ filters: { ...filters }, page: 1, selectedRowKeys: [] }, this.updateList)
 
         //SAVE REDUX
     }
     updateList() {
         const { filters, page } = this.state;
-        this.props.fetchPlans( { ...filters, page })
+        this.props.fetchPlans({ ...filters, page })
         this.saveState();
     }
 
@@ -148,14 +148,14 @@ class PlanesCompra extends React.Component {
                 dataIndex: 'descuento',
                 key: 'descuento',
                 width: 100,
-                render: (text, record, index) => ( Utils.renderFloat( record.escalados[0].descuento )+" %")
+                render: (text, record, index) => (Utils.renderFloat(record.escalados[0].descuento) + " %")
             },
             {
                 title: 'Margen',
                 dataIndex: 'margen',
                 key: 'margen',
                 width: 100,
-                render: (text, record, index) => ( Utils.renderFloat( record.margen )+" %")
+                render: (text, record, index) => (Utils.renderFloat(record.margen) + " %")
             },
             {
                 title: 'Cod Cliente',
@@ -186,38 +186,38 @@ class PlanesCompra extends React.Component {
                 dataIndex: 'ind_renovar',
                 key: 'autorenovar',
                 width: 80,
-                render: (text, record, index) => (text?'Si':'No')
+                render: (text, record, index) => (text ? 'Si' : 'No')
             },
             {
                 title: 'Forzar Mercancía pendiente',
                 dataIndex: 'ind_regularizar',
                 key: 'forzarmercancia',
                 width: 80,
-                render: (text, record, index) => (text?'Si':'No')
+                render: (text, record, index) => (text ? 'Si' : 'No')
             }
         ];
 
         return (
-            <ConfigProvider locale={ locale }>
+            <ConfigProvider locale={locale}>
                 <Maincontainer>
                     <div className="table-indas table-indas-new">
                         <h2 className="table-indas-title">Planes de Compra</h2>
                         <PlanesCompraFilters
-                            setFilters={ this.setFilters  }
-                            delegados={ delegados }
-                            filters={ this.state.filters }
+                            setFilters={this.setFilters}
+                            delegados={delegados}
+                            filters={this.state.filters}
                         />
-                        <TableContainer style={{ overflow: 'visible'}}>
+                        <TableContainer style={{ overflow: 'visible' }}>
                             <PlanesCompraActions
-                                selectedRowKeys={ selectedRowKeys }
-                                updateSelectedRowKeys={ (newSelectedRowKeys) => (this.setState({ selectedRowKeys: newSelectedRowKeys}) ) }
-                                filters={ filters }
-                                plans =  { plans }
+                                selectedRowKeys={selectedRowKeys}
+                                updateSelectedRowKeys={(newSelectedRowKeys) => (this.setState({ selectedRowKeys: newSelectedRowKeys }))}
+                                filters={filters}
+                                plans={plans}
                             />
                             <hr />
-
+                            {console.log(JSON.stringify(plans[0]))}
                             <ResizableTable
-                                dataSource={ plans.map( (plan) => { return { ...plan, key: plan.id } } ) }
+                                dataSource={plans.map((plan) => { return { ...plan, key: plan.id } })}
                                 className="table"
 
                                 onRow={(record, rowIndex) => {
@@ -225,20 +225,20 @@ class PlanesCompra extends React.Component {
                                         key: record.idcondcomercial
                                     };
                                 }}
-                                rowKey={ 'idcondcomercial' }
+                                rowKey={'idcondcomercial'}
                                 rowSelection={{ selectedRowKeys, onChange: this.onSelectRowChange }}
                                 loading={this.props.loadingList}
                                 pagination={{
-                                    position:'both',
+                                    position: 'both',
                                     pageSize: LIMIT,
                                     total: count,
                                     current: this.state.page,
                                     onChange: (page, pageSize) => {
-                                        this.setState( { page: page, selectedRowKeys: [] }, this.updateList )
+                                        this.setState({ page: page, selectedRowKeys: [] }, this.updateList)
                                     }
                                 }}
                                 tableLayout="auto"
-                                scroll={{ x: 'calc(700px + 60%)'}}
+                                scroll={{ x: 'calc(700px + 60%)' }}
                                 columns={columns}
                             />
                         </TableContainer>
@@ -251,9 +251,8 @@ class PlanesCompra extends React.Component {
 };
 
 
-PlanesCompra.propTypes = {
+PlanesCompraNew.propTypes = {
 
 };
 
-export default withRouter(PlanesCompra);
-
+export default withRouter(PlanesCompraNew);

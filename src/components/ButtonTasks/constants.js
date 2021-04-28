@@ -6,3 +6,5 @@ export const taskBadgeNumberColor = '#fffff';
 export const taskBadgeShadow = '0 0 0 1px #d9d9d9 inset';
 export const taskIconSize = '40px';
 export const taskIconColor = '#08c';
+
+
