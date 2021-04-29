@@ -53,19 +53,20 @@ class AcuerdosActions extends React.Component {
 
 	confirmUpdatePlans(keyName, valueName, key, value) {
 		const { selectedRowKeys } = this.props
-		const planes = selectedRowKeys.join(', ')
-		const messageContent = selectedRowKeys.length > 0 ? `¿Desea cambiar \'${keyName}\' de los planes ${planes} a \'${valueName}\'?`
-			: `¿Desea cambiar \'${keyName}\' del plan ${planes} a \'${valueName}\'?`
-		confirm({
-			title: `Confirmar acción`,
-			icon: <ExclamationCircleOutlined />,
-			content: messageContent,
-			onOk: () => {
-				this.updatePlans(key, value)
-			},
-			onCancel() {
-			},
-		})
+		console.log(selectedRowKeys)
+		// const planes = selectedRowKeys.join(', ')
+		// const messageContent = selectedRowKeys.length > 0 ? `¿Desea cambiar \'${keyName}\' de los planes ${planes} a \'${valueName}\'?`
+		// 	: `¿Desea cambiar \'${keyName}\' del plan ${planes} a \'${valueName}\'?`
+		// confirm({
+		// 	title: `Confirmar acción`,
+		// 	icon: <ExclamationCircleOutlined />,
+		// 	content: messageContent,
+		// 	onOk: () => {
+		// 		this.updatePlans(key, value)
+		// 	},
+		// 	onCancel() {
+		// 	},
+		// })
 
 	}
 	renovePlans() {
@@ -122,7 +123,7 @@ class AcuerdosActions extends React.Component {
 						history.push('/acuerdos-comerciales/crear')
 					}}>
 						Nuevo
-                    </Button>
+					</Button>
 					<Button
 						type="link"
 						style={{ marginLeft: '3px', marginRight: '0px', paddingLeft: 0, paddingRight: 0 }}
@@ -141,16 +142,16 @@ class AcuerdosActions extends React.Component {
 						selectedRowKeys.length == 1 && (
 							<React.Fragment>
 								<Button type="link" style={{ marginLeft: '0px', marginRight: '0px' }} onClick={() => {
-									this.props.history.push(`/planes-de-compra/${selectedRowKeys[0]}/editar`)
+									this.props.history.push(`/acuerdos-comerciales/${selectedRowKeys[0]}/editar`)
 								}}>
 									Editar
-                                </Button>
+								</Button>
 								<Button type="link" style={{ marginLeft: '0px', marginRight: '0px' }}
-									onClick={() => {
-										this.props.history.push(`/planes-de-compra/${selectedRowKeys[0]}/copiar`)
-									}}>
+										onClick={() => {
+											this.props.history.push(`/acuerdos-comerciales/${selectedRowKeys[0]}/copiar`)
+										}}>
 									Copiar
-                                </Button>
+								</Button>
 
 								<Modal
 									style={{
@@ -164,7 +165,7 @@ class AcuerdosActions extends React.Component {
 									footer={[
 										<Button key="back" onClick={() => { this.setState({ avanceContent: null }) }}>
 											Cerrar
-                                        </Button>
+										</Button>
 									]}
 								>
 									<IFrame style={{ width: '100%', minHeight: '600px', border: 'none' }}>
@@ -183,10 +184,10 @@ class AcuerdosActions extends React.Component {
 									<Menu>
 										<Menu.Item key="1" onClick={() => { this.confirmUpdatePlans('Estado', 'Activo', 'idestado', '1') }}>
 											Activo
-                                        </Menu.Item>
+										</Menu.Item>
 										<Menu.Item key="2" onClick={() => { this.confirmUpdatePlans('Estado', 'Inactivo', 'idestado', '2') }}>
 											Inactivo
-                                        </Menu.Item>
+										</Menu.Item>
 									</Menu>
 								)}>
 									<Button disabled={loading} type="link" style={{ marginLeft: '0px', marginRight: '0px' }}>

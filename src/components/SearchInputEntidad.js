@@ -59,7 +59,7 @@ function SearchInputEntidad(props) {
     };
 
     const handleChange=(value)=> {
-        //console.log('value: ',value)
+        console.log('value: ',value)
         setValue(
             value
         )

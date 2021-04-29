@@ -7,9 +7,11 @@ import {
     ELIMINAR_DUPLICADOS,
     ELIMINAR_ITEMS_MARCADOS,
     GET_ACUERDOS_COMERCIALES,
-    COPY_ACUERDOS_COMERCIALES ,
-    EDIT_ACUERDOS_COMERCIALES ,
-    CREATE_ACUERDOS_COMERCIALES
+    COPY_ACUERDOS_COMERCIALES,
+    EDIT_ACUERDOS_COMERCIALES,
+    CREATE_ACUERDOS_COMERCIALES,
+    GET_DELEGADOS,
+    COD_CLIENT, ACUERDO_AC
 } from './constans';
 
 export const INITIAL_STATE = {
@@ -22,7 +24,10 @@ export const INITIAL_STATE = {
     listAcuerdosCom:[],
     createAcuerdoRespon: [],
     editAcuerdoRespon: [],
-    copyAcuerdo: []
+    copyAcuerdo: [],
+    listaDelegados: [],
+    cod_Cliente:"",
+    acuerdoAc: {}
 
 };
 
@@ -49,6 +54,12 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, editAcuerdoRespon:  action.payload}
         case COPY_ACUERDOS_COMERCIALES:
             return {...state, copyAcuerdo:  action.payload}
+        case GET_DELEGADOS:
+            return {...state, listaDelegados:  action.payload}
+        case COD_CLIENT:
+            return {...state, cod_Cliente:  action.payload}
+        case ACUERDO_AC:
+            return {...state, acuerdoAc:  action.payload}
         case PRODUCTOS_FILTRADOS:
             return {
                 ...state,

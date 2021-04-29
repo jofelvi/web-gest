@@ -20,9 +20,10 @@ import { Anchor } from 'antd';
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
 import {
+    createAcuerdosComerciales,
     getAcuerdosComerciales,
     getByIdAcuerdoComerciale,
-    getCatalogoProductos,
+    getCatalogoProductos, getDelegado,
     getSubmarcas
 } from "../../modules/acuerdosComer/actions";
 
@@ -51,10 +52,10 @@ const AcuerdosComercialesTable = (props) => {
 
         dispatch(getAcuerdosComerciales())
         dispatch(getByIdAcuerdoComerciale())
-
+        dispatch(getDelegado())
+        //dispatch(createAcuerdosComerciales())
     }, [])
 
-    console.log(JSON.stringify(listAcuerdos))
 
     const invoices = [
         { active: false, customerEmail: 'joedoe@gmail.com', status: 'paid' },
@@ -64,7 +65,7 @@ const AcuerdosComercialesTable = (props) => {
         { active: true, customerEmail: 'johndoe@gmail.com', status: 'open' }
     ]
 
-    const filter = { status: 'paid' }
+    const filter = { status: 'paid',  active: true}
 
     const selectedFilterKeys = Object.keys(filter)
 
@@ -81,7 +82,6 @@ const AcuerdosComercialesTable = (props) => {
             key: 'nombre',
             width: 200,
         },
-
         {
             title: 'Fecha Inicio',
             dataIndex: 'fechainicio',

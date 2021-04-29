@@ -1,14 +1,11 @@
 import React,{ useState ,useEffect} from 'react';
 import { Button, Col, Row, Select, DatePicker} from 'antd';
-
+import { useDispatch, useSelector } from 'react-redux';
 import {DatePickerFromTo, InputBox, InputsContainer }  from '../../lib/styled';
 import OrderFilterEntity from "../OrderListScreen/components/OrderFilterEntity";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import moment from "moment";
 import SearchInputEntidad from "../../components/SearchInputEntidad";
-import * as axios from "../../lib/restClient";
-import utils from "../../lib/utils";
-
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -25,8 +22,8 @@ const PlanesCompraFiltersNew = (props)=> {
     const [codcli_cbim, setCodcli_cbim] = useState("");
     const [fechasValue, setFechasValue] = useState([]);
     const [idestado, setIdestado] = useState("");
-    const [apiData, setApiData] = useState([]);
-    let token = utils.getAuthToken()
+    const listAcuerdos = useSelector((state) => state.acuerdosComer.listAcuerdosCom);
+    const delegadosList = useSelector((state) => state.acuerdosComer.listaDelegados);
 
 
     useEffect(() => {
@@ -36,9 +33,31 @@ const PlanesCompraFiltersNew = (props)=> {
     const customFormat = value => `custom format: ${value.format(dateFormat)}`;
 
        const  onChange = (value, dateString) => {
-            //console.log('Selected Time: ', value);
-            //console.log('Formatted Selected Time: ', dateString)
+
+           let newArray = listAcuerdos.filter(f => checkIsBetweenDates(dateString[0].toString(),dateString[1].toString(), f.fechainicio) && f.codcli_cbim == '194722' && f.estado == "Activo")
+
+            console.log('Selected Time: ', value);
+            console.log('Formatted Selected Time: ', dateString)
+            console.log('srray filted: ', newArray)
+
+       }
+
+    const  checkIsBetweenDates=(dateFrom,dateTo,dateCheck)=> {
+        let dateCheckFormate =  moment(dateCheck).format('DD/MM/YYYY')
+        let fDate,lDate,cDate;
+        fDate = Date.parse(dateFrom);
+        lDate = Date.parse(dateTo);
+        cDate = Date.parse(dateCheckFormate);
+        console.log('dateFrom Time: ', dateFrom);
+        console.log('dateTo: ', dateTo)
+        console.log('dateCheck: ', dateCheckFormate)
+        if((cDate <= lDate && cDate >= fDate)) {
+            console.log(" esta en el rango ")
+            return true;
         }
+        return false;
+    }
+
 
     return (
             <div className="table-filters-indas">
@@ -72,18 +91,18 @@ const PlanesCompraFiltersNew = (props)=> {
                             <DatePickerFromTo
                                 style={{width: '100%'}}
                                 format={dateFormat}
-                                //onChange={()=>setFechasValue()}
+                                onChange={onChange}
                                 placeholder={['desde', 'hasta']}
-                                value={fechasValue}
+                                //value={fechasValue}
                             />
 
-                            <RangePicker
+                           {/* <RangePicker
                                 defaultValue={[moment(), moment()]}
                                 format={dateFormat}
                                 //placeholder={['desde', 'hasta']}
                                 //placeholder={"aqui"}
                                 onChange={ onChange}
-                            />
+                            />*/}
                         </Col>
 
                         <Col span={11} style={{padding: '10px', paddingTop: 0}}>
@@ -99,6 +118,10 @@ const PlanesCompraFiltersNew = (props)=> {
                                 } }
                             >
                                 <Option value=""  style={{ color: '#CCC' }}>- Seleccione -</Option>
+                                {delegadosList.map((option, index) => (
+                                    <Select.Option key={index} value={option.coddelegado}>{option.nombre}</Select.Option>
+                                ))}
+
 
 
                             </Select>

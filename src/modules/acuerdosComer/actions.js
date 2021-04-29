@@ -5,14 +5,46 @@ import {
     ITEMS_MARCADOS,
     PRODUCTOS_FILTRADOS,
     ELIMINAR_DUPLICADOS, ELIMINAR_ITEMS_MARCADOS, GET_ACUERDOS_COMERCIALES,
-    COPY_ACUERDOS_COMERCIALES ,
-    EDIT_ACUERDOS_COMERCIALES ,
-    CREATE_ACUERDOS_COMERCIALES
+    COPY_ACUERDOS_COMERCIALES,
+    EDIT_ACUERDOS_COMERCIALES,
+    CREATE_ACUERDOS_COMERCIALES, GET_DELEGADOS, COD_CLIENT, ACUERDO_AC
 } from './constans';
 import axios from 'axios'
 import utils from "../../lib/utils";
 
 let token = utils.getAuthToken()
+
+
+let body2 ={
+    "productos":[
+        {
+            "idproducto":109
+        },
+    ],
+    "clientes":[
+        {
+            "idcliente":5032
+        }
+    ],
+    "escalados":[
+        {
+            "descuento":16.12,
+            "txtdescuento":"4444",
+            "udsmaximas":10,
+            "udsminimas":100
+        }
+    ],
+    "nombre":"ss",
+    "descripcion":"waa",
+    "idestado":1,
+    "ind_surtido":true,
+    "fechainicio":"2021-04-14T03:25:29.665Z",
+    "fechafin":"2021-04-29T03:25:32.697Z",
+    "ind_seleccion_conjunta":true,
+    "ind_renovar": false,
+    "margen": 10.0,
+    "idtipo": 1
+}
 
 export const getAcuerdosComerciales = () => async (dispatch)  =>{
 
@@ -120,7 +152,6 @@ export const createAcuerdosComerciales = (body) => async (dispatch)  =>{
     let response = await axios.post('http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/acuerdo/create', body ,{
         headers: {
             'Content-Type': 'application/json',
-            'accept': 'application/json',
             'Authorization': `Bearer ${token}`
         }
     }).then((response) => {
@@ -157,19 +188,47 @@ export const editAcuerdosComerciales = (body, id) => async (dispatch)  =>{
 
 export const getByIdAcuerdoComerciale = (id) =>async  (dispatch)  =>{
 
-   console.log("funcion llamar api")
+   console.log("funcion llamar api", id)
     let response = await axios.get(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/acuerdo/${id}` ,{
         headers: {
             'Authorization': `Bearer ${token}`
         }
     }).then((response) => {
         console.log("getByIdAcuerdoComerciale acuerdo done")
-        /*dispatch({
-            type: CREATE_ACUERDOS_COMERCIALES,
+        console.log(response.data)
+        dispatch({
+            type: ACUERDO_AC,
             payload: response.data
-        })*/
+        })
     }).catch((error) => {
         console.log("mensaje de error llamada API: ", error)
     })
 }
 
+
+export const getDelegado = () =>async  (dispatch)  =>{
+
+    console.log("funcion llamar api")
+    let response = await axios.get(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/delegado` ,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((response) => {
+        console.log("getDelegado acuerdo done")
+        console.log("getDelegado " , response.data)
+        dispatch({
+            type: GET_DELEGADOS,
+            payload: response.data
+        })
+    }).catch((error) => {
+        console.log("mensaje de error llamada API: ", error)
+    })
+}
+
+export const setCodCliente = (cod) =>async  (dispatch)  => {
+
+    dispatch({
+        type: COD_CLIENT,
+        payload: cod
+    })
+}

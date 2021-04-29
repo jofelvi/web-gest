@@ -29,6 +29,7 @@ import OrderListScreen from './screens/OrderListScreen'
 import CatalogListScreen from './screens/CatalogListScreenv1/CatalogListScreen'
 import CommercialDealNew from "./screens/CommercialDealsScreenNew/CommercialDealNew";
 import CreateCommercialDealNew from "./screens/CommercialDealsScreenNew/createCommercialDeal/CreateCommercialDeal";
+import AcuerdosComercialesEdit from "./screens/CommercialDealsScreenNew/edit";
 
 
 const { capitalizeWord } = utils;
@@ -92,8 +93,8 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
         }
         <PrivateRoute path="/acuerdos-comerciales/" exact component={CommercialDealNew}/>
         <PrivateRoute path="/acuerdos-comerciales/crear" exact component={CreateCommercialDealNew}/>
-        <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={PlanesCompraEdit}/>
-        <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={PlanesCompraCopy}/>
+        <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={AcuerdosComercialesEdit}/>
+        <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={AcuerdosComercialesEdit}/>
         <PrivateRoute path="/promociones" exact component={Promociones}/>
         <PrivateRoute path="/campañas" exact component={Campanas}/>
         <PrivateRoute path="/clientes" exact component={ClientsScreen}/>
