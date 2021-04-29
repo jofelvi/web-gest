@@ -3,7 +3,7 @@ import * as axios from "../lib/restClient";
 import utils from "../lib/utils";
 import OrderFilterEntity from "../screens/OrderListScreen/components/OrderFilterEntity";
 import { InputBox } from "../screens/OrderListScreen/styled";
-import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button } from 'antd';
+import {Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
@@ -58,6 +58,7 @@ const BrandsSubList = (props) => {
 	const [descuentoState, setDescuento] = useState();
 	const [udsminimasState, setUdsminimas] = useState();
 	const [codcli_cbim, setCodcli_cbim] = useState();
+	const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
 
 	const changeBody = e => {
 		setBody({
@@ -154,6 +155,8 @@ const BrandsSubList = (props) => {
 		console.log(JSON.stringify(body))
 		dispatch(createAcuerdosComerciales(body))
 	}
+
+	//let success = (message.success('el producto se creo exitosamen'))
 
 	return (
 		<>
@@ -416,7 +419,7 @@ const BrandsSubList = (props) => {
 					/>
 				</Col>
 			</Row>
-			<Button size="large" type="primary" onClick={onSubmit} style={{ marginTop: '10px' }}>
+			<Button size="large" type="primary" onClick={()=>onSubmit()} style={{ marginTop: '10px' }}>
 				{typeof window.location.pathname.split('/')[3] === 'undefined' ? window.location.pathname.split('/')[2] : window.location.pathname.split('/')[3]}
 			</Button>
 		</>

@@ -1,5 +1,5 @@
 import React,{ useState ,useEffect} from 'react';
-import { Button, Col, Row, Select, DatePicker} from 'antd';
+import {Button, Col, Row, Select, DatePicker, message} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {DatePickerFromTo, InputBox, InputsContainer }  from '../../lib/styled';
 import OrderFilterEntity from "../OrderListScreen/components/OrderFilterEntity";
@@ -61,6 +61,7 @@ const PlanesCompraFiltersNew = (props)=> {
 
     return (
             <div className="table-filters-indas">
+
                 <InputsContainer style={{width: '100%', marginBottom: 0, paddingBottom: 0}}>
                     <Row key={'filters_b'} style={{width: '100%', marginBottom: 0}}>
                         <Col span={18} style={{padding: '10px'}}  key={'col_1'}>

@@ -7,44 +7,12 @@ import {
     ELIMINAR_DUPLICADOS, ELIMINAR_ITEMS_MARCADOS, GET_ACUERDOS_COMERCIALES,
     COPY_ACUERDOS_COMERCIALES,
     EDIT_ACUERDOS_COMERCIALES,
-    CREATE_ACUERDOS_COMERCIALES, GET_DELEGADOS, COD_CLIENT, ACUERDO_AC
+    CREATE_ACUERDOS_COMERCIALES, GET_DELEGADOS, COD_CLIENT, ACUERDO_AC, CREATE_ACUERDOS_COMERCIALES_SUCCESS
 } from './constans';
 import axios from 'axios'
 import utils from "../../lib/utils";
 
 let token = utils.getAuthToken()
-
-
-let body2 ={
-    "productos":[
-        {
-            "idproducto":109
-        },
-    ],
-    "clientes":[
-        {
-            "idcliente":5032
-        }
-    ],
-    "escalados":[
-        {
-            "descuento":16.12,
-            "txtdescuento":"4444",
-            "udsmaximas":10,
-            "udsminimas":100
-        }
-    ],
-    "nombre":"ss",
-    "descripcion":"waa",
-    "idestado":1,
-    "ind_surtido":true,
-    "fechainicio":"2021-04-14T03:25:29.665Z",
-    "fechafin":"2021-04-29T03:25:32.697Z",
-    "ind_seleccion_conjunta":true,
-    "ind_renovar": false,
-    "margen": 10.0,
-    "idtipo": 1
-}
 
 export const getAcuerdosComerciales = () => async (dispatch)  =>{
 
@@ -160,6 +128,10 @@ export const createAcuerdosComerciales = (body) => async (dispatch)  =>{
             type: CREATE_ACUERDOS_COMERCIALES,
             payload: response.data
         })
+        let a = response.data ? dispatch({
+            type: CREATE_ACUERDOS_COMERCIALES_SUCCESS,
+            payload: true
+        }) : null
     }).catch((error) => {
         console.log("mensaje de error llamada API: ", error)
     })
