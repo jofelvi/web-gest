@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import * as axios from "../lib/restClient";
-import utils from "../lib/utils";
-import OrderFilterEntity from "../screens/OrderListScreen/components/OrderFilterEntity";
-import { InputBox } from "../screens/OrderListScreen/styled";
-import {Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message} from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import locale from "antd/es/locale/es_ES";
-import "moment/locale/es";
+import React, { useEffect, useState } from 'react'
+import * as axios from "../lib/restClient"
+import utils from "../lib/utils"
+import OrderFilterEntity from "../screens/OrderListScreen/components/OrderFilterEntity"
+import { InputBox } from "../screens/OrderListScreen/styled"
+import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import locale from "antd/es/locale/es_ES"
+import "moment/locale/es"
 import {
 	createAcuerdosComerciales,
 	eliminarDuplicados, eliminarItemsMarcados,
@@ -14,22 +14,22 @@ import {
 	getSubmarcas,
 	listItemMarcados,
 	productosFiltrados
-} from "../modules/acuerdosComer/actions";
-import { get, set } from 'lodash';
-import * as moment from "moment";
-import { BoldOutlined } from '@ant-design/icons';
+} from "../modules/acuerdosComer/actions"
+import { get, set } from 'lodash'
+import * as moment from "moment"
+import { BoldOutlined } from '@ant-design/icons'
 
-const { Option } = Select;
-const dateFormat = 'DD/MM/YYYY';
+const { Option } = Select
+const dateFormat = 'DD/MM/YYYY'
 
 
 const BrandsSubList = (props) => {
 	const { acuerdoComercial } = props
 
 	const dispatch = useDispatch()
-	const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
-	const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
-	const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted);
+	const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray)
+	const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray)
+	const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted)
 	const [state, setState] = useState({
 		idcliente: '',
 		codcli_cbim: '',
@@ -49,16 +49,16 @@ const BrandsSubList = (props) => {
 	// 	productsfilted: useSelector((state) => state.acuerdosComer.productsfilted)
 	// })
 
-	const [body, setBody] = useState(acuerdoComercial ? acuerdoComercial : {  productos: [], clientes: [], escalados:[],  "margen": 1.0, "idtipo": 1 , 'ind_renovar': false})
-	const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray);
+	const [body, setBody] = useState(acuerdoComercial ? acuerdoComercial : { productos: [], clientes: [], escalados: [], "margen": 1.0, "idtipo": 1, 'ind_renovar': false })
+	const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray)
 	const [initialDate, setInitialDate] = useState(typeof body === 'undefined' ? '' : body.fechainicio)
 	const [finalDate, setFinalDate] = useState(typeof body === 'undefined' ? '' : body.fechafin)
-	const [txtdescuentoState, setTxtdescuento] = useState("");
-	const [udsmaximasState, setUdsmaximas] = useState();
-	const [descuentoState, setDescuento] = useState();
-	const [udsminimasState, setUdsminimas] = useState();
-	const [codcli_cbim, setCodcli_cbim] = useState();
-	const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
+	const [txtdescuentoState, setTxtdescuento] = useState("")
+	const [udsmaximasState, setUdsmaximas] = useState()
+	const [descuentoState, setDescuento] = useState()
+	const [udsminimasState, setUdsminimas] = useState()
+	const [codcli_cbim, setCodcli_cbim] = useState()
+	const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces)
 
 	const changeBody = e => {
 		setBody({
@@ -106,25 +106,27 @@ const BrandsSubList = (props) => {
 
 	const onSelectChange = async (e, item) => {
 		await handleValues(e, item)
-	};
+	}
 
 	const catalogoProducts = async () => {
 
 		const res = await productosArrayRedux.filter(f => marcadosRedux.find(item => item.id === f.idsubmarca))
 		let productosBody = []
-		let clientesBody = [{
-			"idcliente": parseInt( codcli_cbim )
-		}]
-			await productosArrayRedux.filter(f => marcadosRedux.find(item =>
-				item.id === f.idsubmarca && productosBody.push( { "idproducto": f.idproducto })
+		// let clientesBody = [{
+		// 	"idcliente": codcli_cbim
+		// }]
+		await productosArrayRedux.filter(f => marcadosRedux.find(item =>
+			item.id === f.idsubmarca && productosBody.push({ "idproducto": f.idproducto })
 		))
 
 		console.log("filtrado nuevo formato", productosBody)
 		dispatch(productosFiltrados(res))
 
-		setBody({ ...body,
+		setBody({
+			...body,
 			productos: productosBody,
-			clientes: clientesBody })
+			// clientes: clientesBody
+		})
 	}
 
 	const searchedValue = (key, value) => {
@@ -133,20 +135,20 @@ const BrandsSubList = (props) => {
 		} else {
 			//setBody({ ...body, codcli_cbim: value })
 			setCodcli_cbim(value)
-
+			setBody({ ...state, clientes: [{ "idcliente": parseInt(value) }] })
 			setState({ ...state, [key]: value, isFilterChanged: true })
 		}
 
 	}
 
-	const handleEscaladosBody=()=>{
+	const handleEscaladosBody = () => {
 
 		let escaladoB = [
 			{
 				"descuento": parseFloat(descuentoState),
-				"txtdescuento":txtdescuentoState,
+				"txtdescuento": txtdescuentoState,
 				"udsmaximas": parseInt(udsmaximasState),
-				"udsminimas":parseInt( udsminimasState)
+				"udsminimas": parseInt(udsminimasState)
 			}
 		]
 		setBody({ ...body, escalados: escaladoB })
@@ -178,8 +180,8 @@ const BrandsSubList = (props) => {
 								defaultClient={state.idcliente}
 								onChange={(entity) => searchedValue('searchByEntity', entity)}
 								onChangeClient={(client) => {
-									const idCliente = client ? client.idcliente : '';
-									const codcliCbim = client ? client.codcli_cbim : '';
+									const idCliente = client ? client.idcliente : ''
+									const codcliCbim = client ? client.codcli_cbim : ''
 									searchedValue('idcliente', idCliente)
 									searchedValue('codcli_cbim', codcliCbim)
 								}}
@@ -223,7 +225,7 @@ const BrandsSubList = (props) => {
 						<DatePicker
 							value={initialDate === '' ? '' : moment(initialDate)}
 							onChange={(date, dateString) => {
-								let d = new Date(date);
+								let d = new Date(date)
 								let dateIso = d.toISOString()
 								setInitialDate(date)
 								setBody({ ...body, fechainicio: dateIso })
@@ -240,7 +242,7 @@ const BrandsSubList = (props) => {
 							format={dateFormat}
 							value={finalDate === '' ? '' : moment(finalDate)}
 							onChange={(date, dateString) => {
-								let d = new Date(date);
+								let d = new Date(date)
 								let dateIso = d.toISOString()
 								setFinalDate(date)
 								setBody({ ...body, fechafin: dateIso })
@@ -319,10 +321,10 @@ const BrandsSubList = (props) => {
 						<Input
 							name='udsmaximas'
 							//value={typeof body === 'undefined' ? '' : body.udsmaximas}
-							onChange={(item)=> {
-								 setUdsmaximas(item.target.value)
+							onChange={(item) => {
+								setUdsmaximas(item.target.value)
 							}}
-							onBlur={()=>handleEscaladosBody()}
+							onBlur={() => handleEscaladosBody()}
 							style={inputStyle}
 						/>
 
@@ -332,11 +334,11 @@ const BrandsSubList = (props) => {
 						<Input
 							name='udsminimas'
 							//value={typeof body === 'undefined' ? '' : body.udsminimas}
-							onChange={(item)=> {
+							onChange={(item) => {
 								setUdsminimas(item.target.value)
 							}}
 							style={inputStyle}
-							onBlur={()=>handleEscaladosBody()}
+							onBlur={() => handleEscaladosBody()}
 						/>
 
 					</Col>
@@ -345,12 +347,12 @@ const BrandsSubList = (props) => {
 						<Input
 							name='descuento'
 							//value={typeof body === 'undefined' ? '' : body.descuento}
-							onChange={(item)=> {
+							onChange={(item) => {
 								setDescuento(item.target.value)
 							}}
 							suffix={"%"}
 							style={inputStyle}
-							onBlur={()=>handleEscaladosBody()}
+							onBlur={() => handleEscaladosBody()}
 						/>
 					</Col>
 
@@ -359,12 +361,12 @@ const BrandsSubList = (props) => {
 						<Input
 							name='txtdescuento'
 							//value={typeof body === 'undefined' ? '' : body.txtdescuento}
-							onChange={(item)=> {
+							onChange={(item) => {
 								setTxtdescuento(item.target.value)
 							}}
 							suffix={"%"}
 							style={inputStyle}
-							onBlur={()=>handleEscaladosBody()}
+							onBlur={() => handleEscaladosBody()}
 						/>
 					</Col>
 				</Row>
@@ -419,7 +421,7 @@ const BrandsSubList = (props) => {
 					/>
 				</Col>
 			</Row>
-			<Button size="large" type="primary" onClick={()=>onSubmit()} style={{ marginTop: '10px' }}>
+			<Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: '10px' }}>
 				{typeof window.location.pathname.split('/')[3] === 'undefined' ? window.location.pathname.split('/')[2] : window.location.pathname.split('/')[3]}
 			</Button>
 		</>
