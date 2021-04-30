@@ -79,8 +79,6 @@ const AcuerdosComercialesTable = (props) => {
         filter[key] === invoice[key]
     ))
 
-    // console.log("filteredInvoices", filteredInvoices)
-
     const columns = [
         {
             title: 'Nombre',
@@ -211,17 +209,14 @@ const AcuerdosComercialesTable = (props) => {
 
     return (
         <ConfigProvider locale={locale}>
-            {/* {console.log('delegados', delegados)} */}
             <Maincontainer>
                 <div className="table-indas table-indas-new">
-
                     <TableContainer style={{ overflow: 'visible' }}>
                         <PlanesCompraFiltersNew onFilterArray={onFilterArray} resetFilter={resetFilter} />
                         <AcuerdosActions
                             selectedRowKeys={selectedRowKeysState}
                             updateSelectedRowKeys={(newSelectedRowKeys) => (setSelectedRowKeysState(prevState => [...prevState, newSelectedRowKeys]))}
                         />
-
                         <Table
                             columns={columns}
                             dataSource={listaAcuerdosFilter}

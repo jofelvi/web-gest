@@ -154,11 +154,13 @@ const BrandsSubList = (props) => {
 		setBody({ ...body, escalados: escaladoB })
 	}
 	const onSubmit = () => {
-		console.log(JSON.stringify(body))
-		dispatch(createAcuerdosComerciales(body))
+		if (body.productos.length < 1 || body.clientes.length < 1 || body.nombre === '' || typeof body.nombre === 'undefined') {
+			message.error('falta uno o más campos por llenar')
+		} else {
+			console.log(JSON.stringify(body))
+			dispatch(createAcuerdosComerciales(body))
+		}
 	}
-
-	//let success = (message.success('el producto se creo exitosamen'))
 
 	return (
 		<>
