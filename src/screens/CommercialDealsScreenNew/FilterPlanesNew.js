@@ -176,13 +176,13 @@ const PlanesCompraFiltersNew = (props) => {
                         <span style={{ padding: '10px' }}>Estado</span>
                         <Select
                             value={querySearch.idestado}
-                            onChange={(value) => setQuerySearch({ ...querySearch, idestado: parseInt(value) })}
+                            onChange={(value) => setQuerySearch({ ...querySearch, idestado: value })}
                             style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}
                         >
                             <Option value="" style={{ color: '#CCC' }}>- Seleccione -</Option>
-                            <Option value="0">Borrador</Option>
-                            <Option value="1">Activo</Option>
-                            <Option value="2">Inactivo</Option>
+                            <Option value={0}>Borrador</Option>
+                            <Option value={1}>Activo</Option>
+                            <Option value={2}>Inactivo</Option>
                         </Select>
                     </Col>
 

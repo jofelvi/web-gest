@@ -17,7 +17,7 @@ import {
 } from "../modules/acuerdosComer/actions"
 import { get, set } from 'lodash'
 import * as moment from "moment"
-import { BoldOutlined } from '@ant-design/icons'
+import { BoldOutlined, FolderAddOutlined } from '@ant-design/icons'
 
 const { Option } = Select
 const dateFormat = 'DD/MM/YYYY'
@@ -49,7 +49,16 @@ const BrandsSubList = (props) => {
 	// 	productsfilted: useSelector((state) => state.acuerdosComer.productsfilted)
 	// })
 
-	const [body, setBody] = useState(acuerdoComercial ? acuerdoComercial : { productos: [], clientes: [], escalados: [], "margen": 1.0, "idtipo": 1, 'ind_renovar': false })
+	const [body, setBody] = useState(acuerdoComercial ? acuerdoComercial :
+		{
+			productos: [],
+			clientes: [],
+			escalados: [],
+			"margen": 1.0,
+			"idtipo": 1,
+			'ind_renovar': false,
+			"ind_seleccion_conjunta": false
+		})
 	const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray)
 	const [initialDate, setInitialDate] = useState(typeof body === 'undefined' ? '' : body.fechainicio)
 	const [finalDate, setFinalDate] = useState(typeof body === 'undefined' ? '' : body.fechafin)
@@ -58,6 +67,7 @@ const BrandsSubList = (props) => {
 	const [descuentoState, setDescuento] = useState()
 	const [udsminimasState, setUdsminimas] = useState()
 	const [codcli_cbim, setCodcli_cbim] = useState()
+	const [lineaDescuento, setLineaDescuento] = useState(["row"])
 	const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces)
 
 	const changeBody = e => {
@@ -283,9 +293,8 @@ const BrandsSubList = (props) => {
 							Surtido
 						</label>
 					</Col>
-					<Col span={6}>
+					<Col span={6} style={{ display: 'none' }}>
 						<Switch
-
 							checkedChildren="Si" unCheckedChildren="No"
 							value={typeof body === 'undefined' ? '' : body.ind_renovar}
 							defaultChecked={body.ind_renovar}
@@ -297,7 +306,7 @@ const BrandsSubList = (props) => {
 							Renovar
 						</label>
 					</Col>
-					<Col span={6}>
+					<Col span={6} style={{ display: 'none' }}>
 						<Switch
 							checkedChildren="Si" unCheckedChildren="No"
 							value={typeof body === 'undefined' ? '' : body.ind_seleccion_conjunta}
@@ -316,62 +325,71 @@ const BrandsSubList = (props) => {
 			<h3 style={{ margin: '20px 0 10px 0' }}>
 				Lineas de descuento
 			</h3>
-			<div className="table-filters-indas" style={{ padding: '20px' }}>
-				<Row style={{ width: '100%', marginBottom: 0, paddingBottom: 0 }}>
-					<Col span={6}>
-						<label>Unidades Maximas</label>
-						<Input
-							name='udsmaximas'
-							//value={typeof body === 'undefined' ? '' : body.udsmaximas}
-							onChange={(item) => {
-								setUdsmaximas(item.target.value)
-							}}
-							onBlur={() => handleEscaladosBody()}
-							style={inputStyle}
-						/>
-
+			<div className="table-filters-indas" style={{ padding: '5px 20px 20px 20px' }}>
+				<Row style={{ width: '100%' }}>
+					<Col span={4}>
+						<label>{' '}</label>
+						<Button size="small" type="primary" style={{ marginTop: '30px' }} onClick={() => setLineaDescuento(prevArray => [...prevArray, "new row"])}>Agregar</Button>
 					</Col>
-					<Col span={6}>
-						<label>Unidades Minimas</label>
-						<Input
-							name='udsminimas'
-							//value={typeof body === 'undefined' ? '' : body.udsminimas}
-							onChange={(item) => {
-								setUdsminimas(item.target.value)
-							}}
-							style={inputStyle}
-							onBlur={() => handleEscaladosBody()}
-						/>
-
-					</Col>
-					<Col span={6}>
-						<label>Descuento</label>
-						<Input
-							name='descuento'
-							//value={typeof body === 'undefined' ? '' : body.descuento}
-							onChange={(item) => {
-								setDescuento(item.target.value)
-							}}
-							suffix={"%"}
-							style={inputStyle}
-							onBlur={() => handleEscaladosBody()}
-						/>
-					</Col>
-
-					<Col span={6}>
-						<label> TXT Descuento</label>
-						<Input
-							name='txtdescuento'
-							//value={typeof body === 'undefined' ? '' : body.txtdescuento}
-							onChange={(item) => {
-								setTxtdescuento(item.target.value)
-							}}
-							suffix={"%"}
-							style={inputStyle}
-							onBlur={() => handleEscaladosBody()}
-						/>
-					</Col>
+					<Col span={20} />
 				</Row>
+				{lineaDescuento.map((ele, index) => (
+					<Row style={{ width: '100%', marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
+						<Col span={6}>
+							<label>Unidades Maximas</label>
+							<Input
+								name='udsmaximas'
+								//value={typeof body === 'undefined' ? '' : body.udsmaximas}
+								onChange={(item) => {
+									setUdsmaximas(item.target.value)
+								}}
+								onBlur={() => handleEscaladosBody()}
+								style={inputStyle}
+							/>
+
+						</Col>
+						<Col span={6}>
+							<label>Unidades Minimas</label>
+							<Input
+								name='udsminimas'
+								//value={typeof body === 'undefined' ? '' : body.udsminimas}
+								onChange={(item) => {
+									setUdsminimas(item.target.value)
+								}}
+								style={inputStyle}
+								onBlur={() => handleEscaladosBody()}
+							/>
+
+						</Col>
+						<Col span={6}>
+							<label>Descuento</label>
+							<Input
+								name='descuento'
+								//value={typeof body === 'undefined' ? '' : body.descuento}
+								onChange={(item) => {
+									setDescuento(item.target.value)
+								}}
+								suffix={"%"}
+								style={inputStyle}
+								onBlur={() => handleEscaladosBody()}
+							/>
+						</Col>
+
+						<Col span={6}>
+							<label> TXT Descuento</label>
+							<Input
+								name='txtdescuento'
+								//value={typeof body === 'undefined' ? '' : body.txtdescuento}
+								onChange={(item) => {
+									setTxtdescuento(item.target.value)
+								}}
+								suffix={"%"}
+								style={inputStyle}
+								onBlur={() => handleEscaladosBody()}
+							/>
+						</Col>
+					</Row>
+				))}
 			</div>
 
 			<h3 style={{ margin: '20px 0 10px 0' }}>

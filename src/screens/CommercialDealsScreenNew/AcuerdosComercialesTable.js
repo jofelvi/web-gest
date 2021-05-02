@@ -217,6 +217,7 @@ const AcuerdosComercialesTable = (props) => {
                             selectedRowKeys={selectedRowKeysState}
                             updateSelectedRowKeys={(newSelectedRowKeys) => (setSelectedRowKeysState(prevState => [...prevState, newSelectedRowKeys]))}
                         />
+                         <hr />
                         <Table
                             columns={columns}
                             dataSource={listaAcuerdosFilter}
