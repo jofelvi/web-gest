@@ -161,46 +161,47 @@ const AcuerdosComercialesTable = (props) => {
     };
 
     const onFilterArray = (querySearch) => {
-        let newArray = []
-        //separados
-        if (querySearch.codcli_cbim === "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
-            newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado)
-            setListaAcuerdosFilter(newArray)
-        }
+        console.log('json para filtrar: ', querySearch)
+        // let newArray = []
+        // //separados
+        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        if (querySearch.codcli_cbim === "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
-            newArray = listaAcuerdosFilter.filter(item => item.idestado === querySearch.idestado)
-            setListaAcuerdosFilter(newArray)
-        }
+        // if (querySearch.idcliente === "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        if (querySearch.codcli_cbim !== "" && querySearch.coddelegado === "" && querySearch.idestado === "") {
-            newArray = listaAcuerdosFilter.filter(item => item.codcli_cbim === querySearch.codcli_cbim)
-            setListaAcuerdosFilter(newArray)
-        }
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        //codcli_cbim and idestado
-        if (querySearch.codcli_cbim !== "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
-            newArray = listaAcuerdosFilter.filter(item => item.codcli_cbim === querySearch.codcli_cbim && item.idestado === querySearch.idestado)
-            setListaAcuerdosFilter(newArray)
-        }
+        // //idcliente and idestado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        //idestado and coddelegado
-        if (querySearch.codcli_cbim === "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
-            newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idestado === querySearch.idestado)
-            setListaAcuerdosFilter(newArray)
-        }
+        // //idestado and coddelegado
+        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        //codcli_cbim and coddelegado
-        if (querySearch.codcli_cbim !== "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
-            newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.codcli_cbim === querySearch.codcli_cbim)
-            setListaAcuerdosFilter(newArray)
-        }
+        // //idcliente and coddelegado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente)
+        //     setListaAcuerdosFilter(newArray)
+        // }
 
-        //codcli_cbim and coddelegado and idestado
-        if (querySearch.codcli_cbim !== "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
-            newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.codcli_cbim === querySearch.codcli_cbim && item.idestado === querySearch.idestado)
-            setListaAcuerdosFilter(newArray)
-        }
+        // //idcliente and coddelegado and idestado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
     }
 
     const resetFilter = () => {
@@ -217,7 +218,7 @@ const AcuerdosComercialesTable = (props) => {
                             selectedRowKeys={selectedRowKeysState}
                             updateSelectedRowKeys={(newSelectedRowKeys) => (setSelectedRowKeysState(prevState => [...prevState, newSelectedRowKeys]))}
                         />
-                         <hr />
+                        <hr />
                         <Table
                             columns={columns}
                             dataSource={listaAcuerdosFilter}

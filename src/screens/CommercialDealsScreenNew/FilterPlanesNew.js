@@ -38,9 +38,15 @@ const PlanesCompraFiltersNew = (props) => {
     }
     const [state, setState] = useState(initialState)
     const [querySearch, setQuerySearch] = useState({
-        codcli_cbim: '',
+        nombre: '',
+        idestado: '',
         coddelegado: '',
-        idestado: ''
+        idcliente: '',
+        fecha_desde: '',
+        fecha_hasta: '',
+        formato: '',
+        offset: 0,
+        limit: 50
     })
 
 
@@ -51,6 +57,8 @@ const PlanesCompraFiltersNew = (props) => {
     const customFormat = value => `custom format: ${value.format(dateFormat)}`
 
     const onChange = (value, dateString) => {
+
+        setQuerySearch({ ...querySearch, fecha_desde: dateString[0], fecha_hasta: dateString[1] })
 
         let newArray = listAcuerdos.filter(f => checkIsBetweenDates(dateString[0].toString(), dateString[1].toString(), f.fechainicio) && f.codcli_cbim == '194722' && f.estado == "Activo")
 
@@ -80,7 +88,7 @@ const PlanesCompraFiltersNew = (props) => {
         if (typeof (value) == 'undefined') {
             setState({ ...state, [key]: '', isFilterChanged: true })
         } else {
-            setQuerySearch({ ...querySearch, codcli_cbim: parseInt(value) })
+            setQuerySearch({ ...querySearch, idcliente: parseInt(value) })
             setState({ ...state, [key]: value, isFilterChanged: true })
         }
 
@@ -123,7 +131,7 @@ const PlanesCompraFiltersNew = (props) => {
                         <span style={{ padding: '10px' }}>Código Cliente</span>
                         <InputBox
                             placeholder="Código Cliente"
-                            value={querySearch.codcli_cbim}
+                            value={querySearch.idcliente}
                             disabled
                             style={{ width: '100%' }}
                         />
