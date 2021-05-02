@@ -186,8 +186,8 @@ export const getDelegado = () =>async  (dispatch)  =>{
             'Authorization': `Bearer ${token}`
         }
     }).then((response) => {
-        console.log("getDelegado acuerdo done")
-        console.log("getDelegado " , response.data)
+        // console.log("getDelegado acuerdo done")
+        // console.log("getDelegado " , response.data)
         dispatch({
             type: GET_DELEGADOS,
             payload: response.data

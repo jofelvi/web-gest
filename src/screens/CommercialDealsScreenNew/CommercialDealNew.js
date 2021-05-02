@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlanesCompraFiltersNew from "./FilterPlanesNew";
+// import PlanesCompraFiltersNew from "./FilterPlanesNew";
 import AcuerdosComercialesTable from "./AcuerdosComercialesTable";
 import '../../styles.css'
 import {Button} from "antd";
@@ -16,7 +16,7 @@ const CommercialDealNew = (props) => {
                 <Button type="link" onClick={() => { history.push('/acuerdos-comerciales') }}>
                     <LeftOutlined /> Atrás
                 </Button>
-            <PlanesCompraFiltersNew />
+            {/* <PlanesCompraFiltersNew /> */}
             <AcuerdosComercialesTable />
         </div>
     );

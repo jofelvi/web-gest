@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ResizableTable from '../shared/ResizableTable';
 import PlanesCompraActions from "../../screens/CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
 import AcuerdosActions from './AcuerdosActions'
+import PlanesCompraFiltersNew from "./FilterPlanesNew";
 
 
 import Utils from '../../lib/utils';
@@ -39,22 +40,27 @@ moment.locale("es", {
 });
 
 const AcuerdosComercialesTable = (props) => {
-
     const [loading, setLoading] = useState(false);
     const [selectedRowKeysState, setSelectedRowKeysState] = useState([]);
     const comercialDeals = useSelector((state) => state.commercialDeals.subBrands);
     const listAcuerdos = useSelector((state) => state.acuerdosComer.listAcuerdosCom);
+    const [listaAcuerdosFilter, setListaAcuerdosFilter] = useState([])
+    const delegados = useSelector((state) => state.acuerdosComer.listaDelegados)
+    const [filters, setFilters] = useState({})
 
     const dispatch = useDispatch()
 
 
     useEffect(() => {
-
         dispatch(getAcuerdosComerciales())
         dispatch(getByIdAcuerdoComerciale())
         dispatch(getDelegado())
         //dispatch(createAcuerdosComerciales())
     }, [])
+
+    useEffect(() => {
+        setListaAcuerdosFilter(listAcuerdos)
+    }, [listAcuerdos])
 
 
     const invoices = [
@@ -65,15 +71,13 @@ const AcuerdosComercialesTable = (props) => {
         { active: true, customerEmail: 'johndoe@gmail.com', status: 'open' }
     ]
 
-    const filter = { status: 'paid',  active: true}
+    const filter = { status: 'paid', active: true }
 
     const selectedFilterKeys = Object.keys(filter)
 
     const filteredInvoices = invoices.filter(invoice => selectedFilterKeys.every(key =>
         filter[key] === invoice[key]
     ))
-
-    console.log("filteredInvoices", filteredInvoices)
 
     const columns = [
         {
@@ -156,25 +160,71 @@ const AcuerdosComercialesTable = (props) => {
         setSelectedRowKeysState(selectedRowKeys)
     };
 
+    const onFilterArray = (querySearch) => {
+        console.log('json para filtrar: ', querySearch)
+        // let newArray = []
+        // //separados
+        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // if (querySearch.idcliente === "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // //idcliente and idestado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // //idestado and coddelegado
+        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // //idcliente and coddelegado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+
+        // //idcliente and coddelegado and idestado
+        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
+        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
+        //     setListaAcuerdosFilter(newArray)
+        // }
+    }
+
+    const resetFilter = () => {
+        setListaAcuerdosFilter(listAcuerdos)
+    }
+
     return (
         <ConfigProvider locale={locale}>
-            {console.log('comercialDeals', comercialDeals)}
             <Maincontainer>
                 <div className="table-indas table-indas-new">
-
                     <TableContainer style={{ overflow: 'visible' }}>
-
+                        <PlanesCompraFiltersNew onFilterArray={onFilterArray} resetFilter={resetFilter} />
                         <AcuerdosActions
                             selectedRowKeys={selectedRowKeysState}
                             updateSelectedRowKeys={(newSelectedRowKeys) => (setSelectedRowKeysState(prevState => [...prevState, newSelectedRowKeys]))}
                         />
-
+                        <hr />
                         <Table
                             columns={columns}
-                            dataSource={listAcuerdos}
+                            dataSource={listaAcuerdosFilter}
                             className="table"
                             pagination={{
-                                total: listAcuerdos.length,
+                                total: listaAcuerdosFilter.length,
                                 showSizeChanger: false,
                                 position: 'both',
                                 onChange: (page, pageSize) => {
