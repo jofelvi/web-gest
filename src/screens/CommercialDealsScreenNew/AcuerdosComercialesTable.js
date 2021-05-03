@@ -45,8 +45,11 @@ const AcuerdosComercialesTable = (props) => {
     const comercialDeals = useSelector((state) => state.commercialDeals.subBrands);
     const listAcuerdos = useSelector((state) => state.acuerdosComer.listAcuerdosCom);
     const [listaAcuerdosFilter, setListaAcuerdosFilter] = useState([])
-    const delegados = useSelector((state) => state.acuerdosComer.listaDelegados)
+    const filterActive = useSelector((state) => state.acuerdosComer.filterActive)
+    const filterDataTableAC = useSelector((state) => state.acuerdosComer.filterDataTableAC)
+
     const [filters, setFilters] = useState({})
+
 
     const dispatch = useDispatch()
 
@@ -60,24 +63,7 @@ const AcuerdosComercialesTable = (props) => {
 
     useEffect(() => {
         setListaAcuerdosFilter(listAcuerdos)
-    }, [listAcuerdos])
-
-
-    const invoices = [
-        { active: false, customerEmail: 'joedoe@gmail.com', status: 'paid' },
-        { active: false, customerEmail: 'sam@gmail.com', status: 'paid' },
-        { active: true, customerEmail: 'michael@gmail.com', status: 'void' },
-        { active: true, customerEmail: 'adam@gmail.com', status: 'paid' },
-        { active: true, customerEmail: 'johndoe@gmail.com', status: 'open' }
-    ]
-
-    const filter = { status: 'paid', active: true }
-
-    const selectedFilterKeys = Object.keys(filter)
-
-    const filteredInvoices = invoices.filter(invoice => selectedFilterKeys.every(key =>
-        filter[key] === invoice[key]
-    ))
+    }, [listAcuerdos, filterActive])
 
     const columns = [
         {
@@ -162,46 +148,7 @@ const AcuerdosComercialesTable = (props) => {
 
     const onFilterArray = (querySearch) => {
         console.log('json para filtrar: ', querySearch)
-        // let newArray = []
-        // //separados
-        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado)
-        //     setListaAcuerdosFilter(newArray)
-        // }
 
-        // if (querySearch.idcliente === "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.idestado === querySearch.idestado)
-        //     setListaAcuerdosFilter(newArray)
-        // }
-
-        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado === "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente)
-        //     setListaAcuerdosFilter(newArray)
-        // }
-
-        // //idcliente and idestado
-        // if (querySearch.idcliente !== "" && querySearch.coddelegado === "" && querySearch.idestado !== "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
-        //     setListaAcuerdosFilter(newArray)
-        // }
-
-        // //idestado and coddelegado
-        // if (querySearch.idcliente === "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idestado === querySearch.idestado)
-        //     setListaAcuerdosFilter(newArray)
-        // }
-
-        // //idcliente and coddelegado
-        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado === "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente)
-        //     setListaAcuerdosFilter(newArray)
-        // }
-
-        // //idcliente and coddelegado and idestado
-        // if (querySearch.idcliente !== "" && querySearch.coddelegado !== "" && querySearch.idestado !== "") {
-        //     newArray = listaAcuerdosFilter.filter(item => item.coddelegado === querySearch.coddelegado && item.idcliente === querySearch.idcliente && item.idestado === querySearch.idestado)
-        //     setListaAcuerdosFilter(newArray)
-        // }
     }
 
     const resetFilter = () => {
@@ -213,18 +160,21 @@ const AcuerdosComercialesTable = (props) => {
             <Maincontainer>
                 <div className="table-indas table-indas-new">
                     <TableContainer style={{ overflow: 'visible' }}>
+
                         <PlanesCompraFiltersNew onFilterArray={onFilterArray} resetFilter={resetFilter} />
+
                         <AcuerdosActions
                             selectedRowKeys={selectedRowKeysState}
                             updateSelectedRowKeys={(newSelectedRowKeys) => (setSelectedRowKeysState(prevState => [...prevState, newSelectedRowKeys]))}
                         />
+
                         <hr />
                         <Table
                             columns={columns}
-                            dataSource={listaAcuerdosFilter}
+                            dataSource={filterActive? filterDataTableAC :  listaAcuerdosFilter}
                             className="table"
                             pagination={{
-                                total: listaAcuerdosFilter.length,
+                                total: filterActive? filterDataTableAC.length : listaAcuerdosFilter.length,
                                 showSizeChanger: false,
                                 position: 'both',
                                 onChange: (page, pageSize) => {

@@ -7,7 +7,8 @@ import {
     ELIMINAR_DUPLICADOS, ELIMINAR_ITEMS_MARCADOS, GET_ACUERDOS_COMERCIALES,
     COPY_ACUERDOS_COMERCIALES,
     EDIT_ACUERDOS_COMERCIALES,
-    CREATE_ACUERDOS_COMERCIALES, GET_DELEGADOS, COD_CLIENT, ACUERDO_AC, CREATE_ACUERDOS_COMERCIALES_SUCCESS
+    CREATE_ACUERDOS_COMERCIALES, GET_DELEGADOS, COD_CLIENT, ACUERDO_AC, CREATE_ACUERDOS_COMERCIALES_SUCCESS,
+    FILTER_ACTIVE, GET_FILTER_DATA
 } from './constans';
 import axios from 'axios'
 import utils from "../../lib/utils";
@@ -117,6 +118,8 @@ export const eliminarItemsMarcados = (array) => async (dispatch)  =>{
 
 export const createAcuerdosComerciales = (body) => async (dispatch)  =>{
 
+    console.log("BODY CREATE ", body)
+
     let response = await axios.post('http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/acuerdo/create', body ,{
         headers: {
             'Content-Type': 'application/json',
@@ -128,10 +131,11 @@ export const createAcuerdosComerciales = (body) => async (dispatch)  =>{
             type: CREATE_ACUERDOS_COMERCIALES,
             payload: response.data
         })
-        let a = response.data ? dispatch({
+        let succes = ()=> response.status === 201 ? dispatch({
             type: CREATE_ACUERDOS_COMERCIALES_SUCCESS,
             payload: true
         }) : null
+        succes()
     }).catch((error) => {
         console.log("mensaje de error llamada API: ", error)
     })
@@ -202,5 +206,43 @@ export const setCodCliente = (cod) =>async  (dispatch)  => {
     dispatch({
         type: COD_CLIENT,
         payload: cod
+    })
+}
+
+export const getFilterData = (parametros) =>async  (dispatch)  =>{
+
+    console.log("funcion llamar api")
+    let response = await axios.get(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/acuerdo`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        params: parametros
+
+    }).then((response) => {
+        // console.log("getDelegado acuerdo done")
+         console.log("getFilterData " , response.data)
+        dispatch({
+            type: GET_FILTER_DATA,
+            payload: response.data
+        })
+        dispatch({
+            type: FILTER_ACTIVE,
+            payload: true
+        })
+    }).catch((error) => {
+        console.log("mensaje de error llamada API: ", error)
+    })
+}
+
+export const disableFilterTable = () =>async  (dispatch)  =>{
+        dispatch({
+            type: FILTER_ACTIVE,
+            payload: false
+        })
+}
+export const resetSuccesAC = () =>async  (dispatch)  =>{
+    dispatch({
+        type: CREATE_ACUERDOS_COMERCIALES_SUCCESS,
+        payload: false
     })
 }

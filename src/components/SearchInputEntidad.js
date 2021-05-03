@@ -1,18 +1,27 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Select} from 'antd';
 import {useHistory} from "react-router-dom";
 import utils from "../lib/utils";
+import {useDispatch, useSelector} from "react-redux";
+import {getCatalogoProductos, getSubmarcas, setCodCliente} from "../modules/acuerdosComer/actions";
 
 const {Option} = Select;
 
 function SearchInputEntidad(props) {
     let timeout;
     let currentValue;
-    let history = useHistory();
+
     let token = utils.getAuthToken()
     const [data, setData] = useState([]);
     const [value, setValue] = useState(undefined);
+    const dispatch = useDispatch()
+    const filterActive = useSelector((state) => state.acuerdosComer.filterActive)
+
+    useEffect(() => {
+        let checkChangesFilter = ()=> !filterActive ?  resetVaLues() : "no esta activo el filtro"
+        checkChangesFilter()
+    }, [filterActive])
 
 
     const  search =(value)=> {
@@ -38,7 +47,8 @@ function SearchInputEntidad(props) {
                         data.push({
                             value: r.codentidad_cbim,
                             text: '['+r.codentidad_cbim+'] '+r.nomentidad_cbim+' - '+r.poblacion+', '+r.codigo_postal+', '+r.provincia+', '+r.direccion+'.',
-                            entity: r
+                            entity: r,
+                            idcliente: r.idcliente
                         });
                     });
 
@@ -51,18 +61,25 @@ function SearchInputEntidad(props) {
 
     const handleSearch=(value)=>{
         if (value) {
-           // console.log('Buscador ')
+           console.log('Buscador ')
             search(value);
         } else {
             setData([])
         }
     };
-
-    const handleChange=(value)=> {
+    const resetVaLues=()=>{
+        setData([])
+        setValue(undefined)
+    }
+    const handleChange=async (value)=> {
         console.log('value: ',value)
         setValue(
             value
         )
+        let selectSeach = []
+        await data.filter( f => f.entity.codcli_cbim == value && selectSeach.push({ "idcliente": f.idcliente, "codcli_cbim": f.entity.codcli_cbim }))
+        dispatch(setCodCliente(selectSeach))
+
     };
 
     const options = data.map(d => (<Option key={d.value}>{d.text}</Option>) );

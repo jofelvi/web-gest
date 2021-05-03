@@ -6,6 +6,8 @@ import OrderFilterEntity from "../OrderListScreen/components/OrderFilterEntity"
 import { DownOutlined, UpOutlined } from "@ant-design/icons"
 import moment from "moment"
 import { get } from 'lodash'
+import SearchInputEntidad from "../../components/SearchInputEntidad";
+import {disableFilterTable, getFilterData} from "../../modules/acuerdosComer/actions";
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -17,15 +19,15 @@ const dateFormat = 'DD/MM/YYYY'
 const PlanesCompraFiltersNew = (props) => {
     const { onFilterArray, resetFilter } = props
     const [expandFilters, setExpandFilters] = useState(false)
-    // const [searchByEntity, setSearchByEntity] = useState("")
-    // const [idcliente, setIdcliente] = useState("")
-    // const [fechasValue, setFechasValue] = useState([])
-    // const [idestado, setIdestado] = useState("")
-    const listAcuerdos = useSelector((state) => state.acuerdosComer.listAcuerdosCom)
+    const dispatch = useDispatch()
     const delegadosList = useSelector((state) => state.acuerdosComer.listaDelegados)
+    const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente)
+    const codcli_cbimRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.codcli_cbim)
+    const idclienteRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.idcliente)
+    const [datesFromTo, setDatesFromTo] = useState([]);
     const initialState = {
-        idcliente: '',
-        codcli_cbim: '',
+        idcliente: idclienteRedux,
+        codcli_cbim: codcli_cbimRedux,
         fechasValue: [],
         searchByEntity: get(props, 'filters.searchByEntity', ''),
         page: 0,
@@ -37,73 +39,44 @@ const PlanesCompraFiltersNew = (props) => {
         contareaspendientes: false
     }
     const [state, setState] = useState(initialState)
-    const [querySearch, setQuerySearch] = useState({
-        nombre: '',
-        idestado: '',
-        coddelegado: '',
-        idcliente: '',
-        fecha_desde: '',
-        fecha_hasta: '',
-        formato: '',
+    const [parametros, setParametros] = useState({
+        formato: "json",
         offset: 0,
         limit: 50
     })
 
-
     useEffect(() => {
+        const checkNan =()=> isNaN( parseInt( idsBuscador[0].idcliente)) ?   null : setParametros({ ...parametros, "idcliente":  parseInt( idsBuscador[0].idcliente)})
+        checkNan()
+    }, [idsBuscador])
 
-    }, [])
-
-    const customFormat = value => `custom format: ${value.format(dateFormat)}`
 
     const onChange = (value, dateString) => {
-
-        setQuerySearch({ ...querySearch, fecha_desde: dateString[0], fecha_hasta: dateString[1] })
-
-        let newArray = listAcuerdos.filter(f => checkIsBetweenDates(dateString[0].toString(), dateString[1].toString(), f.fechainicio) && f.codcli_cbim == '194722' && f.estado == "Activo")
-
-        console.log('Selected Time: ', value)
-        console.log('Formatted Selected Time: ', dateString)
-        console.log('srray filted: ', newArray)
-
-    }
-
-    const checkIsBetweenDates = (dateFrom, dateTo, dateCheck) => {
-        let dateCheckFormate = moment(dateCheck).format('DD/MM/YYYY')
-        let fDate, lDate, cDate
-        fDate = Date.parse(dateFrom)
-        lDate = Date.parse(dateTo)
-        cDate = Date.parse(dateCheckFormate)
-        console.log('dateFrom Time: ', dateFrom)
-        console.log('dateTo: ', dateTo)
-        console.log('dateCheck: ', dateCheckFormate)
-        if ((cDate <= lDate && cDate >= fDate)) {
-            console.log(" esta en el rango ")
-            return true
-        }
-        return false
-    }
-
-    const searchedValue = (key, value) => {
-        if (typeof (value) == 'undefined') {
-            setState({ ...state, [key]: '', isFilterChanged: true })
-        } else {
-            setQuerySearch({ ...querySearch, idcliente: parseInt(value) })
-            setState({ ...state, [key]: value, isFilterChanged: true })
-        }
-
+        setDatesFromTo(value)
+       let dateFomart1=  moment(value[0]).format('YYYY-MM-DD');
+       let dateFomart2=  moment(value[1]).format('YYYY-MM-DD');
+       setParametros({ ...parametros, fecha_desde: dateFomart1, fecha_hasta: dateFomart2 })
     }
 
     const onReset = () => {
         resetFilter()
-        setQuerySearch({
-            codcli_cbim: '',
-            coddelegado: '',
-            idestado: ''
+        setParametros({
+            formato: "json",
+            offset: 0,
+            limit: 50
         })
         setState(initialState)
+        setDatesFromTo([])
+        dispatch(disableFilterTable())
     }
 
+    const querySeach = ()=>{
+
+       dispatch(getFilterData(parametros))
+       console.log("querySeach", parametros)
+    }
+
+  console.log("----- valor id a buscar buscado", idsBuscador)
     return (
         <div className="table-filters-indas">
 
@@ -112,18 +85,8 @@ const PlanesCompraFiltersNew = (props) => {
                     <Col span={18} style={{ padding: '10px' }} key={'col_1'}>
                         <span style={{ padding: '10px' }}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
                         <div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
-                            <OrderFilterEntity
-                                column={"object"}
-                                key={'filters_entity_search'}
-                                value={state.searchByEntity}
-                                defaultClient={state.idcliente}
-                                onChange={(entity) => searchedValue('searchByEntity', entity)}
-                                onChangeClient={(client) => {
-                                    const idCliente = client ? client.idcliente : ''
-                                    const codcliCbim = client ? client.codcli_cbim : ''
-                                    searchedValue('idcliente', idCliente)
-                                    searchedValue('codcli_cbim', codcliCbim)
-                                }}
+                            <SearchInputEntidad
+                                //filterChange={}
                             />
                         </div>
                     </Col>
@@ -131,7 +94,7 @@ const PlanesCompraFiltersNew = (props) => {
                         <span style={{ padding: '10px' }}>Código Cliente</span>
                         <InputBox
                             placeholder="Código Cliente"
-                            value={querySearch.idcliente}
+                            value={parametros.codcli_cbim || idsBuscador[0].codcli_cbim }
                             disabled
                             style={{ width: '100%' }}
                         />
@@ -148,24 +111,16 @@ const PlanesCompraFiltersNew = (props) => {
                             format={dateFormat}
                             onChange={onChange}
                             placeholder={['desde', 'hasta']}
-                        //value={fechasValue}
+                            value={datesFromTo}
                         />
-
-                        {/* <RangePicker
-                                defaultValue={[moment(), moment()]}
-                                format={dateFormat}
-                                //placeholder={['desde', 'hasta']}
-                                //placeholder={"aqui"}
-                                onChange={ onChange}
-                            />*/}
                     </Col>
 
                     <Col span={11} style={{ padding: '10px', paddingTop: 0 }}>
                         <span style={{ padding: '10px' }}>Delegado Comercial</span>
                         <Select
-                            value={querySearch.coddelegado || ''}
+                            value={parametros.coddelegado || ''}
                             name='coddelegado'
-                            onChange={(value) => setQuerySearch({ ...querySearch, coddelegado: value })}
+                            onChange={(value) => setParametros({ ...parametros, coddelegado: parseInt( value ) })}
                             style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}
                             showSearch
                             allowClear
@@ -175,20 +130,17 @@ const PlanesCompraFiltersNew = (props) => {
                                 <Select.Option key={index} value={option.coddelegado}>{option.nombre}</Select.Option>
                             ))}
 
-
-
                         </Select>
                     </Col>
 
                     <Col span={5} style={{ padding: '10px', paddingTop: 0 }}>
                         <span style={{ padding: '10px' }}>Estado</span>
                         <Select
-                            value={querySearch.idestado}
-                            onChange={(value) => setQuerySearch({ ...querySearch, idestado: value })}
+                            value={parametros.idestado}
+                            onChange={(value) => setParametros({ ...parametros, idestado: parseInt( value ) })}
                             style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}
                         >
                             <Option value="" style={{ color: '#CCC' }}>- Seleccione -</Option>
-                            <Option value={0}>Borrador</Option>
                             <Option value={1}>Activo</Option>
                             <Option value={2}>Inactivo</Option>
                         </Select>
@@ -213,7 +165,7 @@ const PlanesCompraFiltersNew = (props) => {
                                 icon='search'
                                 type="primary"
                                 style={{ alignSelf: 'flex-end', margin: '0px 10px 0px 10px' }}
-                                onClick={() => onFilterArray(querySearch)}
+                                onClick={()=> querySeach()}
                             >Filtrar</Button>
                             <Button
                                 icon='delete'

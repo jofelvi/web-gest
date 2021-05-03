@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import locale from "antd/es/locale/es_ES"
 import "moment/locale/es"
 import {
-	createAcuerdosComerciales,
+	createAcuerdosComerciales, editAcuerdosComerciales,
 	eliminarDuplicados, eliminarItemsMarcados,
 	getCatalogoProductos,
 	getSubmarcas,
@@ -17,16 +17,22 @@ import {
 } from "../modules/acuerdosComer/actions"
 import { get, set } from 'lodash'
 import * as moment from "moment"
-import { BoldOutlined, FolderAddOutlined } from '@ant-design/icons'
+import {BoldOutlined, FolderAddOutlined, LeftOutlined} from '@ant-design/icons'
+import {useHistory, useLocation, useParams} from "react-router-dom";
+import PlanesCompraSaved from "../screens/CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
+import SearchInputEntidad from "./SearchInputEntidad";
 
 const { Option } = Select
 const dateFormat = 'DD/MM/YYYY'
 
 
 const BrandsSubList = (props) => {
+
 	const { acuerdoComercial } = props
+	let { id } = useParams();
 
 	const dispatch = useDispatch()
+	const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente)
 	const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray)
 	const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray)
 	const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted)
@@ -39,25 +45,23 @@ const BrandsSubList = (props) => {
 		coddelegado: '',
 		idestado: '',
 		fechas: [],
-		expandedKeys: [],
+		//expandedKeys: [],
 		isFilterChanged: false,
 		contareaspendientes: false
 	})
-	// const [body, setBody] = useState({
-	// 	renovar: false,
-	// 	regularizar: false,
-	// 	productsfilted: useSelector((state) => state.acuerdosComer.productsfilted)
-	// })
 
 	const [body, setBody] = useState(acuerdoComercial ? acuerdoComercial :
 		{
 			productos: [],
-			clientes: [],
+			clientes: [
+
+			],
 			escalados: [],
 			"margen": 1.0,
 			"idtipo": 1,
 			'ind_renovar': false,
-			"ind_seleccion_conjunta": false
+			"ind_seleccion_conjunta": false,
+			"ind_surtido": false,
 		})
 	const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray)
 	const [initialDate, setInitialDate] = useState(typeof body === 'undefined' ? '' : body.fechainicio)
@@ -69,6 +73,9 @@ const BrandsSubList = (props) => {
 	const [codcli_cbim, setCodcli_cbim] = useState()
 	const [lineaDescuento, setLineaDescuento] = useState(["row"])
 	const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces)
+	const location = useLocation();
+
+
 
 	const changeBody = e => {
 		setBody({
@@ -82,33 +89,34 @@ const BrandsSubList = (props) => {
 		dispatch(getCatalogoProductos())
 		dispatch(getSubmarcas())
 		catalogoProducts()
+		console.log("current route ", location)
+		console.log("current route ", location.search === "?editar")
 
 	}, [marcadosRedux])
 
+	useEffect(() => {
+		handleSeletClient(idsBuscador)
+		console.log("idsBuscador ", idsBuscador)
+
+	}, [idsBuscador])
 
 	const handleValues = async (e, item) => {
 
-		let objArra = {}
+		let objArra =  {
+			'id': e.target.value,
+			'active': e.target.checked
+		}
 
 		if (e.target.checked) {
 			console.log("entro if", e.target.value)
 
-			objArra = {
-				'id': e.target.value,
-				'active': e.target.checked
-			}
 			if (!marcadosRedux.indexOf(e.target.value) >= 0) {
-
 				await dispatch(listItemMarcados(objArra))
 			}
 		} else {
-
-			console.log("entro else id a borrar :", marcadosRedux)
-
 			let elementosFilted = marcadosRedux.filter(function (item) {
 				return item.id !== e.target.value
 			})
-
 			await dispatch(eliminarItemsMarcados(elementosFilted))
 		}
 	}
@@ -122,9 +130,6 @@ const BrandsSubList = (props) => {
 
 		const res = await productosArrayRedux.filter(f => marcadosRedux.find(item => item.id === f.idsubmarca))
 		let productosBody = []
-		// let clientesBody = [{
-		// 	"idcliente": codcli_cbim
-		// }]
 		await productosArrayRedux.filter(f => marcadosRedux.find(item =>
 			item.id === f.idsubmarca && productosBody.push({ "idproducto": f.idproducto })
 		))
@@ -135,20 +140,13 @@ const BrandsSubList = (props) => {
 		setBody({
 			...body,
 			productos: productosBody,
-			// clientes: clientesBody
 		})
 	}
 
-	const searchedValue = (key, value) => {
-		if (typeof (value) == 'undefined') {
-			setState({ ...state, [key]: '', isFilterChanged: true })
-		} else {
-			//setBody({ ...body, codcli_cbim: value })
-			setCodcli_cbim(value)
-			setBody({ ...state, clientes: [{ "idcliente": parseInt(value) }] })
-			setState({ ...state, [key]: value, isFilterChanged: true })
-		}
 
+	const handleSeletClient =(idsBuscadorObj)=>{
+		console.log("onblur select")
+		setBody({ ...body, clientes: [{ "idcliente": parseInt(idsBuscadorObj[0].idcliente) }] })
 	}
 
 	const handleEscaladosBody = () => {
@@ -163,52 +161,48 @@ const BrandsSubList = (props) => {
 		]
 		setBody({ ...body, escalados: escaladoB })
 	}
-	const onSubmit = () => {
-		if (body.productos.length < 1 || body.clientes.length < 1 || body.nombre === '' || typeof body.nombre === 'undefined') {
-			message.error('falta uno o más campos por llenar')
-		} else {
-			console.log(JSON.stringify(body))
-			dispatch(createAcuerdosComerciales(body))
+
+	const onSubmit = async () => {
+
+		if(location.search === "?editar") {
+			await dispatch(editAcuerdosComerciales(body, id))
+			return true
 		}
+
+		dispatch(createAcuerdosComerciales(body))
+	}
+
+	if(successCreate) {
+		return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true}/>
 	}
 
 	return (
 		<>
+
 			<h3 style={{ margin: '20px 0 10px 0' }}>
 				Datos generales
 			</h3>
 
-			<div className="table-filters-indas" style={{ padding: '20px' }}>
+			<div className="table-filters-indas" style={{ padding: 20 }}>
 
-				<Row style={{ width: '100%', marginBottom: 0 }}>
-					<Col span={18} style={{ padding: '0px' }}>
+				<Row style={{ width: '100%'}}>
+					<Col span={17} style={{ padding: '0px' }}>
 						<span>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
 						<div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
-							<OrderFilterEntity
-								column={"object"}
-								key={'filters_entity_search'}
-								// value={state.searchByEntity}
-								value={state.searchByEntity || body.nomcli_cbim}
-								defaultClient={state.idcliente}
-								onChange={(entity) => searchedValue('searchByEntity', entity)}
-								onChangeClient={(client) => {
-									const idCliente = client ? client.idcliente : ''
-									const codcliCbim = client ? client.codcli_cbim : ''
-									searchedValue('idcliente', idCliente)
-									searchedValue('codcli_cbim', codcliCbim)
-								}}
+							<SearchInputEntidad
+
 							/>
 						</div>
 					</Col>
 
-					<Col span={6} style={{ padding: '0px' }}>
+					<Col span={6} >
 						<span>Código Cliente</span>
 						<InputBox
 							placeholder="Código Cliente"
-							value={codcli_cbim || ''}
+							value={codcli_cbim || idsBuscador[0].codcli_cbim }
 							disabled
+							style={{ width: '100%' }}
 						/>
-
 					</Col>
 				</Row>
 				<Row style={{ width: '100%', marginBottom: 0, paddingBottom: 0 }}>

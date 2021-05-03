@@ -11,7 +11,10 @@ import {
     EDIT_ACUERDOS_COMERCIALES,
     CREATE_ACUERDOS_COMERCIALES,
     GET_DELEGADOS,
-    COD_CLIENT, ACUERDO_AC, CREATE_ACUERDOS_COMERCIALES_SUCCESS
+    COD_CLIENT, ACUERDO_AC,
+    CREATE_ACUERDOS_COMERCIALES_SUCCESS,
+    FILTER_ACTIVE,
+    GET_FILTER_DATA
 } from './constans';
 
 export const INITIAL_STATE = {
@@ -26,10 +29,14 @@ export const INITIAL_STATE = {
     editAcuerdoRespon: [],
     copyAcuerdo: [],
     listaDelegados: [],
-    cod_Cliente:"",
+    cod_Cliente: [{
+        "idcliente":"",
+        "codcli_cbim": ""
+    }],
     acuerdoAc: {},
-    createAcuerdoSucces: false
-
+    createAcuerdoSucces: false,
+    filterActive: false,
+    filterDataTableAC: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -63,12 +70,12 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, acuerdoAc:  action.payload}
         case CREATE_ACUERDOS_COMERCIALES_SUCCESS:
             return {...state, createAcuerdoSucces:  action.payload}
-
         case PRODUCTOS_FILTRADOS:
-            return {
-                ...state,
-                productsfilted:  action.payload
-            };
+            return { ...state, productsfilted:  action.payload };
+        case FILTER_ACTIVE:
+            return {...state, filterActive:  action.payload}
+        case GET_FILTER_DATA:
+            return {...state, filterDataTableAC:  action.payload}
         default:
             return state;
     }

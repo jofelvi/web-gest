@@ -27,15 +27,7 @@ const AcuerdosComercialesEdit = (props) => {
 	return (
 		<Maincontainer>
 			<div className="table-indas table-indas-new">
-				<Button type="link" onClick={() => { history.push('/acuerdos-comerciales') }}>
-					<LeftOutlined /> Atrás
-				</Button>
-				{acuerdoAc ? (
 					<CreateCommercialDealNew acuerdoComercial={acuerdoAc} />
-				) : (<Spin style={{ display: 'block', marginBottom: '10px' }} />)}
-				<Button type="link" onClick={() => { history.push('/acuerdos-comerciales') }}>
-					<LeftOutlined /> Atrás
-				</Button>
 			</div>
 		</Maincontainer>
 	);
