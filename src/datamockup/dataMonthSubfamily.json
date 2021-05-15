@@ -1,0 +1,17 @@
+{ "data": {
+    "data": [
+        { "subfamilia": "A", "porcentajeNumero": 7 ,  "porcentajePVM": 1 ,"totalnumero": 7 , "totalpvm": 10},
+    { "subfamilia": "B", "porcentajeNumero": 2 , "porcentajePVM": 2 , "totalnumero": 7 , "totalpvm": 101},
+    { "subfamilia": "C", "porcentajeNumero": 8, "porcentajePVM": 9,"totalnumero": 37 , "totalpvm": 102 },
+    { "subfamilia": "D", "porcentajeNumero": 6, "porcentajePVM": 8, "totalnumero": 17 , "totalpvm": 103 },
+    { "subfamilia": "E", "porcentajeNumero": 8, "porcentajePVM": 3, "totalnumero": 47 , "totalpvm": 104},
+    { "subfamilia": "F", "porcentajeNumero": 7, "porcentajePVM": 6, "totalnumero": 67 , "totalpvm": 105 },
+    { "subfamilia": "G", "porcentajeNumero": 12, "porcentajePVM": 6, "totalnumero": 87 , "totalpvm": 106 },
+    { "subfamilia": "H", "porcentajeNumero": 5, "porcentajePVM": 3, "totalnumero": 97 , "totalpvm": 107 },
+    { "subfamilia": "I", "porcentajeNumero": 5, "porcentajePVM": 2, "totalnumero": 27 , "totalpvm": 108 },
+    { "subfamilia": "J", "porcentajeNumero": 4,  "porcentajePVM": 3, "totalnumero": 74 , "totalpvm": 109 },
+    { "subfamilia": "K", "porcentajeNumero": 5, "porcentajePVM": 3, "totalnumero": 75 , "totalpvm": 110 },
+    { "subfamilia": "L", "porcentajeNumero": 5, "porcentajePVM": 3,"totalnumero": 77 , "totalpvm": 111 }
+    ]
+}
+}

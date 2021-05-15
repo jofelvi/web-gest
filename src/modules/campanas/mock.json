@@ -1,0 +1,248 @@
+{
+  "campanas": [
+    {
+      "codcli_cbim": 1,
+      "coddelegado": 4010,
+      "delegado": "M.DEL MAR FERNANDEZ MATEOS",
+      "descripcion": "Acuerdo con seleccion por producto",
+      "estado": "Activo",
+      "estado2": "Expirado",
+      "fechafin": "2020-12-31T23:59:59+01:00",
+      "fechainicio": "2020-01-01T00:00:00+01:00",
+      "idcliente": 5032,
+      "idcondcomercial": 6846,
+      "idestado": 1,
+      "idtipo": 1,
+      "ind_renovar": false,
+      "ind_seleccion_conjunta": false,
+      "ind_surtido": true,
+      "margen": 10.0,
+      "nombre": "ACUERDO 1",
+      "nomcli_cbim": "CLIENTE PEDRO 1",
+      "tipo": "Acuerdo Comercial",
+      "escalados": [
+        {
+          "descuento": 16.67,
+          "idcondcomercial": 6846,
+          "idescalado": 7828,
+          "txtdescuento": "(5+1)",
+          "udsmaximas": 40,
+          "udsminimas": 1
+        }
+      ],
+      "productos": [
+        {
+          "idcondcomercial": 6846,
+          "idproducto": 71,
+          "nombre": "INCOPACK Pant Talla Pequeña Día Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6846,
+          "idproducto": 72,
+          "nombre": "INCOPACK Pant Talla Pequeña Noche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6846,
+          "idproducto": 73,
+          "nombre": "INCOPACK Pant Talla Pequeña Supernoche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6846,
+          "idproducto": 74,
+          "nombre": "INCOPACK Pant Talla Media Día Caja 80 Absorbentes"
+        }
+      ],
+      "clientes": [
+        {
+          "apellido1": "Ortiz",
+          "apellido2": "Ortiz",
+          "email": "pedropa.ortiz@gmail.com",
+          "idcliente": 5032,
+          "idcondcomercial": 6846,
+          "nombre": "Pedro"
+        }
+      ],
+      "submarcas": []
+    },
+    {
+      "codcli_cbim": 1,
+      "coddelegado": 4010,
+      "delegado": "M.DEL MAR FERNANDEZ MATEOS",
+      "descripcion": "Acuerdo con seleccion por submarcas",
+      "estado": "Activo",
+      "estado2": "Expirado",
+      "fechafin": "2020-12-31T23:59:59+01:00",
+      "fechainicio": "2020-01-01T00:00:00+01:00",
+      "idcliente": 5032,
+      "idcondcomercial": 6847,
+      "idestado": 1,
+      "idtipo": 1,
+      "ind_renovar": false,
+      "ind_seleccion_conjunta": true,
+      "ind_surtido": true,
+      "margen": 10.0,
+      "nombre": "ACUERDO 2",
+      "nomcli_cbim": "CLIENTE PEDRO 1",
+      "tipo": "Acuerdo Comercial",
+      "escalados": [
+        {
+          "descuento": 16.67,
+          "idcondcomercial": 6847,
+          "idescalado": 7829,
+          "txtdescuento": "(5+1)",
+          "udsmaximas": 40,
+          "udsminimas": 1
+        }
+      ],
+      "productos": [
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 62,
+          "nombre": "INCOPACK NATURE CP Elástico Talla Mediana Noche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 63,
+          "nombre": "INCOPACK NATURE CP Elástico Talla Mediana Supernoche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 64,
+          "nombre": "INCOPACK NATURE CP Elástico Talla Grande Noche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 65,
+          "nombre": "INCOPACK NATURE CP Elástico Talla Grande Supernoche Caja 80 Absorbentes"
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 80,
+          "nombre": "INCOPACK Malla Elástica Lavable Talla Media Bolsa 4 uds."
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 81,
+          "nombre": "INCOPACK Malla Elástica Lavable Talla Grande Bolsa 4 uds."
+        },
+        {
+          "idcondcomercial": 6847,
+          "idproducto": 82,
+          "nombre": "INCOPACK Malla Elástica Lavable Talla Maxi Bolsa 4 uds."
+        }
+      ],
+      "clientes": [
+        {
+          "apellido1": "Ortiz",
+          "apellido2": "Ortiz",
+          "email": "pedropa.ortiz@gmail.com",
+          "idcliente": 5032,
+          "idcondcomercial": 6847,
+          "nombre": "Pedro"
+        }
+      ],
+      "submarcas": [
+        {
+          "idcondcomercial": 6847,
+          "idsubmarca": 11,
+          "nombre": "Incopack Mallas"
+        },
+        {
+          "idcondcomercial": 6847,
+          "idsubmarca": 12,
+          "nombre": "Incopack Nature Elásticos"
+        }
+      ]
+    }
+  ],
+  "campana": {
+    "codcli_cbim": 1,
+    "coddelegado": 4010,
+    "delegado": "M.DEL MAR FERNANDEZ MATEOS",
+    "descripcion": "Acuerdo con seleccion por submarcas",
+    "estado": "Activo",
+    "estado2": "Expirado",
+    "fechafin": "2020-12-31T23:59:59+01:00",
+    "fechainicio": "2020-01-01T00:00:00+01:00",
+    "idcliente": 5032,
+    "idcondcomercial": 6847,
+    "idestado": 1,
+    "idtipo": 1,
+    "ind_renovar": false,
+    "ind_seleccion_conjunta": true,
+    "ind_surtido": true,
+    "margen": 10.0,
+    "nombre": "ACUERDO 2",
+    "nomcli_cbim": "CLIENTE PEDRO 1",
+    "tipo": "Acuerdo Comercial",
+    "escalados": [
+      {
+        "descuento": 16.67,
+        "idcondcomercial": 6847,
+        "idescalado": 7829,
+        "txtdescuento": "(5+1)",
+        "udsmaximas": 40,
+        "udsminimas": 1
+      }
+    ],
+    "productos": [
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 62,
+        "nombre": "INCOPACK NATURE CP Elástico Talla Mediana Noche Caja 80 Absorbentes"
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 63,
+        "nombre": "INCOPACK NATURE CP Elástico Talla Mediana Supernoche Caja 80 Absorbentes"
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 64,
+        "nombre": "INCOPACK NATURE CP Elástico Talla Grande Noche Caja 80 Absorbentes"
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 65,
+        "nombre": "INCOPACK NATURE CP Elástico Talla Grande Supernoche Caja 80 Absorbentes"
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 80,
+        "nombre": "INCOPACK Malla Elástica Lavable Talla Media Bolsa 4 uds."
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 81,
+        "nombre": "INCOPACK Malla Elástica Lavable Talla Grande Bolsa 4 uds."
+      },
+      {
+        "idcondcomercial": 6847,
+        "idproducto": 82,
+        "nombre": "INCOPACK Malla Elástica Lavable Talla Maxi Bolsa 4 uds."
+      }
+    ],
+    "clientes": [
+      {
+        "apellido1": "Ortiz",
+        "apellido2": "Ortiz",
+        "email": "pedropa.ortiz@gmail.com",
+        "idcliente": 5032,
+        "idcondcomercial": 6847,
+        "nombre": "Pedro"
+      }
+    ],
+    "submarcas": [
+      {
+        "idcondcomercial": 6847,
+        "idsubmarca": 11,
+        "nombre": "Incopack Mallas"
+      },
+      {
+        "idcondcomercial": 6847,
+        "idsubmarca": 12,
+        "nombre": "Incopack Nature Elásticos"
+      }
+    ]
+  }
+}

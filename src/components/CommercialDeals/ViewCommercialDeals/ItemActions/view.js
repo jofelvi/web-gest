@@ -1,0 +1,101 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Menu, Dropdown, Button} from 'antd';
+import { Icon } from '@ant-design/compatible';
+import {validationCommercialDeal} from './utils'
+
+const menu = (cmp) => <Menu>
+    {cmp.deal.estado === "Borrador" &&(
+    <Menu.Item key="1" onClick={() => {
+        cmp.setFormKey()
+        cmp.getUsersCount({emailComo: ''})
+        cmp.loadUsers({page: 1, emailComo: ''})
+        cmp.setCurrentCommercialDeal(cmp.deal);
+        cmp.showEditCommercialDeal(true);
+        cmp.setCommercialDealFormStep({currentStep: 0})
+        cmp.setAsociatedProducts({isAsociatedProduct: true})
+        cmp.setAsociatedClients({isAsociatedClient: true})
+        cmp.setCcNotEditable({isNotEditable: false});
+
+    }}>Editar</Menu.Item>)}
+    {(cmp.deal.estado === "Activo" || cmp.deal.estado === "Inactivo") &&(
+     <Menu.Item key="2" onClick={() => {
+        cmp.setFormKey()
+        cmp.getUsersCount({emailComo: ''})
+        cmp.loadUsers({page: 1, emailComo: ''});
+        cmp.setCurrentCommercialDeal(cmp.deal);
+        cmp.showEditCommercialDeal(true);
+        cmp.setCommercialDealFormStep({currentStep: 0})
+        cmp.setNewCommercialDeal(false)
+        cmp.setAsociatedProducts({isAsociatedProduct: true})
+        cmp.setAsociatedClients({isAsociatedClient: true})
+        cmp.setCcNotEditable({isNotEditable: true});
+    }}>Ver</Menu.Item>)}
+     {(cmp.deal.estado === "Borrador" || cmp.deal.estado === "Inactivo") &&(
+     <Menu.Item key="3" onClick={() => {
+         validationCommercialDeal(cmp.deal, cmp.editCommercialDeal)
+
+
+    }}>Activar</Menu.Item>)}
+    {cmp.deal.estado === "Activo" && (
+     <Menu.Item key="4" onClick={() => {
+         cmp.editCommercialDeal({id: cmp.deal.idcondcomercial, values:{ idestado: 2, productos: cmp.deal.productos, escalados: cmp.deal.escalados, clientes: cmp.deal.clientes }})
+    }}>Desactivar</Menu.Item >)}
+</Menu>;
+
+const ItemActions = ({
+    setCurrentCommercialDeal,
+    showEditCommercialDeal,
+    showNewProductCommercialDeal,
+    showViewProductsCommercialDeal,
+    setCommercialDealFormStep,
+    deal,
+    setFormKey,
+    loadUsers,
+    setNewCommercialDeal,
+    editCommercialDeal,
+    getUsersCount,
+    setAsociatedProducts,
+    setAsociatedClients,
+    setCcNotEditable,
+    viewProductsCommercialDealVisible,
+    newProductsCommercialDealVisible,
+    editCommercialDealVisiblee,
+    currentCommercialDeal
+}) => {
+    return  <Dropdown overlay={() => menu({
+            deal:deal,
+            setCurrentCommercialDeal:setCurrentCommercialDeal,
+            showEditCommercialDeal: showEditCommercialDeal,
+            showNewProductCommercialDeal: showNewProductCommercialDeal,
+            showViewProductsCommercialDeal: showViewProductsCommercialDeal,
+            setCommercialDealFormStep: setCommercialDealFormStep,
+            setFormKey: setFormKey,
+            getUsersCount: getUsersCount,
+            loadUsers: loadUsers,
+            setNewCommercialDeal: setNewCommercialDeal,
+            editCommercialDeal:editCommercialDeal,
+            setAsociatedProducts: setAsociatedProducts,
+            setAsociatedClients: setAsociatedClients,
+            setCcNotEditable: setCcNotEditable
+
+            })}>
+                <Button>
+                Acciones <Icon type="down" />
+                </Button>
+            </Dropdown>
+};
+
+ItemActions.propTypes = {
+    setCurrentCommercialDeal: PropTypes.func,
+    showEditCommercialDeal: PropTypes.func,
+    showNewProductCommercialDeal: PropTypes.func,
+    showViewProductsCommercialDeal: PropTypes.func,
+    viewProductsCommercialDealVisible: PropTypes.bool,
+    newProductsCommercialDealVisible:PropTypes.bool,
+    editCommercialDealVisible:PropTypes.bool,
+    currentCommercialDeal: PropTypes.object,
+    deal:PropTypes.object
+};
+
+export default ItemActions;

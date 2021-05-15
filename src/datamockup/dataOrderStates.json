@@ -1,0 +1,47 @@
+{ "data": [
+  {
+    "codestado": "canceled",
+    "descripcion": "Anulado",
+    "nombre": "Anulado"
+  },
+  {
+    "codestado": "completed",
+    "descripcion": "Enviado a CBIM",
+    "nombre": "Tramitado"
+  },
+  {
+    "codestado": "draft",
+    "descripcion": "Caso especial para un pedido que el usuario aún no ha enviado (el carrito)",
+    "nombre": "Borrador"
+  },
+  {
+    "codestado": "failed",
+    "descripcion": "Si falla la transmisión a NTR API",
+    "nombre": "Fallido"
+  },
+  {
+    "codestado": "pending",
+    "descripcion": "Pendiente de envío a Mayorista vía CBIM",
+    "nombre": "En envío a Mayorista"
+  },
+  {
+    "codestado": "processing",
+    "descripcion": "El pedido ha sido enviado al sistema de gestión para su tramitación",
+    "nombre": "En tramitación"
+  },
+  {
+    "codestado": "rejected",
+    "descripcion": "Pedido con incidencia no tramitable",
+    "nombre": "Rechazado"
+  },
+  {
+    "codestado": "retained",
+    "descripcion": "El pedido está retenido por cambios en datos de Cliente",
+    "nombre": "Retenido"
+  },
+  {
+    "codestado": "validating",
+    "descripcion": "El pedido requiere ser validado por un Supervisor",
+    "nombre": "En revisión"
+  }
+]}

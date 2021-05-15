@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+*,
+html,
+body{
+    font-family: 'Roboto', sans-serif!important;
+}
+.ant-layout,
+#root{
+    height: 100%!important;
+}
+.principal-content{
+    margin-top:15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+/*Inicio estilos de controles de formulario*/
+.form-indas{
+    padding: 20px 40px 20px 40px;
+    margin-right: 20px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+.form-indas .ant-form-item-control{
+    padding-right: 40px;
+}
+.form-indas .ant-input:not(.ant-input-disabled){
+    background-color: rgba(211, 211, 211, 0.2);
+    border:1px solid rgba(13, 83, 148, 0.5);
+}
+.form-indas .ant-input:hover:not(.ant-input-disabled),
+.form-indas .ant-input:focus:not(.ant-input-disabled){
+    box-shadow: 0px 0px 10px rgba(13, 83, 148, 0.4);
+    border:1px solid rgba(13, 83, 148, 0.8);
+}
+.form-indas .ant-input-disabled,
+.form-indas .ant-input-disabled:hover{
+    background-color: rgba(211, 211, 211, 0.8);
+    border:1px solid rgba(13, 83, 148, 0.5);
+}
+.form-indas .form-indas-main-title{
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+}
+.form-indas .form-indas-search-btn-container{
+    padding-top: 30px;
+}
+.form-indas .form-indas-btn-search{
+    background-color: rgba(0, 33, 64, 0.85);
+    color:rgba(255,255,255,1);
+}
+.form-indas .form-indas-body-container{
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:2px solid rgba(0, 0, 0, 0.2);
+}
+.form-indas .form-indas-main-sub-title{
+    font-size:1.2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.form-indas .form-indas-main-title-section{
+    font-size:0.9rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color:rgba(0, 33, 64, 0.85);
+}
+.form-indas .form-indas-section{
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+    border-left: 2px solid rgba(0,0,0,0.2);
+}
+.form-indas .ant-form-item-label{
+    max-height: 30px;
+}
+.form-indas .ant-form-item-label label{
+    font-size: 0.8rem;
+}
+.form-indas .ant-row.ant-form-item{
+    margin-bottom:5px;
+}
+
+@media (max-width: 992px) {
+    .form-indas{
+      padding: 20px 10px 20px 10px;
+    }
+    .form-indas .form-indas-section{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .form-indas .ant-form-item-control{
+        padding-right: 10px;
+    }
+    .form-indas .form-indas-section{
+        border:0px;
+    }
+    .ant-btn.ant-btn-primary{
+        margin-top: 10px;
+    }
+  }
+
+/*Fin estilos de controles de formulario*/
+.table-indas{
+    padding: 20px 40px 20px 40px !important;
+    margin-right: 20px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+.table-indas .table-indas-title{
+    font-size: 1.8rem;
+}
+.table-indas .ant-table-wrapper{
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:2px solid rgba(0, 0, 0, 0.2);
+}
+.table-indas.table-indas-new .ant-table-wrapper{
+    margin-top: 0px;
+    padding-top: 0px;
+    border-top: none;
+}
+.table-actions {
+    position: relative;
+    z-index: 90;
+    height: 55px;
+}
+
+@media (max-width: 1700px) {
+    .table-actions {
+    }
+}
+
+.table-filters-indas {
+    background: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+}
+.table-actions .table-action-button{
+    position: absolute;
+    margin-top: 17px;
+}
+.table-indas table{
+   border-width: 0px 2px 0px 2px;
+   border-style: solid;
+   border-color: rgba(0, 33, 64, 0.2);
+}
+.table-indas .ant-descriptions-view table {
+    border: none;
+}
+.list.sublist.ant-list-split .ant-list-header {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    border-color: #555;
+
+}
+.list.sublist.ant-list-split .ant-list-item {
+    padding: 4px 0;
+}
+.table-indas .ant-table-thead tr th{
+    background-color: rgba(0, 33, 64, 0.85);
+    color:rgba(255,255,255,1);
+    border-bottom-width: 2px!important;
+    border-bottom:2px solid rgba(0, 33, 64, 0.85);
+}
+.table-indas .ant-table-thead tr th:hover{
+    background-color: rgba(2, 49, 94, 0.85)!important;
+    border-bottom:2px solid rgba(49, 141, 226, 1)!important;
+}
+
+.table-indas .table-indas-expand{
+    padding: 10px 20px 10px 20px;
+    margin-right: 20px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
+}
+
+.table-indas .table-indas-expand .ant-table-wrapper{
+    margin-top: 10px;
+    border-top: 0px;
+    padding-top: 0px;
+}
+.table-indas .table-indas-expand .table-indas-title{
+    font-size: 1rem;
+    font-weight: bold;
+}
+.table-indas .table-indas-expand .ant-table-thead tr th,
+.table-indas .table-indas-expand .ant-table-thead .ant-table-column-sort{
+    background-color: rgba(224, 222, 222, 0.85)!important;
+    color:rgba(0, 33, 64, 1);
+    border-top-width: 2px!important;
+    border-top:0px!important;
+    border-bottom:0px!important;
+    font-size: 0.75rem;
+}
+.table-indas .table-indas-expand .ant-table-thead tr th:hover{
+    background-color: rgba(255, 255, 255, 1)!important;
+}
+.table-indas .table-indas-expand .ant-table-content{
+    border:0px!important;
+}
+.table-indas .table-indas-expand .ant-table-body{
+    margin:0px!important;
+}
+.table-indas .table-indas-expand .ant-table-body td{
+    font-size: 0.7rem;
+}
+
+/*Inicio estilos de tablas*/
+/*Fin estilos de tablas*/
+
+/* Cambios en los estilos de ant para los objetos disables */
+.ant-input:disabled {
+	color: rgba(0, 0, 0, 0.85);
+}
+.ant-radio-disabled + span {
+	color: rgba(0, 0, 0, 0.85);
+}
+
+.filterSelected {
+    background-color: #005cb3 !important;
+    border-color: #005cb3 !important;
+    color: white !important;
+}
+
+
+.ant-btn-dangerous {
+    color: #ff4d4f;
+    background: #fff;
+    border-color: #ff4d4f;
+}
+.ant-calendar-range-picker-input:placeholder-shown {
+    font-size: 10px;
+}
+

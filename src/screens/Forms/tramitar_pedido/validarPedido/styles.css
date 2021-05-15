@@ -1,0 +1,17 @@
+.table-indas {
+	padding: 0px;
+	padding-top: 10px;
+	box-shadow: none;
+}
+
+.label-ellipsis-indas {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.label-title-indas {
+	font-weight: bold;
+}
+span.label-title-indas::after {
+	content: ": ";
+}

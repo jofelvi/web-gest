@@ -1,0 +1,21 @@
+.menu-container{
+    position: absolute;
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    background-color: #001529;
+}
+.menu-navigation
+{
+    height: 100%;
+}
+.menu-container .menu-toggle{
+    background-color: transparent;
+    color:rgba(255,255,255,1);
+    padding-left: 25px;
+    font-size: 15px;
+}
+.menu-container .menu-toggle:hover > i{
+    color: rgb(84, 127, 151);
+}

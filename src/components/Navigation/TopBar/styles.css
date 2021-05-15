@@ -1,0 +1,22 @@
+.topbar{
+    height: 64px;
+}
+.topbar .user-container{
+    max-width: 100%;
+    color:rgba(255,255,255,1);
+}
+.topbar .user-desc-container{
+    line-height: 20px;
+    padding-top: 10px;
+}
+.topbar .user-container button{
+    border:0px;
+    background-color: transparent;
+    color:rgb(3, 159, 250);
+    padding: 0px 8px;
+}
+@media (max-width: 572px) {
+    .topbar .user-desc-container{
+        
+    }
+}
