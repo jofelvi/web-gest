@@ -107,7 +107,7 @@ export const getSubmarcas = () => async (dispatch) => {
 
 export const getCatalogoProductos = () => async (dispatch) => {
   let token = utils.getAuthToken();
-  let response = await axios
+  axios
     .get(`${process.env.REACT_APP_API_BASE_URL}ntr/producto`, {
       headers: {
         "Content-Type": "application/json",

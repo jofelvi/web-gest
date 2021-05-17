@@ -14,7 +14,7 @@ const CampanasActions = (props) => {
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({});
   const { selectedRowKeys } = props;
-
+  console.log(selectedRowKeys);
   const confirmUpdatePlans = (keyName, valueName, key, value) => {
     const { selectedRowKeys } = props;
     const acuerdos = selectedRowKeys.join(", ");

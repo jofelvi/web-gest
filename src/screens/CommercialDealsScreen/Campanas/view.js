@@ -30,7 +30,6 @@ const Campanas = (props) => {
   const filterDataTableAC = useSelector((state) => state.campanas.filterDataTableAC);
   const dispatch = useDispatch();
   const [updateEstados, setUpdateEstados] = useState(false);
-
   useEffect(() => {
     dispatch(getCampanas());
     setSelectedRowKeysState([]);

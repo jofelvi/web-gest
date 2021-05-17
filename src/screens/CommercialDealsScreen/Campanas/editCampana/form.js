@@ -52,12 +52,12 @@ const dualListIcons = {
 };
 
 const FormEditCampana = (props) => {
-  const { acuerdoComercial } = props;
   let { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const productosArrayRedux = useSelector((state) => state.campanas.productoArray);
+
   const marcadosRedux = useSelector((state) => state.campanas.marcadosArray);
   const productsfilted = useSelector((state) => state.campanas.productsfilted);
 
@@ -70,6 +70,7 @@ const FormEditCampana = (props) => {
     ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
+
   const [inputList, setInputList] = useState([
     {
       descuento: 10.0,
@@ -133,8 +134,21 @@ const FormEditCampana = (props) => {
     loadProducts();
   };
 
+  useEffect(() => {
+    if (body.submarcas && body.submarcas.length) {
+      let activeSubM = [];
+      body.submarcas.forEach((submarca) => activeSubM.push({ id: submarca.idsubmarca, active: true }));
+      dispatch(listItemMarcados(activeSubM));
+
+      return () => {
+        dispatch(listItemMarcados([]));
+      };
+    }
+  }, [body.submarcas]);
+
   const handleApi = async () => {
     let objAc = await dispatch(getIndividualCampana(id));
+
     setLoading(false);
     setCodcli_cbim(objAc.codcli_cbim);
     setNomcli_cbim(objAc.nomcli_cbim);
@@ -155,6 +169,7 @@ const FormEditCampana = (props) => {
     setInputList(escalados);
     setInd_seleccion_conjunta(ind_seleccion_conjunta);
     setBody(objAc);
+    console.log(objAc);
   };
 
   const handleValues = async (e, item) => {
@@ -182,9 +197,10 @@ const FormEditCampana = (props) => {
   };
 
   const catalogoProducts = async () => {
-    const res = await productosArrayRedux.filter((f) => marcadosRedux.find((item) => item.id === f.idsubmarca));
+    const res = productosArrayRedux.filter((f) => marcadosRedux.find((item) => item.id === f.idsubmarca));
     let productosBody = [];
-    await productosArrayRedux.filter((f) =>
+
+    productosArrayRedux.filter((f) =>
       marcadosRedux.find((item) => item.id === f.idsubmarca && productosBody.push({ idproducto: f.idproducto }))
     );
     dispatch(productosFiltrados(res));
@@ -473,20 +489,22 @@ const FormEditCampana = (props) => {
                 bordered
                 dataSource={subMarcasArrayRedux.sort((a, b) => a.nombre.localeCompare(b.nombre))}
                 //onChange={catalogoProducts}
-                renderItem={(item) => (
-                  <List.Item style={{ cursor: "pointer" }}>
-                    <Checkbox
-                      value={item.idsubmarca}
-                      onChange={async (e) => {
-                        await onSelectChange(e, item);
-                      }}
-                      //onChange={()=> onChangeArray( item.idsubmarca ) }
-                      defaultValue={() => marcadosRedux.indexOf(item.idsubmarca) > -1}
-                    >
-                      {item.nombre}
-                    </Checkbox>
-                  </List.Item>
-                )}
+                renderItem={(item) => {
+                  return (
+                    <List.Item style={{ cursor: "pointer" }}>
+                      <Checkbox
+                        value={item.idsubmarca}
+                        onChange={async (e) => {
+                          await onSelectChange(e, item);
+                        }}
+                        //onChange={()=> onChangeArray( item.idsubmarca ) }
+                        checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
+                      >
+                        {item.nombre}
+                      </Checkbox>
+                    </List.Item>
+                  );
+                }}
               />
             </Col>
             <Col span={12} style={{ height: "1150px", overflow: "auto", paddingLeft: "10px" }}>

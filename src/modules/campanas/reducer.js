@@ -48,7 +48,11 @@ export default (state = INITIAL_STATE, action) => {
     case GET_CATALOGO:
       return { ...state, productoArray: action.payload };
     case ITEMS_MARCADOS:
-      return { ...state, marcadosArray: [...state.marcadosArray, action.payload] };
+      if (action.payload.length === 0) {
+        return { ...state, marcadosArray: [] };
+      } else {
+        return { ...state, marcadosArray: state.marcadosArray.concat(action.payload) };
+      }
     case ELIMINAR_ITEMS_MARCADOS:
       return { ...state, marcadosArray: action.payload };
     case ELIMINAR_DUPLICADOS:
