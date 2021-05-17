@@ -8,7 +8,7 @@ import locale from "antd/es/locale/es_ES";
 import {DatePickerFromTo, Maincontainer, TableContainer} from "../../../lib/styled";
 import ResizableTable from "../../shared/ResizableTable";
 import {LIMIT} from "../../../constants";
-import {estados} from './../../../modules/clients-indas/api';
+import {estados} from '../../../modules/clients-indas/api';
 import * as api from "../../../modules/charts/api";
 import {ExportOutlined} from "@ant-design/icons";
 import 'antd/dist/antd.css';

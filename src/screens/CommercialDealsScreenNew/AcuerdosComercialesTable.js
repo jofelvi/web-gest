@@ -5,7 +5,7 @@ import '../../lib/styles.css';
 import '../../styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import ResizableTable from '../shared/ResizableTable';
-import PlanesCompraActions from '../../screens/CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions';
+import PlanesCompraActions from '../CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions';
 import AcuerdosActions from './AcuerdosActions';
 import PlanesCompraFiltersNew from './FilterPlanesNew';
 

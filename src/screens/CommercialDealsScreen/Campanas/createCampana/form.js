@@ -18,7 +18,7 @@ import {
 
 import * as moment from "moment";
 import { useParams } from "react-router-dom";
-import PlanesCompraSaved from "../../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
+import PlanesCompraSaved from "../../PlanesCompra/components/PlanesCompraSaved";
 import SearchInputEntidad from "../../../../components/SearchInputEntidad";
 import { get, keys } from "lodash";
 import ExtendedDualListBox from "../../../CommercialDealsScreenNew/ExtendedDualListBox";

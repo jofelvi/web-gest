@@ -8,7 +8,7 @@ import locale from "antd/es/locale/es_ES";
 import {Maincontainer, TableContainer} from "../../../lib/styled";
 import ResizableTable from "../../shared/ResizableTable";
 import {LIMIT} from "../../../constants";
-import {estados} from './../../../modules/clients-indas/api';
+import {estados} from '../../../modules/clients-indas/api';
 import {filter } from 'lodash';
 import TablaClientesAno from './Estadisticas/TablaClientesAno';
 import TablaClientesMes from './Estadisticas/TablaClientesMes';

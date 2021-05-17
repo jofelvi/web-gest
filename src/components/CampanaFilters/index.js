@@ -5,7 +5,7 @@ import { DatePickerFromTo, InputBox, InputsContainer } from "../../lib/styled";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { get } from "lodash";
-import SearchInputEntidad from "../../components/SearchInputEntidad";
+import SearchInputEntidad from "../SearchInputEntidad";
 import {
   clearCods,
   disableFilterTable,

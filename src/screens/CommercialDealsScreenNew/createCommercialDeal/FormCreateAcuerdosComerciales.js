@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { InputBox } from "../../OrderListScreen/styled"
-import {  Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Tooltip } from 'antd'
+import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Tooltip, Modal } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import locale from "antd/es/locale/es_ES"
 import "moment/locale/es"
@@ -31,7 +31,6 @@ import {
 	DoubleLeftOutlined,
 	DeleteRowOutlined, FolderAddOutlined, ExclamationCircleOutlined
 } from "@ant-design/icons"
-import Checkbox from '@material-ui/core/Checkbox';
 
 const { Option } = Select
 const { TabPane } = Tabs
@@ -82,7 +81,7 @@ const FormCreateAcuerdosComerciales = (props) => {
 			"margen": parseFloat(1.0),
 			"idtipo": 1,
 			'ind_renovar': false,
-			"ind_seleccion_conjunta": false,
+			"ind_seleccion_conjunta": true,
 			"ind_surtido": false,
 
 		})
@@ -143,6 +142,9 @@ const FormCreateAcuerdosComerciales = (props) => {
 
 
 	const handleValues = async (e, item) => {
+		console.log(item)
+
+		let objArraySub = {}
 
 		let objArra = {
 			'id': e.target.value,
@@ -150,12 +152,20 @@ const FormCreateAcuerdosComerciales = (props) => {
 		}
 
 		if (e.target.checked) {
-			console.log("entro if ", e.target.value)
+			console.log("entro if", e.target.value)
+
+			objArraySub = {
+				"idsubmarca": item.idsubmarca
+			}
+
+			setBody({ ...body, submarcas: [...body.submarcas, objArraySub] })
 
 			if (!marcadosRedux.indexOf(e.target.value) >= 0) {
 				await dispatch(listItemMarcados(objArra))
 			}
 		} else {
+			let deleteItemArraySub = body.submarcas.filter(prev => prev.idsubmarca !== item.idsubmarca)
+			setBody({ ...body, submarcas: deleteItemArraySub })
 			let elementosFilted = marcadosRedux.filter(function (item) {
 				return item.id !== e.target.value
 			})
@@ -208,12 +218,14 @@ const FormCreateAcuerdosComerciales = (props) => {
 				message: 'No puede ser una fecha pasada.'
 			},
 			{ field: 'fechafin', validator: (value, record) => (moment(value).startOf('day') >= moment(record.fechainicio).startOf('day')), message: 'Debe ser posterior a la fecha de inicio.' },
-			{ field: 'escalados[0].udsmaximas', validator: (value) => (parseInt(value) > 0), message: 'Debe ser mayor que 0.' },
+			{ field: 'escalados[0].udsmaximas', validator: (value) => (parseInt(value) === 0), message: 'Debe ser mayor que 0.' },
 			{ field: 'escalados[0].udsmaximas', validator: (value) => (parseInt(value).toString() == value), message: 'Debe ser un numero entero.' },
+			{ field: 'escalados[0].udsminimas', validator: (value) => (parseInt(value) === 0), message: 'Debe ser mayor que 0.' },
+			{ field: 'escalados[0].udsminimas', validator: (value) => (parseInt(value).toString() == value), message: 'Debe ser un numero entero.' },
 			{ field: 'escalados[0].descuento', validator: (value) => (parseFloat(value) > 0 && parseFloat(value) < 100), message: 'Debe ser un porcentaje.' },
 			{ field: 'margen', validator: (value) => (parseFloat(value) > 0 && parseFloat(value) < 100), message: 'Debe ser un porcentaje.' },
-			{ field: 'submarcas', validator: (value, record) => (record.ind_seleccion_conjunta == false || value.length > 0), message: 'Debe seleccionar por lo menos una submarca.' },
-			{ field: 'productos', validator: (value, record) => (record.ind_seleccion_conjunta == true || value.length > 0), message: 'Debe seleccionar por lo menos un producto.' }
+			{ field: 'submarcas', validator: (value, record) => (record.ind_seleccion_conjunta == false && body.submarcas.length === 0), message: 'Debe seleccionar por lo menos una submarca.' },
+			{ field: 'productos', validator: (value, record) => (record.ind_seleccion_conjunta == true && body.productos.lenght === 0), message: 'Debe seleccionar por lo menos un producto.' }
 		]
 
 		const validationErrors = []
@@ -256,6 +268,10 @@ const FormCreateAcuerdosComerciales = (props) => {
 	}
 
 	const handleInputChange = (value, index, key) => {
+		console.log("evento", value)
+		// console.log("index", index)
+
+		/*const {name, value} = e.target;*/
 
 		if (key === "udsminimas" || key === "udsmaximas") {
 			const list = [...inputList]
@@ -295,6 +311,27 @@ const FormCreateAcuerdosComerciales = (props) => {
 
 	if (successCreate) {
 		return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />
+	}
+
+	const { confirm } = Modal
+
+	const confirmChangePanel = (tipo, value) => {
+		if (body.productos.length === 0 && body.submarcas.length === 0) {
+			setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false })
+		} else {
+			const messageContent = `¿Desea cambiar a ${tipo}? Se perderán los productos agregados`
+			confirm({
+				title: `Confirmar acción`,
+				icon: <ExclamationCircleOutlined />,
+				content: messageContent,
+				onOk: () => {
+					setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false, productos: [], submarcas: [] })
+				},
+				onCancel() {
+					setBody({ ...body, ind_seleccion_conjunta: body.ind_seleccion_conjunta })
+				},
+			})
+		}
 	}
 
 	return (
@@ -521,15 +558,15 @@ const FormCreateAcuerdosComerciales = (props) => {
 				Asociación de productos
 			</h3>
 			<Row style={{ width: '100%' }}>
+				<div style={{ top: '-80px', position: 'relative' }}>
+					{getError('submarcas')}
+				</div>
 				<Tabs
-					defaultActiveKey={body.ind_seleccion_conjunta ? "2" : "1"}
-					onChange={(value) => setBody({ ...body, ind_seleccion_conjunta: value === "1" })}
+					defaultActiveKey={body.ind_seleccion_conjunta ? "1" : "2"}
+					onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
 				>
 					<TabPane tab="Selección por submarca" key="1">
 						<Col span={12} style={{ height: '1150px', overflow: 'auto', paddingRight: '10px' }}>
-							<div style={{ top: '-80px', position: 'relative' }}>
-								{getError('submarcas')}
-							</div>
 							<List
 								size="small"
 								header={<div>Submarcas</div>}
@@ -541,24 +578,13 @@ const FormCreateAcuerdosComerciales = (props) => {
 										<List.Item
 											style={{ cursor: 'pointer' }}
 										>
-											{console.log(item)}
-											{/*<Checkbox
-												checked={body.submarcas.indexOf(item.idsubmarca) >1}
+											<Checkbox
+												value={item.idsubmarca}
 												onChange={async (e) => {
 													await onSelectChange(e, item)
 												}}
 												//onChange={()=> onChangeArray( item.idsubmarca ) }
-												defaultChecked={() => marcadosRedux.indexOf(item.idsubmarca) > -1 || body.submarcas.indexOf(item.idsubmarca) >1 }
-											>
-
-											</Checkbox>*/}
-											<Checkbox
-												//defaultChecked={true}
-												checked={true}
-												onChange={async (e) => {
-													await onSelectChange(e, item)
-												}}
-
+												defaultValue={() => marcadosRedux.indexOf(item.idsubmarca) > -1 || body.submarcas.indexOf(item.idsubmarca) > -1}
 											>
 												{item.nombre}
 											</Checkbox>
@@ -567,16 +593,7 @@ const FormCreateAcuerdosComerciales = (props) => {
 								}
 
 							/>
-							<Checkbox
-								//defaultChecked={true}
-								checked={true}
-								onChange={async (e) => {
-									//await onSelectChange(e, item)
-								}}
 
-							>
-								{body.productos}
-							</Checkbox>
 						</Col>
 						<Col span={12} style={{ height: '1150px', overflow: 'auto', paddingLeft: '10px' }}>
 							<List
