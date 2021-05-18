@@ -212,10 +212,12 @@ const FormEdi2AcuerdosComerciales = (props) => {
 
     //dispatch(productosFiltrados(res));
 
-    setBody({
-      ...body,
-      productos: productosBody,
-    });
+    if (productosBody.length) {
+      setBody({
+        ...body,
+        productos: productosBody,
+      });
+    }
   };
 
   const handleSeletClient = (idsBuscadorObj) => {

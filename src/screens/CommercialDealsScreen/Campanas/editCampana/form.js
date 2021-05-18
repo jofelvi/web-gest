@@ -598,9 +598,7 @@ const FormEditCampana = (props) => {
               options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
-              onChange={(idproductos, hola) => {
-                console.log(idproductos, hola);
-                /*
+              onChange={(idproductos) => {
                 let p = [];
                 idproductos.map((id) => {
                   productosArrayRedux.map((productoRedux) => {
@@ -615,7 +613,6 @@ const FormEditCampana = (props) => {
 
                 let newArray = [...body.productos, ...p];
                 setBody({ ...body, productos: newArray });
-                */
               }}
             />
           </TabPane>
