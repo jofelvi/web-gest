@@ -14,7 +14,7 @@ import {
   getMarcas,
   getFamilia,
   getByIdAcuerdoComerciale,
-  editAcuerdosComerciales,
+  editAcuerdosComerciales, clearCods,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
@@ -49,7 +49,7 @@ const dualListIcons = {
   moveUp: <UpOutlined />,
 };
 
-const FormEdi2AcuerdosComerciales = (props) => {
+const FormCopyCommercialDeal = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
   const history = useHistory();
@@ -160,8 +160,8 @@ const FormEdi2AcuerdosComerciales = (props) => {
     let objAc = await dispatch(getByIdAcuerdoComerciale(id));
 
     setLoading(false);
-    setCodcli_cbim(objAc.codcli_cbim);
-    setNomcli_cbim(objAc.nomcli_cbim);
+    //setCodcli_cbim(objAc.codcli_cbim);
+    //setNomcli_cbim(objAc.nomcli_cbim);
 
     const { clientes, ind_surtido, escalados, ind_seleccion_conjunta } = objAc;
     let objResult = delete objAc.clientes;
@@ -174,7 +174,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
     let objResult8 = delete objAc.nomcli_cbim;
     let objResult9 = delete objAc.tipo;
 
-    objAc.clientes = [{ idcliente: parseInt(clientes[0].idcliente) }];
+    //objAc.clientes = [{ idcliente: parseInt(clientes[0].idcliente) }];
 
     console.log("verificar ind_surtido", objAc);
     setInd_surtido(ind_surtido);
@@ -309,7 +309,8 @@ const FormEdi2AcuerdosComerciales = (props) => {
     validate(
       body,
       async () => {
-        await dispatch(editAcuerdosComerciales(body, id));
+       await dispatch(createAcuerdosComerciales(body))
+       await dispatch(clearCods())
       },
       () => {
         document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -398,7 +399,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
               Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small>
             </span>
             <div style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}>
-              <SearchInputEntidad desactivado={true} valorDefecto={typeof body === "undefined" ? "" : nomcli_cbim} />
+              <SearchInputEntidad />
               {getError("clientes[0].idcliente")}
             </div>
           </Col>
@@ -407,10 +408,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
             <span>Código Cliente</span>
             <InputBox
               placeholder="Código Cliente"
-              value={typeof body === "undefined" ? "" : codcli_cbim || idsBuscador[0].codcli_cbim}
+              value={idsBuscador[0].codcli_cbim}
               disabled
               style={hasError("clientes[0].idcliente") ? inputErrorStyle : inputStyle}
             />
+            {getError('clientes[0].idcliente')}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -735,4 +737,4 @@ const inputErrorStyle = {
   borderRadius: "4px",
 };
 
-export default FormEdi2AcuerdosComerciales;
+export default FormCopyCommercialDeal;

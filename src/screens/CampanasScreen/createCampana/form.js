@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { InputBox } from "../../OrderListScreen/styled";
-import { Alert, Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Modal } from "antd";
+import {Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
+
 import {
-  createAcuerdosComerciales,
+  createCampana,
   eliminarItemsMarcados,
   getCatalogoProductos,
   getSubmarcas,
@@ -13,17 +13,13 @@ import {
   productosFiltrados,
   getMarcas,
   getFamilia,
-  getByIdAcuerdoComerciale,
-  editAcuerdosComerciales,
-} from "../../../modules/acuerdosComer/actions";
+} from "../../../modules/campanas/actions";
+
 import * as moment from "moment";
-import { useHistory, useParams } from "react-router-dom";
-import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
-import SearchInputEntidad from "../../../components/SearchInputEntidad";
+import { useParams } from "react-router-dom";
 import { get, keys } from "lodash";
-import ExtendedDualListBox from "../ExtendedDualListBox";
-import DualListFilter from "../DualListFilter";
-import { loadProducts } from "../../../modules/commercialDeals/actions";
+
+
 import {
   UpOutlined,
   DownOutlined,
@@ -35,11 +31,16 @@ import {
   FolderAddOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { LoadingComponents } from "../../../components/LoadingComponents";
+import {loadProducts} from "../../../modules/commercialDeals/actions";
+import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
+import SearchInputEntidad from "../../../components/SearchInputEntidad";
+import DualListFilter from "../../CommercialDealsScreenNew/DualListFilter";
+import ExtendedDualListBox from "../../CommercialDealsScreenNew/ExtendedDualListBox";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 const dateFormat = "DD/MM/YYYY";
+
 const dualListIcons = {
   moveLeft: <LeftOutlined />,
   moveAllLeft: <DoubleLeftOutlined />,
@@ -49,31 +50,43 @@ const dualListIcons = {
   moveUp: <UpOutlined />,
 };
 
-const FormEdi2AcuerdosComerciales = (props) => {
+const errorTooltipStyle = {
+  position: "absolute",
+  top: "35px",
+  right: "40px",
+  fontSize: "17px",
+};
+
+const spacedErrorTooltipStyle = {
+  position: "absolute",
+  top: "35px",
+  right: "65px",
+  fontSize: "17px",
+};
+
+const FormCreateAcuerdosComerciales = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
-  const history = useHistory();
+
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
   const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted);
   const [body, setBody] = useState({
-    submarcas: [],
     productos: [],
     clientes: [],
     escalados: [],
+    submarcas: [],
     margen: parseFloat(1.0),
     idtipo: 1,
     ind_renovar: false,
     ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
-  console.log(body);
   const [inputList, setInputList] = useState([
     {
-      descuento: 10.0,
+      descuento: 10.1,
       udsmaximas: 1,
       udsminimas: 1,
       txtdescuento: "",
@@ -87,15 +100,12 @@ const FormEdi2AcuerdosComerciales = (props) => {
   const [codcli_cbim, setCodcli_cbim] = useState();
   const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
-  console.log(bodyError);
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
     seleccion_individual_filtro_categoria: "",
     seleccion_individual_filtro_marca: "",
   });
-  const [nomcli_cbim, setNomcli_cbim] = useState("");
-  const [ind_surtido, setInd_surtido] = useState(false);
-  const [ind_seleccion_conjunta, setInd_seleccion_conjunta] = useState();
+
   const callbackSave = (action) => {
     if (typeof action === "undefined") {
       console.log("no hay action");
@@ -112,8 +122,13 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   useEffect(() => {
+    dispatch(getCatalogoProductos());
+    dispatch(getSubmarcas());
+    dispatch(getMarcas());
+    dispatch(getFamilia());
     catalogoProducts();
-  }, [marcadosRedux]);
+    loadProducts();
+  }, [marcadosRedux, acuerdoComercial, id]);
 
   useEffect(() => {
     handleSeletClient(idsBuscador);
@@ -124,77 +139,23 @@ const FormEdi2AcuerdosComerciales = (props) => {
     callbackSave();
   }, [bodyError]);
 
-  useEffect(() => {
-    handleApi();
-  }, [id]);
-
-  useEffect(() => {
-    callApis();
-  }, []);
-
-  useEffect(() => {
-    catalogoProducts();
-  }, [body.submarcas, productosArrayRedux]);
-
-  useEffect(() => {
-    if (body.submarcas && body.submarcas.length) {
-      let activeSubM = [];
-      body.submarcas.forEach((submarca) => activeSubM.push({ id: submarca.idsubmarca, active: true }));
-      dispatch(listItemMarcados(activeSubM));
-
-      return () => {
-        dispatch(listItemMarcados([]));
-      };
-    }
-  }, [body.submarcas]);
-
-  const callApis = () => {
-    dispatch(getSubmarcas());
-    dispatch(getCatalogoProductos());
-    dispatch(getMarcas());
-    dispatch(getFamilia());
-    loadProducts();
-  };
-
-  const handleApi = async () => {
-    let objAc = await dispatch(getByIdAcuerdoComerciale(id));
-
-    setLoading(false);
-    setCodcli_cbim(objAc.codcli_cbim);
-    setNomcli_cbim(objAc.nomcli_cbim);
-
-    const { clientes, ind_surtido, escalados, ind_seleccion_conjunta } = objAc;
-    let objResult = delete objAc.clientes;
-    let objResult2 = delete objAc.codcli_cbim;
-    let objResult3 = delete objAc.coddelegado;
-    let objResult4 = delete objAc.delegado;
-    let objResult5 = delete objAc.estado;
-    let objResult6 = delete objAc.estado2;
-    let objResult7 = delete objAc.idcliente;
-    let objResult8 = delete objAc.nomcli_cbim;
-    let objResult9 = delete objAc.tipo;
-
-    objAc.clientes = [{ idcliente: parseInt(clientes[0].idcliente) }];
-
-    console.log("verificar ind_surtido", objAc);
-    setInd_surtido(ind_surtido);
-    setInputList(escalados);
-    setInd_seleccion_conjunta(ind_seleccion_conjunta);
-    setBody(objAc);
-  };
-
   const handleValues = async (e, item) => {
-    if (e.target.checked) {
-      console.log("entro if", e.target.value);
+    let objArra = {
+      id: e.target.value,
+      active: e.target.checked,
+    };
 
-      if (!body.submarcas.some((submarca) => submarca.idsubmarca == item.idsubmarca)) {
-        setBody({ ...body, submarcas: body.submarcas.concat({ idsubmarca: item.idsubmarca, nombre: item.nombre }) });
+    if (e.target.checked) {
+      console.log("entro if ", e.target.value);
+
+      if (!marcadosRedux.indexOf(e.target.value) >= 0) {
+        await dispatch(listItemMarcados(objArra));
       }
     } else {
-      let elementosFilted = body.submarcas.filter(function (item) {
-        return item.idsubmarca !== e.target.value;
+      let elementosFilted = marcadosRedux.filter(function (item) {
+        return item.id !== e.target.value;
       });
-      setBody({ ...body, submarcas: elementosFilted });
+      await dispatch(eliminarItemsMarcados(elementosFilted));
     }
   };
 
@@ -203,14 +164,12 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   const catalogoProducts = async () => {
-    //const res = productosArrayRedux.filter((f) => body.submarcas.find((item) => item.idsubmarca === f.idsubmarca));
+    const res = await productosArrayRedux.filter((f) => marcadosRedux.find((item) => item.id === f.idsubmarca));
     let productosBody = [];
-
-    productosArrayRedux.filter((f) =>
-      body.submarcas.find((item) => item.idsubmarca === f.idsubmarca && productosBody.push({ idproducto: f.idproducto, nombre: f.nombre }))
+    await productosArrayRedux.filter((f) =>
+      marcadosRedux.find((item) => item.id === f.idsubmarca && productosBody.push({ idproducto: f.idproducto }))
     );
-
-    //dispatch(productosFiltrados(res));
+    dispatch(productosFiltrados(res));
 
     setBody({
       ...body,
@@ -220,7 +179,10 @@ const FormEdi2AcuerdosComerciales = (props) => {
 
   const handleSeletClient = (idsBuscadorObj) => {
     console.log("onblur select");
-    setBody({ ...body, clientes: [{ idcliente: parseInt(idsBuscadorObj[0].idcliente) }] });
+    setBody({
+      ...body,
+      clientes: [{ idcliente: parseInt(idsBuscadorObj[0].idcliente) }],
+    });
   };
 
   const handleEscaladosBody = () => {
@@ -234,7 +196,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
         validator: (value) => value != "",
         message: "No se puede dejar en blanco. Seleccione una entidad para rellenarlo.",
       },
-      { field: "nombre", validator: (value) => value != "", message: "No se puede dejar en blanco" },
+      {
+        field: "nombre",
+        validator: (value) => value != "",
+        message: "No se puede dejar en blanco",
+      },
       {
         field: "fechainicio",
         validator: (value) =>
@@ -252,7 +218,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
         validator: (value, record) => moment(value).startOf("day") >= moment(record.fechainicio).startOf("day"),
         message: "Debe ser posterior a la fecha de inicio.",
       },
-      { field: "escalados[0].udsmaximas", validator: (value) => parseInt(value) > 0, message: "Debe ser mayor que 0." },
+      {
+        field: "escalados[0].udsmaximas",
+        validator: (value) => parseInt(value) > 0,
+        message: "Debe ser mayor que 0.",
+      },
       {
         field: "escalados[0].udsmaximas",
         validator: (value) => parseInt(value).toString() == value,
@@ -263,7 +233,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
         validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100,
         message: "Debe ser un porcentaje.",
       },
-      { field: "margen", validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100, message: "Debe ser un porcentaje." },
+      {
+        field: "margen",
+        validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100,
+        message: "Debe ser un porcentaje.",
+      },
       {
         field: "submarcas",
         validator: (value, record) => record.ind_seleccion_conjunta == false || value.length > 0,
@@ -297,8 +271,12 @@ const FormEdi2AcuerdosComerciales = (props) => {
     if (hasError(field)) {
       const validationError = get(bodyError, field, false);
       return (
-        <div style={{ display: "inline" }}>
-          <Alert message={validationError} type="error" />
+        <div style={spaced ? spacedErrorTooltipStyle : errorTooltipStyle}>
+          <Tooltip title={validationError}>
+            <span>
+              <ExclamationCircleOutlined style={{ color: "red", fontSize: "18px" }} />
+            </span>
+          </Tooltip>
         </div>
       );
     }
@@ -308,8 +286,8 @@ const FormEdi2AcuerdosComerciales = (props) => {
   const onSubmit = () => {
     validate(
       body,
-      async () => {
-        await dispatch(editAcuerdosComerciales(body, id));
+      () => {
+        dispatch(createCampana(body));
       },
       () => {
         document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -320,11 +298,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
   const handleInputChange = (value, index, key) => {
     if (key === "udsminimas" || key === "udsmaximas") {
       const list = [...inputList];
-      list[index][key] = value;
+      list[index][key] = typeof value === "string" || typeof value === "object" ? 0 : parseInt(value);
       setInputList(list);
     } else {
       const list = [...inputList];
-      list[index][key] = value;
+      list[index][key] = typeof value === "string" || typeof value === "object" ? 0 : parseFloat(value).toFixed(2);
       setInputList(list);
     }
   };
@@ -363,30 +341,6 @@ const FormEdi2AcuerdosComerciales = (props) => {
     return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
   }
 
-  const { confirm } = Modal;
-
-  const confirmChangePanel = (tipo, value) => {
-    if (body.productos.length === 0 && body.submarcas.length === 0) {
-      setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false });
-    } else {
-      const messageContent = `¿Desea cambiar a ${tipo}? Se perderán los productos agregados`;
-      confirm({
-        title: `Confirmar acción`,
-        icon: <ExclamationCircleOutlined />,
-        content: messageContent,
-        onOk: () => {
-          setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false, productos: [], submarcas: [] });
-        },
-        onCancel() {
-          setBody({ ...body, ind_seleccion_conjunta: body.ind_seleccion_conjunta });
-        },
-      });
-    }
-  };
-
-  if (loading) {
-    return <LoadingComponents />;
-  }
   return (
     <>
       <h3 style={{ margin: "20px 0 10px 0" }}>Datos generales</h3>
@@ -394,28 +348,36 @@ const FormEdi2AcuerdosComerciales = (props) => {
       <div className="table-filters-indas" style={{ padding: 20 }}>
         <Row style={{ width: "100%" }}>
           <Col span={17} style={{ padding: "0px" }}>
-            <span>
-              Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small>
-            </span>
-            <div style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}>
-              <SearchInputEntidad desactivado={true} valorDefecto={typeof body === "undefined" ? "" : nomcli_cbim} />
-              {getError("clientes[0].idcliente")}
+            <div
+              style={{
+                padding: "0px",
+                paddingTop: "0",
+                paddingBottom: "10px",
+                paddingRight: "20px",
+              }}
+            >
+              <span>Cupón de Campaña</span>
+              <SearchInputEntidad />
             </div>
           </Col>
-
+          {/*
           <Col span={6}>
             <span>Código Cliente</span>
             <InputBox
               placeholder="Código Cliente"
-              value={typeof body === "undefined" ? "" : codcli_cbim || idsBuscador[0].codcli_cbim}
+              value={codcli_cbim || idsBuscador[0].codcli_cbim}
               disabled
-              style={hasError("clientes[0].idcliente") ? inputErrorStyle : inputStyle}
+              style={
+                hasError("clientes[0].idcliente") ? inputErrorStyle : inputStyle
+              }
             />
+            {getError("clientes[0].idcliente")}
           </Col>
+          */}
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
           <Col span={6}>
-            <label>Nombre del Acuerdo Comercial</label>
+            <label>Nombre de la Campaña</label>
             <Input
               name="nombre"
               value={typeof body === "undefined" ? "" : body.nombre}
@@ -425,7 +387,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
             {getError("nombre")}
           </Col>
           <Col span={18}>
-            <label>Descripción del Acuerdo Comercial</label>
+            <label>Descripción de la Campaña</label>
             <Input
               name="descripcion"
               value={typeof body === "undefined" ? "" : body.descripcion}
@@ -438,7 +400,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
           <Col span={8}>
             <label>Fecha de inicio</label>
             <DatePicker
-              value={typeof body === "undefined" ? "" : moment(body.fechainicio)}
+              value={initialDate === "" ? "" : moment(initialDate)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -456,7 +418,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
             <label>Fecha de fin</label>
             <DatePicker
               format={dateFormat}
-              value={typeof body === "undefined" ? "" : moment(body.fechafin)}
+              value={finalDate === "" ? "" : moment(finalDate)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -487,40 +449,69 @@ const FormEdi2AcuerdosComerciales = (props) => {
               <Option value={2}>Inactivo</Option>
             </Select>
           </Col>
+          {/*
           <Col span={6}>
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              checked={typeof body === "undefined" ? false : body.ind_surtido}
+              value={body.ind_surtido}
+              defaultChecked={
+                typeof body === "undefined" ? "" : body.ind_surtido
+              }
               onChange={(value) => {
                 setBody({ ...body, ind_surtido: value });
               }}
             />
-            <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Surtido</label>
+            <label
+              style={{
+                display: "inline-block",
+                marginTop: "35px",
+                marginLeft: "10px",
+              }}
+            >
+              Surtido
+            </label>
           </Col>
+          */}
           <Col span={6} style={{ display: "none" }}>
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              checked={typeof body === "undefined" ? "" : body.ind_renovar}
+              value={typeof body === "undefined" ? "" : body.ind_renovar}
               defaultChecked={body.ind_renovar}
               onChange={(value) => {
                 setBody({ ...body, ind_renovar: value });
               }}
             />
-            <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Renovar</label>
+            <label
+              style={{
+                display: "inline-block",
+                marginTop: "35px",
+                marginLeft: "10px",
+              }}
+            >
+              Renovar
+            </label>
           </Col>
           <Col span={6} style={{ display: "none" }}>
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              checked={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
+              value={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
               defaultChecked={body.ind_seleccion_conjunta}
               onChange={(value) => {
                 setBody({ ...body, ind_seleccion_conjunta: value });
               }}
             />
-            <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Seleccion conjunta</label>
+            <label
+              style={{
+                display: "inline-block",
+                marginTop: "35px",
+                marginLeft: "10px",
+              }}
+            >
+              Seleccion conjunta
+            </label>
           </Col>
         </Row>
       </div>
@@ -529,7 +520,15 @@ const FormEdi2AcuerdosComerciales = (props) => {
       <div className="table-filters-indas" style={{ padding: "5px 20px 20px 20px" }}>
         {inputList.map((x, i) => {
           return (
-            <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
+            <Row
+              style={{
+                width: "100%",
+                marginBottom: 0,
+                paddingBottom: 0,
+                marginTop: 10,
+              }}
+            >
+              {/*
               <Col span={6}>
                 <label>{i <= 0 ? "Unidades Minimas" : ""}</label>
                 <InputNumber
@@ -542,7 +541,6 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   onBlur={() => handleEscaladosBody()}
                   value={x.udsminimas}
                 />
-                {getError("escalados[0].udsminimas")}
               </Col>
               <Col span={6}>
                 <label>{i <= 0 ? "Unidades Maximas" : ""} </label>
@@ -557,8 +555,9 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   stringMode
                   value={x.udsmaximas}
                 />
-                {getError("escalados[0].udsmaximas")}
               </Col>
+
+                */}
               <Col span={6}>
                 <label>{i <= 0 ? "Descuento" : ""} </label>
 
@@ -575,14 +574,16 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   stringMode
                   decimalSeparator=","
                 />
-                {getError("escalados[0].descuento")}
               </Col>
+              {/*
               <Col span={3}>
                 <div className="btn-box">
                   {inputList.length !== 1 && (
                     <Button
                       onClick={handleRemoveClick}
-                      style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
+                      style={
+                        i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }
+                      }
                       className="ant-btn-dangerous"
                     >
                       <DeleteRowOutlined />
@@ -592,11 +593,20 @@ const FormEdi2AcuerdosComerciales = (props) => {
               </Col>
               <Col span={3}>
                 {inputList.length - 1 === i && (
-                  <Button onClick={handleAddClick} style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }} className="ant-btn">
+                  <Button
+                    onClick={handleAddClick}
+                    style={
+                      i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }
+                    }
+                    className="ant-btn"
+                  >
                     <FolderAddOutlined />
                   </Button>
                 )}
               </Col>
+                 
+                 
+                */}
             </Row>
           );
         })}
@@ -604,14 +614,20 @@ const FormEdi2AcuerdosComerciales = (props) => {
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        {getError("submarcas")}
-        {getError("productos")}
         <Tabs
-          activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
-          onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
+          defaultActiveKey={body.ind_seleccion_conjunta ? "2" : "1"}
+          onChange={(value) => setBody({ ...body, ind_seleccion_conjunta: value === "1" })}
         >
           <TabPane tab="Selección por submarca" key="1">
-            <Col span={12} style={{ height: "1150px", overflow: "auto", paddingRight: "10px" }}>
+            <Col
+              span={12}
+              style={{
+                height: "1150px",
+                overflow: "auto",
+                paddingRight: "10px",
+              }}
+            >
+              <div style={{ top: "-80px", position: "relative" }}>{getError("submarcas")}</div>
               <List
                 size="small"
                 header={<div>Submarcas</div>}
@@ -620,27 +636,53 @@ const FormEdi2AcuerdosComerciales = (props) => {
                 //onChange={catalogoProducts}
                 renderItem={(item) => (
                   <List.Item style={{ cursor: "pointer" }}>
+                    {console.log(item)}
+                    {/*<Checkbox
+												checked={body.submarcas.indexOf(item.idsubmarca) >1}
+												onChange={async (e) => {
+													await onSelectChange(e, item)
+												}}
+												//onChange={()=> onChangeArray( item.idsubmarca ) }
+												defaultChecked={() => marcadosRedux.indexOf(item.idsubmarca) > -1 || body.submarcas.indexOf(item.idsubmarca) >1 }
+											>
+
+											</Checkbox>*/}
                     <Checkbox
-                      value={item.idsubmarca}
+                      //defaultChecked={true}
+                      checked={true}
                       onChange={async (e) => {
                         await onSelectChange(e, item);
                       }}
-                      //onChange={()=> onChangeArray( item.idsubmarca ) }
-                      checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
                     >
                       {item.nombre}
                     </Checkbox>
                   </List.Item>
                 )}
               />
+              <Checkbox
+                //defaultChecked={true}
+                checked={true}
+                onChange={async (e) => {
+                  //await onSelectChange(e, item)
+                }}
+              >
+                {body.productos}
+              </Checkbox>
             </Col>
-            <Col span={12} style={{ height: "1150px", overflow: "auto", paddingLeft: "10px" }}>
+            <Col
+              span={12}
+              style={{
+                height: "1150px",
+                overflow: "auto",
+                paddingLeft: "10px",
+              }}
+            >
               <List
                 //onChange={catalogoProducts}
                 size="small"
                 header={<div>Seleccionados</div>}
                 bordered
-                dataSource={body.productos}
+                dataSource={productsfilted}
                 renderItem={(item) => <List.Item>{item.nombre}</List.Item>}
               />
             </Col>
@@ -657,7 +699,10 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   })}
                   value={filterProducts.seleccion_individual_filtro_categoria}
                   onChange={(seleccion_individual_filtro_categoria) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_categoria: seleccion_individual_filtro_categoria });
+                    setFilterProducts({
+                      ...filterProducts,
+                      seleccion_individual_filtro_categoria: seleccion_individual_filtro_categoria,
+                    });
                   }}
                 />
               </Col>
@@ -671,7 +716,10 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   })}
                   value={filterProducts.seleccion_individual_filtro_marca}
                   onChange={(seleccion_individual_filtro_marca) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_marca: seleccion_individual_filtro_marca });
+                    setFilterProducts({
+                      ...filterProducts,
+                      seleccion_individual_filtro_marca: seleccion_individual_filtro_marca,
+                    });
                   }}
                 />
               </Col>
@@ -685,40 +733,36 @@ const FormEdi2AcuerdosComerciales = (props) => {
                   })}
                   value={filterProducts.seleccion_individual_filtro_submarca}
                   onChange={(seleccion_individual_filtro_submarca) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_submarca: seleccion_individual_filtro_submarca });
+                    setFilterProducts({
+                      ...filterProducts,
+                      seleccion_individual_filtro_submarca: seleccion_individual_filtro_submarca,
+                    });
                   }}
                 />
               </Col>
             </Row>
             <ExtendedDualListBox
               icons={dualListIcons}
-              options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
+              options={productosArrayRedux.map((product) => ({
+                ...product,
+                value: product.idproducto,
+                label: product.nombre,
+              }))}
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
               onChange={(productos) => {
-                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
-                console.log(newArray);
-                setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
+                setBody({
+                  ...body,
+                  productos: productos.map((idproducto) => ({ idproducto })),
+                });
               }}
             />
           </TabPane>
         </Tabs>
       </Row>
-      <Row>
-        <Col>
-          <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
-            Guardar
-          </Button>
-          <Button
-            type="link"
-            onClick={() => {
-              history.push("/acuerdos-comerciales");
-            }}
-          >
-            <LeftOutlined /> Atrás
-          </Button>
-        </Col>
-      </Row>
+      <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
+        Guardar
+      </Button>
     </>
   );
 };
@@ -735,4 +779,4 @@ const inputErrorStyle = {
   borderRadius: "4px",
 };
 
-export default FormEdi2AcuerdosComerciales;
+export default FormCreateAcuerdosComerciales;

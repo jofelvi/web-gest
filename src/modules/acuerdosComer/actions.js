@@ -334,7 +334,7 @@ export const getFilterData = (parametros) => async (dispatch) => {
 };
 
 export const disableFilterTable = () => async (dispatch) => {
-  let token = utils.getAuthToken();
+
   let cods = [{ idcliente: "", codcli_cbim: "" }];
   dispatch({
     type: FILTER_ACTIVE,
