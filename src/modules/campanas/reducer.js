@@ -68,7 +68,11 @@ export default (state = INITIAL_STATE, action) => {
     case CREATE_CAMPANA_SUCCESS:
       return { ...state, createCampanaSuccess: action.payload };
     case PRODUCTOS_FILTRADOS:
-      return { ...state, productsfilted: action.payload };
+      if (action.payload.length === 0) {
+        return { ...state, productsfilted: [] };
+      } else {
+        return { ...state, productsfilted: state.productsfilted.concat(action.payload) };
+      }
     case FILTER_ACTIVE:
       return { ...state, filterActive: action.payload };
     case GET_FILTER_DATA:

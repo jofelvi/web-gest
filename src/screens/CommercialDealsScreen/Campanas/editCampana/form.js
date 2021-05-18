@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { InputBox } from "../../../OrderListScreen/styled";
-import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs } from "antd";
+import { Alert, Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import locale from "antd/es/locale/es_ES";
 import "moment/locale/es";
@@ -36,6 +36,7 @@ import {
   DoubleLeftOutlined,
   DeleteRowOutlined,
   FolderAddOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { LoadingComponents } from "../../../../components/LoadingComponents";
 
@@ -62,6 +63,7 @@ const FormEditCampana = (props) => {
   const productsfilted = useSelector((state) => state.campanas.productsfilted);
 
   const [body, setBody] = useState({
+    submarcas: [],
     productos: [],
     escalados: [],
     margen: parseFloat(1.0),
@@ -70,7 +72,7 @@ const FormEditCampana = (props) => {
     ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
-
+  console.log(body);
   const [inputList, setInputList] = useState([
     {
       descuento: 10.0,
@@ -85,7 +87,7 @@ const FormEditCampana = (props) => {
   const [initialDate, setInitialDate] = useState(typeof body === "undefined" ? "" : body.fechainicio);
   const [finalDate, setFinalDate] = useState(typeof body === "undefined" ? "" : body.fechafin);
   const [codcli_cbim, setCodcli_cbim] = useState();
-  const successCreate = useSelector((state) => state.campanas.createAcuerdoSucces);
+  const successCreate = useSelector((state) => state.campanas.createCampanaSuccess);
   const [bodyError, setBodyError] = useState([]);
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
@@ -95,6 +97,7 @@ const FormEditCampana = (props) => {
   const [nomcli_cbim, setNomcli_cbim] = useState("");
   const [ind_surtido, setInd_surtido] = useState(false);
   const [ind_seleccion_conjunta, setInd_seleccion_conjunta] = useState();
+
   const callbackSave = (action) => {
     if (typeof action === "undefined") {
       console.log("no hay action");
@@ -111,10 +114,6 @@ const FormEditCampana = (props) => {
   };
 
   useEffect(() => {
-    catalogoProducts();
-  }, [marcadosRedux]);
-
-  useEffect(() => {
     callbackSave();
   }, [bodyError]);
 
@@ -126,6 +125,10 @@ const FormEditCampana = (props) => {
     callApis();
   }, []);
 
+  useEffect(() => {
+    catalogoProducts();
+  }, [body.submarcas, productosArrayRedux]);
+
   const callApis = () => {
     dispatch(getSubmarcas());
     dispatch(getCatalogoProductos());
@@ -133,18 +136,6 @@ const FormEditCampana = (props) => {
     dispatch(getFamilia());
     loadProducts();
   };
-
-  useEffect(() => {
-    if (body.submarcas && body.submarcas.length) {
-      let activeSubM = [];
-      body.submarcas.forEach((submarca) => activeSubM.push({ id: submarca.idsubmarca, active: true }));
-      dispatch(listItemMarcados(activeSubM));
-
-      return () => {
-        dispatch(listItemMarcados([]));
-      };
-    }
-  }, [body.submarcas]);
 
   const handleApi = async () => {
     let objAc = await dispatch(getIndividualCampana(id));
@@ -168,27 +159,23 @@ const FormEditCampana = (props) => {
     setInd_surtido(ind_surtido);
     setInputList(escalados);
     setInd_seleccion_conjunta(ind_seleccion_conjunta);
+
     setBody(objAc);
     console.log(objAc);
   };
 
   const handleValues = async (e, item) => {
-    let objArra = {
-      id: e.target.value,
-      active: e.target.checked,
-    };
-
     if (e.target.checked) {
       console.log("entro if", e.target.value);
 
-      if (!marcadosRedux.indexOf(e.target.value) >= 0) {
-        await dispatch(listItemMarcados(objArra));
+      if (!body.submarcas.some((submarca) => submarca.idsubmarca == item.idsubmarca)) {
+        setBody({ ...body, submarcas: body.submarcas.concat({ idsubmarca: item.idsubmarca, nombre: item.nombre }) });
       }
     } else {
-      let elementosFilted = marcadosRedux.filter(function (item) {
-        return item.id !== e.target.value;
+      let elementosFilted = body.submarcas.filter(function (item) {
+        return item.idsubmarca !== e.target.value;
       });
-      await dispatch(eliminarItemsMarcados(elementosFilted));
+      setBody({ ...body, submarcas: elementosFilted });
     }
   };
 
@@ -197,13 +184,14 @@ const FormEditCampana = (props) => {
   };
 
   const catalogoProducts = async () => {
-    const res = productosArrayRedux.filter((f) => marcadosRedux.find((item) => item.id === f.idsubmarca));
+    //const res = productosArrayRedux.filter((f) => body.submarcas.find((item) => item.idsubmarca === f.idsubmarca));
     let productosBody = [];
 
     productosArrayRedux.filter((f) =>
-      marcadosRedux.find((item) => item.id === f.idsubmarca && productosBody.push({ idproducto: f.idproducto }))
+      body.submarcas.find((item) => item.idsubmarca === f.idsubmarca && productosBody.push({ idproducto: f.idproducto, nombre: f.nombre }))
     );
-    dispatch(productosFiltrados(res));
+
+    //dispatch(productosFiltrados(res));
 
     setBody({
       ...body,
@@ -259,6 +247,7 @@ const FormEditCampana = (props) => {
       },
     ];
 
+    console.log(validations);
     const validationErrors = [];
 
     for (let i in validations) {
@@ -274,6 +263,18 @@ const FormEditCampana = (props) => {
 
   const hasError = (field) => {
     return get(bodyError, field, false) !== false;
+  };
+
+  const getError = (field, spaced = false) => {
+    if (hasError(field)) {
+      const validationError = get(bodyError, field, false);
+      return (
+        <div style={{ display: "inline" }}>
+          <Alert message={validationError} type="error" />
+        </div>
+      );
+    }
+    return "";
   };
 
   const onSubmit = () => {
@@ -331,8 +332,29 @@ const FormEditCampana = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved mensaje={"Su campaña fue creada exitosamente"} ac={true} />;
   }
+
+  const { confirm } = Modal;
+
+  const confirmChangePanel = (tipo, value) => {
+    if (body.productos.length === 0 && body.submarcas.length === 0) {
+      setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false });
+    } else {
+      const messageContent = `¿Desea cambiar a ${tipo}? Se perderán los productos agregados`;
+      confirm({
+        title: `Confirmar acción`,
+        icon: <ExclamationCircleOutlined />,
+        content: messageContent,
+        onOk: () => {
+          setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false, productos: [], submarcas: [] });
+        },
+        onCancel() {
+          setBody({ ...body, ind_seleccion_conjunta: body.ind_seleccion_conjunta });
+        },
+      });
+    }
+  };
 
   if (loading) {
     return <LoadingComponents />;
@@ -359,6 +381,7 @@ const FormEditCampana = (props) => {
               onChange={changeBody}
               style={hasError("nombre") ? inputErrorStyle : inputStyle}
             />
+            {getError("nombre")}
           </Col>
           <Col style={{ padding: "10px" }} span={18}>
             <label>Descripción de la Campaña</label>
@@ -386,6 +409,7 @@ const FormEditCampana = (props) => {
               placeholder={"Seleccionar fecha"}
               style={hasError("fechainicio") ? inputErrorStyle : inputStyle}
             />
+            {getError("fechainicio")}
           </Col>
           <Col span={8}>
             <label>Fecha de fin</label>
@@ -401,6 +425,7 @@ const FormEditCampana = (props) => {
               placeholder={"Seleccionar fecha"}
               style={hasError("fechafin") ? inputErrorStyle : inputStyle}
             />
+            {getError("fechafin")}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -469,6 +494,7 @@ const FormEditCampana = (props) => {
                   stringMode
                   decimalSeparator=","
                 />
+                {getError("escalados[0].descuento")}
               </Col>
             </Row>
           );
@@ -477,9 +503,11 @@ const FormEditCampana = (props) => {
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
+        {getError("submarcas")}
+        {getError("productos")}
         <Tabs
-          defaultActiveKey={body.ind_seleccion_conjunta ? "2" : "1"}
-          onChange={(value) => setBody({ ...body, ind_seleccion_conjunta: value === "1" })}
+          activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
+          onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
         >
           <TabPane tab="Selección por submarca" key="1">
             <Col span={12} style={{ height: "1150px", overflow: "auto", paddingRight: "10px" }}>
@@ -498,7 +526,7 @@ const FormEditCampana = (props) => {
                           await onSelectChange(e, item);
                         }}
                         //onChange={()=> onChangeArray( item.idsubmarca ) }
-                        checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
+                        checked={body.submarcas.some((submarca) => submarca.idsubmarca === item.idsubmarca)}
                       >
                         {item.nombre}
                       </Checkbox>
@@ -513,7 +541,7 @@ const FormEditCampana = (props) => {
                 size="small"
                 header={<div>Seleccionados</div>}
                 bordered
-                dataSource={productsfilted}
+                dataSource={body.productos}
                 renderItem={(item) => <List.Item>{item.nombre}</List.Item>}
               />
             </Col>
