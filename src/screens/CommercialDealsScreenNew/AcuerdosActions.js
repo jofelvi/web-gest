@@ -87,7 +87,7 @@ const PlanesCompraActions = (props) => {
 
                         <Link
                             to={{
-                                pathname: `/planes-de-compra/${selectedRowKeys[0]}/copiar`,
+                                pathname: `/acuerdos-comerciales/${selectedRowKeys[0]}/copiar`,
                                 search: 'copiar',
                             }}>
                             <Button type='link' style={{ marginLeft: '0px', marginRight: '0px' }}>

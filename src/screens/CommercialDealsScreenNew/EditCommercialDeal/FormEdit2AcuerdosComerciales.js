@@ -700,21 +700,10 @@ const FormEdi2AcuerdosComerciales = (props) => {
               options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
-              onChange={(idproductos) => {
-                let p = [];
-                idproductos.map((id) => {
-                  productosArrayRedux.map((productoRedux) => {
-                    if (id === productoRedux.idproducto) {
-                      p.push({
-                        idproducto: id,
-                        nombre: productoRedux.nombre,
-                      });
-                    }
-                  });
-                });
-
-                let newArray = [...body.productos, ...p];
-                setBody({ ...body, productos: newArray });
+              onChange={(productos) => {
+                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
+                console.log(newArray);
+                setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
               }}
             />
           </TabPane>
