@@ -15,7 +15,7 @@ import {
   getFamilia,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
 import SearchInputEntidad from "../../../components/SearchInputEntidad";
 import { get, keys } from "lodash";
@@ -64,6 +64,7 @@ const spacedErrorTooltipStyle = {
 const FormCreateAcuerdosComerciales = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
@@ -343,7 +344,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su acuerdo comercial fue creado exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -625,6 +626,7 @@ const FormCreateAcuerdosComerciales = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -639,6 +641,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -653,6 +656,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
@@ -681,6 +685,14 @@ const FormCreateAcuerdosComerciales = (props) => {
       </Row>
       <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
         Guardar
+      </Button>
+      <Button
+        type="link"
+        onClick={() => {
+          history.push("/acuerdos-comerciales");
+        }}
+      >
+        <LeftOutlined /> Atrás
       </Button>
     </>
   );

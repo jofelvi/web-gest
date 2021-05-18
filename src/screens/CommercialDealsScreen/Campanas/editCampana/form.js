@@ -81,9 +81,11 @@ const FormEditCampana = (props) => {
       txtdescuento: "",
     },
   ]);
+
   const subMarcasArrayRedux = useSelector((state) => state.campanas.subMarcaArray);
   const marcasArrayRedux = useSelector((state) => state.campanas.marcasArray);
   const familiaArrayRedux = useSelector((state) => state.campanas.familiaArray);
+
   const [initialDate, setInitialDate] = useState(typeof body === "undefined" ? "" : body.fechainicio);
   const [finalDate, setFinalDate] = useState(typeof body === "undefined" ? "" : body.fechafin);
   const [codcli_cbim, setCodcli_cbim] = useState();
@@ -334,7 +336,7 @@ const FormEditCampana = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/campañas" mensaje={"Su campaña fue creada exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/campañas" mensaje={"Su campaña fue editada exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -551,6 +553,7 @@ const FormEditCampana = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -565,6 +568,7 @@ const FormEditCampana = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -579,6 +583,7 @@ const FormEditCampana = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
