@@ -360,7 +360,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -695,10 +695,21 @@ const FormEdi2AcuerdosComerciales = (props) => {
               options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
-              onChange={(productos) => {
-                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
-                console.log(newArray);
-                setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
+              onChange={(idproductos) => {
+                let p = [];
+                idproductos.map((id) => {
+                  productosArrayRedux.map((productoRedux) => {
+                    if (id === productoRedux.idproducto) {
+                      p.push({
+                        idproducto: id,
+                        nombre: productoRedux.nombre,
+                      });
+                    }
+                  });
+                });
+
+                let newArray = [...body.productos, ...p];
+                setBody({ ...body, productos: newArray });
               }}
             />
           </TabPane>

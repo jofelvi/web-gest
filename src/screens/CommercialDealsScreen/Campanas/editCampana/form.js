@@ -72,7 +72,7 @@ const FormEditCampana = (props) => {
     ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
-  console.log(body);
+
   const [inputList, setInputList] = useState([
     {
       descuento: 10.0,
@@ -193,10 +193,12 @@ const FormEditCampana = (props) => {
 
     //dispatch(productosFiltrados(res));
 
-    setBody({
-      ...body,
-      productos: productosBody,
-    });
+    if (productosBody.length) {
+      setBody({
+        ...body,
+        productos: productosBody,
+      });
+    }
   };
 
   const handleEscaladosBody = () => {
@@ -332,7 +334,7 @@ const FormEditCampana = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su campaña fue creada exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/campañas" mensaje={"Su campaña fue creada exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -596,10 +598,24 @@ const FormEditCampana = (props) => {
               options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
-              onChange={(productos) => {
-                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
-                console.log(newArray);
-                setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
+              onChange={(idproductos, hola) => {
+                console.log(idproductos, hola);
+                /*
+                let p = [];
+                idproductos.map((id) => {
+                  productosArrayRedux.map((productoRedux) => {
+                    if (id === productoRedux.idproducto) {
+                      p.push({
+                        idproducto: id,
+                        nombre: productoRedux.nombre,
+                      });
+                    }
+                  });
+                });
+
+                let newArray = [...body.productos, ...p];
+                setBody({ ...body, productos: newArray });
+                */
               }}
             />
           </TabPane>
