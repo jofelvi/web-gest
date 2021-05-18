@@ -212,10 +212,12 @@ const FormEdi2AcuerdosComerciales = (props) => {
 
     //dispatch(productosFiltrados(res));
 
-    setBody({
-      ...body,
-      productos: productosBody,
-    });
+    if (productosBody.length) {
+      setBody({
+        ...body,
+        productos: productosBody,
+      });
+    }
   };
 
   const handleSeletClient = (idsBuscadorObj) => {
@@ -360,7 +362,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su Acuerdo Comercial Fue editado Exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -648,6 +650,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -662,6 +665,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -676,6 +680,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
