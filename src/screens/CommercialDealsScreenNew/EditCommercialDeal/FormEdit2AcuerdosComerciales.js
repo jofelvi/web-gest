@@ -626,7 +626,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
                         await onSelectChange(e, item);
                       }}
                       //onChange={()=> onChangeArray( item.idsubmarca ) }
-                      checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
+                      checked={body.submarcas.some((submarca) => submarca.idsubmarca === item.idsubmarca)}
                     >
                       {item.nombre}
                     </Checkbox>
