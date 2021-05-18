@@ -70,7 +70,6 @@ const FormEdi2AcuerdosComerciales = (props) => {
     ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
-  console.log(body);
   const [inputList, setInputList] = useState([
     {
       descuento: 10.0,
@@ -87,7 +86,6 @@ const FormEdi2AcuerdosComerciales = (props) => {
   const [codcli_cbim, setCodcli_cbim] = useState();
   const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
-  console.log(bodyError);
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
     seleccion_individual_filtro_categoria: "",
