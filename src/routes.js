@@ -17,9 +17,9 @@ import PlanesCompra from "./screens/CommercialDealsScreen/PlanesCompra";
 import PlanesCompraCreate from "./screens/CommercialDealsScreen/PlanesCompra/create";
 import PlanesCompraCopy from "./screens/CommercialDealsScreen/PlanesCompra/copy";
 import PlanesCompraEdit from "./screens/CommercialDealsScreen/PlanesCompra/edit";
-import Campanas from "./screens/CommercialDealsScreen/Campanas";
-import CreateCampana from "./screens/CommercialDealsScreen/Campanas/createCampana";
-import EditCampana from "./screens/CommercialDealsScreen/Campanas/editCampana";
+import Campanas from "./screens/CampanasScreen";
+import CreateCampana from "./screens/CampanasScreen/createCampana";
+import EditCampana from "./screens/CampanasScreen/editCampana";
 import ClientsScreen from "./screens/ClientsScreen";
 import ClientsShowScreen from "./screens/ClientsScreen/show";
 import ClientsPuntosScreen from "./screens/ClientsScreen/puntos";
@@ -33,6 +33,7 @@ import CreateCommercialDealNew from "./screens/CommercialDealsScreenNew/createCo
 
 import EntidadPuntosNegativos from "./screens/Forms/incidencia_puntos/entidadPuntosNegativos";
 import ScrenEditCommercialDeal from "./screens/CommercialDealsScreenNew/EditCommercialDeal/ScrenEditCommercialDeal";
+import ScrenCopyCommercialDeal from "./screens/CommercialDealsScreenNew/CopyCommercialDeal/ScrenEditCommercialDeal";
 
 const { capitalizeWord } = utils;
 
@@ -76,11 +77,12 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path="/acuerdos-comerciales/" exact component={CommercialDealNew} />
       <PrivateRoute path="/acuerdos-comerciales/crear" exact component={CreateCommercialDealNew} />
       <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={ScrenEditCommercialDeal} />
-      <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={ScrenEditCommercialDeal} />
+      <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={ScrenCopyCommercialDeal} />
       <PrivateRoute path="/promociones" exact component={Promociones} />
       <PrivateRoute path="/campaña/crear" exact component={CreateCampana} />
       <PrivateRoute path="/campañas" exact component={Campanas} />
       <PrivateRoute path="/campaña/:id/editar" exact component={EditCampana} />
+        <PrivateRoute path="/campaña/:id/copiar" exact component={ScrenCopyCommercialDeal} />
       <PrivateRoute path="/clientes" exact component={ClientsScreen} />
       <PrivateRoute path="/clientes/:id/expediente" exact component={ClientsShowScreen} />
       <PrivateRoute path="/clientes/:idcliente/entidades/:codentidad_cbim/puntos" exact component={ClientsPuntosScreen} />

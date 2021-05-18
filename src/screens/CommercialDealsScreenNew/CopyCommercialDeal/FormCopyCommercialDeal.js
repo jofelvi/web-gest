@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { InputBox } from "../../OrderListScreen/styled"
-import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Tooltip, Modal } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import locale from "antd/es/locale/es_ES"
-import "moment/locale/es"
+import React, { useEffect, useState } from "react";
+import { InputBox } from "../../OrderListScreen/styled";
+import { Alert, Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Modal } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import locale from "antd/es/locale/es_ES";
+import "moment/locale/es";
 import {
   createAcuerdosComerciales,
   eliminarItemsMarcados,
@@ -13,9 +13,11 @@ import {
   productosFiltrados,
   getMarcas,
   getFamilia,
+  getByIdAcuerdoComerciale,
+  editAcuerdosComerciales, clearCods,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
 import SearchInputEntidad from "../../../components/SearchInputEntidad";
 import { get, keys } from "lodash";
@@ -23,67 +25,55 @@ import ExtendedDualListBox from "../ExtendedDualListBox";
 import DualListFilter from "../DualListFilter";
 import { loadProducts } from "../../../modules/commercialDeals/actions";
 import {
-	UpOutlined,
-	DownOutlined,
-	RightOutlined,
-	DoubleRightOutlined,
-	LeftOutlined,
-	DoubleLeftOutlined,
-	DeleteRowOutlined, FolderAddOutlined, ExclamationCircleOutlined
-} from "@ant-design/icons"
+  UpOutlined,
+  DownOutlined,
+  RightOutlined,
+  DoubleRightOutlined,
+  LeftOutlined,
+  DoubleLeftOutlined,
+  DeleteRowOutlined,
+  FolderAddOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { LoadingComponents } from "../../../components/LoadingComponents";
 
-const { Option } = Select
-const { TabPane } = Tabs
-const dateFormat = 'DD/MM/YYYY'
-
+const { Option } = Select;
+const { TabPane } = Tabs;
+const dateFormat = "DD/MM/YYYY";
 const dualListIcons = {
-	moveLeft: <LeftOutlined />,
-	moveAllLeft: <DoubleLeftOutlined />,
-	moveRight: <RightOutlined />,
-	moveAllRight: <DoubleRightOutlined />,
-	moveDown: <DownOutlined />,
-	moveUp: <UpOutlined />,
-}
+  moveLeft: <LeftOutlined />,
+  moveAllLeft: <DoubleLeftOutlined />,
+  moveRight: <RightOutlined />,
+  moveAllRight: <DoubleRightOutlined />,
+  moveDown: <DownOutlined />,
+  moveUp: <UpOutlined />,
+};
 
-const errorTooltipStyle = {
-	position: 'absolute',
-	top: '35px',
-	right: '40px',
-	fontSize: '17px',
-}
-
-const spacedErrorTooltipStyle = {
-	position: 'absolute',
-	top: '35px',
-	right: '65px',
-	fontSize: '17px',
-}
-
-
-const FormCreateAcuerdosComerciales = (props) => {
+const FormCopyCommercialDeal = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
   const history = useHistory();
-
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
   const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted);
   const [body, setBody] = useState({
+    submarcas: [],
     productos: [],
     clientes: [],
     escalados: [],
-    submarcas: [],
     margen: parseFloat(1.0),
     idtipo: 1,
     ind_renovar: false,
-    ind_seleccion_conjunta: true,
+    ind_seleccion_conjunta: false,
     ind_surtido: false,
   });
+  console.log(body);
   const [inputList, setInputList] = useState([
     {
-      descuento: 10.1,
+      descuento: 10.0,
       udsmaximas: 1,
       udsminimas: 1,
       txtdescuento: "",
@@ -97,12 +87,15 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [codcli_cbim, setCodcli_cbim] = useState();
   const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
+  console.log(bodyError);
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
     seleccion_individual_filtro_categoria: "",
     seleccion_individual_filtro_marca: "",
   });
-
+  const [nomcli_cbim, setNomcli_cbim] = useState("");
+  const [ind_surtido, setInd_surtido] = useState(false);
+  const [ind_seleccion_conjunta, setInd_seleccion_conjunta] = useState();
   const callbackSave = (action) => {
     if (typeof action === "undefined") {
       console.log("no hay action");
@@ -119,13 +112,8 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   useEffect(() => {
-    dispatch(getCatalogoProductos());
-    dispatch(getSubmarcas());
-    dispatch(getMarcas());
-    dispatch(getFamilia());
     catalogoProducts();
-    loadProducts();
-  }, [marcadosRedux, acuerdoComercial, id]);
+  }, [marcadosRedux]);
 
   useEffect(() => {
     handleSeletClient(idsBuscador);
@@ -136,35 +124,77 @@ const FormCreateAcuerdosComerciales = (props) => {
     callbackSave();
   }, [bodyError]);
 
+  useEffect(() => {
+    handleApi();
+  }, [id]);
+
+  useEffect(() => {
+    callApis();
+  }, []);
+
+  useEffect(() => {
+    catalogoProducts();
+  }, [body.submarcas, productosArrayRedux]);
+
+  useEffect(() => {
+    if (body.submarcas && body.submarcas.length) {
+      let activeSubM = [];
+      body.submarcas.forEach((submarca) => activeSubM.push({ id: submarca.idsubmarca, active: true }));
+      dispatch(listItemMarcados(activeSubM));
+
+      return () => {
+        dispatch(listItemMarcados([]));
+      };
+    }
+  }, [body.submarcas]);
+
+  const callApis = () => {
+    dispatch(getSubmarcas());
+    dispatch(getCatalogoProductos());
+    dispatch(getMarcas());
+    dispatch(getFamilia());
+    loadProducts();
+  };
+
+  const handleApi = async () => {
+    let objAc = await dispatch(getByIdAcuerdoComerciale(id));
+
+    setLoading(false);
+    //setCodcli_cbim(objAc.codcli_cbim);
+    //setNomcli_cbim(objAc.nomcli_cbim);
+
+    const { clientes, ind_surtido, escalados, ind_seleccion_conjunta } = objAc;
+    let objResult = delete objAc.clientes;
+    let objResult2 = delete objAc.codcli_cbim;
+    let objResult3 = delete objAc.coddelegado;
+    let objResult4 = delete objAc.delegado;
+    let objResult5 = delete objAc.estado;
+    let objResult6 = delete objAc.estado2;
+    let objResult7 = delete objAc.idcliente;
+    let objResult8 = delete objAc.nomcli_cbim;
+    let objResult9 = delete objAc.tipo;
+
+    //objAc.clientes = [{ idcliente: parseInt(clientes[0].idcliente) }];
+
+    console.log("verificar ind_surtido", objAc);
+    setInd_surtido(ind_surtido);
+    setInputList(escalados);
+    setInd_seleccion_conjunta(ind_seleccion_conjunta);
+    setBody(objAc);
+  };
+
   const handleValues = async (e, item) => {
-    console.log(item);
-
-    let objArraySub = {};
-
-    let objArra = {
-      id: e.target.value,
-      active: e.target.checked,
-    };
-
     if (e.target.checked) {
       console.log("entro if", e.target.value);
 
-      objArraySub = {
-        idsubmarca: item.idsubmarca,
-      };
-
-      setBody({ ...body, submarcas: [...body.submarcas, objArraySub] });
-
-      if (!marcadosRedux.indexOf(e.target.value) >= 0) {
-        await dispatch(listItemMarcados(objArra));
+      if (!body.submarcas.some((submarca) => submarca.idsubmarca == item.idsubmarca)) {
+        setBody({ ...body, submarcas: body.submarcas.concat({ idsubmarca: item.idsubmarca, nombre: item.nombre }) });
       }
     } else {
-      let deleteItemArraySub = body.submarcas.filter((prev) => prev.idsubmarca !== item.idsubmarca);
-      setBody({ ...body, submarcas: deleteItemArraySub });
-      let elementosFilted = marcadosRedux.filter(function (item) {
-        return item.id !== e.target.value;
+      let elementosFilted = body.submarcas.filter(function (item) {
+        return item.idsubmarca !== e.target.value;
       });
-      await dispatch(eliminarItemsMarcados(elementosFilted));
+      setBody({ ...body, submarcas: elementosFilted });
     }
   };
 
@@ -173,12 +203,14 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const catalogoProducts = async () => {
-    const res = await productosArrayRedux.filter((f) => marcadosRedux.find((item) => item.id === f.idsubmarca));
+    //const res = productosArrayRedux.filter((f) => body.submarcas.find((item) => item.idsubmarca === f.idsubmarca));
     let productosBody = [];
-    await productosArrayRedux.filter((f) =>
-      marcadosRedux.find((item) => item.id === f.idsubmarca && productosBody.push({ idproducto: f.idproducto }))
+
+    productosArrayRedux.filter((f) =>
+      body.submarcas.find((item) => item.idsubmarca === f.idsubmarca && productosBody.push({ idproducto: f.idproducto, nombre: f.nombre }))
     );
-    dispatch(productosFiltrados(res));
+
+    //dispatch(productosFiltrados(res));
 
     setBody({
       ...body,
@@ -220,15 +252,9 @@ const FormCreateAcuerdosComerciales = (props) => {
         validator: (value, record) => moment(value).startOf("day") >= moment(record.fechainicio).startOf("day"),
         message: "Debe ser posterior a la fecha de inicio.",
       },
-      { field: "escalados[0].udsmaximas", validator: (value) => parseInt(value) === 0, message: "Debe ser mayor que 0." },
+      { field: "escalados[0].udsmaximas", validator: (value) => parseInt(value) > 0, message: "Debe ser mayor que 0." },
       {
         field: "escalados[0].udsmaximas",
-        validator: (value) => parseInt(value).toString() == value,
-        message: "Debe ser un numero entero.",
-      },
-      { field: "escalados[0].udsminimas", validator: (value) => parseInt(value) === 0, message: "Debe ser mayor que 0." },
-      {
-        field: "escalados[0].udsminimas",
         validator: (value) => parseInt(value).toString() == value,
         message: "Debe ser un numero entero.",
       },
@@ -240,12 +266,13 @@ const FormCreateAcuerdosComerciales = (props) => {
       { field: "margen", validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100, message: "Debe ser un porcentaje." },
       {
         field: "submarcas",
-        validator: (value, record) => record.ind_seleccion_conjunta == false && body.submarcas.length === 0,
+        validator: (value, record) => record.ind_seleccion_conjunta == false || value.length > 0,
         message: "Debe seleccionar por lo menos una submarca.",
       },
       {
         field: "productos",
-        validator: (value, record) => record.ind_seleccion_conjunta == true && body.productos.lenght === 0,
+        validator: (value, record) => record.ind_seleccion_conjunta == true || value.length > 0,
+        message: "Debe seleccionar por lo menos un producto.",
       },
     ];
 
@@ -267,16 +294,11 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const getError = (field, spaced = false) => {
-    console.log(field, spaced);
     if (hasError(field)) {
       const validationError = get(bodyError, field, false);
       return (
-        <div style={spaced ? spacedErrorTooltipStyle : errorTooltipStyle}>
-          <Tooltip title={validationError}>
-            <span>
-              <ExclamationCircleOutlined style={{ color: "red", fontSize: "18px" }} />
-            </span>
-          </Tooltip>
+        <div style={{ display: "inline" }}>
+          <Alert message={validationError} type="error" />
         </div>
       );
     }
@@ -286,8 +308,9 @@ const FormCreateAcuerdosComerciales = (props) => {
   const onSubmit = () => {
     validate(
       body,
-      () => {
-        dispatch(createAcuerdosComerciales(body));
+      async () => {
+       await dispatch(createAcuerdosComerciales(body))
+       await dispatch(clearCods())
       },
       () => {
         document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -296,18 +319,13 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const handleInputChange = (value, index, key) => {
-    console.log("evento", value);
-    // console.log("index", index)
-
-    /*const {name, value} = e.target;*/
-
     if (key === "udsminimas" || key === "udsmaximas") {
       const list = [...inputList];
-      list[index][key] = typeof value === "string" || typeof value === "object" ? 0 : parseInt(value);
+      list[index][key] = value;
       setInputList(list);
     } else {
       const list = [...inputList];
-      list[index][key] = typeof value === "string" || typeof value === "object" ? 0 : parseFloat(value).toFixed(2);
+      list[index][key] = value;
       setInputList(list);
     }
   };
@@ -343,7 +361,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su acuerdo comercial fue creado exitosamente"} ac={true} />;
+    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -367,6 +385,9 @@ const FormCreateAcuerdosComerciales = (props) => {
     }
   };
 
+  if (loading) {
+    return <LoadingComponents />;
+  }
   return (
     <>
       <h3 style={{ margin: "20px 0 10px 0" }}>Datos generales</h3>
@@ -379,6 +400,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             </span>
             <div style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}>
               <SearchInputEntidad />
+              {getError("clientes[0].idcliente")}
             </div>
           </Col>
 
@@ -386,16 +408,16 @@ const FormCreateAcuerdosComerciales = (props) => {
             <span>Código Cliente</span>
             <InputBox
               placeholder="Código Cliente"
-              value={codcli_cbim || idsBuscador[0].codcli_cbim}
+              value={idsBuscador[0].codcli_cbim}
               disabled
               style={hasError("clientes[0].idcliente") ? inputErrorStyle : inputStyle}
             />
-            {getError("clientes[0].idcliente")}
+            {getError('clientes[0].idcliente')}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
           <Col span={6}>
-            <label>Nombre del Acuerdo Comeroooocial</label>
+            <label>Nombre del Acuerdo Comercial</label>
             <Input
               name="nombre"
               value={typeof body === "undefined" ? "" : body.nombre}
@@ -418,7 +440,7 @@ const FormCreateAcuerdosComerciales = (props) => {
           <Col span={8}>
             <label>Fecha de inicio</label>
             <DatePicker
-              value={initialDate === "" ? "" : moment(initialDate)}
+              value={typeof body === "undefined" ? "" : moment(body.fechainicio)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -436,7 +458,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             <label>Fecha de fin</label>
             <DatePicker
               format={dateFormat}
-              value={finalDate === "" ? "" : moment(finalDate)}
+              value={typeof body === "undefined" ? "" : moment(body.fechafin)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -471,8 +493,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              value={body.ind_surtido}
-              defaultChecked={typeof body === "undefined" ? "" : body.ind_surtido}
+              checked={typeof body === "undefined" ? false : body.ind_surtido}
               onChange={(value) => {
                 setBody({ ...body, ind_surtido: value });
               }}
@@ -483,7 +504,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              value={typeof body === "undefined" ? "" : body.ind_renovar}
+              checked={typeof body === "undefined" ? "" : body.ind_renovar}
               defaultChecked={body.ind_renovar}
               onChange={(value) => {
                 setBody({ ...body, ind_renovar: value });
@@ -495,7 +516,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             <Switch
               checkedChildren="Si"
               unCheckedChildren="No"
-              value={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
+              checked={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
               defaultChecked={body.ind_seleccion_conjunta}
               onChange={(value) => {
                 setBody({ ...body, ind_seleccion_conjunta: value });
@@ -523,6 +544,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   onBlur={() => handleEscaladosBody()}
                   value={x.udsminimas}
                 />
+                {getError("escalados[0].udsminimas")}
               </Col>
               <Col span={6}>
                 <label>{i <= 0 ? "Unidades Maximas" : ""} </label>
@@ -537,6 +559,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   stringMode
                   value={x.udsmaximas}
                 />
+                {getError("escalados[0].udsmaximas")}
               </Col>
               <Col span={6}>
                 <label>{i <= 0 ? "Descuento" : ""} </label>
@@ -554,6 +577,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   stringMode
                   decimalSeparator=","
                 />
+                {getError("escalados[0].descuento")}
               </Col>
               <Col span={3}>
                 <div className="btn-box">
@@ -582,9 +606,10 @@ const FormCreateAcuerdosComerciales = (props) => {
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        <div style={{ top: "-80px", position: "relative" }}>{getError("submarcas")}</div>
+        {getError("submarcas")}
+        {getError("productos")}
         <Tabs
-          defaultActiveKey={body.ind_seleccion_conjunta ? "1" : "2"}
+          activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
           onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
         >
           <TabPane tab="Selección por submarca" key="1">
@@ -603,7 +628,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                         await onSelectChange(e, item);
                       }}
                       //onChange={()=> onChangeArray( item.idsubmarca ) }
-                      defaultValue={() => marcadosRedux.indexOf(item.idsubmarca) > -1 || body.submarcas.indexOf(item.idsubmarca) > -1}
+                      checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
                     >
                       {item.nombre}
                     </Checkbox>
@@ -617,7 +642,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 size="small"
                 header={<div>Seleccionados</div>}
                 bordered
-                dataSource={productsfilted}
+                dataSource={body.productos}
                 renderItem={(item) => <List.Item>{item.nombre}</List.Item>}
               />
             </Col>
@@ -625,7 +650,6 @@ const FormCreateAcuerdosComerciales = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -640,7 +664,6 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -655,7 +678,6 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
@@ -676,38 +698,43 @@ const FormCreateAcuerdosComerciales = (props) => {
               selectedKeys={body.productos.map((producto) => producto.idproducto)}
               filter={filterSeleccionIndividual}
               onChange={(productos) => {
+                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
+                console.log(newArray);
                 setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
               }}
             />
           </TabPane>
         </Tabs>
       </Row>
-      <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
-        Guardar
-      </Button>
-      <Button
-        type="link"
-        onClick={() => {
-          history.push("/acuerdos-comerciales");
-        }}
-      >
-        <LeftOutlined /> Atrás
-      </Button>
+      <Row>
+        <Col>
+          <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
+            Guardar
+          </Button>
+          <Button
+            type="link"
+            onClick={() => {
+              history.push("/acuerdos-comerciales");
+            }}
+          >
+            <LeftOutlined /> Atrás
+          </Button>
+        </Col>
+      </Row>
     </>
   );
 };
 
 const inputStyle = {
-	width: 'calc(100% - 40px)',
-	margin: '10px'
-}
+  width: "calc(100% - 40px)",
+  margin: "10px",
+};
 
 const inputErrorStyle = {
-	width: 'calc(100% - 40px)',
-	margin: '10px',
-	border: '1px solid red',
-	borderRadius: '4px'
-}
+  width: "calc(100% - 40px)",
+  margin: "10px",
+  border: "1px solid red",
+  borderRadius: "4px",
+};
 
-
-export default FormCreateAcuerdosComerciales
+export default FormCopyCommercialDeal;
