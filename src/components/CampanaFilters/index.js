@@ -6,12 +6,7 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { get } from "lodash";
 import SearchInputEntidad from "../SearchInputEntidad";
-import {
-  clearCods,
-  disableFilterTable,
-  getFilterData,
-  handleBtnLimpiar,
-} from "../../modules/acuerdosComer/actions";
+import { clearCods, disableFilterTable, getFilterData, handleBtnLimpiar } from "../../modules/acuerdosComer/actions";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -23,18 +18,10 @@ const PlanesCompraFiltersNew = (props) => {
   const [expandFilters, setExpandFilters] = useState(false);
 
   const dispatch = useDispatch();
-  const delegadosList = useSelector(
-    (state) => state.acuerdosComer.listaDelegados
-  );
-  const codsClientSelect = useSelector(
-    (state) => state.acuerdosComer.cod_Cliente
-  );
-  const codcli_cbimRedux = useSelector(
-    (state) => state.acuerdosComer.cod_Cliente.codcli_cbim
-  );
-  const idclienteRedux = useSelector(
-    (state) => state.acuerdosComer.cod_Cliente.idcliente
-  );
+  const delegadosList = useSelector((state) => state.acuerdosComer.listaDelegados);
+  const codsClientSelect = useSelector((state) => state.acuerdosComer.cod_Cliente);
+  const codcli_cbimRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.codcli_cbim);
+  const idclienteRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.idcliente);
   const limpiarBtn = useSelector((state) => state.acuerdosComer.limpiarBtn);
 
   const [datesFromTo, setDatesFromTo] = useState([]);
@@ -56,6 +43,7 @@ const PlanesCompraFiltersNew = (props) => {
     formato: "json",
     offset: 0,
     limit: 50,
+    idestado: "",
   });
 
   useEffect(() => {
@@ -101,15 +89,11 @@ const PlanesCompraFiltersNew = (props) => {
 
   return (
     <div className="table-filters-indas">
-      <InputsContainer
-        style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}
-      >
+      <InputsContainer style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
         <Row key={"filters_b"} style={{ width: "100%", marginBottom: 0 }}>
           <Col span={18} style={{ padding: "10px" }} key={"col_1"}>
             <span style={{ padding: "10px" }}>Cupón de Campaña</span>
-            <div
-              style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}
-            >
+            <div style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}>
               <SearchInputEntidad
               //filterChange={}
               />
@@ -143,9 +127,7 @@ const PlanesCompraFiltersNew = (props) => {
       >
         <Row style={{ width: "100%" }}>
           <Col span={18} style={{ padding: "10px", paddingTop: 0 }}>
-            <span style={{ padding: "10px" }}>
-              AC vigentes en este intervalo
-            </span>
+            <span style={{ padding: "10px" }}>AC vigentes en este intervalo</span>
 
             <DatePickerFromTo
               style={{ width: "100%", paddingRight: "20px" }}
@@ -190,9 +172,7 @@ const PlanesCompraFiltersNew = (props) => {
             <span style={{ padding: "10px" }}>Estado</span>
             <Select
               value={parametros.idestado}
-              onChange={(value) =>
-                setParametros({ ...parametros, idestado: parseInt(value) })
-              }
+              onChange={(value) => setParametros({ ...parametros, idestado: parseInt(value) })}
               style={{
                 width: "100%",
                 marginTop: "10px",
@@ -213,10 +193,7 @@ const PlanesCompraFiltersNew = (props) => {
         <Row style={{ width: "100%" }}>
           <Col span={24} align="right">
             <div style={{ alignSelf: "flex-end" }}>
-              <a
-                style={{ fontSize: 12 }}
-                onClick={() => setExpandFilters(!expandFilters)}
-              >
+              <a style={{ fontSize: 12 }} onClick={() => setExpandFilters(!expandFilters)}>
                 {expandFilters ? (
                   <React.Fragment>
                     <UpOutlined /> Mostar menos
@@ -236,11 +213,7 @@ const PlanesCompraFiltersNew = (props) => {
               >
                 Filtrar
               </Button>
-              <Button
-                icon="delete"
-                style={{ alignSelf: "flex-end", margin: "0px 0px 0px 0px" }}
-                onClick={() => onReset()}
-              >
+              <Button icon="delete" style={{ alignSelf: "flex-end", margin: "0px 0px 0px 0px" }} onClick={() => onReset()}>
                 Limpiar
               </Button>
             </div>
