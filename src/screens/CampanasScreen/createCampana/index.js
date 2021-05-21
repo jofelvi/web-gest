@@ -1,17 +1,22 @@
 import React, { Component, useEffect } from "react";
 import { Button } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 import FormCreateCampana from "./form";
+import { useDispatch } from "react-redux";
+import { resetSuccesAC } from "../../../modules/campanas/actions";
+
+import { useHistory } from "react-router-dom";
 
 const CreateCampana = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <div>
       <Button
         type="link"
         onClick={() => {
+          dispatch(resetSuccesAC());
           history.push("/campañas");
         }}
       >
