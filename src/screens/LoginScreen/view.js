@@ -8,18 +8,18 @@ import { Row, Col } from 'antd';
 import LoginForm from '../../components/LoginForm';
 
 const LoginScreen = ({ status }) =>
-    status !== STATUS.LOGGED ? (
-        <Row type='flex' justify='center' align='middle'>
-            <Col span={12}>
-                <LoginForm />
-            </Col>
-        </Row>
-    ) : (
-        <Redirect to='/' />
-    );
+  status !== STATUS.LOGGED ? (
+    <Row type="flex" justify="center" align="middle">
+      <Col span={12}>
+        <LoginForm />
+      </Col>
+    </Row>
+  ) : (
+    <Redirect to="/" />
+  );
 
 LoginScreen.propTypes = {
-    status: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired
 };
 
 export default LoginScreen;

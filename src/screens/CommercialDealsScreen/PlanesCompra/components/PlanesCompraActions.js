@@ -5,7 +5,7 @@ import * as moment from "moment";
 import {DownOutlined, ExportOutlined} from "@ant-design/icons";
 import { withRouter } from 'react-router-dom';
 import { find } from 'lodash';
-import * as api from '../../../../modules/planes-compra/api';
+import * as api from './../../../../modules/planes-compra/api';
 import { updatePlans  } from '../../../../modules/planes-compra/actions';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import * as download from "downloadjs";
@@ -127,6 +127,7 @@ class PlanesCompraActions extends React.Component {
                         style={{marginLeft: '3px', marginRight: '0px', paddingLeft: 0, paddingRight: 0}}
                         onClick={
                             () => {
+                                console.log("filter actions old", filters)
                                 this.setState({exportLoading: true})
                                 api.exportPlans( filters , () => {
                                     this.setState({exportLoading: false})
@@ -147,7 +148,7 @@ class PlanesCompraActions extends React.Component {
                                 <Button type="link" style={{marginLeft: '0px', marginRight: '0px'}}
                                         onClick={() => {
                                             this.props.history.push(`/planes-de-compra/${selectedRowKeys[0]}/copiar`)
-                                }}>
+                                        }}>
                                     Copiar
                                 </Button>
                                 <Button type="link" disabled={loading == 'avance'} style={{marginLeft: '0px', marginRight: '0px'}} onClick={ this.avancePlan } >
@@ -155,7 +156,7 @@ class PlanesCompraActions extends React.Component {
                                 </Button>
                                 <Modal
                                     style={{ minWidth: '1200px', width: '80%',
-                                    height: '800px', padding: 0 }}
+                                        height: '800px', padding: 0 }}
                                     className="unpadded-modal"
                                     title={ this.state.avanceTitle }
                                     visible={this.state.avanceContent != null}

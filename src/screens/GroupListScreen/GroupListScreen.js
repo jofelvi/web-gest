@@ -19,7 +19,7 @@ const GroupListScreen = (props) => {
       }, [])
 
     const LLamadaGetGrupos = async() =>{
-        let response = await axios.get(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/grupo`, {
+        let response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}ntr/grupo`, {
             headers: {  
               'Content-Type': 'application/json',
                accept: 'application/json',

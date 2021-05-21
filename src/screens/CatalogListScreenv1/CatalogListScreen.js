@@ -7,36 +7,42 @@ import { Table, Tag, Button, Space, Pagination,Switch, Select, Tooltip, Row, Inp
 import {Maincontainer} from './styled';
 import ModalCatalogo from '../../components/ModalCatalogo/ModalCatalogo';
 import ModalEditProducto from '../../components/ModalEditProducto/ModalEditProducto';
-import { EditOutlined } from '@ant-design/icons';
-import { activarModal } from '../../modules/products/actions';
+import { CheckSquareOutlined, EditOutlined, WarningOutlined } from '@ant-design/icons';
+import { activarModal, getProductRedux } from '../../modules/products/actions';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import ModalEditCodIndas from '../../components/ModalEditCodIndas/ModalEditCodIndas';
+import ModalEditCodIndasConfirmar from '../../components/ModalEditCodIndas/ModalEditCodIndasConfirmar';
+import ModalBloqueoMayorista from '../../components/ModalBloqueoMayorista/ModalBloqueoMayorista';
 
 const { Option,OptGroup } = Select;
 
 
 function CatalogListScreen(props){   
 
-const [apiDataPosts, setapiDataPosts] = useState([]);
+// const [apiDataPosts, setapiDataPosts] = useState([]);
 const [visible, setvisible] = useState(false);
 const [order_id, setorder_id] = useState("");
 const dispatch = useDispatch()
-
 const successApiGrupo = useSelector((state) => state.products.success);
-let token = utils.getAuthToken()
+const apiDataPosts = useSelector((state) => state.products.getAllProducts);
+const [searchText, setsearchText] = useState("");
+const [searchedColumn, setsearchedColumn] = useState("");
+
+
+
+useEffect(() => {   
+  dispatch(getProductRedux())
+}, [successApiGrupo])
+
 
 
 /////////////////////////////////////////////////////////////////////////////////
 
-
-
-const [searchText, setsearchText] = useState("");
-const [searchedColumn, setsearchedColumn] = useState("");
-
 let searchInput 
 
 const getColumnSearchProps = dataIndex => ({
-      
+    
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
@@ -102,28 +108,32 @@ const getColumnSearchProps = dataIndex => ({
     setsearchText('')
   };
 
+  function colores (indbloqueo,campoNombre,campoCod,campoID,texto){
+      if (indbloqueo){
+        return(
+        <>
+        <p style= {{color: '#fbbe41'}}>{texto}<a>
+        <ModalEditCodIndasConfirmar
+        nombreProducto = {campoNombre}
+        codindasactual = {campoCod}
+        idProducto = {campoID}
+      /></a></p></>);
+      }
+      else{
+        return(
+          <><p style= {{color: '#32a6ff'}}>{texto}<a>
+        <ModalEditCodIndas
+        tituloModal = {campoNombre}
+        codindasactual = {campoCod}
+        idProducto = {campoID}
+      /></a></p></>
+        );
+      }
+  }
 
-////////////////////////////////////////////////////////////////////////////////
 
-    useEffect(() => {   
-      LLamadaGetProducto()
-    }, [successApiGrupo])
 
-        const LLamadaGetProducto = async() =>{
-            let response = await axios.get('http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/producto', {
-                headers: {  
-                  'Content-Type': 'application/json',
-                  accept: 'application/json',
-                  Authorization: `Bearer ${token}` }
-              })
-              .then((response) => {
-                setapiDataPosts(response.data)   
-                console.log(JSON.stringify(response.data[0]))                         
-                })
-             .catch((error) => { 
-                console.log("mensaje de error llamada API: ",error)   
-                 })
-        }
+
 
         
     const showModal = (id) => {
@@ -144,13 +154,17 @@ const getColumnSearchProps = dataIndex => ({
         title: 'COD Indas',
         dataIndex: 'codindas',
         key: 'codindas',
-        render: text => <>{text}</>,
+        width: '7%',
+        render: (text,row) => 
+        <p>{colores(row.ind_bloqueo_codindas,row.nombre,row.codindas,row.idproducto,text)}</p>,
         sorter: (a, b) => a.codindas - b.codindas,
       },
+      
       {
         title: 'COD Nacional',
         dataIndex: 'codnacional',
         key: 'codnacional',
+        width: '8%',
         render: text => <>{text}</>,
         sorter: (a, b) => a.codnacional - b.codnacional,
       },
@@ -195,6 +209,20 @@ const getColumnSearchProps = dataIndex => ({
           </a>
         </div>  ,
         sorter: (a, b) =>  a.nombregrupo.localeCompare(b.nombregrupo),
+      },
+      {
+        title: 'Bloqueo Mayorista',
+        dataIndex: 'ind_bloqueo_mayorista',
+        key: 'ind_bloqueo_mayorista',
+        render: (text, row) => 
+        
+        <ModalBloqueoMayorista 
+        tituloModal = {row.nombre}
+        indbloqueoM = {row.ind_bloqueo_mayorista}
+        idProducto = {row.idproducto}
+        />,
+        sorter: (a, b) =>  a.nombregrupo.localeCompare(b.nombregrupo),
+
       },
       {
           title: 'Activo',

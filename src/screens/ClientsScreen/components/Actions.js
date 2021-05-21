@@ -5,7 +5,7 @@ import * as moment from "moment";
 import {DownOutlined, ExportOutlined} from "@ant-design/icons";
 import { withRouter } from 'react-router-dom';
 import { find } from 'lodash';
-import * as api from '../../../modules/clients-indas/api';
+import * as api from './../../../modules/clients-indas/api';
 //import {  } from '../../../modules/clients-indas/actions';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import * as download from "downloadjs";

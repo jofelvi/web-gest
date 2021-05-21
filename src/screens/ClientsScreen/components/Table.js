@@ -10,7 +10,7 @@ import PlanesCompraFilters from "../../CommercialDealsScreen/PlanesCompra/compon
 import PlanesCompraActions from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
 import ResizableTable from "../../shared/ResizableTable";
 import {LIMIT} from "../../../constants";
-import {estados} from '../../../modules/clients-indas/api';
+import {estados} from './../../../modules/clients-indas/api';
 
 const renderDate = (dateStr, record, index) => {
     if ( ! dateStr ) {

@@ -5,7 +5,7 @@ import utils from "../../lib/utils"
 import axios from 'axios';
 import { EditOutlined } from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
-import { guardadoSuccess } from '../../modules/products/actions';
+import { editProduct, guardadoSuccess } from '../../modules/products/actions';
 
 const { Option,OptGroup } = Select;
 
@@ -28,35 +28,20 @@ const ModalEditProducto = (props) => {
         /////////////////////////////////////////////////////////
 
         const updateGrupos = async() =>{
-
+          
           let body = {
             "idgrupo": idGrupoSelect
           }
-          console.log(JSON.stringify(body))
-          console.log(token)
-          console.log(props.idProducto)
-
-          let response = await axios.patch(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/producto/${props.idProducto}`, body ,{
-              headers: {  
-                'Content-Type': 'application/json',
-                 accept: 'application/json',
-                 Authorization: `Bearer ${token}` }
-            }).then((response) => {
-              
-              setrespuestaNewGroup(response.status) 
-              dispatch(guardadoSuccess(!successApiGrupo))
-              hiddenModal()
-            }).catch((error) => { 
-              console.log("mensaje de error llamada API: ",error)   
-          })
-          
+             await dispatch(editProduct(props.idProducto,body))
+             await dispatch(guardadoSuccess(!successApiGrupo))
+              hiddenModal()          
       }
 
         /////////////////////////////////////////////////////////
 
 
         const LLamadaGetGrupos = async() =>{
-          let response = await axios.get(`http://ec2-54-194-246-228.eu-west-1.compute.amazonaws.com:8083/ntr/grupo`, {
+          let response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}ntr/grupo`, {
               headers: {  
                 'Content-Type': 'application/json',
                  accept: 'application/json',
@@ -100,12 +85,6 @@ const ModalEditProducto = (props) => {
       }
 
 
-    const modificarGrupo = (evento) => {
-      // evento.preventdefault()
-      setidGrupoSelect(evento)
-    }
-
-
     const showModal = () => {
       setIsModalVisible(true);
       LLamadaGetGrupos();      
@@ -145,7 +124,7 @@ const ModalEditProducto = (props) => {
                 <Select
                      placeholder= {props.nombreGrupoActual}
                      style={{width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft:10 }}
-                     onChange = {(evento) => modificarGrupo(evento)}
+                     onChange = {(evento) => setidGrupoSelect(evento)}
                  >
 
                      { apiDataGrupos.map( (stateObject,index) => {

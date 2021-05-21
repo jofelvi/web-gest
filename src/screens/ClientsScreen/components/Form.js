@@ -5,7 +5,7 @@ import {Checkbox, Switch, DatePicker, Input, Button, Col, Row, Select, Tooltip, 
 import {InputsContainer} from "../../../lib/styled";
 import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import { Tabs } from 'antd';
-import {estados} from '../../../modules/clients-indas/api';
+import {estados} from './../../../modules/clients-indas/api';
 import _ from 'underscore';
 import { get, keys, map } from 'lodash';
 import * as moment from "moment";

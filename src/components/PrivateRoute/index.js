@@ -6,13 +6,13 @@ import utils from "../../lib/utils";
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={(props) =>
+    render={props =>
       utils.isAuthd() ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
-            pathname: "/login",
+            pathname: "/login"
           }}
         />
       )

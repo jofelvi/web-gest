@@ -1,9 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { InputBox } from "../../OrderListScreen/styled"
-import { Checkbox, Col, DatePicker, Input, List, Row, Select, Switch, Button, message, InputNumber, Tabs, Tooltip, Modal } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import locale from "antd/es/locale/es_ES"
-import "moment/locale/es"
+import React, { useEffect, useState } from "react";
+import { InputBox } from "../../OrderListScreen/styled";
+import {
+  Alert,
+  Checkbox,
+  Col,
+  DatePicker,
+  Input,
+  List,
+  Row,
+  Select,
+  Switch,
+  Button,
+  message,
+  InputNumber,
+  Tabs,
+  Tooltip,
+  Modal,
+} from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import locale from "antd/es/locale/es_ES";
+import "moment/locale/es";
 import {
   createAcuerdosComerciales,
   eliminarItemsMarcados,
@@ -15,7 +31,7 @@ import {
   getFamilia,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
 import SearchInputEntidad from "../../../components/SearchInputEntidad";
 import { get, keys } from "lodash";
@@ -23,47 +39,47 @@ import ExtendedDualListBox from "../ExtendedDualListBox";
 import DualListFilter from "../DualListFilter";
 import { loadProducts } from "../../../modules/commercialDeals/actions";
 import {
-	UpOutlined,
-	DownOutlined,
-	RightOutlined,
-	DoubleRightOutlined,
-	LeftOutlined,
-	DoubleLeftOutlined,
-	DeleteRowOutlined, FolderAddOutlined, ExclamationCircleOutlined
-} from "@ant-design/icons"
+  UpOutlined,
+  DownOutlined,
+  RightOutlined,
+  DoubleRightOutlined,
+  LeftOutlined,
+  DoubleLeftOutlined,
+  DeleteRowOutlined,
+  FolderAddOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 
-const { Option } = Select
-const { TabPane } = Tabs
-const dateFormat = 'DD/MM/YYYY'
+const { Option } = Select;
+const { TabPane } = Tabs;
+const dateFormat = "DD/MM/YYYY";
 
 const dualListIcons = {
-	moveLeft: <LeftOutlined />,
-	moveAllLeft: <DoubleLeftOutlined />,
-	moveRight: <RightOutlined />,
-	moveAllRight: <DoubleRightOutlined />,
-	moveDown: <DownOutlined />,
-	moveUp: <UpOutlined />,
-}
+  moveLeft: <LeftOutlined />,
+  moveAllLeft: <DoubleLeftOutlined />,
+  moveRight: <RightOutlined />,
+  moveAllRight: <DoubleRightOutlined />,
+  moveDown: <DownOutlined />,
+  moveUp: <UpOutlined />,
+};
 
 const errorTooltipStyle = {
-	position: 'absolute',
-	top: '35px',
-	right: '40px',
-	fontSize: '17px',
-}
+  position: "absolute",
+  top: "35px",
+  right: "40px",
+  fontSize: "17px",
+};
 
 const spacedErrorTooltipStyle = {
-	position: 'absolute',
-	top: '35px',
-	right: '65px',
-	fontSize: '17px',
-}
-
+  position: "absolute",
+  top: "35px",
+  right: "65px",
+  fontSize: "17px",
+};
 
 const FormCreateAcuerdosComerciales = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
-  const history = useHistory();
 
   const dispatch = useDispatch();
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
@@ -80,6 +96,8 @@ const FormCreateAcuerdosComerciales = (props) => {
     ind_renovar: false,
     ind_seleccion_conjunta: true,
     ind_surtido: false,
+    fechainicio: new Date().toISOString(),
+    fechafin: new Date().toISOString(),
   });
   const [inputList, setInputList] = useState([
     {
@@ -246,6 +264,7 @@ const FormCreateAcuerdosComerciales = (props) => {
       {
         field: "productos",
         validator: (value, record) => record.ind_seleccion_conjunta == true && body.productos.lenght === 0,
+        message: "Debe seleccionar por lo menos un producto.",
       },
     ];
 
@@ -267,16 +286,11 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const getError = (field, spaced = false) => {
-    console.log(field, spaced);
     if (hasError(field)) {
       const validationError = get(bodyError, field, false);
       return (
-        <div style={spaced ? spacedErrorTooltipStyle : errorTooltipStyle}>
-          <Tooltip title={validationError}>
-            <span>
-              <ExclamationCircleOutlined style={{ color: "red", fontSize: "18px" }} />
-            </span>
-          </Tooltip>
+        <div style={{ display: "inline" }}>
+          <Alert message={validationError} type="error" />
         </div>
       );
     }
@@ -343,7 +357,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su acuerdo comercial fue creado exitosamente"} ac={true} />;
+    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -418,7 +432,7 @@ const FormCreateAcuerdosComerciales = (props) => {
           <Col span={8}>
             <label>Fecha de inicio</label>
             <DatePicker
-              value={initialDate === "" ? "" : moment(initialDate)}
+              value={body.fechainicio === "" ? "" : moment(body.fechainicio)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -436,7 +450,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             <label>Fecha de fin</label>
             <DatePicker
               format={dateFormat}
-              value={finalDate === "" ? "" : moment(finalDate)}
+              value={body.fechafin === "" ? "" : moment(body.fechafin)}
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
@@ -582,7 +596,7 @@ const FormCreateAcuerdosComerciales = (props) => {
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        <div style={{ top: "-80px", position: "relative" }}>{getError("submarcas")}</div>
+        <div style={{ position: "relative" }}>{getError("submarcas")}</div>
         <Tabs
           defaultActiveKey={body.ind_seleccion_conjunta ? "1" : "2"}
           onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
@@ -625,7 +639,6 @@ const FormCreateAcuerdosComerciales = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -640,7 +653,6 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -655,7 +667,6 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
@@ -685,29 +696,20 @@ const FormCreateAcuerdosComerciales = (props) => {
       <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
         Guardar
       </Button>
-      <Button
-        type="link"
-        onClick={() => {
-          history.push("/acuerdos-comerciales");
-        }}
-      >
-        <LeftOutlined /> Atrás
-      </Button>
     </>
   );
 };
 
 const inputStyle = {
-	width: 'calc(100% - 40px)',
-	margin: '10px'
-}
+  width: "calc(100% - 40px)",
+  margin: "10px",
+};
 
 const inputErrorStyle = {
-	width: 'calc(100% - 40px)',
-	margin: '10px',
-	border: '1px solid red',
-	borderRadius: '4px'
-}
+  width: "calc(100% - 40px)",
+  margin: "10px",
+  border: "1px solid red",
+  borderRadius: "4px",
+};
 
-
-export default FormCreateAcuerdosComerciales
+export default FormCreateAcuerdosComerciales;

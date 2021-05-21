@@ -1,5 +1,9 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import View from "./view";
+import View from './view';
 
-export default connect((state) => ({}), {})(View);
+export default connect(
+    state => ({
+    }),
+    {  }
+)(View);

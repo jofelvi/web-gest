@@ -14,7 +14,7 @@ const TopBar = ({
 }) => {
     return <Row className="topbar">
             {/*<div className="logo-container">
-                <img src2={logo} alt="logo sitio domtar indas"/>
+                <img src={logo} alt="logo sitio domtar indas"/>
     </div>*/}
             {status === STATUS.LOGGED ? 
             <Col className="user-container" xxl={{span:3, offset:21}}  xs={{span:16, offset:8}}  xl={{span:4, offset:20}} lg={{span:5, offset:19}} md={{span:6, offset:18}} sm={{span:10, offset:14}}>
