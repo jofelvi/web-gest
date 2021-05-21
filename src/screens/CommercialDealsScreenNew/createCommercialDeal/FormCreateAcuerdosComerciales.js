@@ -357,7 +357,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su acuerdo comercial fue creado exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"El Acuerdo Comercial fue creado exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;

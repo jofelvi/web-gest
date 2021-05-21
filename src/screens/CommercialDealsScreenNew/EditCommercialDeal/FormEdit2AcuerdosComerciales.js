@@ -362,7 +362,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su Acuerdo Comercial Fue editado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"El Acuerdo Comercial se ha modificado"} ac={true} />;
   }
 
   const { confirm } = Modal;
