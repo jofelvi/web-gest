@@ -37,7 +37,6 @@ import ScrenCopyCommercialDeal from "./screens/CommercialDealsScreenNew/CopyComm
 import ScrenCopyCampana from "./screens/CampanasScreen/CopyCampana/ScrenCopyCampana";
 import GroupListScreen from "./screens/GroupListScreen/GroupListScreen";
 
-
 const { capitalizeWord } = utils;
 
 const Routes = ({ location: { pathname }, process, taskName }) => {
@@ -67,33 +66,35 @@ const Routes = ({ location: { pathname }, process, taskName }) => {
       <PrivateRoute path={`/process/:process/:task`} exact component={DynamicProcessForm} />
       <PrivateRoute path={`/process/:process/complete`} exact component={CompletedForm} />
       <PrivateRoute path={`/task/completed`} exact component={CompletedForm} />
-      <Route path='/login' exact component={LoginScreen} />
-      <Route path='/process/signup' exact component={SignupScreen} />
-      <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen}/>
-        <PrivateRoute path="/planes-de-compra/" exact component={PlanesCompra}/>
-        <PrivateRoute path="/planes-de-compra/crear" exact component={PlanesCompraCreate}/>
-        <PrivateRoute path="/planes-de-compra/:id/editar" exact component={PlanesCompraEdit}/>
-        <PrivateRoute path="/planes-de-compra/:id/copiar" exact component={PlanesCompraCopy}/>
-        {
-          // nuevas rutas
-        }
-        <PrivateRoute path="/acuerdos-comerciales/" exact component={CommercialDealNew}/>
-        <PrivateRoute path="/acuerdos-comerciales/crear" exact component={CreateCommercialDealNew}/>
-        <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={ScrenEditCommercialDeal}/>
-        <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={ScrenEditCommercialDeal}/>
-        <PrivateRoute path="/promociones" exact component={Promociones}/>
-        <PrivateRoute path="/campañas" exact component={Campanas}/>
-        <PrivateRoute path="/clientes" exact component={ClientsScreen}/>
-        <PrivateRoute path="/clientes/:id/expediente" exact component={ClientsShowScreen}/>
-        <PrivateRoute path="/clientes/:idcliente/entidades/:codentidad_cbim/puntos" exact component={ClientsPuntosScreen}/>
-      <PrivateRoute path="/pruebaform" exact component={ValidarRegistro}/>
-      <PrivateRoute path="/pruebaform2" exact component={ValidarPedido}/>
-      <PrivateRoute path="/orders" exact component={OrderListScreen}/>
-      <PrivateRoute path="/pruebaform3" exact component={ValidarEntidad}/>
-      <PrivateRoute path="/catalog-list" exact component={CatalogListScreen}/>
-      <PrivateRoute path="/puntos" exact component={EntidadPuntosNegativos}/>
-      <PrivateRoute path="/group-list" exact component={GroupListScreen}/>
-
+      <Route path="/login" exact component={LoginScreen} />
+      <Route path="/process/signup" exact component={SignupScreen} />
+      <PrivateRoute path="/commercial-deals" exact component={CommercialDealsScreen} />
+      <PrivateRoute path="/planes-de-compra/" exact component={PlanesCompra} />
+      <PrivateRoute path="/planes-de-compra/crear" exact component={PlanesCompraCreate} />
+      <PrivateRoute path="/planes-de-compra/:id/editar" exact component={PlanesCompraEdit} />
+      <PrivateRoute path="/planes-de-compra/:id/copiar" exact component={PlanesCompraCopy} />
+      {
+        // nuevas rutas
+      }
+      <PrivateRoute path="/acuerdos-comerciales/" exact component={CommercialDealNew} />
+      <PrivateRoute path="/acuerdos-comerciales/crear" exact component={CreateCommercialDealNew} />
+      <PrivateRoute path="/acuerdos-comerciales/:id/editar" exact component={ScrenEditCommercialDeal} />
+      <PrivateRoute path="/acuerdos-comerciales/:id/copiar" exact component={ScrenCopyCommercialDeal} />
+      <PrivateRoute path="/promociones" exact component={Promociones} />
+      <PrivateRoute path="/campaña/crear" exact component={CreateCampana} />
+      <PrivateRoute path="/campañas" exact component={Campanas} />
+      <PrivateRoute path="/campaña/:id/editar" exact component={EditCampana} />
+      <PrivateRoute path="/campaña/:id/copiar" exact component={ScrenCopyCampana} />
+      <PrivateRoute path="/clientes" exact component={ClientsScreen} />
+      <PrivateRoute path="/clientes/:id/expediente" exact component={ClientsShowScreen} />
+      <PrivateRoute path="/clientes/:idcliente/entidades/:codentidad_cbim/puntos" exact component={ClientsPuntosScreen} />
+      <PrivateRoute path="/pruebaform" exact component={ValidarRegistro} />
+      <PrivateRoute path="/pruebaform2" exact component={ValidarPedido} />
+      <PrivateRoute path="/orders" exact component={OrderListScreen} />
+      <PrivateRoute path="/pruebaform3" exact component={ValidarEntidad} />
+      <PrivateRoute path="/catalog-list" exact component={CatalogListScreen} />
+      <PrivateRoute path="/puntos" exact component={EntidadPuntosNegativos} />
+      {/* <PrivateRoute path="/group-list" exact component={GroupListScreen}/> */}
     </Switch>
   );
 };

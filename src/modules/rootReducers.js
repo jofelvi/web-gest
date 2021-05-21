@@ -12,9 +12,9 @@ import menu from "./menu/reducers";
 import clientsIndas from "./clients-indas/reducers";
 import clientesCbim from "./clientes-cbim/reducers";
 import AcuerdosComReducer from "./acuerdosComer/reducer";
-import productReducer from './products/reducer'
-import groupReducer from './group/reducer'
-
+import productReducer from "./products/reducer";
+import groupReducer from "./group/reducer";
+import campanasReducer from "./campanas/reducer";
 
 export default combineReducers({
   auth,
@@ -31,4 +31,5 @@ export default combineReducers({
   acuerdosComer: AcuerdosComReducer,
   products: productReducer,
   group: groupReducer,
+  campanas: campanasReducer,
 });
