@@ -221,7 +221,7 @@ const getColumnSearchProps = dataIndex => ({
         indbloqueoM = {row.ind_bloqueo_mayorista}
         idProducto = {row.idproducto}
         />,
-        sorter: (a, b) =>  a.nombregrupo.localeCompare(b.nombregrupo),
+        sorter: (a, b) => a.ind_bloqueo_mayorista - b.ind_bloqueo_mayorista,
 
       },
       {

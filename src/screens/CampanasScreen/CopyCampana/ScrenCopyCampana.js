@@ -6,7 +6,8 @@ import {
 import {useHistory, useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import FormCopyCampana from "./FormCopyCampana";
-import FormEditCampana from "../editCampana/form";
+
+
 
 const ScrenCopyCampana = (props) => {
     const history = useHistory()
@@ -30,7 +31,7 @@ const ScrenCopyCampana = (props) => {
             <h2 className="table-indas-title">Copiar Campaña</h2>
 
             <div className="table-indas table-indas-new">
-                <FormEditCampana />
+                <FormCopyCampana />
             </div>
         </div>
     );

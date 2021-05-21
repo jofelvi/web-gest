@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { InputBox } from "../../OrderListScreen/styled"
-import { Button, Checkbox, Col, DatePicker, Input, InputNumber, List, Row, Select, Switch, Tabs, Tooltip, Modal } from 'antd'
+import { Button, Checkbox, Col, DatePicker, Input, InputNumber, List, Row, Select, Switch, Tabs, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import locale from "antd/es/locale/es_ES"
 import "moment/locale/es"
@@ -22,7 +22,7 @@ import SearchInputEntidad from "../../../components/SearchInputEntidad";
 import ExtendedDualListBox from '../ExtendedDualListBox'
 import DualListFilter from '../DualListFilter'
 import { get, keys } from 'lodash'
-import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined, BorderTopOutlined } from "@ant-design/icons"
+import { UpOutlined, DownOutlined, ExclamationCircleOutlined, RightOutlined, DoubleRightOutlined, LeftOutlined, DoubleLeftOutlined } from "@ant-design/icons"
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -63,16 +63,7 @@ const FormEditAcuerdosComerciales = (props) => {
 	const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray)
 	const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted)
 	const [successEdit, setSuccessEdit] = useState(false);
-	const [body, setBody] = useState({
-		productos: [],
-		clientes: [],
-		escalados: [],
-		ind_seleccion_conjunta: true,
-		"margen": parseFloat(1.0),
-		"idtipo": 1,
-		'ind_renovar': false,
-		"ind_surtido": false
-	})
+	const [body, setBody] = useState({ productos: [] })
 	const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray)
 	const [initialDate, setInitialDate] = useState(typeof body === 'undefined' ? '' : body.fechainicio)
 	const [finalDate, setFinalDate] = useState(typeof body === 'undefined' ? '' : body.fechafin)
@@ -99,7 +90,7 @@ const FormEditAcuerdosComerciales = (props) => {
 	}]);
 
 	const [isForEdit, setIsForEdit] = useState(location.search === "?editar" ? true : false);
-	const [submarcasMarcadas, setSubMarcasMarcadas] = useState([])
+	const [productsTest, setProductsTest] = useState([])
 
 	const callbackSave = (action) => {
 		if (typeof action === 'undefined') {
@@ -117,8 +108,11 @@ const FormEditAcuerdosComerciales = (props) => {
 	}
 
 	useEffect(() => {
-		callApis()
 		handleApi()
+	}, [id])
+
+	useEffect(() => {
+		callApis()
 	}, [])
 
 	useEffect(() => {
@@ -137,10 +131,10 @@ const FormEditAcuerdosComerciales = (props) => {
 		setCodcli_cbim(objAc.codcli_cbim)
 		setNomcli_cbim(objAc.nomcli_cbim)
 		var newArray = []
-		objAc.submarcas.forEach(item => {
-			newArray.push(item.idsubmarca)
+		objAc.productos.forEach(item => {
+			newArray.push({ idproducto: item.idproducto })
 		})
-		setSubMarcasMarcadas(newArray)
+		setProductsTest(newArray)
 
 		const { clientes, ind_surtido, escalados, ind_seleccion_conjunta } = objAc
 		let objResult = delete objAc.clientes
@@ -159,7 +153,6 @@ const FormEditAcuerdosComerciales = (props) => {
 		setInputList(escalados)
 		setInd_seleccion_conjunta(ind_seleccion_conjunta)
 		setBody(objAc)
-
 	}
 
 	const handleValues = async (e, item) => {
@@ -318,28 +311,6 @@ const FormEditAcuerdosComerciales = (props) => {
 
 	if (successCreate) {
 		return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue editado Exitosamente"} ac={true} />
-	}
-
-
-	const { confirm } = Modal
-
-	const confirmChangePanel = (tipo, value) => {
-		if (body.productos.length === 0 && body.submarcas.length === 0) {
-			setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false })
-		} else {
-			const messageContent = `¿Desea cambiar a ${tipo}? Se perderán los productos agregados`
-			confirm({
-				title: `Confirmar acción`,
-				icon: <ExclamationCircleOutlined />,
-				content: messageContent,
-				onOk: () => {
-					setBody({ ...body, ind_seleccion_conjunta: value === "1" ? true : false, productos: [], submarcas: [] })
-				},
-				onCancel() {
-					setBody({ ...body, ind_seleccion_conjunta: body.ind_seleccion_conjunta })
-				},
-			})
-		}
 	}
 
 	return (
@@ -567,8 +538,8 @@ const FormEditAcuerdosComerciales = (props) => {
 			<Row style={{ width: '100%' }}>
 				<Row style={{ width: '100%', marginBottom: 0, paddingBottom: 0 }}>
 					<Tabs
-						defaultActiveKey={ind_seleccion_conjunta === true ? "1" : "2"}
-						onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
+						defaultActiveKey={ind_seleccion_conjunta ? "1" : "2"}
+						onChange={(value) => setBody({ ...body, ind_seleccion_conjunta: value == "1" })}
 					>
 						<TabPane tab="Selección por submarca" key="1">
 
@@ -586,12 +557,11 @@ const FormEditAcuerdosComerciales = (props) => {
 											>
 												<Checkbox
 													value={item.idsubmarca}
-													checked={submarcasMarcadas.indexOf(item.idsubmarca) > -1}
 													onChange={async (e) => {
 														await onSelectChange(e, item)
 													}}
 													//onChange={()=> onChangeArray( item.idsubmarca ) }
-													defaultValue={marcadosRedux.indexOf(item.idsubmarca) > -1}
+													defaultValue={() => marcadosRedux.indexOf(item.idsubmarca) > -1}
 												>
 													{item.nombre}
 												</Checkbox>

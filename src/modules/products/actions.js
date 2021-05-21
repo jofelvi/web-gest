@@ -115,6 +115,8 @@ export const eliminarUnB = (idBloqueo,body) => async() => {
     })
 }
 
+
+
 export const newBloqueo = (body) => async() => {
     let token = utils.getAuthToken()
     let response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}ntr/bloqueo-producto/create`, body ,{
@@ -137,7 +139,7 @@ export const eliminarBloqueosM = (idProducto,body) => async() => {
            accept: 'application/json',
            Authorization: `Bearer ${token}` }
       }).then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
       }).catch((error) => { 
         console.log("mensaje de error llamada API: ",error)   
     })

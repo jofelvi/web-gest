@@ -31,7 +31,7 @@ import {
   getFamilia,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import PlanesCompraSaved from "../../CommercialDealsScreen/PlanesCompra/components/PlanesCompraSaved";
 import SearchInputEntidad from "../../../components/SearchInputEntidad";
 import { get, keys } from "lodash";
@@ -80,6 +80,7 @@ const spacedErrorTooltipStyle = {
 const FormCreateAcuerdosComerciales = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
@@ -264,7 +265,6 @@ const FormCreateAcuerdosComerciales = (props) => {
       {
         field: "productos",
         validator: (value, record) => record.ind_seleccion_conjunta == true && body.productos.lenght === 0,
-        message: "Debe seleccionar por lo menos un producto.",
       },
     ];
 
@@ -357,7 +357,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su Acuerdo Comercial Fue creado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su acuerdo comercial fue creado exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -526,7 +526,7 @@ const FormCreateAcuerdosComerciales = (props) => {
           return (
             <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
               <Col span={6}>
-                <label>{i <= 0 ? "Unidades Minimas" : ""}</label>
+                <label>{i <= 0 ? "Pedido mínimo" : ""}</label>
                 <InputNumber
                   name="udsminimas"
                   placeholder="Ingresar la cantidad minima para la linea de descuento"
@@ -596,7 +596,8 @@ const FormCreateAcuerdosComerciales = (props) => {
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        <div style={{ position: "relative" }}>{getError("submarcas")}</div>
+        {getError("submarcas")}
+        {getError("productos")}
         <Tabs
           defaultActiveKey={body.ind_seleccion_conjunta ? "1" : "2"}
           onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
@@ -639,6 +640,7 @@ const FormCreateAcuerdosComerciales = (props) => {
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Familias</label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -653,6 +655,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Marcas</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -667,6 +670,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
+                <label style={{ fontWeight: "bold" }}>Submarcas</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {
@@ -695,6 +699,14 @@ const FormCreateAcuerdosComerciales = (props) => {
       </Row>
       <Button size="large" type="primary" onClick={() => onSubmit()} style={{ marginTop: "10px" }}>
         Guardar
+      </Button>
+      <Button
+        type="link"
+        onClick={() => {
+          history.push("/acuerdos-comerciales");
+        }}
+      >
+        <LeftOutlined /> Atrás
       </Button>
     </>
   );

@@ -1,8 +1,12 @@
 import React,{useEffect,useState} from 'react';
 import { Maincontainer } from '../CatalogListScreenv1/styled';
+import {useDispatch, useSelector} from 'react-redux';
 import utils from "../../lib/utils"
 import axios from 'axios';
 import { Col, Table, Row, Divider } from 'antd';
+import ModalGroupNew from '../../components/ModalGroup/ModalGroupNew';
+import ModalEditGroup from '../../components/ModalGroup/ModalEditGroup';
+import ModalDelGroup from '../../components/ModalGroup/ModalDelGroup';
 
 
 
@@ -13,10 +17,14 @@ const GroupListScreen = (props) => {
     let token = utils.getAuthToken();
     let padresGrupo = [];
     const [apiDataGrupos, setapiDataGrupos] = useState([]);
+    const successReloadGroup = useSelector((state) => state.products.successG);
+    const successApiGrupo = useSelector((state) => state.products.success);
+
+
     ///////////////////////////////////////////////////////////////////////////  LLAMADA API GET GRUPOS
     useEffect(() => {   
         LLamadaGetGrupos()
-      }, [])
+      }, [successApiGrupo])
 
     const LLamadaGetGrupos = async() =>{
         let response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}ntr/grupo`, {
@@ -42,8 +50,8 @@ const GroupListScreen = (props) => {
               }
               else{
                 padresGrupo.push({
-                  'idgrupo': `\u00a0\u00a0\u00a0 ${obj.idgrupo}`,
-                  'nombre':`\u00a0\u00a0\u00a0 ${obj.nombre}`,
+                  'idgrupo': `${obj.idgrupo}`,
+                  'nombre':`${obj.nombre}`,
                   'idpadre':obj.idpadre,
                   'hijo':true
                 })
@@ -78,14 +86,43 @@ const GroupListScreen = (props) => {
           title: 'Nombre',
           dataIndex: 'nombre',
           key: 'nombre',
-          render: (text, row) =><a>{text}</a>
+          render: (text,row) =>{
+             if (row.idgrupo != row.idpadre){
+               return(
+                <a>{`\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 ${text}`}</a>
+               )
+             }
+             else{
+               return(
+                 <a>{text}</a>
+               )
+             }
+
+
+          }
+          
+          // <a>{text}</a>
         },  
         {
-            title: 'Id Padre',
-            dataIndex: 'idpadre',
-            key: 'idpadre',
-            render: text => <a>{text}</a>
-          }  
+            title: '',
+            dataIndex: '',
+            key: '',
+            render: (text,row) => <ModalEditGroup
+            nombreAGrupo = {row.nombre}
+            idPadre = {row.idpadre}
+            idGrupo = {row.idgrupo}
+            />
+          },
+        {
+          title: '',
+          dataIndex: '',
+          key: '',
+          render: (text,row) => <ModalDelGroup
+          nombreGrupo = {row.nombre}
+          idGrupo = {row.idgrupo}
+
+          />
+        }   
       ]
 
 
@@ -95,21 +132,32 @@ const GroupListScreen = (props) => {
                 <div className="table-indas table-indas-new">
                 <h2 className="table-indas-title">Grupos</h2>
                 <Row>
-                <Col span={12} style={{textAlign:'center'}}><Divider><b>LISTADO DE GRUPOS</b></Divider>
-                     <Table 
-                         columns={columns} 
-                         dataSource={apiDataGrupos}
-                         className="table"
-                         pagination={{
-                             pageSize: 500,
-                             total: 5,
-                             showSizeChanger: false,
-                             position: ['bottomLeft']
-
-                           }}
-                     /> 
-                 </Col>
-                <Col span={12} style={{textAlign:'center'}}><Divider><b>CATEGORÍA</b></Divider> </Col>
+                     <Col span={24} style={{textAlign:'left'}}>
+                        <ModalGroupNew></ModalGroupNew>
+                     </Col> 
+                </Row>
+                <br/>
+                <Row>
+                    <Col span={24} style={{textAlign:'center'}}>
+                         <Table 
+                             columns={columns} 
+                             dataSource={apiDataGrupos}
+                             className="table"
+                             pagination={{
+                                 pageSize: 500,
+                                 total: 5,
+                                 showSizeChanger: false,
+                                 position: ['bottomLeft']
+                            
+                               }}
+                         /> 
+                     </Col>
+                </Row>
+                <br/>
+                <Row>
+                     <Col span={24} style={{textAlign:'right'}}>
+                        <ModalGroupNew></ModalGroupNew>
+                     </Col> 
                 </Row>
                 
              

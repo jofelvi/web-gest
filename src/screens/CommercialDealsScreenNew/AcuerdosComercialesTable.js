@@ -1,61 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { ConfigProvider, Table, Tooltip, } from 'antd';
+import { ConfigProvider, Table, Tooltip } from 'antd';
 import * as moment from 'moment';
 import '../../lib/styles.css';
-import '../../styles.css'
+import '../../styles.css';
 import { useDispatch, useSelector } from 'react-redux';
-import ResizableTable from '../shared/ResizableTable';
-import PlanesCompraActions from "../../screens/CommercialDealsScreen/PlanesCompra/components/PlanesCompraActions";
-import AcuerdosActions from './AcuerdosActions'
-import PlanesCompraFiltersNew from "./FilterPlanesNew";
-
+import AcuerdosActions from './AcuerdosActions';
+import PlanesCompraFiltersNew from './FilterPlanesNew';
 
 import Utils from '../../lib/utils';
-import {
-    Maincontainer,
-    TableContainer,
-} from '../../lib/styled';
+import { Maincontainer, TableContainer } from '../../lib/styled';
+import locale from 'antd/es/locale/es_ES';
+import 'moment/locale/es';
+import { getAcuerdosComerciales, getDelegado } from '../../modules/acuerdosComer/actions';
 
-import { Anchor } from 'antd';
-
-import locale from "antd/es/locale/es_ES";
-import "moment/locale/es";
-import {
-    getAcuerdosComerciales,
-    getDelegado,
-} from "../../modules/acuerdosComer/actions";
-
-
-moment.locale("es", {
+moment.locale('es', {
     week: {
-        dow: 1
-    }
+        dow: 1,
+    },
 });
 
 const AcuerdosComercialesTable = (props) => {
     const [selectedRowKeysState, setSelectedRowKeysState] = useState([]);
     const comercialDeals = useSelector((state) => state.commercialDeals.subBrands);
     const listAcuerdos = useSelector((state) => state.acuerdosComer.listAcuerdosCom);
-    const [listaAcuerdosFilter, setListaAcuerdosFilter] = useState([])
-    const filterActive = useSelector((state) => state.acuerdosComer.filterActive)
-    const filterDataTableAC = useSelector((state) => state.acuerdosComer.filterDataTableAC)
-    const dispatch = useDispatch()
+    const [listaAcuerdosFilter, setListaAcuerdosFilter] = useState([]);
+    const filterActive = useSelector((state) => state.acuerdosComer.filterActive);
+    const filterDataTableAC = useSelector((state) => state.acuerdosComer.filterDataTableAC);
+    const dispatch = useDispatch();
     const [updateEstados, setUpdateEstados] = useState(false);
 
     useEffect(() => {
-        dispatch(getAcuerdosComerciales())
-        dispatch(getDelegado())
-        setSelectedRowKeysState([])
-    }, [updateEstados])
+        dispatch(getAcuerdosComerciales());
+        dispatch(getDelegado());
+        setSelectedRowKeysState([]);
+    }, [updateEstados]);
 
     useEffect(() => {
-        setListaAcuerdosFilter(listAcuerdos)
-    }, [listAcuerdos, filterActive])
+        setListaAcuerdosFilter(listAcuerdos);
+    }, [listAcuerdos, filterActive]);
 
-    useEffect(() => {
-
-    }, [selectedRowKeysState])
-
+    useEffect(() => {}, [selectedRowKeysState]);
 
     const columns = [
         {
@@ -73,7 +57,7 @@ const AcuerdosComercialesTable = (props) => {
                 <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
                     <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
                 </Tooltip>
-            )
+            ),
         },
         {
             title: 'Fecha Fin',
@@ -84,21 +68,21 @@ const AcuerdosComercialesTable = (props) => {
                 <Tooltip title={moment(dateStr).format('DD/MM/YYYY HH:mm')}>
                     <span>{moment(dateStr).format('DD/MM/YYYY')}</span>
                 </Tooltip>
-            )
+            ),
         },
         {
-            title: 'Uds Minimas',
+            title: 'Pedido mínimo',
             dataIndex: 'escalados',
             key: 'escalados',
             width: 110,
-            render: (value, record, index) => (record.escalados[0].udsminimas)
+            render: (value, record, index) => record.escalados[0].udsminimas,
         },
         {
             title: 'Descuento',
             dataIndex: 'descuento',
             key: 'descuento',
             width: 100,
-            render: (text, record, index) => (Utils.renderFloat(record.escalados[0].descuento) + " %")
+            render: (text, record, index) => Utils.renderFloat(record.escalados[0].descuento) + ' %',
         },
         {
             title: 'Cod Cliente',
@@ -124,7 +108,7 @@ const AcuerdosComercialesTable = (props) => {
             key: 'estado',
             width: 100,
         },
-       /* {
+        /* {
             title: 'Renov. Auto.',
             dataIndex: 'ind_renovar',
             key: 'autorenovar',
@@ -133,57 +117,55 @@ const AcuerdosComercialesTable = (props) => {
         },*/
     ];
 
-    const onSelectChange = selectedRowKeys => {
+    const onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
-        setSelectedRowKeysState(selectedRowKeys)
+        setSelectedRowKeysState(selectedRowKeys);
     };
 
     const onFilterArray = (querySearch) => {
-        console.log('json para filtrar: ', querySearch)
-
-    }
+        console.log('json para filtrar: ', querySearch);
+    };
 
     const resetFilter = () => {
-        setListaAcuerdosFilter(listAcuerdos)
-    }
+        setListaAcuerdosFilter(listAcuerdos);
+    };
 
     return (
         <ConfigProvider locale={locale}>
             <Maincontainer>
-                <div className="table-indas table-indas-new">
-
+                <div className='table-indas table-indas-new'>
                     <TableContainer style={{ overflow: 'visible' }}>
-                        <h2 className="table-indas-title">Acuerdos Comerciales</h2>
+                        <h2 className='table-indas-title'>Acuerdos Comerciales</h2>
                         <PlanesCompraFiltersNew onFilterArray={onFilterArray} resetFilter={resetFilter} />
 
                         <AcuerdosActions
                             selectedRowKeys={selectedRowKeysState}
-                            updateSelectedRowKeysNew={()=> setSelectedRowKeysState([])}
-                            setUpdateEstados={()=> setUpdateEstados(!updateEstados)}
+                            updateSelectedRowKeysNew={() => setSelectedRowKeysState([])}
+                            setUpdateEstados={() => setUpdateEstados(!updateEstados)}
                         />
 
                         <hr />
                         <Table
                             columns={columns}
-                            dataSource={filterActive? filterDataTableAC :  listaAcuerdosFilter}
-                            className="table"
+                            dataSource={filterActive ? filterDataTableAC : listaAcuerdosFilter}
+                            className='table'
                             pagination={{
-                                total: filterActive? filterDataTableAC.length : listaAcuerdosFilter.length,
+                                total: filterActive ? filterDataTableAC.length : listaAcuerdosFilter.length,
                                 showSizeChanger: false,
                                 position: 'both',
                                 onChange: (page, pageSize) => {
-                                    setSelectedRowKeysState([])
-                                }
+                                    setSelectedRowKeysState([]);
+                                },
                             }}
-                            className="table"
+                            className='table'
                             onRow={(record, rowIndex) => {
                                 return {
-                                    key: record.idcondcomercial
+                                    key: record.idcondcomercial,
                                 };
                             }}
                             rowKey={'idcondcomercial'}
                             rowSelection={{ onChange: onSelectChange }}
-                            tableLayout="auto"
+                            tableLayout='auto'
                             scroll={{ x: 'calc(700px + 60%)' }}
                         />
                     </TableContainer>
@@ -191,8 +173,7 @@ const AcuerdosComercialesTable = (props) => {
             </Maincontainer>
         </ConfigProvider>
     );
-
 };
 
-
 export default AcuerdosComercialesTable;
+

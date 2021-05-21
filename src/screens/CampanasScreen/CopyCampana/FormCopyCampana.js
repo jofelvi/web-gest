@@ -38,6 +38,8 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { LoadingComponents } from "../../../components/LoadingComponents";
+import {crearCampaña, editAcuerdosComerciales, getByIdAcuerdoComerciale} from "../../../modules/acuerdosComer/actions";
+import {InputBox} from "../../OrderListScreen/styled";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -52,18 +54,19 @@ const dualListIcons = {
 };
 
 const FormCopyCampana = (props) => {
+  const { acuerdoComercial } = props;
   let { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const productosArrayRedux = useSelector((state) => state.campanas.productoArray);
-
-  const marcadosRedux = useSelector((state) => state.campanas.marcadosArray);
-  const productsfilted = useSelector((state) => state.campanas.productsfilted);
-
+  const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
+  const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
+  const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
+  const productsfilted = useSelector((state) => state.acuerdosComer.productsfilted);
   const [body, setBody] = useState({
     submarcas: [],
     productos: [],
+    clientes: [],
     escalados: [],
     margen: parseFloat(1.0),
     idtipo: 1,
@@ -80,14 +83,15 @@ const FormCopyCampana = (props) => {
       txtdescuento: "",
     },
   ]);
-  const subMarcasArrayRedux = useSelector((state) => state.campanas.subMarcaArray);
-  const marcasArrayRedux = useSelector((state) => state.campanas.marcasArray);
-  const familiaArrayRedux = useSelector((state) => state.campanas.familiaArray);
+  const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray);
+  const marcasArrayRedux = useSelector((state) => state.acuerdosComer.marcasArray);
+  const familiaArrayRedux = useSelector((state) => state.acuerdosComer.familiaArray);
   const [initialDate, setInitialDate] = useState(typeof body === "undefined" ? "" : body.fechainicio);
   const [finalDate, setFinalDate] = useState(typeof body === "undefined" ? "" : body.fechafin);
   const [codcli_cbim, setCodcli_cbim] = useState();
-  const successCreate = useSelector((state) => state.campanas.createCampanaSuccess);
+  const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
+  console.log(bodyError);
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
     seleccion_individual_filtro_categoria: "",
@@ -96,7 +100,6 @@ const FormCopyCampana = (props) => {
   const [nomcli_cbim, setNomcli_cbim] = useState("");
   const [ind_surtido, setInd_surtido] = useState(false);
   const [ind_seleccion_conjunta, setInd_seleccion_conjunta] = useState();
-
   const callbackSave = (action) => {
     if (typeof action === "undefined") {
       console.log("no hay action");
@@ -111,6 +114,15 @@ const FormCopyCampana = (props) => {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    catalogoProducts();
+  }, [marcadosRedux]);
+
+  useEffect(() => {
+    handleSeletClient(idsBuscador);
+    console.log("idsBuscador ", idsBuscador);
+  }, [idsBuscador]);
 
   useEffect(() => {
     callbackSave();
@@ -128,6 +140,18 @@ const FormCopyCampana = (props) => {
     catalogoProducts();
   }, [body.submarcas, productosArrayRedux]);
 
+  useEffect(() => {
+    if (body.submarcas && body.submarcas.length) {
+      let activeSubM = [];
+      body.submarcas.forEach((submarca) => activeSubM.push({ id: submarca.idsubmarca, active: true }));
+      dispatch(listItemMarcados(activeSubM));
+
+      return () => {
+        dispatch(listItemMarcados([]));
+      };
+    }
+  }, [body.submarcas]);
+
   const callApis = () => {
     dispatch(getSubmarcas());
     dispatch(getCatalogoProductos());
@@ -137,11 +161,11 @@ const FormCopyCampana = (props) => {
   };
 
   const handleApi = async () => {
-    let objAc = await dispatch(getIndividualCampana(id));
+    let objAc = await dispatch(getByIdAcuerdoComerciale(id));
 
     setLoading(false);
-    setCodcli_cbim(objAc.codcli_cbim);
-    setNomcli_cbim(objAc.nomcli_cbim);
+    //setCodcli_cbim(objAc.codcli_cbim);
+    //setNomcli_cbim(objAc.nomcli_cbim);
 
     const { clientes, ind_surtido, escalados, ind_seleccion_conjunta } = objAc;
     let objResult = delete objAc.clientes;
@@ -154,13 +178,13 @@ const FormCopyCampana = (props) => {
     let objResult8 = delete objAc.nomcli_cbim;
     let objResult9 = delete objAc.tipo;
 
+    //objAc.clientes = [{ idcliente: parseInt(clientes[0].idcliente) }];
+
     console.log("verificar ind_surtido", objAc);
     setInd_surtido(ind_surtido);
     setInputList(escalados);
     setInd_seleccion_conjunta(ind_seleccion_conjunta);
-
     setBody(objAc);
-    console.log(objAc);
   };
 
   const handleValues = async (e, item) => {
@@ -192,10 +216,17 @@ const FormCopyCampana = (props) => {
 
     //dispatch(productosFiltrados(res));
 
-    setBody({
-      ...body,
-      productos: productosBody,
-    });
+    if (productosBody.length) {
+      setBody({
+        ...body,
+        productos: productosBody,
+      });
+    }
+  };
+
+  const handleSeletClient = (idsBuscadorObj) => {
+    console.log("onblur select");
+    setBody({ ...body, clientes: [{ idcliente: parseInt(idsBuscadorObj[0].idcliente) }] });
   };
 
   const handleEscaladosBody = () => {
@@ -204,7 +235,12 @@ const FormCopyCampana = (props) => {
 
   const validate = (body, success, errorCallback) => {
     const validations = [
-      { field: "nombre", validator: (value) => value != "", message: "No se puede dejar en blanco" },
+     /* {
+        field: "clientes[0].idcliente",
+        validator: (value) => value != "",
+        message: "No se puede dejar en blanco. Seleccione una entidad para rellenarlo.",
+      },
+      { field: "nombre", validator: (value) => value != "", message: "No se puede dejar en blanco" },*/
       {
         field: "fechainicio",
         validator: (value) =>
@@ -246,7 +282,6 @@ const FormCopyCampana = (props) => {
       },
     ];
 
-    console.log(validations);
     const validationErrors = [];
 
     for (let i in validations) {
@@ -280,7 +315,7 @@ const FormCopyCampana = (props) => {
     validate(
         body,
         async () => {
-          await dispatch(editCampana(body, id));
+          await dispatch(crearCampaña(body, id));
         },
         () => {
           document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -331,7 +366,7 @@ const FormCopyCampana = (props) => {
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved mensaje={"Su campaña fue creada exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su Acuerdo Comercial Fue editado Exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -363,15 +398,7 @@ const FormCopyCampana = (props) => {
         <h3 style={{ margin: "20px 0 10px 0" }}>Datos generales</h3>
 
         <div className="table-filters-indas" style={{ padding: 20 }}>
-          <Row style={{ width: "100%" }}>
-            <Col span={17} style={{ padding: "0px" }}>
-              <span>Cupón de Campaña</span>
-              <div style={{ padding: "0px", paddingTop: "0", paddingRight: "20px" }}>
-                <SearchInputEntidad desactivado={true} valorDefecto={typeof body === "undefined" ? "" : nomcli_cbim} />
-              </div>
-            </Col>
-          </Row>
-          <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
+            <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
             <Col style={{ padding: "10px" }} span={6}>
               <label>Nombre de la Campaña</label>
               <Input
@@ -516,22 +543,20 @@ const FormCopyCampana = (props) => {
                     bordered
                     dataSource={subMarcasArrayRedux.sort((a, b) => a.nombre.localeCompare(b.nombre))}
                     //onChange={catalogoProducts}
-                    renderItem={(item) => {
-                      return (
-                          <List.Item style={{ cursor: "pointer" }}>
-                            <Checkbox
-                                value={item.idsubmarca}
-                                onChange={async (e) => {
-                                  await onSelectChange(e, item);
-                                }}
-                                //onChange={()=> onChangeArray( item.idsubmarca ) }
-                                checked={body.submarcas.some((submarca) => submarca.idsubmarca === item.idsubmarca)}
-                            >
-                              {item.nombre}
-                            </Checkbox>
-                          </List.Item>
-                      );
-                    }}
+                    renderItem={(item) => (
+                        <List.Item style={{ cursor: "pointer" }}>
+                          <Checkbox
+                              value={item.idsubmarca}
+                              onChange={async (e) => {
+                                await onSelectChange(e, item);
+                              }}
+                              //onChange={()=> onChangeArray( item.idsubmarca ) }
+                              checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
+                          >
+                            {item.nombre}
+                          </Checkbox>
+                        </List.Item>
+                    )}
                 />
               </Col>
               <Col span={12} style={{ height: "1150px", overflow: "auto", paddingLeft: "10px" }}>
@@ -548,6 +573,7 @@ const FormCopyCampana = (props) => {
             <TabPane tab="Selección individual" key="2">
               <Row style={{ marginBottom: "10px" }}>
                 <Col span={8}>
+                  <label style={{ fontWeight: "bold" }}>Familias</label>
                   <DualListFilter
                       options={familiaArrayRedux.map((family) => {
                         return {
@@ -562,6 +588,7 @@ const FormCopyCampana = (props) => {
                   />
                 </Col>
                 <Col span={8}>
+                  <label style={{ fontWeight: "bold" }}>Marcas</label>
                   <DualListFilter
                       options={marcasArrayRedux.map((brand) => {
                         return {
@@ -576,6 +603,7 @@ const FormCopyCampana = (props) => {
                   />
                 </Col>
                 <Col span={8}>
+                  <label style={{ fontWeight: "bold" }}>Submarcas</label>
                   <DualListFilter
                       options={subMarcasArrayRedux.map((subBrand) => {
                         return {

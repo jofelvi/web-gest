@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Row, Select, DatePicker, message } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { DatePickerFromTo, InputBox, InputsContainer } from '../../lib/styled'
-import OrderFilterEntity from "../OrderListScreen/components/OrderFilterEntity"
-import { DownOutlined, UpOutlined } from "@ant-design/icons"
-import moment from "moment"
-import { get } from 'lodash'
-import SearchInputEntidad from "../../components/SearchInputEntidad";
-import {clearCods, disableFilterTable, getFilterData, handleBtnLimpiar} from "../../modules/acuerdosComer/actions";
+import React, { useState, useEffect } from 'react';
+import { Button, Col, Row, Select, DatePicker, message } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { DatePickerFromTo, InputBox, InputsContainer } from '../../lib/styled';
+import OrderFilterEntity from '../OrderListScreen/components/OrderFilterEntity';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import { get } from 'lodash';
+import SearchInputEntidad from '../../components/SearchInputEntidad';
+import { clearCods, disableFilterTable, getFilterData, handleBtnLimpiar } from '../../modules/acuerdosComer/actions';
 
-const { RangePicker } = DatePicker
-const { Option } = Select
-const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YYYY']
-const dateFormat = 'DD/MM/YYYY'
-
-
+const { RangePicker } = DatePicker;
+const { Option } = Select;
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YYYY'];
+const dateFormat = 'DD/MM/YYYY';
 
 const PlanesCompraFiltersNew = (props) => {
-    const { onFilterArray, resetFilter } = props
-    const [expandFilters, setExpandFilters] = useState(false)
-    const dispatch = useDispatch()
-    const delegadosList = useSelector((state) => state.acuerdosComer.listaDelegados)
-    const codsClientSelect = useSelector((state) => state.acuerdosComer.cod_Cliente)
-    const codcli_cbimRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.codcli_cbim)
-    const idclienteRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.idcliente)
-    const limpiarBtn = useSelector((state) => state.acuerdosComer.limpiarBtn)
+    const { onFilterArray, resetFilter } = props;
+    const [expandFilters, setExpandFilters] = useState(false);
+
+    const dispatch = useDispatch();
+    const delegadosList = useSelector((state) => state.acuerdosComer.listaDelegados);
+    const codsClientSelect = useSelector((state) => state.acuerdosComer.cod_Cliente);
+    const codcli_cbimRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.codcli_cbim);
+    const idclienteRedux = useSelector((state) => state.acuerdosComer.cod_Cliente.idcliente);
+    const limpiarBtn = useSelector((state) => state.acuerdosComer.limpiarBtn);
 
     const [datesFromTo, setDatesFromTo] = useState([]);
     const initialState = {
@@ -38,73 +37,78 @@ const PlanesCompraFiltersNew = (props) => {
         fechas: [],
         expandedKeys: [],
         isFilterChanged: false,
-        contareaspendientes: false
-    }
-    const [state, setState] = useState(initialState)
+        contareaspendientes: false,
+    };
+    const [state, setState] = useState(initialState);
     const [parametros, setParametros] = useState({
-        formato: "json",
+        formato: 'json',
         offset: 0,
-        limit: 50
-    })
+        limit: 50,
+    });
 
     useEffect(() => {
-        const checkNan =()=> isNaN( parseInt( codsClientSelect[0].idcliente)) ?   null : setParametros({ ...parametros, "idcliente":  parseInt( codsClientSelect[0].idcliente)})
-        checkNan()
-    }, [codsClientSelect])
-
+        const checkNan = () =>
+            isNaN(parseInt(codsClientSelect[0].idcliente))
+                ? null
+                : setParametros({ ...parametros, idcliente: parseInt(codsClientSelect[0].idcliente) });
+        checkNan();
+    }, [codsClientSelect]);
 
     const onChange = (value, dateString) => {
-        setDatesFromTo(value)
-       let dateFomart1=  moment(value[0]).format('YYYY-MM-DD');
-       let dateFomart2=  moment(value[1]).format('YYYY-MM-DD');
-       setParametros({ ...parametros, fecha_desde: dateFomart1, fecha_hasta: dateFomart2 })
-    }
+        setDatesFromTo(value);
+        let dateFomart1 = moment(value[0]).format('YYYY-MM-DD');
+        let dateFomart2 = moment(value[1]).format('YYYY-MM-DD');
+        setParametros({ ...parametros, fecha_desde: dateFomart1, fecha_hasta: dateFomart2 });
+    };
 
     const onReset = () => {
-        resetFilter()
+        resetFilter();
         setParametros({
-            formato: "json",
+            formato: 'json',
             offset: 0,
-            limit: 50
-        })
-        setState(initialState)
-        setDatesFromTo([])
-        dispatch(disableFilterTable())
-        dispatch(clearCods())
-        dispatch(handleBtnLimpiar(!limpiarBtn))
-    }
+            limit: 50,
+        });
+        setState(initialState);
+        setDatesFromTo([]);
+        dispatch(disableFilterTable());
+        dispatch(clearCods());
+        dispatch(handleBtnLimpiar(!limpiarBtn));
+    };
 
-    const querySeach = ()=>{
-
-       dispatch(getFilterData(parametros))
-       console.log("querySeach", parametros)
-    }
+    const querySeach = () => {
+        dispatch(getFilterData(parametros));
+        console.log('querySeach', parametros);
+    };
 
     return (
-        <div className="table-filters-indas">
-
+        <div className='table-filters-indas'>
             <InputsContainer style={{ width: '100%', marginBottom: 0, paddingBottom: 0 }}>
                 <Row key={'filters_b'} style={{ width: '100%', marginBottom: 0 }}>
                     <Col span={18} style={{ padding: '10px' }} key={'col_1'}>
-                        <span style={{ padding: '10px' }}>Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small></span>
+                        <span style={{ padding: '10px' }}>
+                            Entidad <small>(Código, Nombre, Código Postal, Población, Provincia, Dirección)</small>
+                        </span>
                         <div style={{ padding: '0px', paddingTop: '0', paddingRight: '20px' }}>
                             <SearchInputEntidad
-                                //filterChange={}
+                            //filterChange={}
                             />
                         </div>
                     </Col>
                     <Col span={6} style={{ padding: '10px' }} key={'col_2'}>
                         <span style={{ padding: '10px' }}>Código Cliente</span>
                         <InputBox
-                            placeholder="Código Cliente"
-                            value={ codsClientSelect[0].codcli_cbim || "" }
+                            placeholder='Código Cliente'
+                            value={codsClientSelect[0].codcli_cbim || ''}
                             disabled
                             style={{ width: '100%' }}
                         />
                     </Col>
                 </Row>
             </InputsContainer>
-            <InputsContainer hidden={!expandFilters} style={{ width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0 }} key={'filters_b_2'}>
+            <InputsContainer
+                hidden={!expandFilters}
+                style={{ width: '100%', marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0 }}
+                key={'filters_b_2'}>
                 <Row style={{ width: '100%' }}>
                     <Col span={8} style={{ padding: '10px', paddingTop: 0 }}>
                         <span style={{ padding: '10px' }}>AC vigentes en este intervalo</span>
@@ -123,16 +127,18 @@ const PlanesCompraFiltersNew = (props) => {
                         <Select
                             value={parametros.coddelegado || ''}
                             name='coddelegado'
-                            onChange={(value) => setParametros({ ...parametros, coddelegado: parseInt( value ) })}
+                            onChange={(value) => setParametros({ ...parametros, coddelegado: parseInt(value) })}
                             style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}
                             showSearch
-                            allowClear
-                        >
-                            <Option value='' style={{ color: '#CCC' }}>- Seleccione -</Option>
+                            allowClear>
+                            <Option value='' style={{ color: '#CCC' }}>
+                                - Seleccione -
+                            </Option>
                             {delegadosList.map((option, index) => (
-                                <Select.Option key={index} value={option.coddelegado}>{option.nombre}</Select.Option>
+                                <Select.Option key={index} value={option.coddelegado}>
+                                    {option.nombre}
+                                </Select.Option>
                             ))}
-
                         </Select>
                     </Col>
 
@@ -140,52 +146,49 @@ const PlanesCompraFiltersNew = (props) => {
                         <span style={{ padding: '10px' }}>Estado</span>
                         <Select
                             value={parametros.idestado}
-                            onChange={(value) => setParametros({ ...parametros, idestado: parseInt( value ) })}
-                            style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}
-                        >
-                            <Option value="" style={{ color: '#CCC' }}>- Seleccione -</Option>
+                            onChange={(value) => setParametros({ ...parametros, idestado: parseInt(value) })}
+                            style={{ width: '100%', marginTop: '10px', paddingLeft: 0, marginLeft: 10 }}>
+                            <Option value='' style={{ color: '#CCC' }}>
+                                - Seleccione -
+                            </Option>
                             <Option value={1}>Activo</Option>
                             <Option value={2}>Inactivo</Option>
                         </Select>
                     </Col>
-
                 </Row>
             </InputsContainer>
             <InputsContainer style={{ width: '100%', marginTop: 0, paddingTop: 0 }}>
                 <Row style={{ width: '100%' }}>
-                    <Col span={24} align="right">
+                    <Col span={24} align='right'>
                         <div style={{ alignSelf: 'flex-end' }}>
-                            <a
-                                style={{ fontSize: 12 }}
-                                onClick={() =>
-                                    setExpandFilters(!expandFilters)
-                                }
-                            >
-                                {expandFilters ? <React.Fragment><UpOutlined /> Mostar menos</React.Fragment> : <React.Fragment><DownOutlined /> Mostar más</React.Fragment>}
+                            <a style={{ fontSize: 12 }} onClick={() => setExpandFilters(!expandFilters)}>
+                                {expandFilters ? (
+                                    <React.Fragment>
+                                        <UpOutlined /> Mostar menos
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <DownOutlined /> Mostar más
+                                    </React.Fragment>
+                                )}
                             </a>
 
                             <Button
                                 icon='search'
-                                type="primary"
+                                type='primary'
                                 style={{ alignSelf: 'flex-end', margin: '0px 10px 0px 10px' }}
-                                onClick={()=> querySeach()}
-                            >Filtrar</Button>
-                            <Button
-                                icon='delete'
-                                style={{ alignSelf: 'flex-end', margin: '0px 0px 0px 0px' }}
-                                onClick={() => onReset()}
-                            >
+                                onClick={() => querySeach()}>
+                                Filtrar
+                            </Button>
+                            <Button icon='delete' style={{ alignSelf: 'flex-end', margin: '0px 0px 0px 0px' }} onClick={() => onReset()}>
                                 Limpiar
-                                </Button>
+                            </Button>
                         </div>
                     </Col>
                 </Row>
             </InputsContainer>
         </div>
-    )
+    );
+};
 
-
-}
-
-
-export default PlanesCompraFiltersNew
+export default PlanesCompraFiltersNew;
