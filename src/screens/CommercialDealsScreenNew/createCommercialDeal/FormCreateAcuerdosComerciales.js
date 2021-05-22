@@ -49,6 +49,7 @@ import {
   FolderAddOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import { reduce } from "underscore";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -93,6 +94,7 @@ const FormCreateAcuerdosComerciales = (props) => {
     escalados: [],
     submarcas: [],
     margen: parseFloat(1.0),
+    idestado: 1,
     idtipo: 1,
     ind_renovar: false,
     ind_seleccion_conjunta: true,
@@ -103,7 +105,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [inputList, setInputList] = useState([
     {
       descuento: 10.1,
-      udsmaximas: 1,
+      udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
     },
@@ -116,6 +118,8 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [codcli_cbim, setCodcli_cbim] = useState();
   const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
+  console.log(bodyError);
+
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",
     seleccion_individual_filtro_categoria: "",
@@ -239,23 +243,6 @@ const FormCreateAcuerdosComerciales = (props) => {
         validator: (value, record) => moment(value).startOf("day") >= moment(record.fechainicio).startOf("day"),
         message: "Debe ser posterior a la fecha de inicio.",
       },
-      { field: "escalados[0].udsmaximas", validator: (value) => parseInt(value) === 0, message: "Debe ser mayor que 0." },
-      {
-        field: "escalados[0].udsmaximas",
-        validator: (value) => parseInt(value).toString() == value,
-        message: "Debe ser un numero entero.",
-      },
-      { field: "escalados[0].udsminimas", validator: (value) => parseInt(value) === 0, message: "Debe ser mayor que 0." },
-      {
-        field: "escalados[0].udsminimas",
-        validator: (value) => parseInt(value).toString() == value,
-        message: "Debe ser un numero entero.",
-      },
-      {
-        field: "escalados[0].descuento",
-        validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100,
-        message: "Debe ser un porcentaje.",
-      },
       { field: "margen", validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100, message: "Debe ser un porcentaje." },
       {
         field: "submarcas",
@@ -264,7 +251,18 @@ const FormCreateAcuerdosComerciales = (props) => {
       },
       {
         field: "productos",
-        validator: (value, record) => record.ind_seleccion_conjunta == true && body.productos.lenght === 0,
+        validator: (value, record) => record.ind_seleccion_conjunta == true || value.length > 0,
+        message: "Debe seleccionar por lo menos un producto.",
+      },
+      {
+        field: "idestado",
+        validator: (value, record) => value !== null,
+        message: "Debe seleccionar un estado",
+      },
+      {
+        field: "udsmaximas",
+        validator: validateDiscountInputs,
+        message: "La unidad máxima no puede tener una valor menor a la anterior línea",
       },
     ];
 
@@ -280,6 +278,15 @@ const FormCreateAcuerdosComerciales = (props) => {
     }
     callbackSave(keys(validationErrors).length > 0 ? errorCallback : success);
   };
+
+  function validateDiscountInputs() {
+    let wrong = 0;
+    let result = inputList.reduce((previous, current) => {
+      if (current.udsmaximas < previous.udsmaximas) wrong++;
+      return current;
+    });
+    return wrong ? false : true;
+  }
 
   const hasError = (field) => {
     return get(bodyError, field, false) !== false;
@@ -480,6 +487,7 @@ const FormCreateAcuerdosComerciales = (props) => {
               <Option value={1}>Activo</Option>
               <Option value={2}>Inactivo</Option>
             </Select>
+            {getError("estado")}
           </Col>
           <Col span={6}>
             <Switch
@@ -592,6 +600,7 @@ const FormCreateAcuerdosComerciales = (props) => {
             </Row>
           );
         })}
+        {getError("udsmaximas")}
       </div>
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>

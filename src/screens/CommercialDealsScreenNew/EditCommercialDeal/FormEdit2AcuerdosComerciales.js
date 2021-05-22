@@ -65,6 +65,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
     clientes: [],
     escalados: [],
     margen: parseFloat(1.0),
+    idestado: 1,
     idtipo: 1,
     ind_renovar: false,
     ind_seleccion_conjunta: false,
@@ -276,6 +277,11 @@ const FormEdi2AcuerdosComerciales = (props) => {
         validator: (value, record) => record.ind_seleccion_conjunta == true || value.length > 0,
         message: "Debe seleccionar por lo menos un producto.",
       },
+      {
+        field: "udsmaximas",
+        validator: validateDiscountInputs,
+        message: "La unidad máxima no puede tener una valor menor a la anterior línea",
+      },
     ];
 
     const validationErrors = [];
@@ -306,6 +312,14 @@ const FormEdi2AcuerdosComerciales = (props) => {
     }
     return "";
   };
+  function validateDiscountInputs() {
+    let wrong = 0;
+    let result = inputList.reduce((previous, current) => {
+      if (current.udsmaximas < previous.udsmaximas) wrong++;
+      return current;
+    });
+    return wrong ? false : true;
+  }
 
   const onSubmit = () => {
     validate(
@@ -342,7 +356,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
       ...inputList,
       {
         descuento: 1.0,
-        udsmaximas: 1,
+        udsmaximas: 50,
         udsminimas: 1,
         txtdescuento: "",
       },
@@ -602,6 +616,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
             </Row>
           );
         })}
+        {getError("udsmaximas")}
       </div>
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>

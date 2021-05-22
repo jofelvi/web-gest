@@ -79,6 +79,7 @@ const FormCreateAcuerdosComerciales = (props) => {
     escalados: [],
     submarcas: [],
     margen: parseFloat(1.0),
+    idestado: 1,
     idtipo: 1,
     ind_renovar: false,
     ind_seleccion_conjunta: false,
@@ -89,7 +90,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [inputList, setInputList] = useState([
     {
       descuento: 10.1,
-      udsmaximas: 1,
+      udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
     },
