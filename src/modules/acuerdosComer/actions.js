@@ -18,7 +18,7 @@ import {
   GET_FILTER_DATA,
   LIMPIAR_BTN,
   GET_MARCAS,
-  GET_FAMILIA,
+  GET_FAMILIA, FORM_BODY,
 } from "./constans";
 import axios from "axios";
 import utils from "../../lib/utils";
@@ -383,3 +383,12 @@ export const getExcelAc = (parametros) => async (dispatch) => {
       console.log("mensaje de error llamada API: ", error);
     });
 };
+
+export const handleBody = (value) => async (dispatch) => {
+  dispatch({
+    type: FORM_BODY,
+    payload: value,
+  });
+};
+
+

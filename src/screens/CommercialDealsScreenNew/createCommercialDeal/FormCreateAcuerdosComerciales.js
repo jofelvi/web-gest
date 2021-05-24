@@ -64,20 +64,6 @@ const dualListIcons = {
   moveUp: <UpOutlined />,
 };
 
-const errorTooltipStyle = {
-  position: "absolute",
-  top: "35px",
-  right: "40px",
-  fontSize: "17px",
-};
-
-const spacedErrorTooltipStyle = {
-  position: "absolute",
-  top: "35px",
-  right: "65px",
-  fontSize: "17px",
-};
-
 const FormCreateAcuerdosComerciales = (props) => {
   const { acuerdoComercial } = props;
   let { id } = useParams();
@@ -118,7 +104,6 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [codcli_cbim, setCodcli_cbim] = useState();
   const successCreate = useSelector((state) => state.acuerdosComer.createAcuerdoSucces);
   const [bodyError, setBodyError] = useState([]);
-  console.log(bodyError);
 
   const [filterProducts, setFilterProducts] = useState({
     seleccion_individual_filtro_submarca: "",

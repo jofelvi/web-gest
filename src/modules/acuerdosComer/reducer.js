@@ -18,7 +18,7 @@ import {
   GET_FILTER_DATA,
   LIMPIAR_BTN,
   GET_MARCAS,
-  GET_FAMILIA,
+  GET_FAMILIA, FORM_BODY,
 } from "./constans";
 
 export const INITIAL_STATE = {
@@ -48,6 +48,20 @@ export const INITIAL_STATE = {
   limpiarBtn: false,
   marcasArray: [],
   familiaArray: [],
+  body:{
+    productos: [],
+    clientes: [],
+    escalados: [],
+    submarcas: [],
+    margen: parseFloat(1.0),
+    idestado: 1,
+    idtipo: 1,
+    ind_renovar: false,
+    ind_seleccion_conjunta: true,
+    ind_surtido: false,
+    fechainicio: new Date().toISOString(),
+    fechafin: new Date().toISOString(),
+  }
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -96,6 +110,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, marcasArray: action.payload };
     case GET_FAMILIA:
       return { ...state, familiaArray: action.payload };
+    case FORM_BODY:
+      return { ...state, body: {...state.body, ...action.payload}  };
     default:
       return state;
   }
