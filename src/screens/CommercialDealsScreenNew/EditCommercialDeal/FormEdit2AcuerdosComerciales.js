@@ -34,7 +34,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { LoadingComponents } from "../../../components/LoadingComponents";
-import {validateDate, validateDatesMoment} from "../componets/ValidateFields";
+import { validateDate, validateDatesMoment } from "../componets/ValidateFields";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -55,7 +55,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [errorDate, setErrorDate] = useState(false);
-  const [errorEscalados, setErrorEscalados] = useState({error:false, mensaje:""});
+  const [errorEscalados, setErrorEscalados] = useState({ error: false, mensaje: "" });
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
@@ -344,14 +344,14 @@ const FormEdi2AcuerdosComerciales = (props) => {
   };
 
   const filterSeleccionIndividual = (item) => {
-    const filtro_categoria = filterProducts.seleccion_individual_filtro_categoria;
+    const filtro_familia = filterProducts.seleccion_individual_filtro_categoria;
     const filtro_marca = filterProducts.seleccion_individual_filtro_marca;
     const filtro_submarca = filterProducts.seleccion_individual_filtro_submarca;
 
     return (
-      (filtro_categoria === "" || parseInt(item.idgrupo) == parseInt(filtro_categoria)) &&
-      (filtro_marca === "" || parseInt(item.idmarca) == parseInt(filtro_marca)) &&
-      (filtro_submarca === "" || parseInt(item.idsubmarca) == parseInt(filtro_submarca))
+      (filtro_familia == "" || item.idfamilia == filtro_familia) &&
+      (filtro_marca == "" || item.idmarca == filtro_marca) &&
+      (filtro_submarca == "" || item.idsubmarca == filtro_submarca)
     );
   };
 
@@ -380,50 +380,46 @@ const FormEdi2AcuerdosComerciales = (props) => {
     }
   };
 
-  const checkErrorDates = ()=>{
-    let mensaje = validateDatesMoment(body.fechainicio, finalDate)
-    mensaje === "" ? setErrorDate(true): setErrorDate(false)
-  }
-
-
+  const checkErrorDates = () => {
+    let mensaje = validateDatesMoment(body.fechainicio, finalDate);
+    mensaje === "" ? setErrorDate(true) : setErrorDate(false);
+  };
 
   const renderErrorDates = (
-
-        <div style={{ display: "inline" }}>
-          <Alert message={"Fecha invalida"} type="error" />
-        </div>
-  )
+    <div style={{ display: "inline" }}>
+      <Alert message={"Fecha invalida"} type="error" />
+    </div>
+  );
 
   const validateErrorEscalados = () => {
-    let mensajeError = ""
-    body.escalados.map((item,index)=>{
-      if (item.udsminimas >= item.udsmaximas){
-        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas"
-      }else if (item.udsmaximas <= item.udsminimas ){
-        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas"
+    let mensajeError = "";
+    body.escalados.map((item, index) => {
+      if (item.udsminimas >= item.udsmaximas) {
+        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas";
+      } else if (item.udsmaximas <= item.udsminimas) {
+        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas";
       }
-    })
+    });
 
-    if(mensajeError !== ""){
-     return(
-         <div style={{ display: "inline" }}>
-           <Alert message={mensajeError} type="error" />
-         </div> )
+    if (mensajeError !== "") {
+      return (
+        <div style={{ display: "inline" }}>
+          <Alert message={mensajeError} type="error" />
+        </div>
+      );
     }
   };
-
 
   const validateArrays = () => {
-    let mensajeError = "Asociación de productos no puede queda vacio!"
-    if(body.productos.length === 0){
+    let mensajeError = "Asociación de productos no puede queda vacio!";
+    if (body.productos.length === 0) {
       return (
-          <div style={{ display: "inline" }}>
-            <Alert message={mensajeError} type="error" />
-          </div>
-      )
+        <div style={{ display: "inline" }}>
+          <Alert message={mensajeError} type="error" />
+        </div>
+      );
     }
   };
-
 
   if (loading) {
     return <LoadingComponents />;
@@ -491,8 +487,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
               format={dateFormat}
               placeholder={"Seleccionar fecha"}
               disabled={true}
-              style={ inputStyle}
-
+              style={inputStyle}
             />
           </Col>
           <Col span={8}>
@@ -503,15 +498,15 @@ const FormEdi2AcuerdosComerciales = (props) => {
               onChange={(date, dateString) => {
                 let d = new Date(date);
                 let dateIso = d.toISOString();
-                setFinalDate( moment(d).format("YYYY-MM-DD"));
+                setFinalDate(moment(d).format("YYYY-MM-DD"));
                 setBody({ ...body, fechafin: dateIso });
-                checkErrorDates()
+                checkErrorDates();
               }}
               placeholder={"Seleccionar fecha"}
               style={hasError("fechafin") ? inputErrorStyle : inputStyle}
-              onBlur={()=>checkErrorDates()}
+              onBlur={() => checkErrorDates()}
             />
-            {  errorDate ? renderErrorDates : null}
+            {errorDate ? renderErrorDates : null}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -531,7 +526,6 @@ const FormEdi2AcuerdosComerciales = (props) => {
               <Option value={1}>Activo</Option>
               <Option value={2}>Inactivo</Option>
             </Select>
-
           </Col>
           <Col span={6}>
             <Switch
@@ -575,85 +569,81 @@ const FormEdi2AcuerdosComerciales = (props) => {
       <div className="table-filters-indas" style={{ padding: "5px 20px 20px 20px" }}>
         {inputList.map((x, i) => {
           return (
-              <div>
-            <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
-              <Col span={6}>
-                <label>{i <= 0 ? "Pedido mínimo" : ""}</label>
-                <InputNumber
-                  name="udsminimas"
-                  placeholder="Ingresar la cantidad minima para la linea de descuento"
-                  min={1}
-                  defaultValue={1}
-                  onChange={(e) => handleInputChange(e, i, "udsminimas")}
-                  style={hasError("udsminimas") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  value={x.udsminimas}
-                />
-                {getError("escalados[0].udsminimas")}
-              </Col>
-              <Col span={6}>
-                <label>{i <= 0 ? "Pedido Maximo" : ""} </label>
-                <InputNumber
-                  name="udsmaximas"
-                  placeholder="Ingresar la cantidad Maxima para la linea de descuento"
-                  min={1}
-                  max={50}
-                  defaultValue={6}
-                  onChange={(e) => handleInputChange(e, i, "udsmaximas")}
-                  style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  stringMode
-                  value={x.udsmaximas}
-                />
-                {getError("escalados[0].udsmaximas")}
-              </Col>
-              <Col span={6}>
-                <label>{i <= 0 ? "Descuento" : ""} </label>
+            <div>
+              <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
+                <Col span={6}>
+                  <label>{i <= 0 ? "Pedido mínimo" : ""}</label>
+                  <InputNumber
+                    name="udsminimas"
+                    placeholder="Ingresar la cantidad minima para la linea de descuento"
+                    min={1}
+                    defaultValue={1}
+                    onChange={(e) => handleInputChange(e, i, "udsminimas")}
+                    style={hasError("udsminimas") ? inputErrorStyle : inputStyle}
+                    onBlur={() => handleEscaladosBody()}
+                    value={x.udsminimas}
+                  />
+                  {getError("escalados[0].udsminimas")}
+                </Col>
+                <Col span={6}>
+                  <label>{i <= 0 ? "Pedido Maximo" : ""} </label>
+                  <InputNumber
+                    name="udsmaximas"
+                    placeholder="Ingresar la cantidad Maxima para la linea de descuento"
+                    min={1}
+                    max={50}
+                    defaultValue={6}
+                    onChange={(e) => handleInputChange(e, i, "udsmaximas")}
+                    style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
+                    onBlur={() => handleEscaladosBody()}
+                    stringMode
+                    value={x.udsmaximas}
+                  />
+                  {getError("escalados[0].udsmaximas")}
+                </Col>
+                <Col span={6}>
+                  <label>{i <= 0 ? "Descuento" : ""} </label>
 
-                <InputNumber
-                  name="descuento"
-                  placeholder="Ingresar % de descuento"
-                  min={1}
-                  value={x.descuento}
-                  defaultValue={10}
-                  step="0,1"
-                  onChange={(e) => handleInputChange(e, i, "descuento")}
-                  style={hasError("descuento") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  stringMode
-                  decimalSeparator=","
-                />
-                {getError("escalados[0].descuento")}
-              </Col>
-              <Col span={3}>
-                <div className="btn-box">
-                  {inputList.length !== 1 && (
-                    <Button
-                      onClick={()=>handleRemoveClick(i)}
-                      style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
-                      className="ant-btn-dangerous"
-                    >
-                      <DeleteRowOutlined />
+                  <InputNumber
+                    name="descuento"
+                    placeholder="Ingresar % de descuento"
+                    min={1}
+                    value={x.descuento}
+                    defaultValue={10}
+                    step="0,1"
+                    onChange={(e) => handleInputChange(e, i, "descuento")}
+                    style={hasError("descuento") ? inputErrorStyle : inputStyle}
+                    onBlur={() => handleEscaladosBody()}
+                    stringMode
+                    decimalSeparator=","
+                  />
+                  {getError("escalados[0].descuento")}
+                </Col>
+                <Col span={3}>
+                  <div className="btn-box">
+                    {inputList.length !== 1 && (
+                      <Button
+                        onClick={() => handleRemoveClick(i)}
+                        style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
+                        className="ant-btn-dangerous"
+                      >
+                        <DeleteRowOutlined />
+                      </Button>
+                    )}
+                  </div>
+                </Col>
+                <Col span={3}>
+                  {inputList.length - 1 === i && (
+                    <Button onClick={handleAddClick} style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }} className="ant-btn">
+                      <FolderAddOutlined />
                     </Button>
                   )}
-                </div>
-              </Col>
-              <Col span={3}>
-                {inputList.length - 1 === i && (
-                  <Button onClick={handleAddClick} style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }} className="ant-btn">
-                    <FolderAddOutlined />
-                  </Button>
-                )}
-              </Col>
-
-
-            </Row>
-
-              </div>
+                </Col>
+              </Row>
+            </div>
           );
         })}
         {validateErrorEscalados()}
-
       </div>
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
@@ -663,7 +653,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
           activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
           onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
         >
-          <TabPane tab="Selección por submarca" key="1" >
+          <TabPane tab="Selección por submarca" key="1">
             <Col span={12} style={{ height: "1150px", overflow: "auto", paddingRight: "10px" }}>
               <List
                 size="small"

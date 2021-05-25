@@ -354,14 +354,14 @@ const FormEditCampana = (props) => {
   };
 
   const filterSeleccionIndividual = (item) => {
-    const filtro_categoria = filterProducts.seleccion_individual_filtro_categoria;
+    const filtro_familia = filterProducts.seleccion_individual_filtro_categoria;
     const filtro_marca = filterProducts.seleccion_individual_filtro_marca;
     const filtro_submarca = filterProducts.seleccion_individual_filtro_submarca;
 
     return (
-      (filtro_categoria === "" || parseInt(item.idgrupo) == parseInt(filtro_categoria)) &&
-      (filtro_marca === "" || parseInt(item.idmarca) == parseInt(filtro_marca)) &&
-      (filtro_submarca === "" || parseInt(item.idsubmarca) == parseInt(filtro_submarca))
+      (filtro_familia == "" || item.idfamilia == filtro_familia) &&
+      (filtro_marca == "" || item.idmarca == filtro_marca) &&
+      (filtro_submarca == "" || item.idsubmarca == filtro_submarca)
     );
   };
 

@@ -28,7 +28,8 @@ import {
   listItemMarcados,
   productosFiltrados,
   getMarcas,
-  getFamilia, resetItemsMarcados,
+  getFamilia,
+  resetItemsMarcados,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
 import { useParams, useHistory } from "react-router-dom";
@@ -49,7 +50,7 @@ import {
   FolderAddOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import {validateDate, validateDatesMoment} from "../componets/ValidateFields";
+import { validateDate, validateDatesMoment } from "../componets/ValidateFields";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -72,7 +73,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   const dispatch = useDispatch();
   const [errorDate, setErrorDate] = useState(false);
   const [errorDateInit, setErrorDateInit] = useState(false);
-  const [errorEscalados, setErrorEscalados] = useState({error:false, mensaje:""});
+  const [errorEscalados, setErrorEscalados] = useState({ error: false, mensaje: "" });
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
@@ -80,12 +81,14 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [body, setBody] = useState({
     productos: [],
     clientes: [],
-    escalados: [ {
-      descuento: 1.0,
-      udsmaximas: 50,
-      udsminimas: 1,
-      txtdescuento: "",
-    }],
+    escalados: [
+      {
+        descuento: 1.0,
+        udsmaximas: 50,
+        udsminimas: 1,
+        txtdescuento: "",
+      },
+    ],
     submarcas: [],
     margen: parseFloat(1.0),
     idestado: 1,
@@ -107,6 +110,8 @@ const FormCreateAcuerdosComerciales = (props) => {
   const subMarcasArrayRedux = useSelector((state) => state.acuerdosComer.subMarcaArray);
   const marcasArrayRedux = useSelector((state) => state.acuerdosComer.marcasArray);
   const familiaArrayRedux = useSelector((state) => state.acuerdosComer.familiaArray);
+  console.log(familiaArrayRedux);
+  console.log(productosArrayRedux);
   const [initialDate, setInitialDate] = useState(typeof body === "undefined" ? "" : body.fechainicio);
   const [finalDate, setFinalDate] = useState(typeof body === "undefined" ? "" : body.fechafin);
   const [codcli_cbim, setCodcli_cbim] = useState();
@@ -287,7 +292,7 @@ const FormCreateAcuerdosComerciales = (props) => {
       body,
       () => {
         dispatch(createAcuerdosComerciales(body));
-        dispatch(resetItemsMarcados())
+        dispatch(resetItemsMarcados());
       },
       () => {
         document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -328,14 +333,14 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const filterSeleccionIndividual = (item) => {
-    const filtro_categoria = filterProducts.seleccion_individual_filtro_categoria;
+    const filtro_familia = filterProducts.seleccion_individual_filtro_categoria;
     const filtro_marca = filterProducts.seleccion_individual_filtro_marca;
     const filtro_submarca = filterProducts.seleccion_individual_filtro_submarca;
 
     return (
-      (filtro_categoria === "" || parseInt(item.idgrupo) == parseInt(filtro_categoria)) &&
-      (filtro_marca === "" || parseInt(item.idmarca) == parseInt(filtro_marca)) &&
-      (filtro_submarca === "" || parseInt(item.idsubmarca) == parseInt(filtro_submarca))
+      (filtro_familia == "" || item.idfamilia == filtro_familia) &&
+      (filtro_marca == "" || item.idmarca == filtro_marca) &&
+      (filtro_submarca == "" || item.idsubmarca == filtro_submarca)
     );
   };
 
@@ -365,51 +370,49 @@ const FormCreateAcuerdosComerciales = (props) => {
   };
 
   const validateErrorEscalados = () => {
-    let mensajeError = ""
-    body.escalados.map((item,index)=>{
-      if (item.udsminimas >= item.udsmaximas){
-        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas"
-      }else if (item.udsmaximas <= item.udsminimas ){
-        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas"
+    let mensajeError = "";
+    body.escalados.map((item, index) => {
+      if (item.udsminimas >= item.udsmaximas) {
+        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas";
+      } else if (item.udsmaximas <= item.udsminimas) {
+        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas";
       }
-    })
-    if(mensajeError !== ""){
-      return(
-          <div style={{ display: "inline" }}>
-            <Alert message={mensajeError} type="error" />
-          </div> )
+    });
+    if (mensajeError !== "") {
+      return (
+        <div style={{ display: "inline" }}>
+          <Alert message={mensajeError} type="error" />
+        </div>
+      );
     }
   };
 
-  const checkErrorDateInit = (date)=>{
-    let mensaje = validateDate(date)
-    mensaje === "" ? setErrorDateInit(false): setErrorDateInit(true)
-  }
+  const checkErrorDateInit = (date) => {
+    let mensaje = validateDate(date);
+    mensaje === "" ? setErrorDateInit(false) : setErrorDateInit(true);
+  };
 
-  const checkErrorDates = ()=>{
-    let mensaje = validateDatesMoment(body.fechainicio, finalDate)
-    mensaje === "" ? setErrorDate(true): setErrorDate(false)
-  }
+  const checkErrorDates = () => {
+    let mensaje = validateDatesMoment(body.fechainicio, finalDate);
+    mensaje === "" ? setErrorDate(true) : setErrorDate(false);
+  };
 
   const renderErrorDates = (
-
-      <div style={{ display: "inline" }}>
-        <Alert message={"Fecha invalida"} type="error" />
-      </div>
-  )
-
-
+    <div style={{ display: "inline" }}>
+      <Alert message={"Fecha invalida"} type="error" />
+    </div>
+  );
 
   const validateArrays = () => {
-    let mensajeError = "Asociación de productos no puede queda vacio!"
-    if(body.productos.length === 0){
-      return(
-          <div style={{ display: "inline" }}>
-            <Alert message={mensajeError} type="error" />
-          </div> )
+    let mensajeError = "Asociación de productos no puede queda vacio!";
+    if (body.productos.length === 0) {
+      return (
+        <div style={{ display: "inline" }}>
+          <Alert message={mensajeError} type="error" />
+        </div>
+      );
     }
   };
-
 
   return (
     <>
@@ -468,33 +471,33 @@ const FormCreateAcuerdosComerciales = (props) => {
                 let dateIso = d.toISOString();
                 setInitialDate(date);
                 setBody({ ...body, fechainicio: dateIso });
-                checkErrorDateInit(d)
+                checkErrorDateInit(d);
               }}
               locale={locale}
               format={dateFormat}
               placeholder={"Seleccionar fecha"}
               style={hasError("fechainicio") ? inputErrorStyle : inputStyle}
             />
-            {  errorDateInit ? renderErrorDates : null}
+            {errorDateInit ? renderErrorDates : null}
           </Col>
           <Col span={8}>
             <label>Fecha de fin</label>
             <DatePicker
-                format={dateFormat}
-                allowClear
-                value={typeof body === "undefined" ? "" : moment(body.fechafin)}
-                onChange={(date, dateString) => {
-                  let d = new Date(date);
-                  let dateIso = d.toISOString();
-                  setFinalDate( moment(d).format("YYYY-MM-DD"));
-                  setBody({ ...body, fechafin: dateIso });
-                  checkErrorDates()
-                }}
-                placeholder={"Seleccionar fecha"}
-                style={hasError("fechafin") ? inputErrorStyle : inputStyle}
-                onBlur={()=>checkErrorDates()}
+              format={dateFormat}
+              allowClear
+              value={typeof body === "undefined" ? "" : moment(body.fechafin)}
+              onChange={(date, dateString) => {
+                let d = new Date(date);
+                let dateIso = d.toISOString();
+                setFinalDate(moment(d).format("YYYY-MM-DD"));
+                setBody({ ...body, fechafin: dateIso });
+                checkErrorDates();
+              }}
+              placeholder={"Seleccionar fecha"}
+              style={hasError("fechafin") ? inputErrorStyle : inputStyle}
+              onBlur={() => checkErrorDates()}
             />
-            {  errorDate ? renderErrorDates : null}
+            {errorDate ? renderErrorDates : null}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -609,7 +612,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 <div className="btn-box">
                   {inputList.length !== 1 && (
                     <Button
-                      onClick={()=>handleRemoveClick(i)}
+                      onClick={() => handleRemoveClick(i)}
                       style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
                       className="ant-btn-dangerous"
                     >
@@ -673,7 +676,6 @@ const FormCreateAcuerdosComerciales = (props) => {
               />
             </Col>
           </TabPane>
-
 
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
