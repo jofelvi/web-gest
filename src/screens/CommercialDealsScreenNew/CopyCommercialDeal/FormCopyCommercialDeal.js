@@ -37,6 +37,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { LoadingComponents } from "../../../components/LoadingComponents";
+import {validateDate, validateDatesMoment} from "../componets/ValidateFields";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -56,6 +57,8 @@ const FormCopyCommercialDeal = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [errorDate, setErrorDate] = useState(false);
+  const [errorDateInit, setErrorDateInit] = useState(false);
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
@@ -75,7 +78,7 @@ const FormCopyCommercialDeal = (props) => {
   console.log(body);
   const [inputList, setInputList] = useState([
     {
-      descuento: 10.0,
+      descuento: 1.0,
       udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
@@ -209,7 +212,7 @@ const FormCopyCommercialDeal = (props) => {
     let productosBody = [];
 
     productosArrayRedux.filter((f) =>
-      body.submarcas.find((item) => item.idsubmarca === f.idsubmarca && productosBody.push({ idproducto: f.idproducto, nombre: f.nombre }))
+        body.submarcas.find((item) => item.idsubmarca === f.idsubmarca && productosBody.push({ idproducto: f.idproducto, nombre: f.nombre }))
     );
 
     //dispatch(productosFiltrados(res));
@@ -242,13 +245,13 @@ const FormCopyCommercialDeal = (props) => {
       {
         field: "fechainicio",
         validator: (value) =>
-          body && moment(body.fechainicio).isSame(value, "day") ? true : moment(value).startOf("day") >= moment().startOf("day"),
+            body && moment(body.fechainicio).isSame(value, "day") ? true : moment(value).startOf("day") >= moment().startOf("day"),
         message: "No puede ser una fecha pasada.",
       },
       {
         field: "fechafin",
         validator: (value) =>
-          body && moment(body.fechafin).isSame(value, "day") ? true : moment(value).startOf("day") >= moment().startOf("day"),
+            body && moment(body.fechafin).isSame(value, "day") ? true : moment(value).startOf("day") >= moment().startOf("day"),
         message: "No puede ser una fecha pasada.",
       },
       {
@@ -256,28 +259,7 @@ const FormCopyCommercialDeal = (props) => {
         validator: (value, record) => moment(value).startOf("day") >= moment(record.fechainicio).startOf("day"),
         message: "Debe ser posterior a la fecha de inicio.",
       },
-      { field: "escalados[0].udsmaximas", validator: (value) => parseInt(value) > 0, message: "Debe ser mayor que 0." },
-      {
-        field: "escalados[0].udsmaximas",
-        validator: (value) => parseInt(value).toString() == value,
-        message: "Debe ser un numero entero.",
-      },
-      {
-        field: "escalados[0].descuento",
-        validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100,
-        message: "Debe ser un porcentaje.",
-      },
       { field: "margen", validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100, message: "Debe ser un porcentaje." },
-      {
-        field: "submarcas",
-        validator: (value, record) => record.ind_seleccion_conjunta == false || value.length > 0,
-        message: "Debe seleccionar por lo menos una submarca.",
-      },
-      {
-        field: "productos",
-        validator: (value, record) => record.ind_seleccion_conjunta == true || value.length > 0,
-        message: "Debe seleccionar por lo menos un producto.",
-      },
       {
         field: "udsmaximas",
         validator: validateDiscountInputs,
@@ -306,9 +288,9 @@ const FormCopyCommercialDeal = (props) => {
     if (hasError(field)) {
       const validationError = get(bodyError, field, false);
       return (
-        <div style={{ display: "inline" }}>
-          <Alert message={validationError} type="error" />
-        </div>
+          <div style={{ display: "inline" }}>
+            <Alert message={validationError} type="error" />
+          </div>
       );
     }
     return "";
@@ -325,13 +307,14 @@ const FormCopyCommercialDeal = (props) => {
 
   const onSubmit = () => {
     validate(
-      body,
-      async () => {
-        await dispatch(editAcuerdosComerciales(body, id));
-      },
-      () => {
-        document.querySelector(".ant-layout-content").scrollTo(0, 0);
-      }
+        body,
+        async () => {
+          await dispatch(editAcuerdosComerciales(body, id));
+
+        },
+        () => {
+          document.querySelector(".ant-layout-content").scrollTo(0, 0);
+        }
     );
   };
 
@@ -358,7 +341,7 @@ const FormCopyCommercialDeal = (props) => {
       ...inputList,
       {
         descuento: 1.0,
-        udsmaximas: 1,
+        udsmaximas: 50,
         udsminimas: 1,
         txtdescuento: "",
       },
@@ -371,14 +354,14 @@ const FormCopyCommercialDeal = (props) => {
     const filtro_submarca = filterProducts.seleccion_individual_filtro_submarca;
 
     return (
-      (filtro_categoria === "" || parseInt(item.idgrupo) == parseInt(filtro_categoria)) &&
-      (filtro_marca === "" || parseInt(item.idmarca) == parseInt(filtro_marca)) &&
-      (filtro_submarca === "" || parseInt(item.idsubmarca) == parseInt(filtro_submarca))
+        (filtro_categoria === "" || parseInt(item.idgrupo) == parseInt(filtro_categoria)) &&
+        (filtro_marca === "" || parseInt(item.idmarca) == parseInt(filtro_marca)) &&
+        (filtro_submarca === "" || parseInt(item.idsubmarca) == parseInt(filtro_submarca))
     );
   };
 
   if (successCreate) {
-    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"Su Acuerdo Comercial Fue editado Exitosamente"} ac={true} />;
+    return <PlanesCompraSaved redirectURL="/acuerdos-comerciales" mensaje={"El Acuerdo Comercial fue creado exitosamente"} ac={true} />;
   }
 
   const { confirm } = Modal;
@@ -402,9 +385,58 @@ const FormCopyCommercialDeal = (props) => {
     }
   };
 
+  const checkErrorDates = ()=>{
+    let mensaje = validateDatesMoment(body.fechainicio, finalDate)
+    mensaje === "" ? setErrorDate(true): setErrorDate(false)
+  }
+
+  const checkErrorDateInit = (date)=>{
+    let mensaje = validateDate(date)
+    mensaje === "" ? setErrorDateInit(false): setErrorDateInit(true)
+  }
+
+  const renderErrorDates = (
+
+      <div style={{ display: "inline" }}>
+        <Alert message={"Fecha invalida"} type="error" />
+      </div>
+  )
+
+  const validateErrorEscalados = () => {
+    let mensajeError = ""
+    body.escalados.map((item,index)=>{
+      if (item.udsminimas >= item.udsmaximas){
+        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas"
+      }else if (item.udsmaximas <= item.udsminimas ){
+        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas"
+      }
+    })
+
+    if(mensajeError !== ""){
+      return(
+          <div style={{ display: "inline" }}>
+            <Alert message={mensajeError} type="error" />
+          </div> )
+    }
+  };
+
+
+  const validateArrays = () => {
+    let mensajeError = "Asociación de productos no puede queda vacio!"
+    if(body.productos.length === 0){
+      return (
+          <div style={{ display: "inline" }}>
+            <Alert message={mensajeError} type="error" />
+          </div>
+      )
+    }
+  };
+
+
   if (loading) {
     return <LoadingComponents />;
   }
+
   return (
     <>
       <h3 style={{ margin: "20px 0 10px 0" }}>Datos generales</h3>
@@ -435,20 +467,20 @@ const FormCopyCommercialDeal = (props) => {
           <Col span={6}>
             <label>Nombre del Acuerdo Comercial</label>
             <Input
-              name="nombre"
-              value={typeof body === "undefined" ? "" : body.nombre}
-              onChange={changeBody}
-              style={hasError("nombre") ? inputErrorStyle : inputStyle}
+                name="nombre"
+                value={typeof body === "undefined" ? "" : body.nombre}
+                onChange={changeBody}
+                style={hasError("nombre") ? inputErrorStyle : inputStyle}
             />
             {getError("nombre")}
           </Col>
           <Col span={18}>
             <label>Descripción del Acuerdo Comercial</label>
             <Input
-              name="descripcion"
-              value={typeof body === "undefined" ? "" : body.descripcion}
-              onChange={changeBody}
-              style={inputStyle}
+                name="descripcion"
+                value={typeof body === "undefined" ? "" : body.descripcion}
+                onChange={changeBody}
+                style={inputStyle}
             />
           </Col>
         </Row>
@@ -456,35 +488,38 @@ const FormCopyCommercialDeal = (props) => {
           <Col span={8}>
             <label>Fecha de inicio</label>
             <DatePicker
-              value={typeof body === "undefined" ? "" : moment(body.fechainicio)}
-              onChange={(date, dateString) => {
-                let d = new Date(date);
-                let dateIso = d.toISOString();
-                setInitialDate(date);
-                setBody({ ...body, fechainicio: dateIso });
-              }}
-              locale={locale}
-              format={dateFormat}
-              placeholder={"Seleccionar fecha"}
-              style={hasError("fechainicio") ? inputErrorStyle : inputStyle}
+                value={body.fechainicio === "" ? "" : moment(body.fechainicio)}
+                onChange={(date, dateString) => {
+                  let d = new Date(date);
+                  let dateIso = d.toISOString();
+                  setInitialDate(date);
+                  setBody({ ...body, fechainicio: dateIso });
+                  checkErrorDateInit(d)
+                }}
+                locale={locale}
+                format={dateFormat}
+                placeholder={"Seleccionar fecha"}
+                style={hasError("fechainicio") ? inputErrorStyle : inputStyle}
             />
-            {getError("fechainicio")}
+            {  errorDateInit ? renderErrorDates : null}
           </Col>
           <Col span={8}>
             <label>Fecha de fin</label>
             <DatePicker
-              format={dateFormat}
-              value={typeof body === "undefined" ? "" : moment(body.fechafin)}
-              onChange={(date, dateString) => {
-                let d = new Date(date);
-                let dateIso = d.toISOString();
-                setFinalDate(date);
-                setBody({ ...body, fechafin: dateIso });
-              }}
-              placeholder={"Seleccionar fecha"}
-              style={hasError("fechafin") ? inputErrorStyle : inputStyle}
+                format={dateFormat}
+                value={typeof body === "undefined" ? "" : moment(body.fechafin)}
+                onChange={(date, dateString) => {
+                  let d = new Date(date);
+                  let dateIso = d.toISOString();
+                  setFinalDate( moment(d).format("YYYY-MM-DD"));
+                  setBody({ ...body, fechafin: dateIso });
+                  checkErrorDates()
+                }}
+                placeholder={"Seleccionar fecha"}
+                style={hasError("fechafin") ? inputErrorStyle : inputStyle}
+                onBlur={()=>checkErrorDates()}
             />
-            {getError("fechafin")}
+            {  errorDate ? renderErrorDates : null}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -492,11 +527,11 @@ const FormCopyCommercialDeal = (props) => {
             <label>Estado</label>
 
             <Select
-              onChange={(value) => {
-                setBody({ ...body, idestado: value });
-              }}
-              value={typeof body === "undefined" ? "" : body.idestado}
-              style={inputStyle}
+                onChange={(value) => {
+                  setBody({ ...body, idestado: value });
+                }}
+                value={typeof body === "undefined" ? "" : body.idestado}
+                style={inputStyle}
             >
               <Option value={0} style={{ color: "#CCC" }}>
                 Borrador
@@ -504,39 +539,40 @@ const FormCopyCommercialDeal = (props) => {
               <Option value={1}>Activo</Option>
               <Option value={2}>Inactivo</Option>
             </Select>
+
           </Col>
           <Col span={6}>
             <Switch
-              checkedChildren="Si"
-              unCheckedChildren="No"
-              checked={typeof body === "undefined" ? false : body.ind_surtido}
-              onChange={(value) => {
-                setBody({ ...body, ind_surtido: value });
-              }}
+                checkedChildren="Si"
+                unCheckedChildren="No"
+                checked={typeof body === "undefined" ? false : body.ind_surtido}
+                onChange={(value) => {
+                  setBody({ ...body, ind_surtido: value });
+                }}
             />
             <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Surtido</label>
           </Col>
           <Col span={6} style={{ display: "none" }}>
             <Switch
-              checkedChildren="Si"
-              unCheckedChildren="No"
-              checked={typeof body === "undefined" ? "" : body.ind_renovar}
-              defaultChecked={body.ind_renovar}
-              onChange={(value) => {
-                setBody({ ...body, ind_renovar: value });
-              }}
+                checkedChildren="Si"
+                unCheckedChildren="No"
+                checked={typeof body === "undefined" ? "" : body.ind_renovar}
+                defaultChecked={body.ind_renovar}
+                onChange={(value) => {
+                  setBody({ ...body, ind_renovar: value });
+                }}
             />
             <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Renovar</label>
           </Col>
           <Col span={6} style={{ display: "none" }}>
             <Switch
-              checkedChildren="Si"
-              unCheckedChildren="No"
-              checked={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
-              defaultChecked={body.ind_seleccion_conjunta}
-              onChange={(value) => {
-                setBody({ ...body, ind_seleccion_conjunta: value });
-              }}
+                checkedChildren="Si"
+                unCheckedChildren="No"
+                checked={typeof body === "undefined" ? "" : body.ind_seleccion_conjunta}
+                defaultChecked={body.ind_seleccion_conjunta}
+                onChange={(value) => {
+                  setBody({ ...body, ind_seleccion_conjunta: value });
+                }}
             />
             <label style={{ display: "inline-block", marginTop: "35px", marginLeft: "10px" }}>Seleccion conjunta</label>
           </Col>
@@ -547,181 +583,187 @@ const FormCopyCommercialDeal = (props) => {
       <div className="table-filters-indas" style={{ padding: "5px 20px 20px 20px" }}>
         {inputList.map((x, i) => {
           return (
-            <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
-              <Col span={6}>
-                <label>{i <= 0 ? "Pedido mínimo" : ""}</label>
-                <InputNumber
-                  name="udsminimas"
-                  placeholder="Ingresar la cantidad minima para la linea de descuento"
-                  min={1}
-                  defaultValue={1}
-                  onChange={(e) => handleInputChange(e, i, "udsminimas")}
-                  style={hasError("udsminimas") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  value={x.udsminimas}
-                />
-                {getError("escalados[0].udsminimas")}
-              </Col>
-              <Col span={6}>
-                <label>{i <= 0 ? "Unidades Maximas" : ""} </label>
-                <InputNumber
-                  name="udsmaximas"
-                  placeholder="Ingresar la cantidad minima para la linea de descuento"
-                  min={0}
-                  defaultValue={6}
-                  onChange={(e) => handleInputChange(e, i, "udsmaximas")}
-                  style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  stringMode
-                  value={x.udsmaximas}
-                />
-                {getError("escalados[0].udsmaximas")}
-              </Col>
-              <Col span={6}>
-                <label>{i <= 0 ? "Descuento" : ""} </label>
+              <div>
+                <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0, marginTop: 10 }}>
+                  <Col span={6}>
+                    <label>{i <= 0 ? "Pedido mínimo" : ""}</label>
+                    <InputNumber
+                        name="udsminimas"
+                        placeholder="Ingresar la cantidad minima para la linea de descuento"
+                        min={1}
+                        defaultValue={1}
+                        onChange={(e) => handleInputChange(e, i, "udsminimas")}
+                        style={hasError("udsminimas") ? inputErrorStyle : inputStyle}
+                        onBlur={() => handleEscaladosBody()}
+                        value={x.udsminimas}
+                    />
+                    {getError("escalados[0].udsminimas")}
+                  </Col>
+                  <Col span={6}>
+                    <label>{i <= 0 ? "Pedido Maximo" : ""} </label>
+                    <InputNumber
+                        name="udsmaximas"
+                        placeholder="Ingresar la cantidad Maxima para la linea de descuento"
+                        min={1}
+                        max={50}
+                        defaultValue={6}
+                        onChange={(e) => handleInputChange(e, i, "udsmaximas")}
+                        style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
+                        onBlur={() => handleEscaladosBody()}
+                        stringMode
+                        value={x.udsmaximas}
+                    />
+                    {getError("escalados[0].udsmaximas")}
+                  </Col>
+                  <Col span={6}>
+                    <label>{i <= 0 ? "Descuento" : ""} </label>
 
-                <InputNumber
-                  name="descuento"
-                  placeholder="Ingresar % de descuento"
-                  min={0}
-                  value={x.descuento}
-                  defaultValue={10}
-                  step="0,1"
-                  onChange={(e) => handleInputChange(e, i, "descuento")}
-                  style={hasError("descuento") ? inputErrorStyle : inputStyle}
-                  onBlur={() => handleEscaladosBody()}
-                  stringMode
-                  decimalSeparator=","
-                />
-                {getError("escalados[0].descuento")}
-              </Col>
-              <Col span={3}>
-                <div className="btn-box">
-                  {inputList.length !== 1 && (
-                    <Button
-                      onClick={handleRemoveClick}
-                      style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
-                      className="ant-btn-dangerous"
-                    >
-                      <DeleteRowOutlined />
-                    </Button>
-                  )}
-                </div>
-              </Col>
-              <Col span={3}>
-                {inputList.length - 1 === i && (
-                  <Button onClick={handleAddClick} style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }} className="ant-btn">
-                    <FolderAddOutlined />
-                  </Button>
-                )}
-              </Col>
-            </Row>
+                    <InputNumber
+                        name="descuento"
+                        placeholder="Ingresar % de descuento"
+                        min={1}
+                        value={x.descuento}
+                        defaultValue={10}
+                        step="0,1"
+                        onChange={(e) => handleInputChange(e, i, "descuento")}
+                        style={hasError("descuento") ? inputErrorStyle : inputStyle}
+                        onBlur={() => handleEscaladosBody()}
+                        stringMode
+                        decimalSeparator=","
+                    />
+                    {getError("escalados[0].descuento")}
+                  </Col>
+                  <Col span={3}>
+                    <div className="btn-box">
+                      {inputList.length !== 1 && (
+                          <Button
+                              onClick={()=>handleRemoveClick(i)}
+                              style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
+                              className="ant-btn-dangerous"
+                          >
+                            <DeleteRowOutlined />
+                          </Button>
+                      )}
+                    </div>
+                  </Col>
+                  <Col span={3}>
+                    {inputList.length - 1 === i && (
+                        <Button onClick={handleAddClick} style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }} className="ant-btn">
+                          <FolderAddOutlined />
+                        </Button>
+                    )}
+                  </Col>
+
+
+                </Row>
+
+              </div>
           );
         })}
-        {getError("udsmaximas")}
+        {validateErrorEscalados()}
+
       </div>
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        {getError("submarcas")}
-        {getError("productos")}
+        {validateArrays()}
         <Tabs
-          activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
-          onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
+            activeKey={body.ind_seleccion_conjunta ? "1" : "2"}
+            onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
         >
-          <TabPane tab="Selección por submarca" key="1">
+          <TabPane tab="Selección por submarca" key="1" >
             <Col span={12} style={{ height: "1150px", overflow: "auto", paddingRight: "10px" }}>
               <List
-                size="small"
-                header={<div>Submarcas</div>}
-                bordered
-                dataSource={subMarcasArrayRedux.sort((a, b) => a.nombre.localeCompare(b.nombre))}
-                //onChange={catalogoProducts}
-                renderItem={(item) => (
-                  <List.Item style={{ cursor: "pointer" }}>
-                    <Checkbox
-                      value={item.idsubmarca}
-                      onChange={async (e) => {
-                        await onSelectChange(e, item);
-                      }}
-                      //onChange={()=> onChangeArray( item.idsubmarca ) }
-                      checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
-                    >
-                      {item.nombre}
-                    </Checkbox>
-                  </List.Item>
-                )}
+                  size="small"
+                  header={<div>Submarcas</div>}
+                  bordered
+                  dataSource={subMarcasArrayRedux.sort((a, b) => a.nombre.localeCompare(b.nombre))}
+                  //onChange={catalogoProducts}
+                  renderItem={(item) => (
+                      <List.Item style={{ cursor: "pointer" }}>
+                        <Checkbox
+                            value={item.idsubmarca}
+                            onChange={async (e) => {
+                              await onSelectChange(e, item);
+                            }}
+                            //onChange={()=> onChangeArray( item.idsubmarca ) }
+                            checked={marcadosRedux.some((element) => element.id === item.idsubmarca)}
+                        >
+                          {item.nombre}
+                        </Checkbox>
+                      </List.Item>
+                  )}
               />
             </Col>
             <Col span={12} style={{ height: "1150px", overflow: "auto", paddingLeft: "10px" }}>
               <List
-                //onChange={catalogoProducts}
-                size="small"
-                header={<div>Seleccionados</div>}
-                bordered
-                dataSource={body.productos}
-                renderItem={(item) => <List.Item>{item.nombre}</List.Item>}
+                  //onChange={catalogoProducts}
+                  size="small"
+                  header={<div>Seleccionados</div>}
+                  bordered
+                  dataSource={body.productos}
+                  renderItem={(item) => <List.Item>{item.nombre}</List.Item>}
               />
             </Col>
           </TabPane>
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Familias</label>
+                <label style={{ fontWeight: "bold" }}>Categoría</label>
                 <DualListFilter
-                  options={familiaArrayRedux.map((family) => {
-                    return {
-                      label: family.nombre,
-                      value: family.idfamilia,
-                    };
-                  })}
-                  value={filterProducts.seleccion_individual_filtro_categoria}
-                  onChange={(seleccion_individual_filtro_categoria) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_categoria: seleccion_individual_filtro_categoria });
-                  }}
+                    options={familiaArrayRedux.map((family) => {
+                      return {
+                        label: family.nombre,
+                        value: family.idfamilia,
+                      };
+                    })}
+                    value={filterProducts.seleccion_individual_filtro_categoria}
+                    onChange={(seleccion_individual_filtro_categoria) => {
+                      setFilterProducts({ ...filterProducts, seleccion_individual_filtro_categoria: seleccion_individual_filtro_categoria });
+                    }}
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Marcas</label>
+                <label style={{ fontWeight: "bold" }}>Marca</label>
                 <DualListFilter
-                  options={marcasArrayRedux.map((brand) => {
-                    return {
-                      label: brand.nombre,
-                      value: brand.idmarca,
-                    };
-                  })}
-                  value={filterProducts.seleccion_individual_filtro_marca}
-                  onChange={(seleccion_individual_filtro_marca) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_marca: seleccion_individual_filtro_marca });
-                  }}
+                    options={marcasArrayRedux.map((brand) => {
+                      return {
+                        label: brand.nombre,
+                        value: brand.idmarca,
+                      };
+                    })}
+                    value={filterProducts.seleccion_individual_filtro_marca}
+                    onChange={(seleccion_individual_filtro_marca) => {
+                      setFilterProducts({ ...filterProducts, seleccion_individual_filtro_marca: seleccion_individual_filtro_marca });
+                    }}
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Submarcas</label>
+                <label style={{ fontWeight: "bold" }}>Submarca</label>
                 <DualListFilter
-                  options={subMarcasArrayRedux.map((subBrand) => {
-                    return {
-                      label: subBrand.nombre,
-                      value: subBrand.idsubmarca,
-                    };
-                  })}
-                  value={filterProducts.seleccion_individual_filtro_submarca}
-                  onChange={(seleccion_individual_filtro_submarca) => {
-                    setFilterProducts({ ...filterProducts, seleccion_individual_filtro_submarca: seleccion_individual_filtro_submarca });
-                  }}
+                    options={subMarcasArrayRedux.map((subBrand) => {
+                      return {
+                        label: subBrand.nombre,
+                        value: subBrand.idsubmarca,
+                      };
+                    })}
+                    value={filterProducts.seleccion_individual_filtro_submarca}
+                    onChange={(seleccion_individual_filtro_submarca) => {
+                      setFilterProducts({ ...filterProducts, seleccion_individual_filtro_submarca: seleccion_individual_filtro_submarca });
+                    }}
                 />
               </Col>
             </Row>
             <ExtendedDualListBox
-              icons={dualListIcons}
-              options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
-              selectedKeys={body.productos.map((producto) => producto.idproducto)}
-              filter={filterSeleccionIndividual}
-              onChange={(productos) => {
-                var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
-                console.log(newArray);
-                setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
-              }}
+                icons={dualListIcons}
+                options={productosArrayRedux.map((product) => ({ ...product, value: product.idproducto, label: product.nombre }))}
+                selectedKeys={body.productos.map((producto) => producto.idproducto)}
+                filter={filterSeleccionIndividual}
+                onChange={(productos) => {
+                  var newArray = [...body.productos, productos.map((idproducto) => ({ idproducto }))];
+                  console.log(newArray);
+                  setBody({ ...body, productos: productos.map((idproducto) => ({ idproducto })) });
+                }}
             />
           </TabPane>
         </Tabs>
@@ -732,10 +774,10 @@ const FormCopyCommercialDeal = (props) => {
             Guardar
           </Button>
           <Button
-            type="link"
-            onClick={() => {
-              history.push("/acuerdos-comerciales");
-            }}
+              type="link"
+              onClick={() => {
+                history.push("/acuerdos-comerciales");
+              }}
           >
             <LeftOutlined /> Atrás
           </Button>

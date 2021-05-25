@@ -49,7 +49,6 @@ import {
   FolderAddOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { reduce } from "underscore";
 import {validateDate, validateDatesMoment} from "../componets/ValidateFields";
 
 const { Option } = Select;
@@ -82,7 +81,7 @@ const FormCreateAcuerdosComerciales = (props) => {
     productos: [],
     clientes: [],
     escalados: [ {
-      descuento: 10.1,
+      descuento: 1.0,
       udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
@@ -99,7 +98,7 @@ const FormCreateAcuerdosComerciales = (props) => {
   });
   const [inputList, setInputList] = useState([
     {
-      descuento: 10.1,
+      descuento: 1.0,
       udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
@@ -321,7 +320,7 @@ const FormCreateAcuerdosComerciales = (props) => {
       ...inputList,
       {
         descuento: 1.0,
-        udsmaximas: 1,
+        udsmaximas: 50,
         udsminimas: 1,
         txtdescuento: "",
       },
@@ -569,7 +568,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   min={1}
                   defaultValue={1}
                   onChange={(e) => handleInputChange(e, i, "udsminimas")}
-                  style={hasError("udsminimas") ? inputErrorStyle : inputStyle}
+                  style={inputStyle}
                   onBlur={() => handleEscaladosBody()}
                   value={x.udsminimas}
                 />
@@ -583,7 +582,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   max={50}
                   defaultValue={6}
                   onChange={(e) => handleInputChange(e, i, "udsmaximas")}
-                  style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
+                  style={inputStyle}
                   onBlur={() => handleEscaladosBody()}
                   stringMode
                   value={x.udsmaximas}
@@ -610,7 +609,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 <div className="btn-box">
                   {inputList.length !== 1 && (
                     <Button
-                      onClick={handleRemoveClick}
+                      onClick={()=>handleRemoveClick(i)}
                       style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
                       className="ant-btn-dangerous"
                     >

@@ -74,8 +74,8 @@ const FormEdi2AcuerdosComerciales = (props) => {
   });
   const [inputList, setInputList] = useState([
     {
-      descuento: 10.0,
-      udsmaximas: 1,
+      descuento: 1.0,
+      udsmaximas: 50,
       udsminimas: 1,
       txtdescuento: "",
     },
@@ -629,7 +629,7 @@ const FormEdi2AcuerdosComerciales = (props) => {
                 <div className="btn-box">
                   {inputList.length !== 1 && (
                     <Button
-                      onClick={handleRemoveClick}
+                      onClick={()=>handleRemoveClick(i)}
                       style={i <= 0 ? { marginTop: "30px" } : { marginTop: "10px" }}
                       className="ant-btn-dangerous"
                     >
