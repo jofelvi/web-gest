@@ -19,6 +19,7 @@ import {
   LIMPIAR_BTN,
   GET_MARCAS,
   GET_FAMILIA, FORM_BODY,
+  RESET_PRODUCTOS_FILTRADOS
 } from "./constans";
 
 export const INITIAL_STATE = {
@@ -112,6 +113,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, familiaArray: action.payload };
     case FORM_BODY:
       return { ...state, body: {...state.body, ...action.payload}  };
+    case RESET_PRODUCTOS_FILTRADOS:
+      return { ...state, productsfilted: action.payload };
     default:
       return state;
   }

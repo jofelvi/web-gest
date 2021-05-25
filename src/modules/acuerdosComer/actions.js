@@ -18,7 +18,7 @@ import {
   GET_FILTER_DATA,
   LIMPIAR_BTN,
   GET_MARCAS,
-  GET_FAMILIA, FORM_BODY,
+  GET_FAMILIA, FORM_BODY, RESET_PRODUCTOS_FILTRADOS,
 } from "./constans";
 import axios from "axios";
 import utils from "../../lib/utils";
@@ -160,13 +160,21 @@ export const eliminarItemsMarcados = (array) => async (dispatch) => {
     payload: array,
   });
 };
+export const resetItemsMarcados = (array) => async (dispatch) => {
+
+  dispatch({
+    type: RESET_PRODUCTOS_FILTRADOS,
+    payload: [],
+  });
+};
+
+
 
 export const createAcuerdosComerciales = (body) => async (dispatch) => {
   let token = utils.getAuthToken();
   console.log("BODY CREATE ", body);
 
-  let response = await axios
-    .post(`${process.env.REACT_APP_API_BASE_URL}ntr/acuerdo/create`, body, {
+  await axios  .post(`${process.env.REACT_APP_API_BASE_URL}ntr/acuerdo/create`, body, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

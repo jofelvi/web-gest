@@ -28,7 +28,7 @@ import {
   listItemMarcados,
   productosFiltrados,
   getMarcas,
-  getFamilia,
+  getFamilia, resetItemsMarcados,
 } from "../../../modules/acuerdosComer/actions";
 import * as moment from "moment";
 import { useParams, useHistory } from "react-router-dom";
@@ -50,6 +50,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { reduce } from "underscore";
+import {validateDate, validateDatesMoment} from "../componets/ValidateFields";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -70,6 +71,9 @@ const FormCreateAcuerdosComerciales = (props) => {
   const history = useHistory();
 
   const dispatch = useDispatch();
+  const [errorDate, setErrorDate] = useState(false);
+  const [errorDateInit, setErrorDateInit] = useState(false);
+  const [errorEscalados, setErrorEscalados] = useState({error:false, mensaje:""});
   const idsBuscador = useSelector((state) => state.acuerdosComer.cod_Cliente);
   const productosArrayRedux = useSelector((state) => state.acuerdosComer.productoArray);
   const marcadosRedux = useSelector((state) => state.acuerdosComer.marcadosArray);
@@ -77,7 +81,12 @@ const FormCreateAcuerdosComerciales = (props) => {
   const [body, setBody] = useState({
     productos: [],
     clientes: [],
-    escalados: [],
+    escalados: [ {
+      descuento: 10.1,
+      udsmaximas: 50,
+      udsminimas: 1,
+      txtdescuento: "",
+    }],
     submarcas: [],
     margen: parseFloat(1.0),
     idestado: 1,
@@ -230,24 +239,9 @@ const FormCreateAcuerdosComerciales = (props) => {
       },
       { field: "margen", validator: (value) => parseFloat(value) > 0 && parseFloat(value) < 100, message: "Debe ser un porcentaje." },
       {
-        field: "submarcas",
-        validator: (value, record) => record.ind_seleccion_conjunta == false && body.submarcas.length === 0,
-        message: "Debe seleccionar por lo menos una submarca.",
-      },
-      {
-        field: "productos",
-        validator: (value, record) => record.ind_seleccion_conjunta == true || value.length > 0,
-        message: "Debe seleccionar por lo menos un producto.",
-      },
-      {
         field: "idestado",
         validator: (value, record) => value !== null,
         message: "Debe seleccionar un estado",
-      },
-      {
-        field: "udsmaximas",
-        validator: validateDiscountInputs,
-        message: "La unidad máxima no puede tener una valor menor a la anterior línea",
       },
     ];
 
@@ -294,6 +288,7 @@ const FormCreateAcuerdosComerciales = (props) => {
       body,
       () => {
         dispatch(createAcuerdosComerciales(body));
+        dispatch(resetItemsMarcados())
       },
       () => {
         document.querySelector(".ant-layout-content").scrollTo(0, 0);
@@ -303,9 +298,6 @@ const FormCreateAcuerdosComerciales = (props) => {
 
   const handleInputChange = (value, index, key) => {
     console.log("evento", value);
-    // console.log("index", index)
-
-    /*const {name, value} = e.target;*/
 
     if (key === "udsminimas" || key === "udsmaximas") {
       const list = [...inputList];
@@ -373,6 +365,53 @@ const FormCreateAcuerdosComerciales = (props) => {
     }
   };
 
+  const validateErrorEscalados = () => {
+    let mensajeError = ""
+    body.escalados.map((item,index)=>{
+      if (item.udsminimas >= item.udsmaximas){
+        mensajeError = "Existe un error Pedidos Minimo no puede ser mayor o igual que unidades Maximas"
+      }else if (item.udsmaximas <= item.udsminimas ){
+        mensajeError = "Existe un error Unidades maximas no puede ser menor o igual que unidades Minimas"
+      }
+    })
+    if(mensajeError !== ""){
+      return(
+          <div style={{ display: "inline" }}>
+            <Alert message={mensajeError} type="error" />
+          </div> )
+    }
+  };
+
+  const checkErrorDateInit = (date)=>{
+    let mensaje = validateDate(date)
+    mensaje === "" ? setErrorDateInit(false): setErrorDateInit(true)
+  }
+
+  const checkErrorDates = ()=>{
+    let mensaje = validateDatesMoment(body.fechainicio, finalDate)
+    mensaje === "" ? setErrorDate(true): setErrorDate(false)
+  }
+
+  const renderErrorDates = (
+
+      <div style={{ display: "inline" }}>
+        <Alert message={"Fecha invalida"} type="error" />
+      </div>
+  )
+
+
+
+  const validateArrays = () => {
+    let mensajeError = "Asociación de productos no puede queda vacio!"
+    if(body.productos.length === 0){
+      return(
+          <div style={{ display: "inline" }}>
+            <Alert message={mensajeError} type="error" />
+          </div> )
+    }
+  };
+
+
   return (
     <>
       <h3 style={{ margin: "20px 0 10px 0" }}>Datos generales</h3>
@@ -430,29 +469,33 @@ const FormCreateAcuerdosComerciales = (props) => {
                 let dateIso = d.toISOString();
                 setInitialDate(date);
                 setBody({ ...body, fechainicio: dateIso });
+                checkErrorDateInit(d)
               }}
               locale={locale}
               format={dateFormat}
               placeholder={"Seleccionar fecha"}
               style={hasError("fechainicio") ? inputErrorStyle : inputStyle}
             />
-            {getError("fechainicio")}
+            {  errorDateInit ? renderErrorDates : null}
           </Col>
           <Col span={8}>
             <label>Fecha de fin</label>
             <DatePicker
-              format={dateFormat}
-              value={body.fechafin === "" ? "" : moment(body.fechafin)}
-              onChange={(date, dateString) => {
-                let d = new Date(date);
-                let dateIso = d.toISOString();
-                setFinalDate(date);
-                setBody({ ...body, fechafin: dateIso });
-              }}
-              placeholder={"Seleccionar fecha"}
-              style={hasError("fechafin") ? inputErrorStyle : inputStyle}
+                format={dateFormat}
+                allowClear
+                value={typeof body === "undefined" ? "" : moment(body.fechafin)}
+                onChange={(date, dateString) => {
+                  let d = new Date(date);
+                  let dateIso = d.toISOString();
+                  setFinalDate( moment(d).format("YYYY-MM-DD"));
+                  setBody({ ...body, fechafin: dateIso });
+                  checkErrorDates()
+                }}
+                placeholder={"Seleccionar fecha"}
+                style={hasError("fechafin") ? inputErrorStyle : inputStyle}
+                onBlur={()=>checkErrorDates()}
             />
-            {getError("fechafin")}
+            {  errorDate ? renderErrorDates : null}
           </Col>
         </Row>
         <Row style={{ width: "100%", marginBottom: 0, paddingBottom: 0 }}>
@@ -537,6 +580,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                   name="udsmaximas"
                   placeholder="Ingresar la cantidad minima para la linea de descuento"
                   min={0}
+                  max={50}
                   defaultValue={6}
                   onChange={(e) => handleInputChange(e, i, "udsmaximas")}
                   style={hasError("udsmaximas") ? inputErrorStyle : inputStyle}
@@ -585,13 +629,12 @@ const FormCreateAcuerdosComerciales = (props) => {
             </Row>
           );
         })}
-        {getError("udsmaximas")}
+        {validateErrorEscalados()}
       </div>
 
       <h3 style={{ margin: "20px 0 10px 0" }}>Asociación de productos</h3>
       <Row style={{ width: "100%" }}>
-        {getError("submarcas")}
-        {getError("productos")}
+        {validateArrays()}
         <Tabs
           defaultActiveKey={body.ind_seleccion_conjunta ? "1" : "2"}
           onChange={(value) => confirmChangePanel(value === "1" ? "Selección conjunta" : "Selección individual", value)}
@@ -631,10 +674,12 @@ const FormCreateAcuerdosComerciales = (props) => {
               />
             </Col>
           </TabPane>
+
+
           <TabPane tab="Selección individual" key="2">
             <Row style={{ marginBottom: "10px" }}>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Familias</label>
+                <label style={{ fontWeight: "bold" }}>Categoría </label>
                 <DualListFilter
                   options={familiaArrayRedux.map((family) => {
                     return {
@@ -649,7 +694,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Marcas</label>
+                <label style={{ fontWeight: "bold" }}>Marca</label>
                 <DualListFilter
                   options={marcasArrayRedux.map((brand) => {
                     return {
@@ -664,7 +709,7 @@ const FormCreateAcuerdosComerciales = (props) => {
                 />
               </Col>
               <Col span={8}>
-                <label style={{ fontWeight: "bold" }}>Submarcas</label>
+                <label style={{ fontWeight: "bold" }}>Submarca</label>
                 <DualListFilter
                   options={subMarcasArrayRedux.map((subBrand) => {
                     return {

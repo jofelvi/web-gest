@@ -71,12 +71,12 @@ const CreateCommercialDealNew = (props) => {
 
       <h2 className="table-indas-title">Crear Acuerdo Comercial</h2>
 
-   {/*   <FormCreateAcuerdosComerciales {...props} />*/}
-        <Formik
+     <FormCreateAcuerdosComerciales {...props} />
+       {/* <Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
             render={FormCreateAc}
-        />
+        />*/}
     </div>
   );
 };
